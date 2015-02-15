@@ -26,7 +26,7 @@ public class Player {
         return null;
     }
 
-    public Village getVillages() {
+    public ArrayList<Village> getVillages() {
         /* TODO: No message view defined */
         return null;
     }

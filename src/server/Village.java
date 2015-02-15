@@ -19,8 +19,9 @@ public class Village {
     private Player myPlayer;
     private Tile myCapital;
     private Region myRegion;
+    private GameMap aMap; 
     
-    public Village(Tile tiles) {
+    public Village(ArrayList<Tile> pTiles) {
         /* TODO: No message view defined */
     }
 
@@ -51,23 +52,21 @@ public class Village {
     }
 
     public void updateUnits() {
-        Unit unit;
         Tile pTile;
         ActionType actionType;
         UnitType aUnitType;
-        /*unit = myArrayList.get();  WHAT was this? */
         for (Unit lUnit : aUnits) {
-            aUnitType = unit.getUnitType();
+            aUnitType = lUnit.getUnitType();
             if ((aUnitType.equals(UnitType.PEASANT))) {
-                actionType = unit.getActionType();
-                if ((actionType.equals(ActionType.CULTIVATING_END)) {
-                    pTile = unit.getTile();
+                actionType = lUnit.getActionType();
+                if ((actionType.equals(ActionType.CULTIVATING_END))) {
+                    pTile = lUnit.getTile();
                     pTile.setHasMeadow(true);
-                    unit.setActionType(actionType.READY); /*have to double check if this should be ready or moved*/
+                    lUnit.setActionType(actionType.READY); /*have to double check if this should be ready or moved*/
                 }
                 if ((actionType.equals(ActionType.BUILDINGROAD))) {
-                    pTile = unit.getTile();
-                    pTile.setStructureType();
+                    pTile = lUnit.getTile();
+                    pTile.setStructureType(StructureType.ROAD);
                 }
             }
         }
@@ -81,16 +80,19 @@ public class Village {
         /* TODO: No message view defined */
     }
 
-    public void addTile(Tile newTile) {
-        Tile reachableTiles;
-        Village village;
-        // TODO : adding newTile to the list of Tiles;
-        reachableTiles = aTiles.reachableTiles();
-        for (Tile t in reachableTiles but not in ruledTiles) {
-            village = reachableTiles.getVillage();
-            invalid(target);
-            reachableTiles = reachableTiles.reachableTiles();
-        }
+    
+  //add a specified Tile to a village, then check if adding that tile caused two villages under the same player to become one Mega-Village
+    public void addTile(Tile pTile) {
+    	ArrayList<Village> fusableVillages; 
+    	aTiles.add(pTile);
+    	fusableVillages = aMap.getNeighboringVillages(pTile); 
+    	for (Village lVillage : fusableVillages)
+    	{
+    		if (aMap.canFuse(lVillage, this))
+    		{
+    			aMap.fuseVillages(lVillage, this);
+    		}
+    	}
     }
 
     public void removeTile(Tile t) {
@@ -122,7 +124,7 @@ public class Village {
         return 0;
     }
 
-    public boolean canFuse() {
+ /*  public boolean canFuse() {
         if (canFuse) {
             invalid(java.lang.Object@63d2d6fd);
         }
@@ -130,5 +132,6 @@ public class Village {
 
     public void fuse() {
         /* TODO: No message view defined */
-    }
+    
+    
 }

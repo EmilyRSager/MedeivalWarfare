@@ -1,5 +1,7 @@
 package server;
 
+import java.util.Map;
+
 
 
 /**
@@ -11,7 +13,7 @@ public class MapBase {
     private Map<Integer, GameMap> myMap;
     private static MapBase singleton;
     
-    public GameMap getMap(int mapID) {
+    public static GameMap getMap(int mapID) {
         /* TODO: No message view defined */
         return null;
     }

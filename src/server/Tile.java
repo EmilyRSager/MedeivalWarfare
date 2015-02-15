@@ -1,5 +1,7 @@
 package server;
 
+import java.util.ArrayList;
+
 
 
 /**
@@ -19,7 +21,7 @@ public class Tile {
         /* TODO: No message view defined */
     }
 
-    public Tile reachableTiles() {
+    public ArrayList<Tile> getReachableTiles() {
         /* TODO: No message view defined */
         return null;
     }

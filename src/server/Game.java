@@ -14,66 +14,70 @@ public class Game {
     private static GameMap aMap;  //changed this variable to static as it is global... idk if this is right 
     private Player aCurrentPlayer;
     
-    public static Game newGame(ArrayList<Player> pPlayers, int mapID, Color colors) {
+    public Game (ArrayList<Player> pPlayers, int mapID, Color colors) {
         for (Player lPlayer : pPlayers) {
             lPlayer.assignColor(colors);
         }
-        if (mapID != -1) {
+        if (mapID == 0) {
             aMap = GameMap.generateRandomMap();
-        } else {
-            MapBase.singleton();
-            return singleton;
-            aMap = invalid.getMap(mapID);
+        } 
+        else { //Query our database of maps 
+           
+            aMap = MapBase.getMap(mapID);
         }
         aMap.partition(colors);
     }
 
-    public void upgradeUnit(Unit u, UnitType newType) {
+    public void upgradeUnit(Unit pUnit, UnitType newType) {
         boolean success;
         int upgradeCost;
         Village villageRuling;
         Tile tile;
         UnitType unitType;
-        unitType = u.getUnitType();
+        unitType = pUnit.getUnitType();
         upgradeCost = PaymentManager.upgradeCost(unitType, newType);
-        tile = u.getTile();
-        villageRuling = currentPlayer.getVillageRuling(tile);
+        tile = pUnit.getTile();
+        villageRuling = aCurrentPlayer.getVillageRuling(tile);
         success = villageRuling.tryPayingGold(upgradeCost);
     }
 
     public void beginTurn() {
-        Village villages;
-        villages = currentPlayer.getVillages();
-        for () {
-            villages.updateTiles();
-            villages.updateUnits();
+        ArrayList<Village> aCrtVillages;
+        aCrtVillages = aCurrentPlayer.getVillages();
+        for (Village lVillage : aCrtVillages) {
+            lVillage.updateTiles();
+            lVillage.updateUnits();
         }
     }
 
-    public void moveUnit(Unit u, Tile destination) {
-        Tile tile;
-        Tile path;
-        Village village;
+    
+    //TODO -- Check if the unit is a knight, and act accordingly
+    public void moveUnit(Unit pUnit, Tile pDestinationTile) {
+        Tile crtTile;
+        boolean isPath;
+        Village crtVillage;
         Village villageDest;
         StructureType structureType;
-        tile = u.getTile();
-        path = aMap.getPath(tile, destination);
-        structureType = destination.getStructureType();
-        if (structureType==StructureType.TOMBSTONE) {
-            destination.setStructureType();
-            u.setTile(destination);
-        }
-        village = tile.getVillage();
-        if (structureType==StructureType.TREE) {
-            destination.setStructureType();
-            u.setTile(destination);
-            village.addWood(1);
-        }
-        villageDest = destination.getVillage();
-        if (villageDest==null) {
-            village.addTile(destination);
-        } else {
-            
+        crtTile = pUnit.getTile();
+        isPath = aMap.getPath(crtTile, pDestinationTile);
+        structureType = pDestinationTile.getStructureType();
+        
+        if (isPath) 
+        {
+        	if (structureType==StructureType.TOMBSTONE) {
+        		pDestinationTile.setStructureType(StructureType.NO_STRUCT); 
+        		pUnit.setTile(pDestinationTile);
+        	}
+        	crtVillage = crtTile.getVillage();
+        	if (structureType==StructureType.TREE) {
+        		pDestinationTile.setStructureType(StructureType.NO_STRUCT);
+        		pUnit.setTile(pDestinationTile);
+        		crtVillage.addWood(1);
+        	}
+        	villageDest = pDestinationTile.getVillage();
+        	if (villageDest==null) { // if the tile we want to go to is neutral land
+        		crtVillage.addTile(pDestinationTile);
+        	} 
         }
     }
 
@@ -90,15 +94,12 @@ public class Game {
             invadingVillage.addGold(aGold);
             aWood = invadedVillage.getAWood();
             invadingVillage.addWood(aWood);
-            dest.setStructureType();
+            dest.setStructureType(StructureType.NO_STRUCT);  //Structure Type should be none because the invading village will already have a Village
         }
         dest.setVillage(invadingVillage);
         invadedVillage.removeTile(dest);
         invadingVillage.addTile(dest);
-        canFuse = invadingVillage.canFuse();
-        if (canFuse) {
-            invalid();
-        }
+        
     }
 
     public void buildRoad(Unit u) {
@@ -132,10 +133,7 @@ public class Game {
         }
         dest.setVillage(invadingVillage);
         invadingVillage.addTile(dest);
-        invadedVillage.removeTile(dest);
-        canFuse = invadingVillage.canFuse();
-        if (canFuse) {
-            invadingVillage.fuse();
+      
         }
     }
-}
+
