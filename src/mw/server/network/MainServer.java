@@ -1,4 +1,4 @@
-package server;
+package mw.server.network;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -6,31 +6,36 @@ import java.net.Socket;
 
 public class MainServer {
 	private static final int PORT_NUMBER = 6666;
-	ServerSocket serverSocket;
-	Socket clientSocket;
+	ServerSocket aServerSocket;
+	Socket aClientSocket;
+	ClientList aClientList;
 	
+	public MainServer(){
+		aClientList = new ClientList();
+	}
+	
+	/*
+	 * opens a server socket for MainServer to listen to. When a client
+	 * requests a connection, a new thread is created and communicates over
+	 * a unique clientSocket.
+	 */
 	public void listen(){
 		
 		try {
-			serverSocket = new ServerSocket(PORT_NUMBER);
+			aServerSocket = new ServerSocket(PORT_NUMBER);
 			
 			while(true){
 				System.out.println("Waiting on client to connect.\n");
-				clientSocket = serverSocket.accept();
-				System.out.println("Server connected to " + clientSocket.getLocalAddress());
+				aClientSocket = aServerSocket.accept();
+				System.out.println("Server connected to " + aClientSocket.getLocalAddress());
 				
-				Thread clientCommunicatorThread = new Thread(new ClientCommunicator(clientSocket));
-				clientCommunicatorThread.start();
+				Client lClient = new Client(aClientSocket);
+				aClientList.add(lClient);
 			}
 			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-	}
-	
-	public static void main(String[] args) {
-		MainServer listener = new MainServer();
-		listener.listen();
 	}
 }
