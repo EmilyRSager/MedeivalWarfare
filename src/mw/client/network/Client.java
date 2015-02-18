@@ -12,6 +12,7 @@ public class Client {
 	private static final int port = 6666;
 	DataOutputStream aDataOutputStream;
 	DataInputStream aDataInputStream;
+	Socket aClientSocket;
 	
 	public Client(){
 		try
@@ -19,13 +20,13 @@ public class Client {
 			System.out.println("Connecting to " + serverName
 					+ " on port " + port + ".");
 			
-			Socket lClient = new Socket(serverName, port);
+			Socket aClientSocket = new Socket(serverName, port);
 			
 			System.out.println("Just connected to "
-					+ lClient.getRemoteSocketAddress());
+					+ aClientSocket.getRemoteSocketAddress());
 			
-			aDataOutputStream = new DataOutputStream(lClient.getOutputStream());
-			aDataInputStream = new DataInputStream(lClient.getInputStream());
+			aDataOutputStream = new DataOutputStream(aClientSocket.getOutputStream());
+			aDataInputStream = new DataInputStream(aClientSocket.getInputStream());
 			
 		}catch(IOException e){
 			e.printStackTrace();
@@ -34,11 +35,20 @@ public class Client {
 	
 	public void sendMessage(Message pMessage){
 		try {
-			aDataOutputStream.writeUTF(pMessage.toJson());
+			String s = pMessage.toJson();
+			aDataOutputStream.writeUTF(s);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+	}
+	
+	public void readMessage(){
+		try {
+			Message m = Message.fromJson(aDataInputStream.readUTF());
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 }

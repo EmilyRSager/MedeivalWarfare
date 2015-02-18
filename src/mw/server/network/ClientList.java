@@ -10,19 +10,19 @@ import java.util.ArrayList;
  * Feb 16, 2015
  */
 public class ClientList {
-	private ArrayList<Client> aClients;
+	private ArrayList<ServerClient> aClients;
 	
 	public ClientList(){
-		aClients = new ArrayList<Client>();
+		aClients = new ArrayList<ServerClient>();
 	}
 	
-	public synchronized void add(Client pClient){
+	public synchronized void add(ServerClient pClient){
 		aClients.add(pClient);
 		
-		System.out.println("Client " + pClient.getClientNumber() + "added to list.");
+		System.out.println("Client " + pClient.getClientNumber() + " added to list.");
 	}
 	
-	public synchronized void remove(Client pClient){
+	public synchronized void remove(ServerClient pClient){
 		aClients.remove(pClient);
 	}
 }
