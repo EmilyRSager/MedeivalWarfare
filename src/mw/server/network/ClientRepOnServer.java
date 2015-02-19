@@ -53,6 +53,8 @@ public class ClientRepOnServer {
 
 		ClientThread lClientThread = new ClientThread();
 		lClientThread.start();
+		
+		//test comment
 	}
 
 	/**
