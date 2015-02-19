@@ -12,20 +12,21 @@ public class Game {
     
     private ArrayList<Player> aPlayers;
     private  GameMap aMap;  
-    private Player aCurgyrentPlayer;
+    private Player aCurrentPlayer;
     
-    public Game (ArrayList<Player> pPlayers, int mapID, Color colors) {
-        for (Player lPlayer : pPlayers) {
+public Game (ArrayList<Player> pPlayers, int mapID, Color colors) {
+    aPlayers  = pPlayers;     
+	for (Player lPlayer : aPlayers) {
             lPlayer.assignColor(colors);
         }
         if (mapID == 0) {
-            aMap = new GameMap(30,10, true, 0 ); 
+            aMap = new GameMap(30, 10); 
         } 
         else { //Query our database of maps 
            
             aMap = MapBase.getMap(mapID);
         }
-        aMap.partition(colors);
+        aMap.partition();
     }
 
     public void upgradeUnit(Unit pUnit, UnitType newType) {
