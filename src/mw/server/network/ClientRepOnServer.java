@@ -1,9 +1,11 @@
 
 package mw.server.network;
 
+import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -15,11 +17,11 @@ import mw.server.gamelogic.Message;
  * Feb 16, 2015
  * Modelled after code from "http://math.hws.edu/eck/cs124/javanotes5/source/BuddyChatServer.java"
  * 
- * ServerClient class represents a single connection between the server and a client, ON THE SERVER. It has two threads,
+ * ClientRepOnServer class represents a single connection between the server and a client, ON THE SERVER. It has two threads,
  * one for reading data in from the Client's computer, and one thread for writing data to the Client's computer.
  * 
  */
-public class ServerClient {
+public class ClientRepOnServer {
 
 	private static int aNumClientsCreated;  // How many clients have been created.
 	private int aClientNumber;  // Clients are numbered 1, 2, ... as they are created.
@@ -31,16 +33,20 @@ public class ServerClient {
 
 	//Message queue stores Message to be sent
 	private BlockingQueue<Message> aMessageQueue;
+	
+	//String queue stores Strings for testing
+	private BlockingQueue<String> aStringQueue;
 
 	/**
-	 * @param Socket through which the server communicates with this Client
+	 * @param psSocket through which the server communicates with this Client
 	 * Construct a client, initialize the main client thread.
 	 */
-	public ServerClient(Socket pSocket) {
+	public ClientRepOnServer(Socket pSocket) {
 		aClientNumber = aNumClientsCreated; //each client's unique id
 		aNumClientsCreated++;
 
 		aMessageQueue = new LinkedBlockingQueue<Message>();
+		aStringQueue = new LinkedBlockingQueue<String>();
 		aSocket = pSocket;
 
 		SocketManager.getInstance().putSocket(aClientNumber, aSocket);
@@ -55,11 +61,11 @@ public class ServerClient {
 	 * to the client.
 	 */
 	class ClientThread extends Thread {
-		DataOutputStream aDataOutputStream;
+		PrintWriter aPrintWriter;
 
 		public ClientThread(){
 			try {
-				aDataOutputStream = new DataOutputStream(aSocket.getOutputStream());
+				PrintWriter aPrintWriter = new PrintWriter(aSocket.getOutputStream(), true);
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -73,9 +79,11 @@ public class ServerClient {
 			//main loop of ClientThread
 			while(true){
 				try {
-					Message lMessage = aMessageQueue.take();
-					sendMessage(lMessage);
+//					Message lMessage = aMessageQueue.take();
+//					sendMessage(lMessage);
 
+					String lString = aStringQueue.take();
+					echoString(lString);
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -89,6 +97,7 @@ public class ServerClient {
 	 * client disconnects 
 	 */
 	class ReaderThread extends Thread {
+		BufferedReader aBufferedReader;
 		DataInputStream aDataInputStream;
 
 		/**
@@ -96,6 +105,9 @@ public class ServerClient {
 		 */
 		ReaderThread() {
 			try {
+//				aBufferedReader = new BufferedReader(
+//						new InputStreamReader(aSocket.getInputStream()));
+				
 				aDataInputStream = new DataInputStream(aSocket.getInputStream());
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
@@ -106,17 +118,17 @@ public class ServerClient {
 		public void run() {
 			try {
 				while (true) {
+					System.out.println("Listening to client " + aClientNumber + ".");
 
 					//read message in from Client
-					String lMessageFromClient = aDataInputStream.readUTF();
-					/**
-					 * TODO readUTF does not succeed. Need to use something different than
-					 * DataInputStream.readUTF(). 
-					 */
+					String lMessageFromClient = readSocketMessage();
+					System.out.println("Message from client \"" + lMessageFromClient + "\".");
+					echoString(lMessageFromClient);
+
+					//System.out.println("read on server" + lMessageFromClient);
+					//aStringQueue.put(lMessageFromClient);
 					
-					System.out.println(lMessageFromClient);
-					
-					aMessageQueue.put(Message.fromJson(lMessageFromClient));
+					//aMessageQueue.put(Message.fromJson(lMessageFromClient));
 				}
 			}
 			catch (Exception e) {
@@ -127,13 +139,23 @@ public class ServerClient {
 				close();
 			}
 		}
+		
+		private String readSocketMessage(){
+			String lMessage = new String();
+			int i;
+			char c;
+		    while((i = aDataInputStream.read()) != null){
+		    	c = (char) i;
+		    	lMessage += c;
+		    }
+		}
 	}
 
 	/**
 	 * Sends a message to the recipient specified by pMessage.aRecipientID
 	 * @param pMessage
 	 */
-	private void sendMessage(Message pMessage){
+	private synchronized void sendMessage(Message pMessage){
 		int lRecipientID = pMessage.getRecipientID(); //extract recipientID from the message
 
 		Socket lDestinationSocket = 
@@ -155,9 +177,25 @@ public class ServerClient {
 	}
 
 	/**
+	 * @param pString
+	 * Writes pString back to the Socket associated with the client communicating
+	 * with this thread.
+	 */
+	private synchronized void echoString(String pString){
+		try {
+			System.out.println("Echoing string \"" + pString + "\" to client.");
+			PrintWriter lPrintWriter = new PrintWriter(aSocket.getOutputStream(), true);
+			lPrintWriter.println(pString);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	/**
 	 * @return the Client's ID number
 	 */
-	public int getClientNumber() {
+	public synchronized int getClientNumber() {
 		return aClientNumber;
 	}
 

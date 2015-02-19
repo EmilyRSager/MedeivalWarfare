@@ -1,7 +1,6 @@
 package mw.server.gamelogic;
 
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 
 public class Message {
 	private String aMessage;
@@ -27,7 +26,7 @@ public class Message {
 	}
 	
 	public String toJson(){
-		Gson gson = new GsonBuilder().setPrettyPrinting().create();
+		Gson gson = new Gson();
 		return gson.toJson(this);
 	}
 	
