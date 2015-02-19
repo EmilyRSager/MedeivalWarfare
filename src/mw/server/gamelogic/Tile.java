@@ -72,4 +72,14 @@ public class Tile {
 	{
 		return false; 
 	}
+	public Village getVillage()
+	{
+		 Village myVillage = new Village(aMap.getSameColorTiles(this));
+		 return myVillage; 
+	}
+
+	public void setVillage(Village invadingVillage) {
+		// TODO Auto-generated method stub
+		
+	}
 }
