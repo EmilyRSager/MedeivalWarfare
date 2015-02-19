@@ -49,8 +49,8 @@ public class ClientRepOnServer {
 
 		SocketManager.getInstance().putSocket(aClientNumber, aSocket);
 
-		ClientThread lClientThread = new ClientThread();
-		lClientThread.start();
+		WriterThread lWriterThread = new WriterThread();
+		lWriterThread.start();
 	}
 
 	/**
@@ -58,30 +58,27 @@ public class ClientRepOnServer {
 	 * the connection, starting the reader thread, and then writing all messages
 	 * to the client.
 	 */
-	class ClientThread extends Thread {
+	class WriterThread extends Thread {
 		DataOutputStream aDataOutputStream;
-
-		public ClientThread(){
-			try {
-				aDataOutputStream = new DataOutputStream(aSocket.getOutputStream());
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
 
 		public void run() {
 			ReaderThread lReaderThread = new ReaderThread();
 			lReaderThread.start();
 
-			//main loop of ClientThread
+			try {
+				//open DataOutputStream for writing back to client
+				aDataOutputStream = new DataOutputStream(aSocket.getOutputStream());
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			
+			//main loop of WriterThread
 			while(true){
 				try {
-					//Message lMessage = aMessageQueue.take();
-					//sendMessage(lMessage);
-
 					String lString = aStringQueue.take();
 					echoString(lString);
+					
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -97,21 +94,6 @@ public class ClientRepOnServer {
 	class ReaderThread extends Thread {
 		DataInputStream aDataInputStream;
 
-		/**
-		 * @param BufferedReader that reads data from the Socket that the client is connected to.
-		 */
-		ReaderThread() {
-//			try {
-//				//				aBufferedReader = new BufferedReader(
-//				//						new InputStreamReader(aSocket.getInputStream()));
-//
-//				aDataInputStream = new DataInputStream(aSocket.getInputStream());
-//			} catch (IOException e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			}
-		}
-
 		public void run() {
 			try {
 				aDataInputStream = new DataInputStream(aSocket.getInputStream());
@@ -122,11 +104,11 @@ public class ClientRepOnServer {
 					//read message in from Client
 					String lMessageFromClient = aDataInputStream.readUTF();
 					System.out.println("Message from client \"" + lMessageFromClient + "\".");
-					echoString(lMessageFromClient);
+					//echoString(lMessageFromClient);
 					//aDataInputStream.close();
 
 					//System.out.println("read on server" + lMessageFromClient);
-					//aStringQueue.put(lMessageFromClient);
+					aStringQueue.put(lMessageFromClient);
 
 					//aMessageQueue.put(Message.fromJson(lMessageFromClient));
 				}
@@ -224,24 +206,5 @@ public class ClientRepOnServer {
 			}
 			notify();
 		}
-	}
-
-	/**
-	 * Schedule a message to be sent by the writer thread.  This method does
-	 * NOT actually send the message, so it does not block.  (Note: NO line
-	 * feed is added to the message!)
-	 */
-	public synchronized void sendMessage(String pMessage) {
-		//TODO build message to be sent to client computer
-		notify();  // Wake up writer thread so it can send the message.
-	}
-
-	/**
-	 * Schedule the client list to be sent by the writer thread.  This method
-	 * does not actually send the list, so it does not block.
-	 */
-	public synchronized void sendClientList(ClientList pClients) {
-		//TODO build a message to be sent from input ClientLists
-		notify(); // Wake up writer thread so it can send the message.
 	}
 }
