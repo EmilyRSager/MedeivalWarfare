@@ -1,4 +1,4 @@
-package server;
+package mw.server.gamelogic;
 
 import java.util.ArrayList;
 
@@ -10,50 +10,76 @@ import java.util.ArrayList;
  */
 public class Tile {
     
-    private StructureType aStructureType;
+
+    private StructureType aStructureType; 
+    private Unit aUnit; 
     private boolean aHasMeadow;
-    private Village myVillage;
-    private GameMap myMap;
+    private GameMap aMap;
+    private final int aX;
+    private final int aY;
     private Color myColor;
-    private Region myRegion;
+    private ArrayList<Tile> aNeighbors; 
+   
     
+    public Tile(StructureType pStructureType, int pX, int pY) 
+    { 
+    	aX= pX; 
+    	aY = pY; 
+    	aStructureType = pStructureType; 
+    	myColor = Color.NEUTRAL;
+    	aHasMeadow = false; 
+    }
+    
+    public void initializeNeighbors(ArrayList<Tile> pNeighbors)
+    {
+    	aNeighbors = pNeighbors; 
+    }
     public void setColor(Color c) {
-        /* TODO: No message view defined */
+       myColor = c; 
     }
 
-    public ArrayList<Tile> getReachableTiles() {
-        /* TODO: No message view defined */
-        return null;
-    }
 
     public void setNeutral() {
-        /* TODO: No message view defined */
+        myColor = Color.NEUTRAL; 
     }
 
     public StructureType getStructureType() {
-        /* TODO: No message view defined */
-        return null;
+       return aStructureType;
     }
 
-    public void setStructureType(StructureType aStructureType) {
-        /* TODO: No message view defined */
+    public void setStructureType(StructureType pStructureType) {
+        pStructureType = aStructureType; 
     }
 
     public boolean getMeadow() {
-        /* TODO: No message view defined */
-        return false;
+      
+        return aHasMeadow; 
     }
 
-    public void setHasMeadow(boolean aHasMeadow) {
-        /* TODO: No message view defined */
+    public void setHasMeadow(boolean pHasMeadow) {
+       aHasMeadow = pHasMeadow; 
     }
 
-    public Village getVillage() {
-        /* TODO: No message view defined */
-        return null;
+    public Color getColor() {
+        return myColor; 
     }
 
-    public void setVillage(Village v) {
-        /* TODO: No message view defined */
-    }
+	public Unit getUnit() 
+	{
+		return aUnit; 
+	}
+	public boolean isProtected(UnitType pType)
+	{
+		return false; 
+	}
+	public Village getVillage()
+	{
+		 Village myVillage = new Village(aMap.getSameColorTiles(this));
+		 return myVillage; 
+	}
+
+	public void setVillage(Village invadingVillage) {
+		// TODO Auto-generated method stub
+		
+	}
 }
