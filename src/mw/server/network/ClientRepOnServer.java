@@ -1,11 +1,9 @@
 
 package mw.server.network;
 
-import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -33,7 +31,7 @@ public class ClientRepOnServer {
 
 	//Message queue stores Message to be sent
 	private BlockingQueue<Message> aMessageQueue;
-	
+
 	//String queue stores Strings for testing
 	private BlockingQueue<String> aStringQueue;
 
@@ -53,8 +51,6 @@ public class ClientRepOnServer {
 
 		ClientThread lClientThread = new ClientThread();
 		lClientThread.start();
-		
-		//test comment
 	}
 
 	/**
@@ -63,11 +59,11 @@ public class ClientRepOnServer {
 	 * to the client.
 	 */
 	class ClientThread extends Thread {
-		PrintWriter aPrintWriter;
+		DataOutputStream aDataOutputStream;
 
 		public ClientThread(){
 			try {
-				PrintWriter aPrintWriter = new PrintWriter(aSocket.getOutputStream(), true);
+				aDataOutputStream = new DataOutputStream(aSocket.getOutputStream());
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -81,8 +77,8 @@ public class ClientRepOnServer {
 			//main loop of ClientThread
 			while(true){
 				try {
-//					Message lMessage = aMessageQueue.take();
-//					sendMessage(lMessage);
+					//Message lMessage = aMessageQueue.take();
+					//sendMessage(lMessage);
 
 					String lString = aStringQueue.take();
 					echoString(lString);
@@ -99,37 +95,39 @@ public class ClientRepOnServer {
 	 * client disconnects 
 	 */
 	class ReaderThread extends Thread {
-		BufferedReader aBufferedReader;
 		DataInputStream aDataInputStream;
 
 		/**
 		 * @param BufferedReader that reads data from the Socket that the client is connected to.
 		 */
 		ReaderThread() {
-			try {
-//				aBufferedReader = new BufferedReader(
-//						new InputStreamReader(aSocket.getInputStream()));
-				
-				aDataInputStream = new DataInputStream(aSocket.getInputStream());
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+//			try {
+//				//				aBufferedReader = new BufferedReader(
+//				//						new InputStreamReader(aSocket.getInputStream()));
+//
+//				aDataInputStream = new DataInputStream(aSocket.getInputStream());
+//			} catch (IOException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
 		}
 
 		public void run() {
 			try {
+				aDataInputStream = new DataInputStream(aSocket.getInputStream());
 				while (true) {
+					
 					System.out.println("Listening to client " + aClientNumber + ".");
 
 					//read message in from Client
-					String lMessageFromClient = readSocketMessage();
+					String lMessageFromClient = aDataInputStream.readUTF();
 					System.out.println("Message from client \"" + lMessageFromClient + "\".");
 					echoString(lMessageFromClient);
+					//aDataInputStream.close();
 
 					//System.out.println("read on server" + lMessageFromClient);
 					//aStringQueue.put(lMessageFromClient);
-					
+
 					//aMessageQueue.put(Message.fromJson(lMessageFromClient));
 				}
 			}
@@ -137,19 +135,6 @@ public class ClientRepOnServer {
 				System.out.println("Disconnecting from client " + aClientNumber + ".");
 				e.printStackTrace();
 			}
-			finally {
-				close();
-			}
-		}
-		
-		private String readSocketMessage(){
-			String lMessage = new String();
-			int i;
-			char c;
-		    while((i = aDataInputStream.read()) != null){
-		    	c = (char) i;
-		    	lMessage += c;
-		    }
 		}
 	}
 
@@ -186,8 +171,11 @@ public class ClientRepOnServer {
 	private synchronized void echoString(String pString){
 		try {
 			System.out.println("Echoing string \"" + pString + "\" to client.");
-			PrintWriter lPrintWriter = new PrintWriter(aSocket.getOutputStream(), true);
-			lPrintWriter.println(pString);
+			DataOutputStream lDataOutputStream =
+					new DataOutputStream(aSocket.getOutputStream());
+			
+			lDataOutputStream.writeUTF(pString);
+			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

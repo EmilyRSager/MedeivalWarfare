@@ -1,8 +1,10 @@
 package mw.server.gamelogic;
 
+import java.io.Serializable;
+
 import com.google.gson.Gson;
 
-public class Message {
+public class Message implements Serializable{
 	private String aMessage;
 	private int aSenderID;
 	private int aRecipientID;
