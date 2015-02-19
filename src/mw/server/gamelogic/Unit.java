@@ -1,4 +1,4 @@
-package server;
+package mw.server.gamelogic;
 
 
 
@@ -12,10 +12,19 @@ public class Unit {
     private ActionType aActionType;
     private Tile myTile;
     
+    /**
+     * 
+     * @param pUnitType 
+     * Updates the unitType
+     */
     public void setUnitType(UnitType pUnitType) {
         /* TODO: No message view defined */
     }
 
+    /**
+     * 
+     * @return unitType
+     */
     public UnitType getUnitType() {
         /* TODO: No message view defined */
         return null;

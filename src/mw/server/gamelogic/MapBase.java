@@ -1,5 +1,4 @@
-package server;
-
+package mw.server.gamelogic;
 import java.util.Map;
 
 

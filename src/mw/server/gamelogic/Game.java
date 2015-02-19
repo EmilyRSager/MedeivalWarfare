@@ -1,4 +1,4 @@
-package server;
+package mw.server.gamelogic;
 
 import java.util.ArrayList;
 
@@ -11,21 +11,22 @@ import java.util.ArrayList;
 public class Game {
     
     private ArrayList<Player> aPlayers;
-    private static GameMap aMap;  //changed this variable to static as it is global... idk if this is right 
+    private  GameMap aMap;  
     private Player aCurrentPlayer;
     
-    public Game (ArrayList<Player> pPlayers, int mapID, Color colors) {
-        for (Player lPlayer : pPlayers) {
+public Game (ArrayList<Player> pPlayers, int mapID, Color colors) {
+    aPlayers  = pPlayers;     
+	for (Player lPlayer : aPlayers) {
             lPlayer.assignColor(colors);
         }
         if (mapID == 0) {
-            aMap = GameMap.generateRandomMap();
+            aMap = new GameMap(30, 10); 
         } 
         else { //Query our database of maps 
            
             aMap = MapBase.getMap(mapID);
         }
-        aMap.partition(colors);
+        aMap.partition();
     }
 
     public void upgradeUnit(Unit pUnit, UnitType newType) {
@@ -48,6 +49,13 @@ public class Game {
             lVillage.updateTiles();
             lVillage.updateUnits();
         }
+    }
+    /**
+     * Generates trees on tiles 
+     */
+    public void beginRound()
+    {
+    	//TODO 
     }
 
     

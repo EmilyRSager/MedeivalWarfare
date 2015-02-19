@@ -1,4 +1,4 @@
-package server;
+package mw.server.gamelogic;
 
 import java.util.ArrayList;
 
@@ -123,6 +123,17 @@ public class Village {
         /* TODO: No message view defined */
         return 0;
     }
+
+    /**
+     * This method should ONLY be called for getting equality
+     * @return
+     */
+	public ArrayList<Tile> getTiles() {  
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	
 
  /*  public boolean canFuse() {
         if (canFuse) {

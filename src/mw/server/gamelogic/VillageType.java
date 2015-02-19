@@ -1,4 +1,4 @@
-package server;
+package mw.server.gamelogic;
 
 /**
  * VillageType enumeration definition.
