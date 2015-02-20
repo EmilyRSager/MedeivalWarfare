@@ -1,6 +1,8 @@
 package mw.server.gamelogic;
 
 import java.util.ArrayList;
+import java.util.Random;
+import java.util.Stack;
 
 
 
@@ -13,19 +15,35 @@ public class Game extends RandomColorGenerator {
     private ArrayList<Player> aPlayers;
     private  GameMap aMap;  
     private Player aCurrentPlayer;
+
 /**
  * 
  * @param pPlayers
  * @param mapID
  * @param colors
  * Game Constructor -- either randomly generates a new map or it Queries the database for a give map ID 
+ * @throws TooManyPlayersException 
  */
-public Game (ArrayList<Player> pPlayers, int mapID) {
-    aPlayers  = pPlayers;     
-	for (Player lPlayer : aPlayers) {
-			Color myRandomColor = generateRandomColor(); // looks like random color generation should be a super class 
-            lPlayer.assignColor(myRandomColor);
-        }
+public Game (ArrayList<Player> pPlayers, int mapID) throws TooManyPlayersException {
+    aPlayers  = pPlayers;
+    
+     Stack <Color >myColors = new Stack <Color>(); 
+     myColors.push(Color.BLUE); 
+     myColors.push(Color.GREEN);
+     myColors.push(Color.RED); 
+     myColors.push(Color.YELLOW); 
+     
+	for (Player lPlayer : aPlayers) 
+	{
+		if (!myColors.isEmpty())
+		{
+          lPlayer.assignColor(myColors.pop());
+		}
+		else
+		{
+			throw new TooManyPlayersException(); 
+		}
+    }
         if (mapID == 0) {
             aMap = new GameMap(30, 10); 
         } 
@@ -33,7 +51,7 @@ public Game (ArrayList<Player> pPlayers, int mapID) {
            
             aMap = MapBase.getMap(mapID);
         }
-        aMap.partition();
+        aMap.partition(); 
     }
 
     public void upgradeUnit(Unit pUnit, UnitType newType) {
@@ -49,6 +67,54 @@ public Game (ArrayList<Player> pPlayers, int mapID) {
         success = villageRuling.tryPayingGold(upgradeCost);
     }
 
+    /**
+     * 
+     * @param pTile
+     * @return
+     * @throws UnitCantUpgradeException
+     * returns the list of units you can upgrade to, doesn't actually hire a villager 
+     */
+    public ArrayList<UnitType> wantToHireVillager(Tile pTile) throws UnitCantUpgradeException
+    {
+    	ArrayList<UnitType> rArray = new ArrayList<UnitType>();
+    	if (pTile.getUnit().equals(null))
+    	{
+    		rArray.add(UnitType.INFANTRY); 
+    		rArray.add(UnitType.KNIGHT); 
+    		rArray.add(UnitType.PEASANT); 
+    		rArray.add(UnitType.SOLDIER); 
+    				
+    	}
+    	else 
+    	{
+    		if (pTile.getUnit().getUnitType().equals(UnitType.PEASANT))
+    		{
+    			rArray.add(UnitType.INFANTRY);
+    			rArray.add(UnitType.SOLDIER); 
+        		rArray.add(UnitType.KNIGHT);
+    		}
+    		if (pTile.getUnit().getUnitType().equals(UnitType.INFANTRY))
+    		{
+    			rArray.add(UnitType.SOLDIER); 
+        		rArray.add(UnitType.KNIGHT);
+    		}
+    		if (pTile.getUnit().getUnitType().equals(UnitType.SOLDIER))
+    		{
+    			rArray.add(UnitType.KNIGHT); 
+    		}
+    		if (pTile.getUnit().getUnitType().equals(UnitType.KNIGHT)) 
+    		{
+    			throw new UnitCantUpgradeException("Cannot upgrade from Knight."); 
+    		}
+    	}
+    	return rArray; 
+    }
+    
+    public void hireVillager(Tile pTile, UnitType pUnitType)
+    {
+    	Unit pUnit = new Unit(pUnitType); 
+    	pTile.setUnit(pUnit);
+    }
     public void beginTurn() {
         ArrayList<Village> aCrtVillages;
         aCrtVillages = aCurrentPlayer.getVillages();

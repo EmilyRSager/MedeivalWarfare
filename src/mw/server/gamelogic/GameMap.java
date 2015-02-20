@@ -25,7 +25,15 @@ public class GameMap extends RandomColorGenerator {
 	private static HashMap<Tile, ArrayList<Tile>> TileAdjList;
 	private ArrayList<Village> aVillages;  
 	private Tile[][] aTiles; 
-	private Random R = new Random(); 
+	private static Random rTreesAndMeadows = new Random(); 
+	
+	/**
+	 * Takes the map and randomly colors the tiles
+	 * Initializes villages on same color groups of Tiles >=3
+	 * Randomly generates trees with (20%) probability
+	 * Randomly generates meadows with (10%) probability
+	 */
+	
 	public void partition() 
 	{
 		Village lVillage;
@@ -33,19 +41,28 @@ public class GameMap extends RandomColorGenerator {
 		boolean createNewVillage = true;
 		for (Tile lTile : TileAdjList.keySet()) 
 		{
+			int i = rTreesAndMeadows.nextInt(9);  
 			lTile.setColor(generateRandomColor());
+			if(i == 4 || i == 7) // 2/10 times this will happen
+			{
+				lTile.setStructureType(StructureType.TREE);
+			}
+			else if (i == 2) // 1/10 times meadows are put on tiles  
+			{	
+			lTile.setHasMeadow(true); 
+			}
 		}
 		for (Tile lTile : TileAdjList.keySet()) {
 			if (lTile.getColor()!=Color.SEATILE && lTile.getColor()!=Color.NEUTRAL){
 				aReachableTiles = getSameColorTiles(lTile);  //this will get all the tiles that can be reached at this point in the construction of the map 
 				if (aReachableTiles.size() >= 3) 
 				{
-
-
 					for (Village v : aVillages)
 					{
 						if (v.getTiles().equals(aReachableTiles))
-						{ createNewVillage = false; }
+						{ 
+							createNewVillage = false; 
+						}
 
 						if (createNewVillage) 
 						{	
@@ -312,6 +329,10 @@ public class GameMap extends RandomColorGenerator {
     				ArrayList<Tile> adjTiles = TileAdjList.get(crt); 
     				for (Tile lTile: adjTiles)
     				{
+    					if (lTile.getColor().equals(Color.SEATILE))
+    					{
+    						continue; 
+    					}
     					Unit lUnit = lTile.getUnit(); 
     					boolean isUnitOnTile = false ; 
     					if (lUnit != null) 

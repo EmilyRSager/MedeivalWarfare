@@ -3,7 +3,7 @@ package mw.server.gamelogic;
 import java.util.Random;
 
 public class RandomColorGenerator {
-	Random R = new Random (); 
+	static Random R = new Random (); 
 	
 	public  Color generateRandomColor() 
     {

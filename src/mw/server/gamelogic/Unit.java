@@ -11,6 +11,10 @@ public class Unit {
     private UnitType aUnitType;
     private ActionType aActionType;
     private Tile myTile;
+    public Unit( UnitType pUnitType)
+    {
+    	aUnitType = pUnitType; 
+    }
     
     /**
      * 

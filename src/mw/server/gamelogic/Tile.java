@@ -68,6 +68,10 @@ public class Tile {
 	{
 		return aUnit; 
 	}
+	public void setUnit(Unit pUnit)
+	{
+		aUnit = pUnit; 
+	}
 	public boolean isProtected(UnitType pType)
 	{
 		return false; 
