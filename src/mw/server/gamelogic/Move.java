@@ -1,5 +1,10 @@
 package mw.server.gamelogic;
 
-public class Move {
-
+public enum Move 
+{
+	MOVE, 
+	UPGRADE_UNIT,
+	UPGRADE_VILLAGE, 
+	; 
+	
 }

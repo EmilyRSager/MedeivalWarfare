@@ -86,4 +86,10 @@ public class Tile {
 		// TODO Auto-generated method stub
 		
 	}
+
+	public int[] getCoordinates() {
+		int [] toRet = {aX, aY};
+		return toRet; 
+		
+	}
 }

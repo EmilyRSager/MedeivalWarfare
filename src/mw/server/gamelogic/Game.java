@@ -109,8 +109,21 @@ public Game (ArrayList<Player> pPlayers, int mapID) throws TooManyPlayersExcepti
     	}
     	return rArray; 
     }
-    
-    public void hireVillager(Tile pTile, UnitType pUnitType)
+ 
+    public ArrayList<Move> getValidMoves()
+    {
+    	
+    }
+/**
+ * 
+ * @param pTile
+ * @param pUnitType
+ * places the newly hired unit on the Tile
+ * includes upgradeVillager 
+ * 
+ */
+    //TODO add gold deduction from village
+public void hireVillager(Tile pTile, UnitType pUnitType)
     {
     	Unit pUnit = new Unit(pUnitType); 
     	pTile.setUnit(pUnit);

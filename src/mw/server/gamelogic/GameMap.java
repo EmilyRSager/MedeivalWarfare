@@ -124,8 +124,8 @@ public class GameMap extends RandomColorGenerator {
      * 
      */
     public GameMap (int height, int width) {
-
-    
+    		aVillages = new ArrayList<Village>(); 
+    		TileAdjList = new HashMap<Tile, ArrayList<Tile>>(); 
     		aTiles = new Tile[height][width]; 
     	
     		for (int i = 0; i< height; i++ )
@@ -150,11 +150,11 @@ public class GameMap extends RandomColorGenerator {
     				}
     				
     				//for the left column 
-    				if (i!=0 && j==0)
+    				if (i!=0 && i!=height-1&& j==0)
     				{
     					ArrayList<Tile> tmp = new ArrayList<Tile>(); 
     					tmp.add(aTiles[i-1][j]); // directly above
-    					tmp.add(aTiles[i+1][j]); // directly below
+    					tmp.add(aTiles[i+1][j]);// directly below
     					tmp.add(aTiles[i-1][j+1]); //upper right
     					tmp.add(aTiles[i][j+1]); //lower right
     					TileAdjList.put(aTiles[i][j], (ArrayList<Tile>)tmp.clone());
@@ -188,7 +188,7 @@ public class GameMap extends RandomColorGenerator {
     				/*for the right column
     				 * Need even and odd cases
     				 */
-    				if (i !=0 && j == width-1)
+    				if (i !=0 && i!=height-1 && j == width-1)
     				{
     					if (j%2 == 0) //even case
     					{
@@ -305,7 +305,7 @@ public class GameMap extends RandomColorGenerator {
     	Set<Tile> reachableTiles = new HashSet<Tile>(); 
     	if (!TileAdjList.containsKey(start))
     	{
-    		throw new TileNotFound (" The specified tile is not in the game map"); 
+    		throw new TileNotFound ("The specified tile is not in the game map"); 
 
     	}
 
