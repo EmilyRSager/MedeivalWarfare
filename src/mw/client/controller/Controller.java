@@ -1,9 +1,9 @@
 package mw.client.controller;
 
-public interface Controller {
+public abstract class Controller {
 	
-	public static Controller singleton();
-	public static void initialize();
-	public static void clear();
+	public abstract static Controller singleton();
+	public abstract static void initialize();
+	public abstract static void clear();
 
 }

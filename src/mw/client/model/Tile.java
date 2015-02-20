@@ -32,7 +32,7 @@ public final class Tile extends Observable {
 	}
 
 	
-	public enum Terrain {GRASS, TREE, MEADOW, SEA};
+	public enum Terrain {GRASS, TREE, MEADOW, TOMBSTONE, SEA};
 	public enum UnitType {NONE, PEASANT, INFANTRY, SOLDIER, KNIGHT, WATCHTOWER};
 	public enum StructureType {NONE, HOVEL, TOWN, FORT}; 
 	
@@ -43,8 +43,8 @@ public final class Tile extends Observable {
 	private boolean hasRoad = false;
 	private Terrain terrain = Terrain.GRASS;
 	private UnitType unit = UnitType.NONE;
-	private Village village = null;//StructureType.NONE;
-	private SharedColor color = null;//Player owner = null;
+	private Village village = null; //StructureType.NONE;
+	private SharedColor color = null; //Player owner = null;
 	
 	
 	/**
