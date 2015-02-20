@@ -68,8 +68,28 @@ public class Tile {
 	{
 		return aUnit; 
 	}
+	public void setUnit(Unit pUnit)
+	{
+		aUnit = pUnit; 
+	}
 	public boolean isProtected(UnitType pType)
 	{
 		return false; 
+	}
+	public Village getVillage()
+	{
+		 Village myVillage = new Village(aMap.getSameColorTiles(this));
+		 return myVillage; 
+	}
+
+	public void setVillage(Village invadingVillage) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public int[] getCoordinates() {
+		int [] toRet = {aX, aY};
+		return toRet; 
+		
 	}
 }

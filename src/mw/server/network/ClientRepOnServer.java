@@ -15,11 +15,11 @@ import mw.server.gamelogic.Message;
  * Feb 16, 2015
  * Modelled after code from "http://math.hws.edu/eck/cs124/javanotes5/source/BuddyChatServer.java"
  * 
- * ServerClient class represents a single connection between the server and a client, ON THE SERVER. It has two threads,
+ * ClientRepOnServer class represents a single connection between the server and a client, ON THE SERVER. It has two threads,
  * one for reading data in from the Client's computer, and one thread for writing data to the Client's computer.
  * 
  */
-public class ServerClient {
+public class ClientRepOnServer {
 
 	private static int aNumClientsCreated;  // How many clients have been created.
 	private int aClientNumber;  // Clients are numbered 1, 2, ... as they are created.
@@ -32,21 +32,25 @@ public class ServerClient {
 	//Message queue stores Message to be sent
 	private BlockingQueue<Message> aMessageQueue;
 
+	//String queue stores Strings for testing
+	private BlockingQueue<String> aStringQueue;
+
 	/**
-	 * @param Socket through which the server communicates with this Client
+	 * @param psSocket through which the server communicates with this Client
 	 * Construct a client, initialize the main client thread.
 	 */
-	public ServerClient(Socket pSocket) {
+	public ClientRepOnServer(Socket pSocket) {
 		aClientNumber = aNumClientsCreated; //each client's unique id
 		aNumClientsCreated++;
 
 		aMessageQueue = new LinkedBlockingQueue<Message>();
+		aStringQueue = new LinkedBlockingQueue<String>();
 		aSocket = pSocket;
 
 		SocketManager.getInstance().putSocket(aClientNumber, aSocket);
 
-		ClientThread lClientThread = new ClientThread();
-		lClientThread.start();
+		WriterThread lWriterThread = new WriterThread();
+		lWriterThread.start();
 	}
 
 	/**
@@ -54,28 +58,27 @@ public class ServerClient {
 	 * the connection, starting the reader thread, and then writing all messages
 	 * to the client.
 	 */
-	class ClientThread extends Thread {
+	class WriterThread extends Thread {
 		DataOutputStream aDataOutputStream;
-
-		public ClientThread(){
-			try {
-				aDataOutputStream = new DataOutputStream(aSocket.getOutputStream());
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
 
 		public void run() {
 			ReaderThread lReaderThread = new ReaderThread();
 			lReaderThread.start();
 
-			//main loop of ClientThread
+			try {
+				//open DataOutputStream for writing back to client
+				aDataOutputStream = new DataOutputStream(aSocket.getOutputStream());
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			
+			//main loop of WriterThread
 			while(true){
 				try {
-					Message lMessage = aMessageQueue.take();
-					sendMessage(lMessage);
-
+					String lString = aStringQueue.take();
+					echoString(lString);
+					
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -91,40 +94,28 @@ public class ServerClient {
 	class ReaderThread extends Thread {
 		DataInputStream aDataInputStream;
 
-		/**
-		 * @param BufferedReader that reads data from the Socket that the client is connected to.
-		 */
-		ReaderThread() {
-			try {
-				aDataInputStream = new DataInputStream(aSocket.getInputStream());
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-
 		public void run() {
 			try {
+				aDataInputStream = new DataInputStream(aSocket.getInputStream());
 				while (true) {
+					
+					System.out.println("Listening to client " + aClientNumber + ".");
 
 					//read message in from Client
 					String lMessageFromClient = aDataInputStream.readUTF();
-					/**
-					 * TODO readUTF does not succeed. Need to use something different than
-					 * DataInputStream.readUTF(). 
-					 */
-					
-					System.out.println(lMessageFromClient);
-					
-					aMessageQueue.put(Message.fromJson(lMessageFromClient));
+					System.out.println("Message from client \"" + lMessageFromClient + "\".");
+					//echoString(lMessageFromClient);
+					//aDataInputStream.close();
+
+					//System.out.println("read on server" + lMessageFromClient);
+					aStringQueue.put(lMessageFromClient);
+
+					//aMessageQueue.put(Message.fromJson(lMessageFromClient));
 				}
 			}
 			catch (Exception e) {
 				System.out.println("Disconnecting from client " + aClientNumber + ".");
 				e.printStackTrace();
-			}
-			finally {
-				close();
 			}
 		}
 	}
@@ -133,7 +124,7 @@ public class ServerClient {
 	 * Sends a message to the recipient specified by pMessage.aRecipientID
 	 * @param pMessage
 	 */
-	private void sendMessage(Message pMessage){
+	private synchronized void sendMessage(Message pMessage){
 		int lRecipientID = pMessage.getRecipientID(); //extract recipientID from the message
 
 		Socket lDestinationSocket = 
@@ -155,9 +146,28 @@ public class ServerClient {
 	}
 
 	/**
+	 * @param pString
+	 * Writes pString back to the Socket associated with the client communicating
+	 * with this thread.
+	 */
+	private synchronized void echoString(String pString){
+		try {
+			System.out.println("Echoing string \"" + pString + "\" to client.");
+			DataOutputStream lDataOutputStream =
+					new DataOutputStream(aSocket.getOutputStream());
+			
+			lDataOutputStream.writeUTF(pString);
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	/**
 	 * @return the Client's ID number
 	 */
-	public int getClientNumber() {
+	public synchronized int getClientNumber() {
 		return aClientNumber;
 	}
 
@@ -196,24 +206,5 @@ public class ServerClient {
 			}
 			notify();
 		}
-	}
-
-	/**
-	 * Schedule a message to be sent by the writer thread.  This method does
-	 * NOT actually send the message, so it does not block.  (Note: NO line
-	 * feed is added to the message!)
-	 */
-	public synchronized void sendMessage(String pMessage) {
-		//TODO build message to be sent to client computer
-		notify();  // Wake up writer thread so it can send the message.
-	}
-
-	/**
-	 * Schedule the client list to be sent by the writer thread.  This method
-	 * does not actually send the list, so it does not block.
-	 */
-	public synchronized void sendClientList(ClientList pClients) {
-		//TODO build a message to be sent from input ClientLists
-		notify(); // Wake up writer thread so it can send the message.
 	}
 }

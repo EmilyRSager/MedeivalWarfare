@@ -16,7 +16,7 @@ import java.util.Queue;
  * GameMap class definition.
  * 
  */
-public class GameMap {
+public class GameMap extends RandomColorGenerator {
 
 
 	//TODO 
@@ -25,7 +25,15 @@ public class GameMap {
 	private static HashMap<Tile, ArrayList<Tile>> TileAdjList;
 	private ArrayList<Village> aVillages;  
 	private Tile[][] aTiles; 
-	private Random R = new Random(); 
+	private static Random rTreesAndMeadows = new Random(); 
+	
+	/**
+	 * Takes the map and randomly colors the tiles
+	 * Initializes villages on same color groups of Tiles >=3
+	 * Randomly generates trees with (20%) probability
+	 * Randomly generates meadows with (10%) probability
+	 */
+	
 	public void partition() 
 	{
 		Village lVillage;
@@ -33,19 +41,28 @@ public class GameMap {
 		boolean createNewVillage = true;
 		for (Tile lTile : TileAdjList.keySet()) 
 		{
+			int i = rTreesAndMeadows.nextInt(9);  
 			lTile.setColor(generateRandomColor());
+			if(i == 4 || i == 7) // 2/10 times this will happen
+			{
+				lTile.setStructureType(StructureType.TREE);
+			}
+			else if (i == 2) // 1/10 times meadows are put on tiles  
+			{	
+			lTile.setHasMeadow(true); 
+			}
 		}
 		for (Tile lTile : TileAdjList.keySet()) {
 			if (lTile.getColor()!=Color.SEATILE && lTile.getColor()!=Color.NEUTRAL){
 				aReachableTiles = getSameColorTiles(lTile);  //this will get all the tiles that can be reached at this point in the construction of the map 
 				if (aReachableTiles.size() >= 3) 
 				{
-
-
 					for (Village v : aVillages)
 					{
 						if (v.getTiles().equals(aReachableTiles))
-						{ createNewVillage = false; }
+						{ 
+							createNewVillage = false; 
+						}
 
 						if (createNewVillage) 
 						{	
@@ -66,7 +83,7 @@ public class GameMap {
      * @param lTile
      * @return
      */
-    private ArrayList<Tile> getSameColorTiles(Tile pTile) 
+    public ArrayList<Tile> getSameColorTiles(Tile pTile) 
     {
 		//basic BFS that stops whenever we reach a tile with a diff color than our own
     	Queue<Tile> exploredTiles = new LinkedList<Tile>();
@@ -94,37 +111,7 @@ public class GameMap {
     	return toReturn; 
 	}
 
-	private Color generateRandomColor() 
-    {
-		
-    	int i = R.nextInt(5); 
-    	if (i == 0)
-    	{
-    		return Color.BLUE;
-    	}
-    	if (i == 1)
-    	{
-    		return Color.RED;
-    	}
-    	if (i == 2)
-    	{
-    		return Color.GREEN;
-    	}
-    	if (i==3)
-    	{
-    		return Color.YELLOW;
-    	}
-    	if (i==4)
-    	{
-    		return Color.SEATILE;
-    	}
-    	if (i==5)
-    	{
-    		return Color.NEUTRAL;
-    	}
-    	return Color.NEUTRAL; //hopefully this code is unreachable
-		
-	}
+
 
 	/**
      * 
@@ -137,8 +124,8 @@ public class GameMap {
      * 
      */
     public GameMap (int height, int width) {
-
-    
+    		aVillages = new ArrayList<Village>(); 
+    		TileAdjList = new HashMap<Tile, ArrayList<Tile>>(); 
     		aTiles = new Tile[height][width]; 
     	
     		for (int i = 0; i< height; i++ )
@@ -163,11 +150,11 @@ public class GameMap {
     				}
     				
     				//for the left column 
-    				if (i!=0 && j==0)
+    				if (i!=0 && i!=height-1&& j==0)
     				{
     					ArrayList<Tile> tmp = new ArrayList<Tile>(); 
     					tmp.add(aTiles[i-1][j]); // directly above
-    					tmp.add(aTiles[i+1][j]); // directly below
+    					tmp.add(aTiles[i+1][j]);// directly below
     					tmp.add(aTiles[i-1][j+1]); //upper right
     					tmp.add(aTiles[i][j+1]); //lower right
     					TileAdjList.put(aTiles[i][j], (ArrayList<Tile>)tmp.clone());
@@ -201,7 +188,7 @@ public class GameMap {
     				/*for the right column
     				 * Need even and odd cases
     				 */
-    				if (i !=0 && j == width-1)
+    				if (i !=0 && i!=height-1 && j == width-1)
     				{
     					if (j%2 == 0) //even case
     					{
@@ -318,7 +305,7 @@ public class GameMap {
     	Set<Tile> reachableTiles = new HashSet<Tile>(); 
     	if (!TileAdjList.containsKey(start))
     	{
-    		throw new TileNotFound (" The specified tile is not in the game map"); 
+    		throw new TileNotFound ("The specified tile is not in the game map"); 
 
     	}
 
@@ -342,6 +329,10 @@ public class GameMap {
     				ArrayList<Tile> adjTiles = TileAdjList.get(crt); 
     				for (Tile lTile: adjTiles)
     				{
+    					if (lTile.getColor().equals(Color.SEATILE))
+    					{
+    						continue; 
+    					}
     					Unit lUnit = lTile.getUnit(); 
     					boolean isUnitOnTile = false ; 
     					if (lUnit != null) 
@@ -499,5 +490,20 @@ public class GameMap {
 		// TODO Auto-generated method stub
 		return null; 
 		
+	}
+
+	/**
+	 * 
+	 * @param crtTile
+	 * @param pDestinationTile
+	 * @return
+	 * 
+	 */
+	public boolean getPath(Tile crtTile, Tile pDestinationTile) {
+		if( getMovableTiles(crtTile).contains(pDestinationTile))
+		{
+			return true; 
+		}
+		return false;
 	}
 }

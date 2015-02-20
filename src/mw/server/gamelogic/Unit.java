@@ -10,7 +10,10 @@ public class Unit {
     
     private UnitType aUnitType;
     private ActionType aActionType;
-    private Tile myTile;
+    public Unit( UnitType pUnitType)
+    {
+    	aUnitType = pUnitType; 
+    }
     
     /**
      * 
@@ -39,12 +42,5 @@ public class Unit {
         /* TODO: No message view defined */
     }
 
-    public Tile getTile() {
-        /* TODO: No message view defined */
-        return null;
-    }
-
-    public void setTile(Tile newTile) {
-        /* TODO: No message view defined */
-    }
+   
 }
