@@ -25,12 +25,12 @@ public class MainServer extends Thread{
 			aServerSocket = new ServerSocket(PORT_NUMBER);
 			
 			while(true){
-				System.out.println("Waiting on client to connect.");
+				System.out.println("[Server] Waiting on client to connect.");
 				lClientSocket = aServerSocket.accept();
-				System.out.println("Server connected to " + lClientSocket.getLocalAddress());
+				System.out.println("[Server] Connected to " + lClientSocket.getLocalAddress());
 				
-				ClientRepOnServer lServerClient = new ClientRepOnServer(lClientSocket);
-				//aClientList.add(lClient);
+				ClientOnServer lServerClient = new ClientOnServer(lClientSocket);
+				
 			}
 			
 		} catch (IOException e) {

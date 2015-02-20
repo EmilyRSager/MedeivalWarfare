@@ -18,11 +18,11 @@ public class Client extends Thread{
 		try
 		{
 			aClientSocket = new Socket(serverName, port);
-			System.out.println("Connecting to " + serverName
+			System.out.println("[Client] Connecting to " + serverName
 					+ " on port " + port + ".");
 			
 			
-			System.out.println("Just connected to "
+			System.out.println("[Client] Just connected to "
 					+ aClientSocket.getRemoteSocketAddress());
 			
 			WriterThread lWriterThread = new WriterThread();
@@ -52,7 +52,6 @@ public class Client extends Thread{
 				}
 			}
 			catch(Exception e){
-				System.out.println("in the catch block");
 				e.printStackTrace();
 			}
 		}
