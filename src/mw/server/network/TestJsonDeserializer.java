@@ -6,6 +6,7 @@ import java.util.Set;
 
 import mw.shared.AbstractServerMessage;
 import mw.shared.TestServerMessage;
+import mw.utilities.ServerMessageSerializerAndDeserializer;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -24,7 +25,7 @@ public class TestJsonDeserializer {
 //		AbstractServerMessage des = gson.fromJson(json, type);
 //		System.out.println(des.isValid(1));
 		
-		AbstractServerMessage lAbstractServerMessage = JsonDeserializerManual.getInstance().deserialize(json);
+		AbstractServerMessage lAbstractServerMessage = ServerMessageSerializerAndDeserializer.getInstance().deserialize(json);
 		System.out.println(lAbstractServerMessage.isValid(1));
 		
 	}

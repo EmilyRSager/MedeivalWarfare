@@ -1,10 +1,15 @@
 package mw.client.network;
 
 import java.io.DataInputStream;
+import java.util.concurrent.BlockingQueue;
+
+import mw.shared.AbstractServerMessage;
 
 public class ReaderThread extends Thread {
 	DataInputStream aDataInputStream;
-
+	BlockingQueue<AbstractServerMessage> aServerMessageQueue;
+	
+	
 	public void run(){
 
 		try{
