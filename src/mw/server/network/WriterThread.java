@@ -17,10 +17,16 @@ import mw.shared.AbstractClientMessage;
 public class WriterThread extends Thread{
 	DataOutputStream aDataOutputStream;
 	BlockingQueue<AbstractClientMessage> aClientMessageQueue;
+	BlockingQueue<String> aClientTestQueue;
 
+	/**
+	 * Constructor
+	 * @param pDataOutputStream the output stream over which messages will be sent.
+	 */
 	public WriterThread(DataOutputStream pDataOutputStream){
 		aDataOutputStream = pDataOutputStream;
 		aClientMessageQueue = new LinkedBlockingQueue<AbstractClientMessage>();
+		aClientTestQueue = new LinkedBlockingQueue<String>();
 	}
 
 	@Override
@@ -28,22 +34,38 @@ public class WriterThread extends Thread{
 
 		while(true){
 			try {
-				AbstractClientMessage lClientMessage = aClientMessageQueue.take(); //blocks until there is a message available
-
+				//AbstractClientMessage lClientMessage = aClientMessageQueue.take(); //blocks until there is a message available
+				String lTestMessage = aClientTestQueue.take(); //TEST!
+				sendMessage(lTestMessage); //TEST!
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
 	}
+	
+	/**
+	 * TESTING PURPOSES ONLY!!!
+	 * @param pMessage
+	 */
+	public void testSendMessage(String pTestMessage){
+		try {
+			aClientTestQueue.put(pTestMessage);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 
 	/**
-	 * pClientMessage is put in the ClientMessageQueue. It is sent when this thread
-	 * takes it from the queue.
+	 * pClientMessage is put in the ClientMessageQueue. This method is called by the GameMessageHandlerThread
+	 * after that thread has processed an AbstractServerMessage. The parameter pClientMessage
+	 * is sent when this WriterThread is available.
+	 * 
 	 * @param pClientMessage, some concrete message to be sent over aDataOutputStream.
 	 * @return none
 	 */
-	public synchronized void sendMessage(AbstractClientMessage pClientMessage){
+	public void sendMessage(AbstractClientMessage pClientMessage){
 		try {
 			aClientMessageQueue.put(pClientMessage);
 		} catch (InterruptedException e) {

@@ -19,7 +19,7 @@ import mw.shared.AbstractServerMessage;
  * one for reading data in from the Client's computer, and one thread for writing data to the Client's computer.
  * 
  */
-public class ClientOnServer {
+public class ClientOnServer extends Thread{
 
 	private static int aNumClientsCreated;  // How many clients have been created.
 	private int aClientID;  // Clients are numbered 1, 2, ... as they are created.
@@ -61,6 +61,14 @@ public class ClientOnServer {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	
+	/**
+	 * TESTING PURPOSES ONLY!!!
+	 * @param pMessage
+	 */
+	public void testSendString(String pTestMessage){
+		aWriterThread.testSendMessage(pTestMessage);
 	}
 	
 	/**

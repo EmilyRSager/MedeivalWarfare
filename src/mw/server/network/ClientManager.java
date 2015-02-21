@@ -15,6 +15,11 @@ public class ClientManager {
 		aClientOnServerMap = new ConcurrentHashMap<Integer, ClientOnServer>();
 	}
 	
+	/**
+	 * Singleton getInstance method
+	 * @param none
+	 * @return the static ClientManager instance
+	 */
 	public static ClientManager getInstance(){
 		if(aClientManagerInstance == null){
 			aClientManagerInstance = new ClientManager();
@@ -23,9 +28,22 @@ public class ClientManager {
 		return aClientManagerInstance;
 	}
 	
+	/**
+	 * Stores a global reference between client IDs and Clients
+	 * @param The ClientOnServer to be added to the map
+	 * @return none
+	 */
 	public void add(ClientOnServer pClientOnServer){
 		Integer lClientID = pClientOnServer.getClientID();
 		
 		aClientOnServerMap.put(lClientID, pClientOnServer);
+	}
+	
+	/**
+	 * @param the ClientID that of the ClientOnServer to be returned
+	 * @return the ClientOnServer that corresponds to pClientID
+	 */
+	public ClientOnServer get(int pClientID){
+		return aClientOnServerMap.get(pClientID);
 	}
 }

@@ -19,17 +19,17 @@ import java.util.concurrent.LinkedBlockingQueue;
 
 import mw.shared.AbstractServerMessage;
 
-public class GameMessageHandler {
+public class ServerMessageHandler {
 	
 	private BlockingQueue<AbstractServerMessageWrapper> aServerMessageQueue;
-	private static GameMessageHandler aGameMessageHandler;
+	private static ServerMessageHandler aServerMessageHandler;
 	
 	/**
 	 * Constructor. Initiates a ServerMessageHandlerThread, which exists for the entire execution
 	 * of the server program.
 	 * @param none
 	 */
-	private GameMessageHandler(){
+	private ServerMessageHandler(){
 		aServerMessageQueue = new LinkedBlockingQueue<AbstractServerMessageWrapper>();
 		ServerMessageHandlerThread lServerMessageHandlerThread = new ServerMessageHandlerThread();
 		lServerMessageHandlerThread.start();
@@ -38,14 +38,14 @@ public class GameMessageHandler {
 	/**
 	 * Singleton implementation
 	 * @param none
-	 * @return the static instance of GameMessageHandler
+	 * @return the static instance of ServerMessageHandler
 	 */
-	public static GameMessageHandler getInstance(){
-		if(aGameMessageHandler == null){
-			aGameMessageHandler = new GameMessageHandler();
+	public static ServerMessageHandler getInstance(){
+		if(aServerMessageHandler == null){
+			aServerMessageHandler = new ServerMessageHandler();
 		}
 		
-		return aGameMessageHandler;
+		return aServerMessageHandler;
 	}
 	
 	/**
@@ -67,8 +67,12 @@ public class GameMessageHandler {
 		}
 	}
 	
+	public synchronized void testHandle(String pTestMessage){
+		ClientManager.getInstance().get(0).testSendString(pTestMessage); //TEST! Send message back to client 0 through pipeline
+	}
+	
 	/*
-	 * Nested Thread class GameMessageHandlerThread handles all ServerMessages, for all games.
+	 * Nested Thread class ServerMessageHandlerThread handles all ServerMessages, for all games.
 	 */
 	class ServerMessageHandlerThread extends Thread{
 		public void run(){

@@ -26,7 +26,7 @@ public class MainServerThread extends Thread{
 				System.out.println("[Server] Connected to " + lClientSocket.getLocalAddress());
 				
 				ClientOnServer lClientOnServer = new ClientOnServer(lClientSocket);
-				
+				ClientManager.getInstance().add(lClientOnServer); //NOT THREADSAFE	
 			}
 			
 		} catch (IOException e) {

@@ -46,6 +46,7 @@ public class Client extends Thread{
 				aDataOutputStream = new DataOutputStream(aClientSocket.getOutputStream());
 				
 				while(true){
+					System.out.println("[Client] Enter message to send.");
 					String lMessageToSend = reader.next();
 					aDataOutputStream.writeUTF(lMessageToSend);
 					
@@ -69,7 +70,7 @@ public class Client extends Thread{
 				while(true){
 					
 					String lMessageBeingRead = aDataInputStream.readUTF();
-					System.out.println(lMessageBeingRead);
+					System.out.println("[Client] Message received: " + lMessageBeingRead);
 				}
 			}
 			catch(Exception e){
