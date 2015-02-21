@@ -10,8 +10,8 @@ import java.util.HashMap;
 
 import mw.server.gamelogic.Tile;
 import mw.server.gamelogic.Unit;
-import mw.shared.AbstractServerMessage;
-import mw.shared.TestServerMessage;
+import mw.shared.servermessages.AbstractServerMessage;
+import mw.shared.servermessages.TestServerMessage;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;

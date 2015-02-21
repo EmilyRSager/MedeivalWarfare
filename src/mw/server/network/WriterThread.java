@@ -9,7 +9,7 @@ import java.io.IOException;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
-import mw.shared.AbstractClientMessage;
+import mw.shared.clientmessages.AbstractClientMessage;
 
 /**
  * The responsibility of the WriterThread is to send messages to one particular Client computer
@@ -20,6 +20,7 @@ public class WriterThread extends Thread{
 	DataOutputStream aDataOutputStream;
 	BlockingQueue<AbstractClientMessage> aClientMessageQueue;
 	BlockingQueue<String> aClientTestQueue; //TEST!
+	private volatile boolean aIsRunning;
 
 	/**
 	 * Constructor
@@ -29,28 +30,34 @@ public class WriterThread extends Thread{
 		aDataOutputStream = pDataOutputStream;
 		aClientMessageQueue = new LinkedBlockingQueue<AbstractClientMessage>();
 		aClientTestQueue = new LinkedBlockingQueue<String>();
+		aIsRunning = true;
 	}
 
 	@Override
 	public void run(){
 
-		while(true){
-			try {
+
+		try {
+			while(aIsRunning) {
+
 				//AbstractClientMessage lClientMessage = aClientMessageQueue.take(); //blocks until there is a message available
 				String lTestMessage = aClientTestQueue.take(); //TEST!
-				sendMessage(lTestMessage); //TEST!
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				sendString(lTestMessage); //TEST!
 			}
+		} catch (InterruptedException e) {
+			//If the thread was interrupted, initiate clean up.
+			System.out.println("[Server] Writer thread was interupted.");
+			e.printStackTrace();
 		}
+		cleanUp();
 	}
-	
+
 	/**
-	 * TESTING PURPOSES ONLY!!!
+	 * TESTING PURPOSES ONLY!!! Enqueues pTestMessage to be sent when this WriterThread is available.
 	 * @param pMessage
+	 * @return void
 	 */
-	public void testSendMessage(String pTestMessage){
+	public void testSendString(String pTestMessage){
 		try {
 			aClientTestQueue.put(pTestMessage);
 		} catch (InterruptedException e) {
@@ -63,16 +70,15 @@ public class WriterThread extends Thread{
 	 * pClientMessage is put in the ClientMessageQueue. This method is called by the GameMessageHandlerThread
 	 * after that thread has processed an AbstractServerMessage. The parameter pClientMessage
 	 * is sent when this WriterThread is available.
-	 * 
 	 * @param pClientMessage, some concrete message to be sent over aDataOutputStream.
-	 * @return none
+	 * @return void
 	 */
 	public void sendMessage(AbstractClientMessage pClientMessage){
 		try {
 			aClientMessageQueue.put(pClientMessage);
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+			System.out.println("[Server] Closing the Writer Thread.");
 		}
 	}
 
@@ -80,9 +86,9 @@ public class WriterThread extends Thread{
 	 * The string is written over aDataOutputStream, which writes pMessage over a socket to
 	 * the corresponding client computer.
 	 * @param Serialized string to send.
-	 * @return none
+	 * @return void
 	 */
-	private synchronized void sendMessage(String pMessage){
+	private void sendString(String pMessage){
 		try {
 			System.out.println("[Server] Writing string \"" + pMessage + "\" to client.");
 			aDataOutputStream.writeUTF(pMessage);
@@ -93,9 +99,21 @@ public class WriterThread extends Thread{
 	}
 
 	/**
-	 * Closes the DataOutputStream.
+	 * Informs this thread to begin shutting down.
+	 * @param none
+	 * @return void
 	 */
-	private synchronized void close(){
+	public void shutDown(){
+		aIsRunning = false;
+	}
+
+	/**
+	 * Closes the DataOutputStream and Terminates this WriterThread
+	 * @param none
+	 * @return void
+	 */
+	private synchronized void cleanUp(){
+		System.out.println("[Server] Sending all messages from WriterThread queue.");
 		try {
 			//empty message queue before closing
 			while(! aClientMessageQueue.isEmpty()){
@@ -105,12 +123,13 @@ public class WriterThread extends Thread{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 		try {
 			aDataOutputStream.close();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		System.out.println("[Server] Closing WriterThread.");
 	}
 }

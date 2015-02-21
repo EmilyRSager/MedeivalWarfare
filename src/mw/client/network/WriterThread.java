@@ -4,7 +4,7 @@ import java.io.DataOutputStream;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
-import mw.shared.AbstractServerMessage;
+import mw.shared.servermessages.AbstractServerMessage;
 import mw.utilities.ServerMessageSerializerAndDeserializer;
 
 public class WriterThread extends Thread {

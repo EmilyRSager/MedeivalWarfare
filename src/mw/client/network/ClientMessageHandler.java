@@ -3,7 +3,7 @@ package mw.client.network;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
-import mw.shared.AbstractClientMessage;
+import mw.shared.clientmessages.AbstractClientMessage;
 
 public class ClientMessageHandler {
 	

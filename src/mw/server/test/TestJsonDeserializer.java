@@ -1,11 +1,11 @@
-package mw.server.network;
+package mw.server.test;
 
 import java.lang.reflect.Type;
 import java.util.HashSet;
 import java.util.Set;
 
-import mw.shared.AbstractServerMessage;
-import mw.shared.TestServerMessage;
+import mw.shared.servermessages.AbstractServerMessage;
+import mw.shared.servermessages.TestServerMessage;
 import mw.utilities.ServerMessageSerializerAndDeserializer;
 
 import com.google.gson.Gson;

@@ -7,7 +7,7 @@ package mw.server.network;
 import java.io.DataInputStream;
 import java.io.IOException;
 
-import mw.shared.AbstractServerMessage;
+import mw.shared.servermessages.AbstractServerMessage;
 import mw.utilities.ServerMessageSerializerAndDeserializer;
 
 /**
@@ -16,16 +16,18 @@ import mw.utilities.ServerMessageSerializerAndDeserializer;
 public class ReaderThread extends Thread {
 	DataInputStream aDataInputStream;
 	int aClientID;
+	private volatile boolean aIsRunning;
 	
 	public ReaderThread(DataInputStream pDataInputStream, int pClientID){
 		aDataInputStream = pDataInputStream;
 		aClientID = pClientID;
+		aIsRunning = true;
 	}
 
 	@Override
 	public void run() {
 		try {
-			while (true) {
+			while (aIsRunning) {
 
 				//read message in from Client
 				String lMessageFromClient = aDataInputStream.readUTF(); //blocking call
@@ -39,13 +41,28 @@ public class ReaderThread extends Thread {
 			}
 		}
 		catch (Exception e) {
+			//If the thread was interrupted, initiate clean up.
+			System.out.println("[Server] Reader Thread was Interupted.");
 			e.printStackTrace();
-			System.out.println("[Server] Closing client socket.");
-			close();
+			cleanUp();
 		}
 	}
 	
-	private synchronized void close(){
+	/**
+	 * Informs this thread to begin shutting down.
+	 * @param none
+	 * @return void
+	 */
+	public void shutDown(){
+		aIsRunning = false;
+	}
+	
+	/**
+	 * Cleans up remaining class attributes that must be closed.
+	 * @param none
+	 * @return void
+	 */
+	private void cleanUp(){
 		try {
 			//TODO verify that there are no more messages to service
 			aDataInputStream.close();

@@ -1,8 +1,8 @@
 /**
- * @author Charlie Bloomfield
+ * @author Charlie Bloomfield, Abhishek Gupta
  * Feb 20, 2015
  */
-package mw.shared;
+package mw.shared.servermessages;
 
 import java.util.Set;
 
@@ -27,7 +27,7 @@ public class TestServerMessage extends AbstractServerMessage {
 	
 	/**
 	 * @param int pPlayerID, the identification number the client who sent this message to the server.
-	 * @see mw.shared.AbstractServerMessage#isValid(int)
+	 * @see mw.shared.servermessages.AbstractServerMessage#isValid(int)
 	 */
 	@Override
 	public boolean isValid(int pPlayerID) {
@@ -44,7 +44,7 @@ public class TestServerMessage extends AbstractServerMessage {
 	 * actually be completely useless in the future as well.
 	 * 
 	 * @param int pPlayerID, the identification number the client who sent this message to the server.
-	 * @see mw.shared.AbstractServerMessage#execute(int)
+	 * @see mw.shared.servermessages.AbstractServerMessage#execute(int)
 	 */
 	@Override
 	public void execute(int pPlayerID) {

@@ -3,7 +3,7 @@ package mw.client.network;
 import java.io.DataInputStream;
 import java.util.concurrent.BlockingQueue;
 
-import mw.shared.AbstractServerMessage;
+import mw.shared.servermessages.AbstractServerMessage;
 
 public class ReaderThread extends Thread {
 	DataInputStream aDataInputStream;

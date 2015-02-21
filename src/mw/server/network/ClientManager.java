@@ -53,8 +53,9 @@ public class ClientManager {
 	}
 	
 	/**
-	 * Removes the client 
+	 * Removes the client specified by ClientID from the
 	 * @param pClientID
+	 * @return none
 	 */
 	public void remove(int pClientID){
 		aClientManagerInstance.remove(pClientID);

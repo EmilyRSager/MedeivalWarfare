@@ -12,19 +12,23 @@ import java.net.Socket;
 import java.util.Scanner;
 
 public class Client extends Thread{
-	private static final String serverName = "132.206.54.82";
-	private static final int port = 6666;
+	private static final String SERVER_NAME = "localhost";
+	private static final int PORT = 6666;
 
 	private Socket aClientSocket;
 	
 	private Scanner reader = new Scanner(System.in);
 
+	/**
+	 * Constructor. Creates a Reader and Writer thread that communicate with the 
+	 * @param none
+	 */
 	public Client(){
 		try
 		{
-			aClientSocket = new Socket(serverName, port);
-			System.out.println("[Client] Connecting to " + serverName
-					+ " on port " + port + ".");
+			aClientSocket = new Socket(SERVER_NAME, PORT);
+			System.out.println("[Client] Connecting to " + SERVER_NAME
+					+ " on PORT " + PORT + ".");
 			
 			System.out.println("[Client] Just connected to "
 					+ aClientSocket.getRemoteSocketAddress());
@@ -44,13 +48,6 @@ public class Client extends Thread{
 		DataOutputStream aDataOutputStream;	
 		public void run(){
 			try{
-//				aDataOutputStream = new DataOutputStream(aClientSocket.getOutputStream());
-//				HashSet<Integer> set = new HashSet<Integer>();
-//				set.add(0);
-//				set.add(1);
-//				TestServerMessage lMessageToSend = new TestServerMessage("ILoveTitties", set);
-//				Gson gson = new Gson();
-//				String json = gson.toJson(lMessageToSend);
 				while(true){
 					System.out.println("[Client] Enter message to send.");
 					String lMessageToSend = reader.next();
