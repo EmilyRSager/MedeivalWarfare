@@ -1,3 +1,6 @@
+/**
+ * @author emilysager
+ */
 package mw.server.gamelogic;
 
 public class TooManyPlayersException extends Exception {

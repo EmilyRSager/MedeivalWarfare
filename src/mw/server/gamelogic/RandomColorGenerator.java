@@ -5,7 +5,7 @@ import java.util.Random;
 public class RandomColorGenerator {
 	static Random R = new Random (); 
 	
-	public  Color generateRandomColor() 
+	public static Color generateRandomColor() 
     {
 		
     	int i = R.nextInt(5); 
