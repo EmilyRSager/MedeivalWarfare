@@ -7,6 +7,8 @@ package mw.server.network;
 import java.io.DataInputStream;
 import java.io.IOException;
 
+import mw.shared.AbstractServerMessage;
+
 /**
  * Defines a thread that listens to messages coming in from the client. It closes when the client disconnects 
  */
@@ -28,10 +30,11 @@ public class ReaderThread extends Thread {
 				String lMessageFromClient = aDataInputStream.readUTF(); //blocking call
 				System.out.println("[Server] Message from client \"" + lMessageFromClient + "\".");
 				
-				//AbstractServerMessage lServerMessage = //deserialize the message from the client		
-				//ServerMessageHandler.getInstance().handle(lServerMessage, aClientID);
+				AbstractServerMessage lServerMessage = 
+						JsonDeserializerManual.getInstance().deserialize(lMessageFromClient);//deserialize the message from the client		
+				ServerMessageHandler.getInstance().handle(lServerMessage, aClientID);
 				
-				ServerMessageHandler.getInstance().testHandle(lMessageFromClient); //TEST!
+				//ServerMessageHandler.getInstance().testHandle(lMessageFromClient); //TEST!
 			}
 		}
 		catch (Exception e) {

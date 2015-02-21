@@ -17,7 +17,7 @@ import com.google.gson.Gson;
 import mw.shared.TestServerMessage;
 
 public class Client extends Thread{
-	private static final String serverName = "localhost";
+	private static final String serverName = "132.206.54.82";
 	private static final int port = 6666;
 
 	private Socket aClientSocket;
@@ -61,6 +61,7 @@ public class Client extends Thread{
 					//String lMessageToSend = reader.next();
 					
 					aDataOutputStream.writeUTF(json);
+					sleep(10000);
 				}
 			}
 			catch(Exception e){
