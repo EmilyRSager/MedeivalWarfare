@@ -100,8 +100,8 @@ public class ServerMessageHandler {
 		}
 	}
 
-	/**
-	 * Nested class maintains the ClientID attribute
+	/*
+	 * Nested class maintains the ClientID attribute.
 	 */
 	class ServerMessageWrapper{
 		AbstractServerMessage aAbstractServerMessage;

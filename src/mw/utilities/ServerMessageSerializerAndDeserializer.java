@@ -5,11 +5,8 @@
 package mw.utilities;
 
 import java.lang.reflect.Type;
-import java.util.ArrayList;
 import java.util.HashMap;
 
-import mw.server.gamelogic.Tile;
-import mw.server.gamelogic.Unit;
 import mw.shared.servermessages.AbstractServerMessage;
 import mw.shared.servermessages.TestServerMessage;
 
@@ -39,7 +36,6 @@ public class ServerMessageSerializerAndDeserializer {
 	public String serialize(AbstractServerMessage pServerMessage){
 		return aGsonDeserializer.toJson(pServerMessage);
 	}
-	
 	
 	public AbstractServerMessage deserialize(String pGsonString){
 		

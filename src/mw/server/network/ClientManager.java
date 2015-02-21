@@ -4,6 +4,8 @@
  */
 package mw.server.network;
 
+import java.util.HashSet;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
@@ -50,6 +52,15 @@ public class ClientManager {
 	 */
 	public ClientOnServer get(int pClientID){
 		return aClientOnServerMap.get(pClientID);
+	}
+	
+	public Set<ClientOnServer> getSet(Set<Integer> pClientIDs){
+		Set<ClientOnServer> lClientOnServerSet = new HashSet<ClientOnServer>();
+		for(Integer lClientID : pClientIDs){
+			lClientOnServerSet.add(get(lClientID));
+		}
+		
+		return lClientOnServerSet;
 	}
 	
 	/**

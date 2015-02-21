@@ -15,29 +15,29 @@ import mw.shared.clientmessages.AbstractClientMessage;
  * participating with an instance of a single game. There will be one instance
  * of this class observing each game that exits on the server.
  */
-public class GameStateClientMessageHandler implements IGameStateObserver {
-	private Set<Integer> aClientIDs;
+public class GameStateMessageDistributor implements IGameStateObserver {
+	private Set<Integer> aClientIDs; //the set of clients who are participating in a Game instance
 	
 	/**
 	 * Constructor.
 	 * @param a set of ClientIDs to be notified of changes to GameState
 	 */
-	public GameStateClientMessageHandler(Set<Integer> pClientIDs) {
+	public GameStateMessageDistributor(Set<Integer> pClientIDs) {
 		aClientIDs = pClientIDs;
 	}
 
 	/**
 	 * Builds an UpdatedTileClientMessage that is forwarded to every client that
-	 * is participating 
+	 * is participating. 
 	 * @param pSharedTile, the tile whose state has changed in the Model
 	 * @return void
 	 */
 	@Override
 	public void updateTile(SharedTile pSharedTile) {
 		AbstractClientMessage lClientMessage = null;
-		//TODO fill in 
+		//TODO
 		
-		distributeMessageToClients(lClientMessage);
+		distributeMessage(lClientMessage);
 	}
 	
 	/**
@@ -45,10 +45,9 @@ public class GameStateClientMessageHandler implements IGameStateObserver {
 	 * @param pClientMessage
 	 * @return void
 	 */
-	private void distributeMessageToClients(AbstractClientMessage pClientMessage){
-		ClientManager lClientManager = ClientManager.getInstance();
-		for(Integer lClientID : aClientIDs){
-			lClientManager.get(lClientID).sendMessage(pClientMessage);
+	private void distributeMessage(AbstractClientMessage pClientMessage){
+		for(ClientOnServer lClientOnServer : ClientManager.getInstance().getSet(aClientIDs)){
+			lClientOnServer.sendMessage(pClientMessage);
 		}
 	}
 }
