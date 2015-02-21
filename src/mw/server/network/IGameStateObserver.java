@@ -13,6 +13,11 @@ import mw.shared.SharedTile;
  * of Tiles whose values have changed. 
  */
 public interface IGameStateObserver {
+	
+	/**
+	 * Called when the state of a tile changes in the game model.
+	 * @param pSharedTile
+	 */
 	void updateTile(SharedTile pSharedTile);
 	
 }
