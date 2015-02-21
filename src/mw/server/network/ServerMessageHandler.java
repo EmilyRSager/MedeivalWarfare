@@ -8,7 +8,7 @@ package mw.server.network;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
-import mw.shared.servermessages.AbstractServerMessage;
+import mw.shared.networkmessages.AbstractNetworkMessage;
 
 /** 
  * @singleton
@@ -57,7 +57,7 @@ public class ServerMessageHandler {
 	 * @param pClientID, the identification number of the requesting Client.
 	 * @return none
 	 */
-	public synchronized void handle(AbstractServerMessage pServerMessage, int pClientID){
+	public synchronized void handle(AbstractNetworkMessage pServerMessage, int pClientID){
 		try {
 			
 			aServerMessageQueue.put(
@@ -81,7 +81,7 @@ public class ServerMessageHandler {
 			while(true){
 				try {
 					ServerMessageWrapper lServerMessageWrapper = aServerMessageQueue.take();
-					AbstractServerMessage lServerMessage = lServerMessageWrapper.getServerMessage();
+					AbstractNetworkMessage lServerMessage = lServerMessageWrapper.getServerMessage();
 					int lClientID = lServerMessageWrapper.getClientID();
 					
 					if(! lServerMessage.isValid(lClientID)){
@@ -104,15 +104,15 @@ public class ServerMessageHandler {
 	 * Nested class maintains the ClientID attribute
 	 */
 	class ServerMessageWrapper{
-		AbstractServerMessage aAbstractServerMessage;
+		AbstractNetworkMessage aAbstractServerMessage;
 		int aClientID;
 		
-		ServerMessageWrapper(AbstractServerMessage pServerMessage, int pClientID) {
+		ServerMessageWrapper(AbstractNetworkMessage pServerMessage, int pClientID) {
 			aAbstractServerMessage = pServerMessage;
 			aClientID = pClientID;
 		}
 		
-		public AbstractServerMessage getServerMessage(){
+		public AbstractNetworkMessage getServerMessage(){
 			return aAbstractServerMessage;
 		}
 		

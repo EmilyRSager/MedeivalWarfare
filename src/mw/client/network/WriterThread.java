@@ -4,21 +4,21 @@ import java.io.DataOutputStream;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
-import mw.shared.servermessages.AbstractServerMessage;
-import mw.utilities.ServerMessageSerializerAndDeserializer;
+import mw.shared.networkmessages.AbstractNetworkMessage;
+import mw.utilities.MessageSerializerAndDeserializer;
 
 public class WriterThread extends Thread {
 	DataOutputStream aDataOutputStream;	
-	BlockingQueue<AbstractServerMessage> aServerMessageQueue;
+	BlockingQueue<AbstractNetworkMessage> aServerMessageQueue;
 	
 	public WriterThread(DataOutputStream pDataOutputStream) {
 		
 		aDataOutputStream = pDataOutputStream;
-		aServerMessageQueue = new LinkedBlockingQueue<AbstractServerMessage>();
+		aServerMessageQueue = new LinkedBlockingQueue<AbstractNetworkMessage>();
 		
 	}
 	
-	public void addMessageToQueue(AbstractServerMessage pServerMessage){
+	public void addMessageToQueue(AbstractNetworkMessage pServerMessage){
 		
 		try {
 			aServerMessageQueue.put(pServerMessage);
@@ -33,13 +33,13 @@ public class WriterThread extends Thread {
 		try{
 			while(true){
 				
-				AbstractServerMessage lServerMessage= aServerMessageQueue.take();
+				AbstractNetworkMessage lServerMessage= aServerMessageQueue.take();
 				
 				//System.out.println("[Client] Enter message to send.");
 				//String lMessageToSend = reader.next();
 								
 				aDataOutputStream.writeUTF(
-						ServerMessageSerializerAndDeserializer.getInstance().serialize(lServerMessage));
+						MessageSerializerAndDeserializer.getInstance().serialize(lServerMessage));
 				//sleep(10000);
 			}
 		}

@@ -13,7 +13,7 @@ import mw.shared.clientmessages.AbstractClientMessage;
 /**
  * This class is in charge on distributing Game State updates to the clients
  * participating with an instance of a single game. There will be one instance
- * of this class observing each game that exits on the server.
+ * of this class observing each game that exists on the server.
  */
 public class GameStateClientMessageHandler implements IGameStateObserver {
 	private Set<Integer> aClientIDs;

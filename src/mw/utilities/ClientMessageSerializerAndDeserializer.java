@@ -7,19 +7,19 @@ package mw.utilities;
 import java.lang.reflect.Type;
 import java.util.HashMap;
 
-import mw.shared.networkmessages.AbstractNetworkMessage;
 import mw.shared.networkmessages.ClientToServerMessage;
+import mw.shared.networkmessages.ServerToClientMessage;
 
 import com.google.gson.Gson;
 
-public class ServerMessageSerializerAndDeserializer{
-	//These will be singleton class
-	private static ServerMessageSerializerAndDeserializer aServerMessageSerializerAndDeserializer;
+public class ClientMessageSerializerAndDeserializer {
+	//these will be singleton class
+	private static ClientMessageSerializerAndDeserializer aClientMessageSerializerAndDeserializer;
 	private Gson aGsonDeserializer = new Gson();
 	private Type aIncomingType;
 	private HashMap<String, Type> aTypeMap = new HashMap<String, Type>();
 	
-	public ServerMessageSerializerAndDeserializer() {
+	public ClientMessageSerializerAndDeserializer() {
 		//the following is an example on how to populate the map with different types of messages
 		//that this class can handle
 		//Remember to use the TypeToken thing as mentioned here as that is the only way to ensure correctness
@@ -28,22 +28,11 @@ public class ServerMessageSerializerAndDeserializer{
 		
 	}
 	
-	
-	
-	public ServerMessageSerializerAndDeserializer getInstance(){
-		if(aServerMessageSerializerAndDeserializer==null){
-			aServerMessageSerializerAndDeserializer= new ServerMessageSerializerAndDeserializer();
-		}
-		return aServerMessageSerializerAndDeserializer;
-	}
-
-
-	public String serialize(ClientToServerMessage pNetworkMessage) {
+	public String serialize(ServerToClientMessage pNetworkMessage) {
 		return aGsonDeserializer.toJson(pNetworkMessage);
 	}
-
 	
-	public ClientToServerMessage deserialize(String pGsonString) {
+	public ServerToClientMessage deserialize(String pGsonString) {
 		String[] list = pGsonString.split("\"");  
 		
 		//System.out.println(pGsonString);
@@ -56,4 +45,13 @@ public class ServerMessageSerializerAndDeserializer{
 		return aGsonDeserializer.fromJson(pGsonString, aIncomingType);
 		
 	}
+	
+	public ClientMessageSerializerAndDeserializer getInstance(){
+		if(aClientMessageSerializerAndDeserializer==null){
+			aClientMessageSerializerAndDeserializer = new ClientMessageSerializerAndDeserializer();
+		}
+		
+		return aClientMessageSerializerAndDeserializer;
+	}
+	
 }

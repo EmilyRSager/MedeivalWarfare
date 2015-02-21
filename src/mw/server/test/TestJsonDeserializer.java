@@ -4,9 +4,9 @@ import java.lang.reflect.Type;
 import java.util.HashSet;
 import java.util.Set;
 
-import mw.shared.servermessages.AbstractServerMessage;
-import mw.shared.servermessages.TestServerMessage;
-import mw.utilities.ServerMessageSerializerAndDeserializer;
+import mw.shared.networkmessages.AbstractNetworkMessage;
+import mw.shared.networkmessages.TestServerMessage;
+import mw.utilities.MessageSerializerAndDeserializer;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -25,7 +25,7 @@ public class TestJsonDeserializer {
 //		AbstractServerMessage des = gson.fromJson(json, type);
 //		System.out.println(des.isValid(1));
 		
-		AbstractServerMessage lAbstractServerMessage = ServerMessageSerializerAndDeserializer.getInstance().deserialize(json);
+		AbstractNetworkMessage lAbstractServerMessage = MessageSerializerAndDeserializer.getInstance().deserialize(json);
 		System.out.println(lAbstractServerMessage.isValid(1));
 		
 	}

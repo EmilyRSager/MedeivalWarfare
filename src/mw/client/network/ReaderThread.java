@@ -3,11 +3,11 @@ package mw.client.network;
 import java.io.DataInputStream;
 import java.util.concurrent.BlockingQueue;
 
-import mw.shared.servermessages.AbstractServerMessage;
+import mw.shared.networkmessages.AbstractNetworkMessage;
 
 public class ReaderThread extends Thread {
 	DataInputStream aDataInputStream;
-	BlockingQueue<AbstractServerMessage> aServerMessageQueue;
+	BlockingQueue<AbstractNetworkMessage> aServerMessageQueue;
 	
 	
 	public void run(){
