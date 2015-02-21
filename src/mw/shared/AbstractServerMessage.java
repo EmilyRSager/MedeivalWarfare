@@ -1,7 +1,7 @@
 package mw.shared;
 
 /**
- * AbstractGameMessage represents the root class that all possible messages 
+ * AbstractServerMessage represents the root class that all possible messages 
  * sent from the Client to the Server must extend.
  */
 public abstract class AbstractServerMessage {
