@@ -1,5 +1,6 @@
 package mw.client.model;
 
+import java.nio.channels.ScatteringByteChannel;
 import java.util.Observable;
 
 import mw.client.model.Village.VillageType;
@@ -14,31 +15,12 @@ import mw.shared.SharedColor;
  */
 public final class Tile extends Observable {
 	
-	
-	public final class Coordinates {
-		int x, y;
-		
-		private Coordinates(int a, int b)
-		{
-			x=a;
-			y=b;
-		}
-		
-		@Override
-		public int hashCode()
-		{
-			return x*300+y;
-		}
-	}
-
-	
 	public enum Terrain {GRASS, TREE, MEADOW, TOMBSTONE, SEA};
 	public enum UnitType {NONE, PEASANT, INFANTRY, SOLDIER, KNIGHT, WATCHTOWER};
 	public enum StructureType {NONE, HOVEL, TOWN, FORT}; 
 	
 	
 	private final Coordinates coord;
-	
 	
 	private boolean hasRoad = false;
 	private Terrain terrain = Terrain.GRASS;
@@ -63,6 +45,14 @@ public final class Tile extends Observable {
 	 * Set the color of that Tile to c.
 	 * @param c - new Color of the Tile
 	 */
+	public void setColor(SharedColor c)
+	{
+		if (!c.equals(color)) {
+			color = c;
+			setChanged();
+		}
+	}
+	
 	public void setRoad(boolean hasRoadNow)
 	{
 		if (hasRoad!=hasRoadNow) {
@@ -133,7 +123,8 @@ public final class Tile extends Observable {
 	}
 	
 	
-	//	GETTERS
+	//	Getters
+	
 	
 	public Coordinates getCoordinates()
 	{
@@ -141,7 +132,40 @@ public final class Tile extends Observable {
 	}
 	
 	
-	//	STATIC
+	public UnitType getUnitType() {
+		return unit;
+	}
+	
+	
+	public StructureType getStructureType() {
+		if (village==null)
+			return StructureType.NONE;
+		else {
+			switch (village.getVillageType())
+			{
+			case HOVEL:
+				return StructureType.HOVEL;
+				
+			case TOWN:
+				return StructureType.TOWN;
+				
+			case FORT:
+				return StructureType.FORT;
+				
+				default:
+					throw new IllegalStateException("Tile has a village, but VillageType "+village.getVillageType()+" is not recognized");
+			}
+		}
+			
+	}
+	
+
+	public SharedColor getColor() {
+		return color;
+	}
+	
+	//	Static methods
+	
 	
 	private static VillageType translateToVillageType(StructureType st)
 	{
@@ -161,10 +185,14 @@ public final class Tile extends Observable {
 		}
 	}
 	
+	
+	
 	@Override
 	public int hashCode()
 	{
 		return coord.hashCode();
 	}
+
+
 	
 }
