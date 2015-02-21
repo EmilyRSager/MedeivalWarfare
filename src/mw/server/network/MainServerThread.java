@@ -4,20 +4,16 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-public class MainServer extends Thread{
+public class MainServerThread extends Thread{
 	private static final int PORT_NUMBER = 6666;
 	ServerSocket aServerSocket;
-	ClientList aClientList;
 	
-	public MainServer(){
-		aClientList = new ClientList();
-	}
-	
-	/*
-	 * opens a server socket for MainServer to listen to. When a client
+	/**
+	 * Opens a server socket for MainServer to listen to. When a client
 	 * requests a connection, a new thread is created and communicates over
 	 * a unique clientSocket.
 	 */
+	@Override
 	public void run(){
 		Socket lClientSocket; //temporarily stores the socket of the requesting client
 		
@@ -25,12 +21,12 @@ public class MainServer extends Thread{
 			aServerSocket = new ServerSocket(PORT_NUMBER);
 			
 			while(true){
-				System.out.println("Waiting on client to connect.");
+				System.out.println("[Server] Waiting on client to connect.");
 				lClientSocket = aServerSocket.accept();
-				System.out.println("Server connected to " + lClientSocket.getLocalAddress());
+				System.out.println("[Server] Connected to " + lClientSocket.getLocalAddress());
 				
-				ClientRepOnServer lServerClient = new ClientRepOnServer(lClientSocket);
-				//aClientList.add(lClient);
+				ClientOnServer lClientOnServer = new ClientOnServer(lClientSocket);
+				ClientManager.getInstance().add(lClientOnServer); //NOT THREADSAFE	
 			}
 			
 		} catch (IOException e) {
@@ -40,7 +36,7 @@ public class MainServer extends Thread{
 	}
 	
 	public static void main(String[] args) {
-		MainServer m = new MainServer();
+		MainServerThread m = new MainServerThread();
 		m.start();
 	}
 }
