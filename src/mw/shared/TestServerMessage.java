@@ -11,6 +11,7 @@ import mw.server.network.ClientOnServer;
 
 public class TestServerMessage extends AbstractServerMessage {
 	
+	private final String myType = "TestServerMessage";
 	private String aMessage;
 	private Set<Integer> aRecipientCliendIDs;
 	
