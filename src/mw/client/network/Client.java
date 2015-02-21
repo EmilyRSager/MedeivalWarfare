@@ -9,12 +9,7 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
-import java.util.HashSet;
 import java.util.Scanner;
-
-import com.google.gson.Gson;
-
-import mw.shared.TestServerMessage;
 
 public class Client extends Thread{
 	private static final String serverName = "132.206.54.82";
@@ -49,18 +44,18 @@ public class Client extends Thread{
 		DataOutputStream aDataOutputStream;	
 		public void run(){
 			try{
-				aDataOutputStream = new DataOutputStream(aClientSocket.getOutputStream());
-				HashSet<Integer> set = new HashSet<Integer>();
-				set.add(0);
-				set.add(1);
-				TestServerMessage lMessageToSend = new TestServerMessage("ILoveTitties", set);
-				Gson gson = new Gson();
-				String json = gson.toJson(lMessageToSend);
+//				aDataOutputStream = new DataOutputStream(aClientSocket.getOutputStream());
+//				HashSet<Integer> set = new HashSet<Integer>();
+//				set.add(0);
+//				set.add(1);
+//				TestServerMessage lMessageToSend = new TestServerMessage("ILoveTitties", set);
+//				Gson gson = new Gson();
+//				String json = gson.toJson(lMessageToSend);
 				while(true){
-					//System.out.println("[Client] Enter message to send.");
-					//String lMessageToSend = reader.next();
+					System.out.println("[Client] Enter message to send.");
+					String lMessageToSend = reader.next();
 					
-					aDataOutputStream.writeUTF(json);
+					aDataOutputStream.writeUTF(lMessageToSend);
 					sleep(10000);
 				}
 			}
