@@ -12,12 +12,14 @@ import java.util.concurrent.LinkedBlockingQueue;
 import mw.shared.AbstractClientMessage;
 
 /**
- * Writer thread
+ * The responsibility of the WriterThread is to send messages to one particular Client computer
+ * over a DataOutputStream. It is initiated by a ClientOnServer instance, and runs until the Client computer
+ * associated with that ClientOnServer disconnects from the server.
  */
 public class WriterThread extends Thread{
 	DataOutputStream aDataOutputStream;
 	BlockingQueue<AbstractClientMessage> aClientMessageQueue;
-	BlockingQueue<String> aClientTestQueue;
+	BlockingQueue<String> aClientTestQueue; //TEST!
 
 	/**
 	 * Constructor

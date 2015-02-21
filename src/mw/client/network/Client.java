@@ -1,3 +1,8 @@
+/**
+ * @author Charlie Bloomfield
+ * Feb 20, 2015
+ */
+
 package mw.client.network;
 
 import java.io.DataInputStream;
@@ -21,7 +26,6 @@ public class Client extends Thread{
 			System.out.println("[Client] Connecting to " + serverName
 					+ " on port " + port + ".");
 			
-			
 			System.out.println("[Client] Just connected to "
 					+ aClientSocket.getRemoteSocketAddress());
 			
@@ -30,18 +34,15 @@ public class Client extends Thread{
 			
 			ReaderThread lReaderThread = new ReaderThread();
 			lReaderThread.start();
-			
-			
+				
 		}catch(IOException e){
 			e.printStackTrace();
 		}
 	}
 
 	class WriterThread extends Thread{
-		
 		DataOutputStream aDataOutputStream;	
 		public void run(){
-			
 			try{
 				aDataOutputStream = new DataOutputStream(aClientSocket.getOutputStream());
 				
@@ -49,7 +50,6 @@ public class Client extends Thread{
 					System.out.println("[Client] Enter message to send.");
 					String lMessageToSend = reader.next();
 					aDataOutputStream.writeUTF(lMessageToSend);
-					
 				}
 			}
 			catch(Exception e){
@@ -61,20 +61,18 @@ public class Client extends Thread{
 	private class ReaderThread extends Thread{
 		DataInputStream aDataInputStream;
 		
-		
 		public void run(){
 			
 			try{
 				aDataInputStream = new DataInputStream(aClientSocket.getInputStream());
 			
 				while(true){
-					
 					String lMessageBeingRead = aDataInputStream.readUTF();
 					System.out.println("[Client] Message received: " + lMessageBeingRead);
 				}
 			}
 			catch(Exception e){
-				System.out.println("in the catch block");
+				System.out.println("[Client] Error sending message.");
 				e.printStackTrace();
 			}
 			

@@ -7,6 +7,11 @@ package mw.server.network;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
+/**
+ * Provides a Globally accessible mapping between ClientIDs and ClientOnServer classes.
+ * The ServerMessageHandler will use this class to find Client's that need to receive messages,
+ * based on their IDs.
+ */
 public class ClientManager {
 	private static ClientManager aClientManagerInstance;
 	private ConcurrentMap<Integer, ClientOnServer> aClientOnServerMap;
@@ -29,7 +34,7 @@ public class ClientManager {
 	}
 	
 	/**
-	 * Stores a global reference between client IDs and Clients
+	 * Maps the ID of pClientOnServer to that client.
 	 * @param The ClientOnServer to be added to the map
 	 * @return none
 	 */
@@ -45,5 +50,13 @@ public class ClientManager {
 	 */
 	public ClientOnServer get(int pClientID){
 		return aClientOnServerMap.get(pClientID);
+	}
+	
+	/**
+	 * Removes the client 
+	 * @param pClientID
+	 */
+	public void remove(int pClientID){
+		aClientManagerInstance.remove(pClientID);
 	}
 }

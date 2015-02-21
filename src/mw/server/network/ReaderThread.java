@@ -25,7 +25,7 @@ public class ReaderThread extends Thread {
 			while (true) {
 
 				//read message in from Client
-				String lMessageFromClient = aDataInputStream.readUTF();
+				String lMessageFromClient = aDataInputStream.readUTF(); //blocking call
 				System.out.println("[Server] Message from client \"" + lMessageFromClient + "\".");
 				
 				//AbstractServerMessage lServerMessage = //deserialize the message from the client		
