@@ -1,9 +1,14 @@
 
 package mw.server.network;
 
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
 import java.net.Socket;
 import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.LinkedBlockingQueue;
+
+import mw.shared.AbstractClientMessage;
+import mw.shared.AbstractServerMessage;
 
 /**
  * @author Charlie Bloomfield
@@ -17,78 +22,69 @@ import java.util.concurrent.LinkedBlockingQueue;
 public class ClientOnServer {
 
 	private static int aNumClientsCreated;  // How many clients have been created.
-	private int aClientNumber;  // Clients are numbered 1, 2, ... as they are created.
+	private int aClientID;  // Clients are numbered 1, 2, ... as they are created.
 
 	private Socket aSocket;
+	
+	private ReaderThread aReaderThread;
+	private WriterThread aWriterThread;
 
 	private volatile boolean aIsConnected;
 	private volatile boolean aIsClosed;
 
 	//String queue stores Strings for testing
-	private BlockingQueue<String> aBlockingQueue;
+	private BlockingQueue<AbstractServerMessage> aGameMessageQueue;
 
 	/**
 	 * @param psSocket through which the server communicates with this Client
 	 * Construct a client, initialize the main client thread.
 	 */
 	public ClientOnServer(Socket pSocket) {
-		aClientNumber = aNumClientsCreated; //each client's unique id
+		aClientID = aNumClientsCreated; //each client's unique id
 		aNumClientsCreated++;
-
-		aBlockingQueue = new LinkedBlockingQueue<String>();
-		aSocket = pSocket;
-
-		//add 
-		SocketManager.getInstance().putSocket(aClientNumber, aSocket);
-
-		ClientWriterThread lClientWriterThread = new ClientWriterThread(aSocket, aBlockingQueue);
-		lClientWriterThread.start();
+		aSocket = pSocket;		
 		
-		ClientReaderThread lClientReaderThread = new ClientReaderThread(aSocket, aBlockingQueue);
-		lClientReaderThread.start();
+		DataOutputStream lDataOutputStream;
+		DataInputStream lDataInputStream;
+		
+		//TODO this is not precise enough exception handling, need to refactor
+		try {
+			lDataOutputStream = new DataOutputStream(aSocket.getOutputStream());
+			lDataInputStream = new DataInputStream(aSocket.getInputStream());
+			
+			aWriterThread = new WriterThread(lDataOutputStream);
+			aWriterThread.start();
+			
+			aReaderThread = new ReaderThread(lDataInputStream, aClientID);
+			aReaderThread.start();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	/**
+	 *@param
+	 *@return void
+	 */
+	public void sendMessage(AbstractClientMessage pClientMessage){
+		aWriterThread.sendMessage(pClientMessage);
 	}
 
 	/**
+	 * @param none
 	 * @return the Client's ID number
 	 */
-	public synchronized int getClientNumber() {
-		return aClientNumber;
+	public int getClientID() {
+		return aClientID;
 	}
-
+	
 	/**
-	 * Called by ClientList when the server is shutting down;
-	 * Closes this client's socket (which terminates the reader thread)
-	 * and wakes up the writer thread so it can terminate.
+	 * @param none
+	 * @return void
+	 * Closes both reader and writer threads, and does all other necessary clean up.
 	 */
-	public synchronized void shutDown() {
-		if (! aIsClosed) {
-			aIsClosed = true;
-			try {
-				aSocket.close();
-			}
-			catch (Exception e) {
-			}
-			synchronized(this) {
-				notify();  // Notifies writer thread.
-			}
-		}
-	}
-
-	/**
-	 * Called when either the reader or writer thread shuts down.  This
-	 * can happen because of an error or because the connection is aIsClosed
-	 * from the other side.  (It will also be called during server shutdown.)
-	 * If connection is already aIsClosed, nothing is done.
-	 */
-	public synchronized void close() {
-		if (!aIsClosed) {
-			aIsClosed = true;
-			try {
-				aSocket.close();
-			}
-			catch (Exception e) {
-			}
-			notify();
-		}
+	public synchronized void close(){
+		
 	}
 }

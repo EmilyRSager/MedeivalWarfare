@@ -6,27 +6,23 @@ package mw.server.network;
 
 import java.io.DataInputStream;
 import java.io.IOException;
-import java.net.Socket;
-import java.util.concurrent.BlockingQueue;
+
+import mw.shared.AbstractServerMessage;
 
 /**
  * Defines a thread that listens to messages coming in from the client. It closes when the
  * client disconnects 
  */
-public class ClientReaderThread extends Thread {
+public class ReaderThread extends Thread {
 	DataInputStream aDataInputStream;
-	BlockingQueue<String> aBlockingQueue;
+	int aClientID;
 	
-	public ClientReaderThread(Socket pSocket, BlockingQueue<String> pBlockingQueue){
-		try {
-			aDataInputStream = new DataInputStream(pSocket.getInputStream());
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		aBlockingQueue = pBlockingQueue;
+	public ReaderThread(DataInputStream pDataInputStream, int pClientID){
+		aDataInputStream = pDataInputStream;
+		aClientID = pClientID;
 	}
 
+	@Override
 	public void run() {
 		try {
 			while (true) {
@@ -35,13 +31,10 @@ public class ClientReaderThread extends Thread {
 				String lMessageFromClient = aDataInputStream.readUTF();
 				System.out.println("[Server] Message from client \"" + lMessageFromClient + "\".");
 				
-				//echoString(lMessageFromClient);
-				//aDataInputStream.close();
-
-				//System.out.println("read on server" + lMessageFromClient);
-				aBlockingQueue.put(lMessageFromClient);
-
-				//aMessageQueue.put(Message.fromJson(lMessageFromClient));
+				AbstractServerMessage lServerMessage = //deserialize the message from the client
+						
+				GameMessageHandler.getInstance().handle(lServerMessage, aClientID);
+				
 			}
 		}
 		catch (Exception e) {
@@ -51,8 +44,9 @@ public class ClientReaderThread extends Thread {
 		}
 	}
 	
-	private void close(){
+	private synchronized void close(){
 		try {
+			//TODO verify that there are no more messages to service
 			aDataInputStream.close();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
