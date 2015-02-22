@@ -4,11 +4,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 
-
-
-
-
-
 public class HexToGraph {
 	
 	public  static HashMap<GraphNode, Collection<GraphNode>> ConvertFlatToppedHexes(GraphNode [][] pCoordinates)

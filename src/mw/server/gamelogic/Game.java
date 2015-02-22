@@ -72,10 +72,10 @@ public Game (ArrayList<Player> pPlayers, int mapID) throws TooManyPlayersExcepti
      * 
      * @param pTile
      * @return
-     * @throws UnitCantUpgradeException
+     * @throws CantUpgradeException
      * returns the list of units you can upgrade to, doesn't actually hire a villager 
      */
-    public ArrayList<UnitType> wantToHireVillager(Tile pTile) throws UnitCantUpgradeException
+    public ArrayList<UnitType> wantToHireVillager(Tile pTile) throws CantUpgradeException
     {
     	ArrayList<UnitType> rArray = new ArrayList<UnitType>();
     	if (pTile.getUnit().equals(null))
@@ -105,7 +105,7 @@ public Game (ArrayList<Player> pPlayers, int mapID) throws TooManyPlayersExcepti
     		}
     		if (pTile.getUnit().getUnitType().equals(UnitType.KNIGHT)) 
     		{
-    			throw new UnitCantUpgradeException("Cannot upgrade from Knight."); 
+    			throw new CantUpgradeException("Cannot upgrade from Knight."); 
     		}
     	}
     	return rArray; 

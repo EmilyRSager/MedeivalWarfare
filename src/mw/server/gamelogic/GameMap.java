@@ -1,4 +1,6 @@
 package mw.server.gamelogic;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Random;
 import java.util.Set;
 
@@ -10,17 +12,19 @@ public class GameMap  {
 	private static Graph graph; 
 	private GraphNode[][] aNodes; 
 	private static Random rTreesAndMeadows = new Random(); 
-
+	private Collection<Village> aVillages; 
+ 
 	/**
 	 * Randomly Colors the Tiles 
 	 */
 	public void partition() 
 	{
-
+		Village temp;  
 		for (GraphNode lGraphNode : graph.allNodes()) 
 		{
 			Tile lTile = lGraphNode.getTile(); 
 			lTile.setColor(RandomColorGenerator.generateRandomColor());
+			if (PathFinder.getVillage(lGraphNode, graph)
 		}
 	}
 	/**
@@ -43,6 +47,7 @@ public class GameMap  {
 	{
 		aNodes = new GraphNode[height][width];
 		setUpMap(height, width);
+		aVillages = new Set<Village>();
 	}
 
 	private void setUpMap(int height, int width)

@@ -3,6 +3,9 @@ package mw.server.gamelogic;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Set;
+
+import javax.annotation.Generated;
 
 
 
@@ -11,36 +14,42 @@ import java.util.Collection;
  * @author emilysager
  */
 public class Village implements Cloneable, Serializable{
-    
-    /*
-     * absolutely necessary Village attributes
-     */
+	
 	private int aGold; 
     private int aWood; 
     private int aUpkeepCost;
     private VillageType aVillageType; 
-    /*
-     * Village attributes that I want to remove 
-     */
-    private ArrayList<Unit> aUnits; //figure out a way to factor this out of village 
+    private Collection<GraphNode> aVillageNodes; 
     
     
-    
-    
-    public Village() 
+    public Village(Set<GraphNode> villageSet) 
     {
-     //do nothing
+     aVillageNodes = villageSet; 
     }
-
-    public Collection<GraphNode> getVillageSet()
+    public Village(int pGold, int pWood)
     {
-    	return aVillageSet; 
+    	
     }
-    public void upgradeVillage(VillageType newVillageType) throws NotEnoughIncomeException {
-        int upgradeCost;
-        upgradeCost = PaymentManager.upgradeCost(aVillageType, newVillageType);
+    public void generateGold()
+    {
+    	int addGold = 0;  
+    	for (GraphNode lGraphNode: aVillageNodes)
+    	{ 
+    		addGold +=Logic.getGoldGenerated(lGraphNode);  
+    	}
+    	aGold += addGold; 
+    	
+    }
+    public void upgradeVillage(VillageType pVillageType) throws NotEnoughIncomeException {
+        int upgradeCost = PriceCalculator.getUpgradePrice(pVillageType);
+        
         if (aWood >= upgradeCost) {
-            aVillageType = newVillageType;
+            try {
+				aVillageType = Logic.upgrade(aVillageType);
+			} catch (CantUpgradeException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
             aWood -= upgradeCost;
         }
         else 

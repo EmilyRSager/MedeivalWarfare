@@ -3,11 +3,11 @@
  */
 package mw.server.gamelogic;
 
-public class UnitCantUpgradeException extends Exception {
+public class CantUpgradeException extends Exception {
 
 	private String aMessage; 
 	
-	public UnitCantUpgradeException(String pMessage)
+	public CantUpgradeException(String pMessage)
 	{
 		aMessage = pMessage; 
 	}
