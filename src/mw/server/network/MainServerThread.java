@@ -1,9 +1,17 @@
+/**
+ * @author Charlie Bloomfield
+ * Feb 19, 2015
+ */
+
 package mw.server.network;
 
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
+/**
+ * The MainServerThread listens to a port and sets up client connections on unique sockets.
+ */
 public class MainServerThread extends Thread{
 	private static final int PORT_NUMBER = 6666;
 	ServerSocket aServerSocket;

@@ -1,3 +1,7 @@
+/**
+ * @author Charlie Bloomfield
+ * Feb 16, 2015
+ */
 
 package mw.server.network;
 
@@ -5,19 +9,12 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
-import java.util.concurrent.BlockingQueue;
 
-import mw.shared.AbstractClientMessage;
-import mw.shared.AbstractServerMessage;
+import mw.shared.clientmessages.AbstractClientMessage;
 
 /**
- * @author Charlie Bloomfield
- * Feb 16, 2015
- * Modelled after code from "http://math.hws.edu/eck/cs124/javanotes5/source/BuddyChatServer.java"
- * 
  * ClientOnServer class represents a single connection between the server and a client, ON THE SERVER. It has two threads,
  * one for reading data in from the Client's computer, and one thread for writing data to the Client's computer.
- * 
  */
 public class ClientOnServer extends Thread{
 
@@ -28,12 +25,6 @@ public class ClientOnServer extends Thread{
 	
 	private ReaderThread aReaderThread;
 	private WriterThread aWriterThread;
-
-	private volatile boolean aIsConnected;
-	private volatile boolean aIsClosed;
-
-	//String queue stores Strings for testing
-	private BlockingQueue<AbstractServerMessage> aGameMessageQueue;
 
 	/**
 	 * @param psSocket through which the server communicates with this Client
@@ -62,18 +53,21 @@ public class ClientOnServer extends Thread{
 			e.printStackTrace();
 		}
 	}
-	
+
 	/**
-	 * TESTING PURPOSES ONLY!!!
+	 * TESTING PURPOSES ONLY!!! Forwards pTestMesssage to writer thread
 	 * @param pMessage
+	 * @return void
 	 */
 	public void testSendString(String pTestMessage){
-		aWriterThread.testSendMessage(pTestMessage);
+		aWriterThread.testSendString(pTestMessage);
 	}
 	
 	/**
-	 *@param
-	 *@return void
+	 * Forwards pClientMessage to the writer thread dedicated to writing messages
+	 * over the network.
+	 * @param AbstractClientMessage to send to this Client
+	 * @return void
 	 */
 	public void sendMessage(AbstractClientMessage pClientMessage){
 		aWriterThread.sendMessage(pClientMessage);
@@ -93,6 +87,7 @@ public class ClientOnServer extends Thread{
 	 * Closes both reader and writer threads, and does all other necessary clean up.
 	 */
 	public synchronized void close(){
-		
+		aReaderThread.shutDown();;
+		aWriterThread.shutDown();
 	}
 }

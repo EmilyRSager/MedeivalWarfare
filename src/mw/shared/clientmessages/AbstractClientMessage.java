@@ -2,7 +2,7 @@
  * @author Charlie Bloomfield
  * Feb 20, 2015
  */
-package mw.shared;
+package mw.shared.clientmessages;
 
 /**
  * AbstractClientMessage represents the root class that all possible messages sent

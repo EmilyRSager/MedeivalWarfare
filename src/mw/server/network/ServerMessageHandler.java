@@ -2,27 +2,29 @@
  * @author Charlie Bloomfield
  * Feb 20, 2015
  * 
- * @singleton
- * This static class handles AbstractGameMessages. It does so by creating a thread which
- * waits for AbstractServerMessages to become available in a BlockingQueue. It calls the 
- * verify method on each AbstractServerMessage, and if valid, calls execute on each message.
- * 
- * TODO
- * If the AbstractServerMessage is not valid, it must initiate forwarding a message to the
- * client who sent the AbstractServerMessage that informs the User the reason the AbstractServerMessage
- * is invalid.
  */
 package mw.server.network;
 
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
-import mw.shared.AbstractServerMessage;
+import mw.shared.networkmessages.AbstractNetworkMessage;
 
+/** 
+ * @singleton
+ * This class handles AbstractGameMessages. It does so by creating a thread which waits for 
+ * AbstractServerMessages to become available in a BlockingQueue. It calls the verify method on each
+ * AbstractServerMessage, and if valid, calls execute on each message.
+ * 
+ * TODO
+ * If the AbstractServerMessage is not valid, it must initiate forwarding a message to the
+ * client who sent the AbstractServerMessage that informs the User the reason the AbstractServerMessage
+ * is invalid.
+ */
 public class ServerMessageHandler {
 	
-	private BlockingQueue<AbstractServerMessageWrapper> aServerMessageQueue;
 	private static ServerMessageHandler aServerMessageHandler;
+	private BlockingQueue<ServerMessageWrapper> aServerMessageQueue;
 	
 	/**
 	 * Constructor. Initiates a ServerMessageHandlerThread, which exists for the entire execution
@@ -30,7 +32,7 @@ public class ServerMessageHandler {
 	 * @param none
 	 */
 	private ServerMessageHandler(){
-		aServerMessageQueue = new LinkedBlockingQueue<AbstractServerMessageWrapper>();
+		aServerMessageQueue = new LinkedBlockingQueue<ServerMessageWrapper>();
 		ServerMessageHandlerThread lServerMessageHandlerThread = new ServerMessageHandlerThread();
 		lServerMessageHandlerThread.start();
 	}
@@ -55,11 +57,11 @@ public class ServerMessageHandler {
 	 * @param pClientID, the identification number of the requesting Client.
 	 * @return none
 	 */
-	public synchronized void handle(AbstractServerMessage pServerMessage, int pClientID){
+	public synchronized void handle(AbstractNetworkMessage pServerMessage, int pClientID){
 		try {
 			
 			aServerMessageQueue.put(
-					new AbstractServerMessageWrapper(pServerMessage, pClientID));
+					new ServerMessageWrapper(pServerMessage, pClientID));
 			
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
@@ -78,8 +80,8 @@ public class ServerMessageHandler {
 		public void run(){
 			while(true){
 				try {
-					AbstractServerMessageWrapper lServerMessageWrapper = aServerMessageQueue.take();
-					AbstractServerMessage lServerMessage = lServerMessageWrapper.getServerMessage();
+					ServerMessageWrapper lServerMessageWrapper = aServerMessageQueue.take();
+					AbstractNetworkMessage lServerMessage = lServerMessageWrapper.getServerMessage();
 					int lClientID = lServerMessageWrapper.getClientID();
 					
 					if(! lServerMessage.isValid(lClientID)){
@@ -98,19 +100,19 @@ public class ServerMessageHandler {
 		}
 	}
 
-	/**
-	 * Nested class maintains the ClientID attribute
+	/*
+	 * Nested class maintains the ClientID attribute.
 	 */
-	class AbstractServerMessageWrapper{
-		AbstractServerMessage aAbstractServerMessage;
+	class ServerMessageWrapper{
+		AbstractNetworkMessage aAbstractServerMessage;
 		int aClientID;
 		
-		AbstractServerMessageWrapper(AbstractServerMessage pServerMessage, int pClientID) {
+		ServerMessageWrapper(AbstractNetworkMessage pServerMessage, int pClientID) {
 			aAbstractServerMessage = pServerMessage;
 			aClientID = pClientID;
 		}
 		
-		public AbstractServerMessage getServerMessage(){
+		public AbstractNetworkMessage getServerMessage(){
 			return aAbstractServerMessage;
 		}
 		

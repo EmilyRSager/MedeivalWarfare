@@ -4,7 +4,8 @@ import java.util.HashMap;
 
 public final class ModelViewMapping {
 
-	//	GENERIC CONTROLLER methods
+	
+	//	Generic Controller
 	
 	private static ModelViewMapping singleton = null;
 	
@@ -21,7 +22,7 @@ public final class ModelViewMapping {
 	}
 	
 	
-	//	SPECIFIC MODELVIEWMAPPING CODE
+	//	ModelViewMapping
 	
 	private HashMap<Tile, TileDisplay> tileToTileDisplay;
 	
