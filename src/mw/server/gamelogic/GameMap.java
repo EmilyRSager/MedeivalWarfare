@@ -87,7 +87,6 @@ public class GameMap  {
 	{
 		return PathFinder.getVillage(crt, graph); 
 	}
-
 	/**
 	 * @param v1
 	 * @param v2

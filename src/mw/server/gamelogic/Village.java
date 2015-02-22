@@ -29,7 +29,7 @@ public class Village implements Cloneable, Serializable{
     
     public Village() 
     {
-     
+     //do nothing
     }
 
     public Collection<GraphNode> getVillageSet()
