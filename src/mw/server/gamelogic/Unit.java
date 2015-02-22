@@ -1,13 +1,15 @@
 package mw.server.gamelogic;
 
+import java.io.Serializable;
+
 
 
 /**
  * @author emilysager
  */
-public class Unit {
+public class Unit implements Serializable{
     
-    private UnitType aUnitType;
+	private UnitType aUnitType;
     private ActionType aActionType;
     public Unit(UnitType pUnitType)
     {

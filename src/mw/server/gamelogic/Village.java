@@ -2,6 +2,7 @@ package mw.server.gamelogic;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collection;
 
 
 
@@ -15,12 +16,9 @@ public class Village implements Cloneable, Serializable{
      * absolutely necessary Village attributes
      */
 	private int aGold; 
-    private int aWood;  
-    private VillageType aVillageType;
+    private int aWood; 
     private int aUpkeepCost;
-    private ArrayList<Tile> aTiles;
-    private Tile myCapital;
-    private GameMap aMap;
+    private VillageType aVillageType; 
     /*
      * Village attributes that I want to remove 
      */
@@ -29,10 +27,15 @@ public class Village implements Cloneable, Serializable{
     
     
     
-    public Village(ArrayList<Tile> pTiles) {
-        /* TODO: No message view defined */
+    public Village() 
+    {
+     
     }
 
+    public Collection<GraphNode> getVillageSet()
+    {
+    	return aVillageSet; 
+    }
     public void upgradeVillage(VillageType newVillageType) throws NotEnoughIncomeException {
         int upgradeCost;
         upgradeCost = PaymentManager.upgradeCost(aVillageType, newVillageType);

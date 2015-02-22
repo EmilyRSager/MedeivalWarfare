@@ -1,24 +1,22 @@
 package mw.server.gamelogic;
 
-import java.util.ArrayList;
-
-
-
 /**
  * @author emilysager
  */
-public class Tile implements Hexagon{
-    
 
-    private StructureType aStructureType; 
+public class Tile  extends AbstractGraphNode 
+{
+	
+	private StructureType aStructureType; 
+	private VillageType aVillageType; 
     private Unit aUnit; 
     private boolean aHasMeadow;
-    private GameMap aMap;
-    private final int aX;
-    private final int aY;
+    private int aX; 
+    private int aY; 
     private Color myColor;
-    private ArrayList<Hexagon> aNeighbors; 
+
    
+    
     
     public Tile(StructureType pStructureType, int pX, int pY) 
     { 
@@ -28,46 +26,37 @@ public class Tile implements Hexagon{
     	myColor = Color.NEUTRAL;
     	aHasMeadow = false; 
     }
-   
-    @Override
-    public void initializeNeighbors(ArrayList<Hexagon> pNeighbors)
+
+    public int [] getTileCoordinates()
     {
-    	aNeighbors =  pNeighbors; 
+    	int[] rCoord = {aX, aY}; 
+    	return rCoord; 
     }
-    public ArrayList<Hexagon> getNeighbors (){
-    	return aNeighbors; 
-      
-    }
-    public void setColor(Color c) {
+    
+    public void setColor(Color c) 
+    {
        myColor = c; 
     }
-
 
     public void setNeutral() {
         myColor = Color.NEUTRAL; 
     }
-
     public StructureType getStructureType() {
        return aStructureType;
     }
-
     public void setStructureType(StructureType pStructureType) {
         pStructureType = aStructureType; 
     }
-
     public boolean getMeadow() {
       
         return aHasMeadow; 
     }
-
     public void setHasMeadow(boolean pHasMeadow) {
        aHasMeadow = pHasMeadow; 
     }
-
     public Color getColor() {
         return myColor; 
     }
-
 	public Unit getUnit() 
 	{
 		return aUnit; 
@@ -80,23 +69,12 @@ public class Tile implements Hexagon{
 	{
 		return false; 
 	}
-	public Village getVillage()
-	{
-		 Village myVillage = new Village(aMap.getSameColorTiles(this));
-		 return myVillage; 
-	}
 
-	public void setVillage(Village invadingVillage) {
-		// TODO Auto-generated method stub
+	public VillageType getVillageType() {
+		return aVillageType; 
 		
 	}
-
-	public int[] getCoordinates() {
-		int [] toRet = {aX, aY};
-		return toRet; 
-		
-	}
-
+	
 	
 
 	

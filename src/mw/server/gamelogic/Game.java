@@ -2,6 +2,7 @@ package mw.server.gamelogic;
 
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.Set;
 import java.util.Stack;
 
 
@@ -110,9 +111,13 @@ public Game (ArrayList<Player> pPlayers, int mapID) throws TooManyPlayersExcepti
     	return rArray; 
     }
  
-    public ArrayList<Move> getValidMoves()
+    public Set<Tile> move(Tile startTile)
     {
     	
+    }
+    public ArrayList<Move> getValidMoves()
+    {
+    	return null; 
     }
 /**
  * 

@@ -8,6 +8,6 @@ public enum StructureType {
     TOMBSTONE,
     ROAD,
     NO_STRUCT,
-    VILLAGE,
+    VILLAGE_CAPITAL,
     WATCHTOWER
 }

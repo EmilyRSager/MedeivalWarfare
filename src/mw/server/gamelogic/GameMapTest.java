@@ -21,10 +21,10 @@ public class GameMapTest {
 						
 				Tile myTile2 = (Tile) myMap.getHexagon(x, y);
 				
-				ArrayList<Hexagon> yoyoyo = myTile2.getNeighbors(); 
+				ArrayList<HexagonalCoordinates> yoyoyo = myTile2.getNeighbors(); 
 				
 				System.out.println("Neighbors of " + x + ", " + y);
-				for (Hexagon lHexagon : yoyoyo )	
+				for (HexagonalCoordinates lHexagon : yoyoyo )	
 				{
 					System.out.print("(" + lHexagon.getCoordinates()[0] + " , " + lHexagon.getCoordinates()[1] + ") ");
 				}
