@@ -26,7 +26,7 @@ public class AccountManager {
 	 * @param pClientID
 	 * @param pAccount
 	 */
-	public void put(Integer pClientID, Account pAccount){
+	public void putAccounts(Integer pClientID, Account pAccount){
 		aAccountMap.put(pClientID, pAccount);
 	}
 	
@@ -34,9 +34,7 @@ public class AccountManager {
 	 * @param pClientID
 	 * @return Accoutn associated with pClientID if it exists
 	 */
-	public Account get(Integer pClientID){
+	public Account getAccount(Integer pClientID){
 		return aAccountMap.get(pClientID);
 	}
-	
-	
 }

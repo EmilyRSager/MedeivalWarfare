@@ -9,21 +9,23 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
-import java.util.Scanner;
 
-public class Client extends Thread{
+import mw.shared.servercommands.AbstractServerCommand;
+
+public class ServerChannel extends Thread{
 	private static final String SERVER_NAME = "localhost";
 	private static final int PORT = 6666;
 
 	private Socket aSocket;
 	
-	private Scanner reader = new Scanner(System.in);
+	private WriterThread aWriterThread;
+	private ReaderThread aReaderThread; //no need for reference to reader thread
 
 	/**
-	 * Constructor. Creates a Reader and Writer thread that communicate with the 
+	 * Constructor. Initializes two threads to read data from and write data to the server.
 	 * @param none
 	 */
-	public Client(){
+	public ServerChannel(){
 		try
 		{
 			aSocket = new Socket(SERVER_NAME, PORT);
@@ -31,19 +33,21 @@ public class Client extends Thread{
 			System.out.println("[Client] Connecting to " + SERVER_NAME + " on PORT " + PORT + ".");
 			System.out.println("[Client] Just connected to " + aSocket.getRemoteSocketAddress());
 			
-			WriterThread lWriterThread = new WriterThread(
+			aWriterThread = new WriterThread(
 					new DataOutputStream(aSocket.getOutputStream()));
-			lWriterThread.start();
+			aWriterThread.start();
 			
-			ReaderThread lReaderThread = new ReaderThread(
+			
+			aReaderThread = new ReaderThread(
 					new DataInputStream(aSocket.getInputStream()));
-			lReaderThread.start();
+			aReaderThread.start();
 				
 		}catch(IOException e){
 			e.printStackTrace();
 		}
 	}
-	public static void main(String[] args) {
-		Client lClient = new Client();
+	
+	public void sendCommand(AbstractServerCommand pServerCommand){
+		aWriterThread.sendCommand(pServerCommand);
 	}
 }

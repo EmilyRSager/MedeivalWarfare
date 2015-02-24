@@ -26,6 +26,6 @@ public class MessageReceivedCommand extends AbstractClientCommand {
 	@Override
 	public void execute() {
 		// TODO Auto-generated method stub
-		System.out.println("[Client] " + aMessage);
+		System.out.println("[Client in MessageReceivedCommand] " + aMessage);
 	}
 }

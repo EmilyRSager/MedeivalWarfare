@@ -4,8 +4,8 @@ import java.lang.reflect.Type;
 import java.util.HashSet;
 import java.util.Set;
 
-import mw.shared.networkmessages.AbstractNetworkMessage;
-import mw.shared.networkmessages.TestServerMessage;
+import mw.shared.servercommands.AbstractNetworkMessage;
+import mw.shared.servercommands.TestServerMessage;
 import mw.utilities.MessageSerializerAndDeserializer;
 
 import com.google.gson.Gson;

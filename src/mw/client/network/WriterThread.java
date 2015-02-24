@@ -1,3 +1,8 @@
+/**
+ * @author Charlie Bloomfield, Abhishek Gupta
+ * Feb 23, 2015
+ */
+
 package mw.client.network;
 
 import java.io.DataOutputStream;
@@ -11,6 +16,10 @@ public class WriterThread extends Thread {
 	DataOutputStream aDataOutputStream;	
 	BlockingQueue<AbstractServerCommand> aServerCommandQueue;
 	
+	/**
+	 * Constructor.
+	 * @param pDataOutputStream
+	 */
 	public WriterThread(DataOutputStream pDataOutputStream) {
 		
 		aDataOutputStream = pDataOutputStream;
@@ -18,7 +27,11 @@ public class WriterThread extends Thread {
 		
 	}
 	
-	public void addMessageToQueue(AbstractServerCommand pServerCommand){
+	/**
+	 * Enqueues a command to be sent when this thread is available.
+	 * @param pServerCommand
+	 */
+	public void sendCommand(AbstractServerCommand pServerCommand){
 		
 		try {
 			aServerCommandQueue.put(pServerCommand);
@@ -29,6 +42,7 @@ public class WriterThread extends Thread {
 		
 	}
 	
+	@Override
 	public void run(){
 		try{
 			while(true){

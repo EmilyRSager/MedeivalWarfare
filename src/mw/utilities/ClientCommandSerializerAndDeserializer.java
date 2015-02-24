@@ -35,7 +35,7 @@ public class ClientCommandSerializerAndDeserializer {
 	 * Singleton implementation
 	 * @return static instance of ClientCommandSerializerAndDeserializer
 	 */
-	public ClientCommandSerializerAndDeserializer getInstance(){
+	public static ClientCommandSerializerAndDeserializer getInstance(){
 		if(aClientCommandSerializerAndDeserializer == null){
 			aClientCommandSerializerAndDeserializer = new ClientCommandSerializerAndDeserializer();
 		}

@@ -86,7 +86,7 @@ public class ClientChannel extends Thread{
 	 * @return void
 	 * Closes both reader and writer threads, and does all other necessary clean up.
 	 */
-	public synchronized void close(){
+	public synchronized void shutDown(){
 		aReaderThread.shutDown();;
 		aWriterThread.shutDown();
 	}

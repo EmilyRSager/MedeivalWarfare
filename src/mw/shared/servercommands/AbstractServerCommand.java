@@ -15,7 +15,6 @@ public abstract class AbstractServerCommand {
 	 * it's type. The deserialization framework relies on this type attribute to build objects of the 
 	 * correct type on the server.
 	 */
-	protected String aType;
 	
 	public abstract boolean isValid(int pPlayerID);
 	public abstract void execute(int pPlayerID);

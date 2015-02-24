@@ -10,6 +10,7 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
 import mw.shared.clientcommands.AbstractClientCommand;
+import mw.utilities.ClientCommandSerializerAndDeserializer;
 
 /**
  * The responsibility of the WriterThread is to send messages to one particular Client computer
@@ -35,14 +36,12 @@ public class WriterThread extends Thread{
 
 	@Override
 	public void run(){
-
-
 		try {
 			while(aIsRunning) {
-
-				//AbstractClientMessage lClientMessage = aClientMessageQueue.take(); //blocks until there is a message available
-				String lTestMessage = aClientTestQueue.take(); //TEST!
-				sendString(lTestMessage); //TEST!
+				AbstractClientCommand lClientCommand = aClientCommandQueue.take();
+				
+				sendString(//send serialized form
+						ClientCommandSerializerAndDeserializer.getInstance().serialize(lClientCommand));
 			}
 		} catch (InterruptedException e) {
 			//If the thread was interrupted, initiate clean up.

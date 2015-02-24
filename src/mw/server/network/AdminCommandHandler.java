@@ -50,8 +50,8 @@ public class AdminCommandHandler {
 		AbstractClientCommand lClientCommand = 
 				new MessageReceivedCommand(pMessage);
 		
-		for(ClientChannel lClientOnServer : aClientChannelManager.getChannelSet(pClientIDs)){
-			lClientOnServer.sendCommand(lClientCommand);
+		for(ClientChannel lClientChannel : aClientChannelManager.getChannelSet(pClientIDs)){
+			lClientChannel.sendCommand(lClientCommand);
 		}
 	}
 }

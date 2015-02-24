@@ -12,9 +12,18 @@ public class ClientCommandHandler {
 	
 	private ClientCommandHandler(){
 		aClientCommandQueue = new LinkedBlockingQueue<AbstractClientCommand>();
+		new ClientCommandHandlerThread().start();
 	}
 	
-	public void addClientCommandToQueue(AbstractClientCommand pClientCommand){
+	public static ClientCommandHandler getInstance(){
+		if (aClientCommandHandler==null) {
+			aClientCommandHandler = new ClientCommandHandler();
+		}
+		
+		return aClientCommandHandler;	
+	}
+	
+	public void handle(AbstractClientCommand pClientCommand){
 		try {
 			aClientCommandQueue.put(pClientCommand);
 		} catch (InterruptedException e) {
@@ -23,14 +32,21 @@ public class ClientCommandHandler {
 		}
 	}
 	
-	public ClientCommandHandler getInstance(){
-		if (aClientCommandHandler==null) {
-			aClientCommandHandler = new ClientCommandHandler();
+	class ClientCommandHandlerThread extends Thread{
+		
+		@Override
+		public void run(){
+			while(true){
+				try {
+					AbstractClientCommand lClientCommand = 
+							aClientCommandQueue.take();
+					
+					lClientCommand.execute();
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
 		}
-		
-			return aClientCommandHandler;
-		
-		
 	}
-	
 }

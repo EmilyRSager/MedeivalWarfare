@@ -9,7 +9,6 @@ package mw.shared.clientcommands;
  * from the Server to the Client must extend.
  */
 public abstract class AbstractClientCommand {
-	protected String aType;
 	
 	public abstract boolean isValid();
 	public abstract void execute();
