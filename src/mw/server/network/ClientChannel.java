@@ -10,13 +10,13 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
 
-import mw.shared.clientmessages.AbstractClientMessage;
+import mw.shared.clientcommands.AbstractClientCommand;
 
 /**
  * ClientOnServer class represents a single connection between the server and a client, ON THE SERVER. It has two threads,
  * one for reading data in from the Client's computer, and one thread for writing data to the Client's computer.
  */
-public class ClientOnServer extends Thread{
+public class ClientChannel extends Thread{
 
 	private static int aNumClientsCreated;  // How many clients have been created.
 	private int aClientID;  // Clients are numbered 1, 2, ... as they are created.
@@ -30,7 +30,7 @@ public class ClientOnServer extends Thread{
 	 * @param psSocket through which the server communicates with this Client
 	 * Construct a client, initialize the main client thread.
 	 */
-	public ClientOnServer(Socket pSocket) {
+	public ClientChannel(Socket pSocket) {
 		aClientID = aNumClientsCreated; //each client's unique id
 		aNumClientsCreated++;
 		aSocket = pSocket;		
@@ -69,8 +69,8 @@ public class ClientOnServer extends Thread{
 	 * @param AbstractClientMessage to send to this Client
 	 * @return void
 	 */
-	public void sendMessage(AbstractClientMessage pClientMessage){
-		aWriterThread.sendMessage(pClientMessage);
+	public void sendCommand(AbstractClientCommand pClientCommand){
+		aWriterThread.sendCommand(pClientCommand);
 	}
 
 	/**

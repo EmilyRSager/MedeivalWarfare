@@ -10,7 +10,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 /**
- * The MainServerThread listens to a port and sets up client connections on unique sockets.
+ * Listens to a port and sets up client connections on unique sockets.
  */
 public class MainServerThread extends Thread{
 	private static final int PORT_NUMBER = 6666;
@@ -33,8 +33,8 @@ public class MainServerThread extends Thread{
 				lClientSocket = aServerSocket.accept();
 				System.out.println("[Server] Connected to " + lClientSocket.getLocalAddress());
 				
-				ClientOnServer lClientOnServer = new ClientOnServer(lClientSocket);
-				ClientManager.getInstance().add(lClientOnServer); //NOT THREADSAFE	
+				ClientChannel lClientChannel = new ClientChannel(lClientSocket);
+				ClientChannelManager.getInstance().putChannel(lClientChannel); //NOT THREADSAFE	
 			}
 			
 		} catch (IOException e) {

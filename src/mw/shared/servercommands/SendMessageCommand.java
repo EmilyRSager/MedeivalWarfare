@@ -2,16 +2,19 @@
  * @author Charlie Bloomfield, Abhishek Gupta
  * Feb 20, 2015
  */
-package mw.shared.networkmessages;
+package mw.shared.servercommands;
 
 import java.util.Set;
 
-import mw.server.network.ClientManager;
-import mw.server.network.ClientOnServer;
+import mw.server.network.ClientChannelManager;
+import mw.server.network.ClientChannel;
 
-public class TestServerMessage extends AbstractNetworkMessage {
+/**
+ * Initiates sending a message to several recipients by calling the proper server controllers.
+ */
+public class SendMessageCommand extends AbstractServerCommand {
 	
-	private final String myType = "TestServerMessage";
+	private final String aType = "SendMessageCommand";
 	private String aMessage;
 	private Set<Integer> aRecipientCliendIDs;
 	
@@ -20,17 +23,22 @@ public class TestServerMessage extends AbstractNetworkMessage {
 	 * @param pMessage
 	 * @param pRecipientClientIDs
 	 */
-	public TestServerMessage(String pMessage, Set<Integer> pRecipientClientIDs) {
+	public SendMessageCommand(String pMessage, Set<Integer> pRecipientClientIDs) {
 		aMessage = pMessage;
 		aRecipientCliendIDs = pRecipientClientIDs;
 	}
 	
 	/**
 	 * @param int pPlayerID, the identification number the client who sent this message to the server.
-	 * @see mw.shared.networkmessages.AbstractNetworkMessage#isValid(int)
+	 * @see mw.shared.servercommands.AbstractNetworkMessage#isValid(int)
 	 */
 	@Override
 	public boolean isValid(int pPlayerID) {
+		//if not all recipients are available, the message is invalid. 
+		if(!ClientChannelManager.getInstance().containsAll(aRecipientCliendIDs)){
+			return false;
+		}
+		
 		return true;
 	}
 
@@ -44,12 +52,12 @@ public class TestServerMessage extends AbstractNetworkMessage {
 	 * actually be completely useless in the future as well.
 	 * 
 	 * @param int pPlayerID, the identification number the client who sent this message to the server.
-	 * @see mw.shared.networkmessages.AbstractNetworkMessage#execute(int)
+	 * @see mw.shared.servercommands.AbstractNetworkMessage#execute(int)
 	 */
 	@Override
 	public void execute(int pPlayerID) {
 		for(Integer lClientID : aRecipientCliendIDs){
-			ClientOnServer lClientOnServer = ClientManager.getInstance().get(lClientID);
+			ClientChannel lClientOnServer = ClientChannelManager.getInstance().getChannel(lClientID);
 			lClientOnServer.testSendString(aMessage);
 		}
 	}

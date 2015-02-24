@@ -8,12 +8,11 @@ package mw.server.network;
 import java.util.Set;
 
 import mw.shared.SharedTile;
-import mw.shared.clientmessages.AbstractClientMessage;
+import mw.shared.clientcommands.AbstractClientCommand;
 
 /**
- * This class is in charge on distributing Game State updates to the clients
- * participating with an instance of a single game. There will be one instance
- * of this class observing each game that exists on the server.
+ * Distributes GameState updates to the clients participating with an instance of a single game. 
+ * There will be one instance of this class observing each game that exists on the server.
  */
 public class GameStateMessageDistributor implements IGameStateObserver {
 	private Set<Integer> aClientIDs; //the set of clients who are participating in a Game instance
@@ -34,7 +33,7 @@ public class GameStateMessageDistributor implements IGameStateObserver {
 	 */
 	@Override
 	public void updateTile(SharedTile pSharedTile) {
-		AbstractClientMessage lClientMessage = null;
+		AbstractClientCommand lClientMessage = null;
 		//TODO
 		
 		distributeMessage(lClientMessage);
@@ -45,9 +44,9 @@ public class GameStateMessageDistributor implements IGameStateObserver {
 	 * @param pClientMessage
 	 * @return void
 	 */
-	private void distributeMessage(AbstractClientMessage pClientMessage){
-		for(ClientOnServer lClientOnServer : ClientManager.getInstance().getSet(aClientIDs)){
-			lClientOnServer.sendMessage(pClientMessage);
+	private void distributeMessage(AbstractClientCommand pClientCommand){
+		for(ClientChannel lClientOnServer : ClientChannelManager.getInstance().getChannelSet(aClientIDs)){
+			lClientOnServer.sendCommand(pClientCommand);
 		}
 	}
 }

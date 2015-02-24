@@ -3,13 +3,12 @@
  * Feb 21, 2015
  */
 
-package mw.shared.networkmessages;
+package mw.shared.servercommands;
 
 /**
- * AbstractServerMessage represents the root class that all possible messages 
- * sent from the Client to the Server must extend.
+ * Represents the root class that all possible messages sent from the Client to the Server must extend.
  */
-public abstract class AbstractNetworkMessage {
+public abstract class AbstractServerCommand {
 	
 	/**
 	 * Each class that extends AbstractServerMessage must have a unique string Type, which representing
@@ -17,6 +16,7 @@ public abstract class AbstractNetworkMessage {
 	 * correct type on the server.
 	 */
 	protected String aType;
+	
 	public abstract boolean isValid(int pPlayerID);
 	public abstract void execute(int pPlayerID);
 }

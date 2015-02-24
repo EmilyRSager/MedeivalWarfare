@@ -7,17 +7,22 @@ package mw.server.network;
 import java.io.DataInputStream;
 import java.io.IOException;
 
-import mw.shared.networkmessages.AbstractNetworkMessage;
-import mw.utilities.MessageSerializerAndDeserializer;
+import mw.shared.servercommands.AbstractServerCommand;
+import mw.utilities.ServerCommandSerializerAndDeserializer;
 
 /**
- * Defines a thread that listens to messages coming in from the client. It closes when the client disconnects 
+ * Listens to messages coming in from the client. It closes when the client disconnects 
  */
 public class ReaderThread extends Thread {
 	DataInputStream aDataInputStream;
 	int aClientID;
 	private volatile boolean aIsRunning;
 	
+	/**
+	 * Constructor
+	 * @param pDataInputStream
+	 * @param pClientID
+	 */
 	public ReaderThread(DataInputStream pDataInputStream, int pClientID){
 		aDataInputStream = pDataInputStream;
 		aClientID = pClientID;
@@ -28,24 +33,21 @@ public class ReaderThread extends Thread {
 	public void run() {
 		try {
 			while (aIsRunning) {
-
 				//read message in from Client
 				String lMessageFromClient = aDataInputStream.readUTF(); //blocking call
 				System.out.println("[Server] Message from client \"" + lMessageFromClient + "\".");
 				
-				AbstractNetworkMessage lServerMessage = 
-						MessageSerializerAndDeserializer.getInstance().deserialize(lMessageFromClient);//deserialize the message from the client		
-				ServerMessageHandler.getInstance().handle(lServerMessage, aClientID);
-				
-				//ServerMessageHandler.getInstance().testHandle(lMessageFromClient); //TEST!
+				AbstractServerCommand lServerCommand = 
+						ServerCommandSerializerAndDeserializer.getInstance().deserialize(lMessageFromClient);		
+				ServerCommandHandler.getInstance().handle(lServerCommand, aClientID);
 			}
 		}
 		catch (Exception e) {
 			//If the thread was interrupted, initiate clean up.
 			System.out.println("[Server] Reader Thread was Interupted.");
 			e.printStackTrace();
-			cleanUp();
 		}
+		cleanUp();
 	}
 	
 	/**
@@ -70,5 +72,6 @@ public class ReaderThread extends Thread {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		//remove all mappings between the clientID and accounts/games/channels...
 	}
 }

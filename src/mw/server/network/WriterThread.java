@@ -9,7 +9,7 @@ import java.io.IOException;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
-import mw.shared.clientmessages.AbstractClientMessage;
+import mw.shared.clientcommands.AbstractClientCommand;
 
 /**
  * The responsibility of the WriterThread is to send messages to one particular Client computer
@@ -18,7 +18,7 @@ import mw.shared.clientmessages.AbstractClientMessage;
  */
 public class WriterThread extends Thread{
 	DataOutputStream aDataOutputStream;
-	BlockingQueue<AbstractClientMessage> aClientMessageQueue;
+	BlockingQueue<AbstractClientCommand> aClientCommandQueue;
 	BlockingQueue<String> aClientTestQueue; //TEST!
 	private volatile boolean aIsRunning;
 
@@ -28,7 +28,7 @@ public class WriterThread extends Thread{
 	 */
 	public WriterThread(DataOutputStream pDataOutputStream){
 		aDataOutputStream = pDataOutputStream;
-		aClientMessageQueue = new LinkedBlockingQueue<AbstractClientMessage>();
+		aClientCommandQueue = new LinkedBlockingQueue<AbstractClientCommand>();
 		aClientTestQueue = new LinkedBlockingQueue<String>();
 		aIsRunning = true;
 	}
@@ -73,9 +73,9 @@ public class WriterThread extends Thread{
 	 * @param pClientMessage, some concrete message to be sent over aDataOutputStream.
 	 * @return void
 	 */
-	public void sendMessage(AbstractClientMessage pClientMessage){
+	public void sendCommand(AbstractClientCommand pClientCommand){
 		try {
-			aClientMessageQueue.put(pClientMessage);
+			aClientCommandQueue.put(pClientCommand);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 			System.out.println("[Server] Closing the Writer Thread.");
@@ -116,8 +116,8 @@ public class WriterThread extends Thread{
 		System.out.println("[Server] Sending all messages from WriterThread queue.");
 		try {
 			//empty message queue before closing
-			while(! aClientMessageQueue.isEmpty()){
-				sendMessage(aClientMessageQueue.take());
+			while(! aClientCommandQueue.isEmpty()){
+				sendCommand(aClientCommandQueue.take());
 			}
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
