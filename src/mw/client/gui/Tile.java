@@ -3,6 +3,8 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.*;
 
+import mw.client.gui.ImageFileManager.TileType;
+
 import org.minueto.*; 
 import org.minueto.handlers.*; 
 import org.minueto.image.*; 
@@ -37,16 +39,7 @@ public class Tile {
 	
 	public Tile()
 	{
-		try
-		{
-			
-			image = new MinuetoImageFile(FOLDER + "/images/sampleTile.jpg");
-		}
-		catch (MinuetoFileException e)
-		{
-			System.out.println("Could not load image!");
-			return;
-		}
+		image = ImageFileManager.getTileImage(TileType.DEFAULT);
 	}
 	
 	public MinuetoImage getTileImage()
@@ -54,16 +47,8 @@ public class Tile {
 		return this.image;
 	}
 	
-	public void update(int newType)
+	public void update()
 	{
-		try
-		{
-			this.image = new MinuetoImageFile(FOLDER + "/images/grass.png");
-		}
-		catch (MinuetoFileException e)
-		{
-			System.out.println("Could not load image!");
-			return;
-		}
+		this.image = ImageFileManager.getTileImage(TileType.GRASS);
 	}
 }
