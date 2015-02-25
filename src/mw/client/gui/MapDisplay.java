@@ -1,4 +1,6 @@
 package mw.client.gui;
+import java.util.Observer;
+
 import org.minueto.*; 
 import org.minueto.handlers.*; 
 import org.minueto.image.*; 
@@ -43,7 +45,7 @@ public class MapDisplay
 	{
 			for(int i = 0; i < tiles.length; i++)
 			{
-				for(int j = 0; j < tiles.length; j++)
+				for(int j = 0; j < tiles[i].length; j++)
 				{
 					window.draw(tiles[i][j].getTileImage(), i * 50, j * 50);
 				}
@@ -52,6 +54,18 @@ public class MapDisplay
 			window.render();
 			System.out.println("two");
 			//Thread.yield();
+	}
+	
+	public void setObserver(Observer o)
+	{
+		for(int i = 0; i < tiles.length; i++)
+		{
+			for(int j = 0; j < tiles[i].length; j++)
+			{
+				System.out.print("Added observer");
+				tiles[i][j].addObserver(o);
+			}
+		}
 	}
 
 }

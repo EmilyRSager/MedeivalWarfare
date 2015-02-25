@@ -2,6 +2,7 @@ package mw.client.controller;
 
 import java.util.Collection;
 
+import mw.client.gui.ImageTile;
 import mw.client.model.*;
 
 public final class ActionInterpreter /*implements Controller */{
@@ -62,7 +63,7 @@ public final class ActionInterpreter /*implements Controller */{
 	 */
 	
 	
-	public void primarySelect(/* some form of tile representation, either coordinates or the reference itself */)
+	public void primarySelect(ImageTile target)
 	{
 		// get the Tile
 		Tile target;
@@ -77,7 +78,7 @@ public final class ActionInterpreter /*implements Controller */{
 	}
 	
 	
-	public void secondarySelect(/* some form of tile representation, either coordinates or the reference itself */)
+	public void secondarySelect(ImageTile dispTarget)
 	{
 		// get the Tile
 		Tile target;

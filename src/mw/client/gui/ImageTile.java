@@ -2,6 +2,7 @@ package mw.client.gui;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.*;
+import java.util.Observable;
 
 import mw.client.gui.ImageFileManager.TileType;
 
@@ -17,7 +18,7 @@ import java.io.File;
  * @author Arthur Denefle
  *
  */
-public class ImageTile {
+public class ImageTile extends Observable {
 	private MinuetoImage image;
 	/*private static final Path currentFolder = initializeFolder();
 	private static final Path parentFolder = currentFolder.getParent().getParent().getParent().getParent();*/
@@ -49,6 +50,9 @@ public class ImageTile {
 	
 	public void update()
 	{
+		System.out.println("Image tile received update");
 		this.image = ImageFileManager.getTileImage(TileType.GRASS);
+		setChanged();
+		notifyObservers();
 	}
 }

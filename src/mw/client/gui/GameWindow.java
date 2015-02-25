@@ -1,9 +1,12 @@
 package mw.client.gui;
 
+import java.util.Observable;
+import java.util.Observer;
+
 import org.minueto.window.MinuetoFrame;
 import org.minueto.window.MinuetoWindow;
 
-public class GameWindow {
+public class GameWindow implements Observer {
 	private MinuetoWindow window;
 	private MapDisplay md;
 	
@@ -29,6 +32,7 @@ public class GameWindow {
 		md = mapDisp;
 		window = new MinuetoFrame(500, 500, true);
 		window.setVisible(true);
+		mapDisp.setObserver(this);
 	}
 	
 	public GameWindow()
@@ -45,6 +49,12 @@ public class GameWindow {
 	{
 		md.update();
 		System.out.println("dfgcgv");
+		render();
+	}
+
+	@Override
+	public void update(Observable o, Object arg) {
+		System.out.println("Window notified");
 		render();
 	}
 		

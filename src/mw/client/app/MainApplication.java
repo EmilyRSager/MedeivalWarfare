@@ -21,18 +21,25 @@ public final class MainApplication {
 	
 	private static GameWindow window;
 	private static Game game;
+	private static Tile randomTile;
 	
 	public static void main(String[] args)
 	{
 		newGame();
 		window.render();
+		System.out.println("Rendered !");
 		try {
 			Thread.sleep(500);
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		window.update();
+		System.out.println("Slept");
+		randomTile.setRoad(true);
+		System.out.println("set road");
+		randomTile.notifyObservers();
+		System.out.println("notified");
+		//window.update();
 	}
 	
 	public static Game newGame()
@@ -50,6 +57,8 @@ public final class MainApplication {
 				Tile t = new Tile(i, j);
 				tileList.add(t);
 				t.addObserver(observer);
+				if (i==2 && j==1)
+					randomTile = t;
 				
 				ImageTile td = new ImageTile(/*...*/);
 				displayedTiles[i][j] = td;
@@ -63,7 +72,7 @@ public final class MainApplication {
 		MapDisplay mapdisp = new MapDisplay(displayedTiles);
 		window = new GameWindow(mapdisp);
 		
-		ActionInterpreter.initialize(game);
+		//ActionInterpreter.initialize(game);
 		return game;
 	}
 	
