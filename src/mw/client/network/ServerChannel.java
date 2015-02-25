@@ -26,6 +26,7 @@ public class ServerChannel extends Thread{
 	 * @param none
 	 */
 	public ServerChannel(){
+		//TODO split up class construction and socket initialization
 		try
 		{
 			aSocket = new Socket(SERVER_NAME, PORT);

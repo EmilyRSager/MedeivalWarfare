@@ -9,19 +9,21 @@ import java.util.Set;
 
 import mw.shared.SharedTile;
 import mw.shared.clientcommands.AbstractClientCommand;
+import mw.shared.clientcommands.NewGameCommand;
+import mw.shared.clientcommands.UpdateTileCommand;
 
 /**
  * Distributes GameState updates to the clients participating with an instance of a single game. 
  * There will be one instance of this class observing each game that exists on the server.
  */
-public class GameStateMessageDistributor implements IGameStateObserver {
+public class GameStateCommandDistributor implements IGameStateObserver {
 	private Set<Integer> aClientIDs; //the set of clients who are participating in a Game instance
 	
 	/**
 	 * Constructor.
 	 * @param a set of ClientIDs to be notified of changes to GameState
 	 */
-	public GameStateMessageDistributor(Set<Integer> pClientIDs) {
+	public GameStateCommandDistributor(Set<Integer> pClientIDs) {
 		aClientIDs = pClientIDs;
 	}
 
@@ -33,10 +35,17 @@ public class GameStateMessageDistributor implements IGameStateObserver {
 	 */
 	@Override
 	public void updateTile(SharedTile pSharedTile) {
-		AbstractClientCommand lClientMessage = null;
-		//TODO
+		AbstractClientCommand lClientCommand = 
+				new UpdateTileCommand(pSharedTile);
 		
-		distributeMessage(lClientMessage);
+		distributeMessage(lClientCommand);
+	}
+	
+	public void newGame(SharedTile[][] pGameMap){
+		AbstractClientCommand lClientCommand = 
+				new NewGameCommand(pGameMap);
+		
+		distributeMessage(lClientCommand);
 	}
 	
 	/**

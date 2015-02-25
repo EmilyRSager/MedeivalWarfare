@@ -2,8 +2,10 @@ package mw.server.network;
 
 import java.util.Set;
 
+import mw.shared.SharedTile;
 import mw.shared.clientcommands.AbstractClientCommand;
 import mw.shared.clientcommands.MessageReceivedCommand;
+import mw.shared.clientcommands.UpdateTileCommand;
 
 /**
  * @singleton
@@ -28,6 +30,16 @@ public class AdminCommandHandler {
 		}
 		
 		return aAdminMessageDistributor;
+	}
+	
+	/**
+	 * TEST sending a shared tile over the network.s
+	 * @param pSharedTile
+	 */
+	public void testSendSharedTileCommand(SharedTile pSharedTile){
+		AbstractClientCommand lClientCommand = 
+				new UpdateTileCommand(pSharedTile);
+		aClientChannelManager.getChannel(0).sendCommand(lClientCommand);
 	}
 	
 	/**
