@@ -1,5 +1,3 @@
 package mw.shared;
 
-public final class SharedColor {
-
-}
+public enum SharedColor { GREEN, RED, BLUE, YELLOW, GREY };
