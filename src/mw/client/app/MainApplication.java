@@ -2,7 +2,10 @@ package mw.client.app;
 
 import java.util.ArrayList;
 
+import org.omg.CORBA.PRIVATE_MEMBER;
+
 import mw.client.controller.ActionInterpreter;
+import mw.client.controller.CurrentClientState;
 import mw.client.controller.ModelViewMapping;
 import mw.client.controller.TileModificationHandler;
 import mw.client.gui.GameWindow;
@@ -26,7 +29,8 @@ public final class MainApplication {
 	public static void main(String[] args)
 	{
 		newGame();
-		window.render();
+		//window.render();
+		startDisplay();
 		try {
 			Thread.sleep(500);
 		} catch (InterruptedException e) {
@@ -38,7 +42,21 @@ public final class MainApplication {
 		//window.update();
 	}
 	
-	public static Game newGame()
+	public static void newGame()
+	{
+		Tile[][] newTiles = new Tile[MAP_WIDTH][MAP_HEIGHT];
+		for (int i=0; i<MAP_WIDTH; i++)
+		{
+			for (int j=0; j<MAP_HEIGHT; j++)
+			{
+				Tile t = new Tile(i, j);
+				newTiles[i][j] = t;
+			}
+		}
+		newGame(newTiles);
+	}
+	
+	public static void newGame(Tile[][] tiles)
 	{
 		TileModificationHandler observer = new TileModificationHandler();
 		ArrayList<Tile> tileList = new ArrayList<Tile>();
@@ -46,17 +64,19 @@ public final class MainApplication {
 		ModelViewMapping.initialize();
 		ModelViewMapping mapping = ModelViewMapping.singleton();
 		
-		for (int i=0; i<MAP_WIDTH; i++)
+		final int width = tiles.length;
+		final int height = tiles[0].length;
+		for (int i=0; i<width; i++)
 		{
-			for (int j=0; j<MAP_HEIGHT; j++)
+			for (int j=0; j<height; j++)
 			{
-				Tile t = new Tile(i, j);
+				Tile t = tiles[i][j];
 				tileList.add(t);
 				t.addObserver(observer);
 				if (i==2 && j==1)
 					randomTile = t;
 				
-				ImageTile td = new ImageTile(/*...*/);
+				ImageTile td = new ImageTile();
 				displayedTiles[i][j] = td;
 				mapping.addBinding(t, td);
 			}
@@ -67,9 +87,16 @@ public final class MainApplication {
 		
 		MapDisplay mapdisp = new MapDisplay(displayedTiles);
 		window = new GameWindow(mapdisp);
+
+		// Controllers setup
 		
 		//ActionInterpreter.initialize(game);
-		return game;
+		CurrentClientState.setCurrentGame(game);
+	}
+	
+	public static void startDisplay()
+	{
+		window.render();
 	}
 	
 }

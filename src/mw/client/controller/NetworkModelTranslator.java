@@ -8,6 +8,21 @@ import mw.shared.SharedTile;
 
 public final class NetworkModelTranslator {
 
+	public static Tile translateSharedTile(SharedTile sharedTile)
+	{
+		if (sharedTile==null)
+			return null;
+		Tile newTile = new Tile(sharedTile.getCoordinates().getX(), sharedTile.getCoordinates().getY());
+		newTile.setColor(sharedTile.getColor());
+		newTile.setRoad(sharedTile.hasRoad());
+		newTile.setStructureType(translateSharedVillageType(sharedTile.getVillage()));
+		newTile.setTerrain(translateSharedTerrain(sharedTile.getTerrain()));
+		newTile.setUnitType(translateSharedUnitType(sharedTile.getUnitType()));
+		newTile.setVillageGold(sharedTile.getVillageGold());
+		newTile.setVillageWood(sharedTile.getVillageWood());
+		return newTile;
+	}
+	
 	public static Coordinates translateSharedCoordinates(SharedCoordinates sharedCoord)
 	{
 		return new Coordinates(sharedCoord.getX(),sharedCoord.getY());
