@@ -11,16 +11,16 @@ import org.minueto.window.*;
  */
 public class MapDisplay 
 {
-	private Tile[][] tiles;
+	private ImageTile[][] tiles;
 	
 	public MapDisplay()
 	{
-		tiles = new Tile[10][10];
+		tiles = new ImageTile[10][10];
 		for(int i = 0; i < tiles.length; i++)
 		{
 			for(int j = 0; j < tiles.length; j++)
 			{
-				tiles[i][j] = new Tile();
+				tiles[i][j] = new ImageTile();
 			}
 		}
 	}
