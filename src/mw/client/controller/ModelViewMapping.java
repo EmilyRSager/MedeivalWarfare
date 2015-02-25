@@ -32,7 +32,7 @@ public final class ModelViewMapping {
 	}
 	
 	public TileDisplay getTileDisplay(Tile t) {
-		return tileToTileDisplay.get(t);
+		return tileToTileDisplay.getChannel(t);
 	}
 	
 }

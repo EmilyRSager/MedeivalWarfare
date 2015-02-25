@@ -10,6 +10,8 @@ import java.util.HashMap;
 import mw.shared.clientcommands.AbstractClientCommand;
 import mw.shared.clientcommands.AcknowledgementCommand;
 import mw.shared.clientcommands.MessageReceivedCommand;
+import mw.shared.clientcommands.NewGameCommand;
+import mw.shared.clientcommands.UpdateTileCommand;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -22,12 +24,10 @@ public class ClientCommandSerializerAndDeserializer {
 	private HashMap<String, Type> aTypeMap = new HashMap<String, Type>();
 	
 	private ClientCommandSerializerAndDeserializer() {
-		//the following is an example on how to populate the map with different types of messages
-		//that this class can handle
-		//Remember to use the TypeToken thing as mentioned here as that is the only way to ensure correctness
-		//when serializing and deserializing
 		aTypeMap.put("MessageReceivedCommand", new TypeToken<MessageReceivedCommand>(){}.getType());
 		aTypeMap.put("AcknowledgementCommand", new TypeToken<AcknowledgementCommand>(){}.getType());
+		aTypeMap.put("NewGameCommand", new TypeToken<NewGameCommand>(){}.getType());
+		aTypeMap.put("UpdateTileCommand", new TypeToken<UpdateTileCommand>(){}.getType());
 		
 	}
 	
