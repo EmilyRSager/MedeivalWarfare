@@ -17,7 +17,7 @@ import java.io.File;
  * @author Arthur Denefle
  *
  */
-public class Tile {
+public class ImageTile {
 	private MinuetoImage image;
 	/*private static final Path currentFolder = initializeFolder();
 	private static final Path parentFolder = currentFolder.getParent().getParent().getParent().getParent();*/
@@ -37,7 +37,7 @@ public class Tile {
 		}
 	}
 	
-	public Tile()
+	public ImageTile()
 	{
 		image = ImageFileManager.getTileImage(TileType.DEFAULT);
 	}

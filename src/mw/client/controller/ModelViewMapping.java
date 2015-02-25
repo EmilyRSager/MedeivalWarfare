@@ -24,14 +24,14 @@ public final class ModelViewMapping {
 	
 	//	ModelViewMapping
 	
-	private HashMap<Tile, TileDisplay> tileToTileDisplay;
+	private HashMap<ImageTile, TileDisplay> tileToTileDisplay;
 	
 	private ModelViewMapping()
 	{
-		tileToTileDisplay = new HashMap<Tile,TileDisplay>();
+		tileToTileDisplay = new HashMap<ImageTile,TileDisplay>();
 	}
 	
-	public TileDisplay getTileDisplay(Tile t) {
+	public TileDisplay getTileDisplay(ImageTile t) {
 		return tileToTileDisplay.get(t);
 	}
 	
