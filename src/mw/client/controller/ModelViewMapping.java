@@ -2,6 +2,8 @@ package mw.client.controller;
 
 import java.util.HashMap;
 
+import mw.client.model.Tile;
+
 public final class ModelViewMapping {
 
 	
@@ -33,6 +35,11 @@ public final class ModelViewMapping {
 	
 	public TileDisplay getTileDisplay(Tile t) {
 		return tileToTileDisplay.get(t);
+	}
+	
+	public void addBinding(Tile t, TileDisplay td)
+	{
+		tileToTileDisplay.put(t,td);
 	}
 	
 }
