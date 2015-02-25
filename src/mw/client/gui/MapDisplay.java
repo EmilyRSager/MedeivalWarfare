@@ -6,23 +6,28 @@ import org.minueto.window.*;
 
 /**
  * The GameMap class contains all the functions required to visually represent the map in a game of Medieval Warfare.
- * @author Arthur Denefle0
+ * @author Arthur Denefle
  *
  */
 public class MapDisplay 
 {
 	private ImageTile[][] tiles;
 	
-	public MapDisplay()
+	public MapDisplay(int width, int height)
 	{
-		tiles = new ImageTile[10][10];
+		tiles = new ImageTile[width][height];
 		for(int i = 0; i < tiles.length; i++)
 		{
-			for(int j = 0; j < tiles.length; j++)
+			for(int j = 0; j < tiles[i].length; j++)
 			{
 				tiles[i][j] = new ImageTile();
 			}
 		}
+	}
+	
+	public MapDisplay(ImageTile[][] givenTiles)
+	{
+		tiles = givenTiles;
 	}
 	
 	public void update()

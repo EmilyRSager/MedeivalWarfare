@@ -24,11 +24,16 @@ public class GameWindow {
 		gw.update();
 	}
 	
-	public GameWindow()
+	public GameWindow(MapDisplay mapDisp)
 	{
+		md = mapDisp;
 		window = new MinuetoFrame(500, 500, true);
 		window.setVisible(true);
-		md = new MapDisplay();
+	}
+	
+	public GameWindow()
+	{
+		this(new MapDisplay(10,10));
 	}
 	
 	public void render()

@@ -7,6 +7,7 @@ import mw.client.controller.ModelViewMapping;
 import mw.client.controller.TileModificationHandler;
 import mw.client.gui.GameWindow;
 import mw.client.gui.MapDisplay;
+import mw.client.gui.ImageTile;
 import mw.client.model.Game;
 import mw.client.model.GameMap;
 import mw.client.model.Player;
@@ -38,7 +39,7 @@ public final class MainApplication {
 	{
 		TileModificationHandler observer = new TileModificationHandler();
 		ArrayList<Tile> tileList = new ArrayList<Tile>();
-		ImageTile[MAP_WIDTH][MAP_HEIGHT] displayedTiles;
+		ImageTile displayedTiles[][] = new ImageTile[MAP_WIDTH][MAP_HEIGHT];
 		ModelViewMapping.initialize();
 		ModelViewMapping mapping = ModelViewMapping.singleton();
 		

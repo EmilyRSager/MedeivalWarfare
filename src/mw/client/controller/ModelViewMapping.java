@@ -2,6 +2,7 @@ package mw.client.controller;
 
 import java.util.HashMap;
 
+import mw.client.gui.ImageTile;
 import mw.client.model.Tile;
 
 public final class ModelViewMapping {
@@ -26,18 +27,18 @@ public final class ModelViewMapping {
 	
 	//	ModelViewMapping
 	
-	private HashMap<ImageTile, TileDisplay> tileToTileDisplay;
+	private HashMap<Tile, ImageTile> tileToTileDisplay;
 	
 	private ModelViewMapping()
 	{
-		tileToTileDisplay = new HashMap<ImageTile,TileDisplay>();
+		tileToTileDisplay = new HashMap<Tile,ImageTile>();
 	}
 	
-	public TileDisplay getTileDisplay(ImageTile t) {
+	public ImageTile getTileDisplay(Tile t) {
 		return tileToTileDisplay.get(t);
 	}
 	
-	public void addBinding(Tile t, TileDisplay td)
+	public void addBinding(Tile t, ImageTile td)
 	{
 		tileToTileDisplay.put(t,td);
 	}
