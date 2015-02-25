@@ -27,18 +27,14 @@ public final class MainApplication {
 	{
 		newGame();
 		window.render();
-		System.out.println("Rendered !");
 		try {
 			Thread.sleep(500);
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		System.out.println("Slept");
 		randomTile.setRoad(true);
-		System.out.println("set road");
 		randomTile.notifyObservers();
-		System.out.println("notified");
 		//window.update();
 	}
 	

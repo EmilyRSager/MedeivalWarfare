@@ -1,17 +1,10 @@
 package mw.client.gui;
-import java.io.IOException;
-import java.nio.charset.Charset;
-import java.nio.file.*;
+
 import java.util.Observable;
 
 import mw.client.gui.ImageFileManager.TileType;
 
-import org.minueto.*; 
-import org.minueto.handlers.*; 
-import org.minueto.image.*; 
-import org.minueto.window.*; 
-
-import java.io.File;
+import org.minueto.image.*;
 
 /**
  * This class defines the Tile object 
@@ -20,23 +13,6 @@ import java.io.File;
  */
 public class ImageTile extends Observable {
 	private MinuetoImage image;
-	/*private static final Path currentFolder = initializeFolder();
-	private static final Path parentFolder = currentFolder.getParent().getParent().getParent().getParent();*/
-	private static final String FOLDER = initializeFolder();
-	
-	private static String initializeFolder()
-	{
-		try
-		{
-			String s = Files.readAllLines(Paths.get("srcpath.txt"), Charset.defaultCharset()).get(0);
-			System.out.println(s);
-			return s.replace('\\', '/');
-		}
-		catch (IOException e)
-		{
-			return null;
-		}
-	}
 	
 	public ImageTile()
 	{
@@ -50,7 +26,6 @@ public class ImageTile extends Observable {
 	
 	public void update()
 	{
-		System.out.println("Image tile received update");
 		this.image = ImageFileManager.getTileImage(TileType.GRASS);
 		setChanged();
 		notifyObservers();

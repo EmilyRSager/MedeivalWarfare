@@ -10,7 +10,7 @@ public class GameWindow implements Observer {
 	private MinuetoWindow window;
 	private MapDisplay md;
 	
-	public static void main(String[] args)
+	/*public static void main(String[] args)
 	{
 		GameWindow gw = new GameWindow();
 		gw.render();
@@ -25,7 +25,7 @@ public class GameWindow implements Observer {
 		}
 		
 		gw.update();
-	}
+	}*/
 	
 	public GameWindow(MapDisplay mapDisp)
 	{
@@ -35,7 +35,7 @@ public class GameWindow implements Observer {
 		mapDisp.setObserver(this);
 	}
 	
-	public GameWindow()
+	public GameWindow()	// only there for old testing purpose
 	{
 		this(new MapDisplay(10,10));
 	}
@@ -45,38 +45,14 @@ public class GameWindow implements Observer {
 		md.renderMap(window);
 	}
 	
-	public void update()
+	public void update()	// old testing purpose method
 	{
 		md.update();
-		System.out.println("dfgcgv");
 		render();
 	}
 
 	@Override
 	public void update(Observable o, Object arg) {
-		System.out.println("Window notified");
 		render();
 	}
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-	/*public void renderGameWindow()
-	{
-		MinuetoWindow window = new MinuetoFrame(500, 500, true);
-		window.setVisible(true);
-	}*/
 }

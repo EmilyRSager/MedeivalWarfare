@@ -10,7 +10,6 @@ public final class TileModificationHandler implements Observer {
 	
 	@Override
 	public void update(Observable arg0, Object arg1) {
-		System.out.println("TileModificationHandler doing its job");
 		Tile modifiedTile = (Tile)arg0;
 		ImageTile tileDisplay = ModelViewMapping.singleton().getTileDisplay(modifiedTile);
 		tileDisplay.update();
