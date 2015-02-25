@@ -2,8 +2,6 @@ package mw.client.app;
 
 import java.util.ArrayList;
 
-import org.omg.CORBA.PRIVATE_MEMBER;
-
 import mw.client.controller.ActionInterpreter;
 import mw.client.controller.CurrentClientState;
 import mw.client.controller.ModelViewMapping;
