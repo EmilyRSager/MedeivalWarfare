@@ -10,6 +10,8 @@ import java.util.HashMap;
 import mw.shared.servercommands.AbstractServerCommand;
 import mw.shared.servercommands.AuthenticateUserCommand;
 import mw.shared.servercommands.SendMessageCommand;
+import mw.shared.servercommands.TestNewGameCommand;
+import mw.shared.servercommands.TestSharedTileCommand;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -22,12 +24,10 @@ public class ServerCommandSerializerAndDeserializer{
 	private HashMap<String, Type> aTypeMap = new HashMap<String, Type>();
 	
 	public ServerCommandSerializerAndDeserializer() {
-		//the following is an example on how to populate the map with different types of messages
-		//that this class can handle
-		//Remember to use the TypeToken thing as mentioned here as that is the only way to ensure correctness
-		//when serializing and deserializing
 		aTypeMap.put("SendMessageCommand", new TypeToken<SendMessageCommand>(){}.getType());
 		aTypeMap.put("AuthenticateUserCommand", new TypeToken<AuthenticateUserCommand>(){}.getType());
+		aTypeMap.put("TestSharedTileCommand", new TypeToken<TestSharedTileCommand>(){}.getType());
+		aTypeMap.put("TestNewGameCommand", new TypeToken<TestNewGameCommand>(){}.getType());
 		
 	}
 	

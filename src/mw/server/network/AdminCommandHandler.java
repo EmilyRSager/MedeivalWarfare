@@ -2,9 +2,11 @@ package mw.server.network;
 
 import java.util.Set;
 
+import mw.client.controller.TestStuffProvider;
 import mw.shared.SharedTile;
 import mw.shared.clientcommands.AbstractClientCommand;
 import mw.shared.clientcommands.MessageReceivedCommand;
+import mw.shared.clientcommands.NewGameCommand;
 import mw.shared.clientcommands.UpdateTileCommand;
 
 /**
@@ -30,6 +32,16 @@ public class AdminCommandHandler {
 		}
 		
 		return aAdminMessageDistributor;
+	}
+	
+	/**
+	 * TEST
+	 */
+	public void testSentGameCommand(){
+		
+		AbstractClientCommand lClientCommand = 
+				new NewGameCommand(TestStuffProvider.getNewSharedTiles(10, 10));
+		aClientChannelManager.getChannel(0).sendCommand(lClientCommand);
 	}
 	
 	/**

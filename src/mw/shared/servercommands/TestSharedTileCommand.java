@@ -3,14 +3,13 @@
  * Feb 24, 2015
  */
 
-package mw.shared.clientcommands;
+package mw.shared.servercommands;
 
-import mw.client.model.Tile.Terrain;
 import mw.server.network.AdminCommandHandler;
 import mw.shared.SharedColor;
 import mw.shared.SharedCoordinates;
 import mw.shared.SharedTile;
-import mw.shared.servercommands.AbstractServerCommand;
+import mw.shared.SharedTile.Terrain;
 
 public class TestSharedTileCommand extends AbstractServerCommand {
 	private final String aType = "TestSharedTileCommand";
@@ -22,7 +21,7 @@ public class TestSharedTileCommand extends AbstractServerCommand {
 
 	@Override
 	public void execute(int pPlayerID) {
-		SharedTile lSharedTile = new SharedTile(SharedColor.GREY, new SharedCoordinates(0, 0), Terrain.GRASS, false)
+		SharedTile lSharedTile = new SharedTile(SharedColor.GREY, new SharedCoordinates(0, 0), Terrain.GRASS, false);
 		AdminCommandHandler.getInstance().testSendSharedTileCommand(lSharedTile);
 	}
 }

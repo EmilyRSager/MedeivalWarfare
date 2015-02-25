@@ -5,6 +5,7 @@
 
 package mw.shared.clientcommands;
 
+import mw.client.controller.GameCommandHandler;
 import mw.shared.SharedTile;
 
 public class NewGameCommand extends AbstractClientCommand {

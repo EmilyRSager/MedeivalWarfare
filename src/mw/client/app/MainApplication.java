@@ -2,13 +2,12 @@ package mw.client.app;
 
 import java.util.ArrayList;
 
-import mw.client.controller.ActionInterpreter;
 import mw.client.controller.CurrentClientState;
 import mw.client.controller.ModelViewMapping;
 import mw.client.controller.TileModificationHandler;
 import mw.client.gui.GameWindow;
-import mw.client.gui.MapDisplay;
 import mw.client.gui.ImageTile;
+import mw.client.gui.MapDisplay;
 import mw.client.model.Game;
 import mw.client.model.GameMap;
 import mw.client.model.Player;

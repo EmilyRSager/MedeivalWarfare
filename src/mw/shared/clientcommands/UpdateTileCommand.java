@@ -5,10 +5,11 @@
 
 package mw.shared.clientcommands;
 
+import mw.client.controller.GameCommandHandler;
 import mw.shared.SharedTile;
 
 public class UpdateTileCommand extends AbstractClientCommand {
-	private final String aType = "UpdatedTileCommand";
+	private final String aType = "UpdateTileCommand";
 	private SharedTile aSharedTile;
 	
 	/**
