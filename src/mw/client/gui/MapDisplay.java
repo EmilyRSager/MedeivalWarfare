@@ -1,9 +1,11 @@
 package mw.client.gui;
 import java.util.Observer;
 import java.awt.Color;
+import java.lang.Math;
 
 import org.minueto.MinuetoColor;
 import org.minueto.window.*; 
+
 
 /**
  * The GameMap class contains all the functions required to visually represent the map in a game of Medieval Warfare.
@@ -14,6 +16,8 @@ public class MapDisplay
 {
 	//public static final MinuetoColor color = new MinuetoColor(2);
 	private ImageTile[][] tiles;
+	private int tileWidth;
+	private int tileHeight;
 	
 	public MapDisplay(int width, int height)
 	{
@@ -25,11 +29,15 @@ public class MapDisplay
 				tiles[i][j] = new ImageTile();
 			}
 		}
+		tileWidth = tiles[0][0].getTileImage().getWidth();
+		tileHeight = tiles[0][0].getTileImage().getHeight();
 	}
 	
 	public MapDisplay(ImageTile[][] givenTiles)
 	{
 		tiles = givenTiles;
+		tileWidth = tiles[0][0].getTileImage().getWidth();
+		tileHeight = tiles[0][0].getTileImage().getHeight();
 	}
 	
 	public void update()
@@ -74,18 +82,38 @@ public class MapDisplay
 	
 	public int getWidth()
 	{
-		return this.tiles[0][0].getTileImage().getWidth() * this.tiles.length;
+		return this.tileWidth * this.tiles.length;
 	}
 	
 	public int getHeight()
 	{
-		return this.tiles[0][0].getTileImage().getHeight() * this.tiles.length + tiles[0][0].getTileImage().getHeight() / 2;
+		return this.tileHeight * this.tiles.length + tileHeight / 2;
 	}
 
 	public ImageTile getClickedTile(int x, int y)
 	{
-		int xIndex = (int) x / this.tiles[0][0].getTileImage().getWidth();
-		int yIndex = (int) y / this.tiles[0][0].getTileImage().getHeight();
-		return this.tiles[xIndex][yIndex];
+		int xIndex = (int) x / tileWidth;
+		int yIndex;
+		if(xIndex % 2 == 0)
+		{
+			yIndex = (int) y / tileHeight;
+		}
+		else
+		{
+			yIndex = (int) Math.floor(((y - (tileHeight / 2)) / (double) tileHeight)); 
+		}
+		/*if(xIndex % 2 != 0 && y < tileHeight / 2)
+		{
+			return null;
+		}*/
+		//else if(xIndex % 2 == 0 && y > tileHeight() )
+		try
+		{
+			return this.tiles[xIndex][yIndex];
+		}
+		catch (ArrayIndexOutOfBoundsException e)
+		{
+			return null;
+		}
 	}
 }

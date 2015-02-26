@@ -56,8 +56,11 @@ public class GameWindow implements Observer {
 				{
 					ImageTile clickedTile = mapDisp.getClickedTile(x, y);
 					ModelTile clickedModelTile = ModelViewMapping.singleton().getModelTile(clickedTile);
-					clickedModelTile.setColor(SharedColor.RED);
-					clickedModelTile.notifyObservers();
+					if(clickedModelTile != null)
+					{
+						clickedModelTile.setColor(SharedColor.RED);
+						clickedModelTile.notifyObservers();
+					}
 				}
 			};
 		queue = new MinuetoEventQueue();
