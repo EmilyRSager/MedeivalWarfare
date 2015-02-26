@@ -10,7 +10,7 @@ public class GameWindow implements Observer {
 	private MinuetoWindow window;
 	private MapDisplay md;
 	
-	/*public static void main(String[] args)
+	public static void main(String[] args)
 	{
 		GameWindow gw = new GameWindow();
 		gw.render();
@@ -25,12 +25,12 @@ public class GameWindow implements Observer {
 		}
 		
 		gw.update();
-	}*/
+	}
 	
 	public GameWindow(MapDisplay mapDisp)
 	{
 		md = mapDisp;
-		window = new MinuetoFrame(500, 500, true);
+		window = new MinuetoFrame(500, 525, true);
 		window.setVisible(true);
 		mapDisp.setObserver(this);
 	}

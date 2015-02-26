@@ -1,6 +1,8 @@
 package mw.client.gui;
 import java.util.Observer;
+import java.awt.Color;
 
+import org.minueto.MinuetoColor;
 import org.minueto.window.*; 
 
 /**
@@ -10,6 +12,7 @@ import org.minueto.window.*;
  */
 public class MapDisplay 
 {
+	//public static final MinuetoColor color = new MinuetoColor(2);
 	private ImageTile[][] tiles;
 	
 	public MapDisplay(int width, int height)
@@ -31,7 +34,9 @@ public class MapDisplay
 	
 	public void update()
 	{
-		tiles[2][6].update();
+		System.out.println("updating map display");
+		MinuetoColor color =  MinuetoColor.BLACK;
+		tiles[2][6].updateColor(color);
 	}
 	
 	/**
@@ -44,7 +49,14 @@ public class MapDisplay
 			{
 				for(int j = 0; j < tiles[i].length; j++)
 				{
-					window.draw(tiles[i][j].getTileImage(), i * 50, j * 50);
+					if(i % 2 == 0)
+					{
+						window.draw(tiles[i][j].getTileImage(), i * 50, j * 50);
+					}
+					else
+					{
+						window.draw(tiles[i][j].getTileImage(), i * 50, j * 50 + 25);
+					}
 				}
 			}
 			window.render();
