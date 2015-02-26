@@ -12,6 +12,11 @@ import mw.shared.SharedTile;
  */
 public final class NewStateApplier {
 	
+	/**
+	 * Apply the new state of a Tile (given by a SharedTile), to the given game
+	 * @param game the game to change the tile state in
+	 * @param newTileState the new state of a Tile
+	 */
 	public static void applyChanges(Game game, SharedTile newTileState)
 	{
 		Coordinates coord = NetworkModelTranslator.translateSharedCoordinates(newTileState.getCoordinates());
@@ -37,36 +42,5 @@ public final class NewStateApplier {
 		
 		modelTile.notifyObservers();
 	}
-	
-	//	Generic Controller
-	
-	/*private static NewStateApplier singleton = null;
-	
-	public static void initialize(Game currentGame) {
-		singleton = new NewStateApplier(currentGame);
-	}
-	
-	public static void clear() {
-		singleton = null;
-	}
-	
-	public static NewStateApplier singleton() {
-		return singleton;
-	}*/
-	
-	
-	// NewStateApplier
-	
-	/*private final Game game;
-	
-	private NewStateApplier(Game currentGame)
-	{
-		game = currentGame;
-	}
-	
-	public void applyChanges(SharedTile newTileState)
-	{
-		
-	}*/
 	
 }
