@@ -1,7 +1,7 @@
 package mw.client.controller;
 
 import mw.client.app.MainApplication;
-import mw.client.model.Tile;
+import mw.client.model.ModelTile;
 import mw.shared.SharedTile;
 
 public final class GameCommandHandler {
@@ -11,7 +11,7 @@ public final class GameCommandHandler {
 	{
 		final int width = newTiles.length;
 		final int height = newTiles[0].length;
-		Tile[][] gameTiles = new Tile[width][height];
+		ModelTile[][] gameTiles = new ModelTile[width][height];
 		for (int i=0; i<width; i++)
 		{
 			for (int j=0; j<height; j++)

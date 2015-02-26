@@ -11,7 +11,7 @@ import java.util.Map;
  */
 public final class GameMap {
 
-	private final Map<Coordinates, Tile> map;
+	private final Map<Coordinates, ModelTile> map;
 	
 	
 	// Constructors
@@ -19,23 +19,27 @@ public final class GameMap {
 	/**
 	 * Creates a new empty GameMap (with no tiles)
 	 */
-	public GameMap(Iterable<Tile> tileList)
+	public GameMap(Iterable<ModelTile> tileList)
 	{
-		map = new HashMap<Coordinates,Tile>();
-		for (Tile t : tileList) {
+		map = new HashMap<Coordinates,ModelTile>();
+		for (ModelTile t : tileList) {
 			map.put(t.getCoordinates(),t);
 		}
 	}
 	
-	public GameMap(Map<Coordinates,Tile> fullMap) {
+	public GameMap(Map<Coordinates,ModelTile> fullMap) {
 		map = fullMap;
 	}
 	
 	
 	// Queries
 	
-	public Tile getTile(Coordinates coord) {
-		return map.get(coord);
+	public ModelTile getTile(Coordinates coord) {
+		ModelTile ret = map.get(coord);
+		if (ret == null)
+			throw new IllegalArgumentException("Coordinates "+coord+" don't match any Tile in the map");
+		else
+			return ret;
 	}
 	
 	/*public void addTile(Tile t)

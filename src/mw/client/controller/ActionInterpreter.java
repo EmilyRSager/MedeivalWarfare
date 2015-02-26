@@ -39,7 +39,7 @@ public final class ActionInterpreter /*implements Controller */{
 	
 	
 	private final Game game;
-	private Tile selectedTile;
+	private ModelTile selectedTile;
 	private Collection<GameAction> possibleActions;	// Not a good solution !
 	
 	
@@ -66,7 +66,7 @@ public final class ActionInterpreter /*implements Controller */{
 	public void primarySelect(ImageTile target)
 	{
 		// get the Tile
-		Tile target;
+		ModelTile target;
 		if (isSelectable(target)) {
 			selectedTile = target;
 			// display the fact that it is selected
@@ -81,12 +81,12 @@ public final class ActionInterpreter /*implements Controller */{
 	public void secondarySelect(ImageTile dispTarget)
 	{
 		// get the Tile
-		Tile target;
+		ModelTile target;
 		
 	}
 	
 	
-	public void setPossibleActions(Tile concernedTile, Collection<GameAction> actions)
+	public void setPossibleActions(ModelTile concernedTile, Collection<GameAction> actions)
 	{
 		// Not a good solution !
 		if (selectedTile == concernedTile) {	// comparing the references on purpose
@@ -103,7 +103,7 @@ public final class ActionInterpreter /*implements Controller */{
 	 */
 	
 	
-	private boolean isSelectable(Tile target)
+	private boolean isSelectable(ModelTile target)
 	{
 		boolean correctTileComponent = ModelQuerier.hasUnit(target) || ModelQuerier.hasVillage(target);
 		return correctTileComponent && ModelQuerier.ownedByCurrentPlayer(game, target);

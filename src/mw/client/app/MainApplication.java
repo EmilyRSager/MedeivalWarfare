@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import mw.client.controller.CurrentClientState;
 import mw.client.controller.ModelViewMapping;
+import mw.client.controller.NewStateApplier;
 import mw.client.controller.TileModificationHandler;
 import mw.client.gui.GameWindow;
 import mw.client.gui.ImageTile;
@@ -11,7 +12,10 @@ import mw.client.gui.MapDisplay;
 import mw.client.model.Game;
 import mw.client.model.GameMap;
 import mw.client.model.Player;
-import mw.client.model.Tile;
+import mw.client.model.ModelTile;
+import mw.shared.SharedColor;
+import mw.shared.SharedCoordinates;
+import mw.shared.SharedTile;
 
 public final class MainApplication {
 
@@ -21,7 +25,7 @@ public final class MainApplication {
 	
 	private static GameWindow window;
 	private static Game game;
-	private static Tile randomTile;
+	private static ModelTile randomTile;
 	
 	public static void main(String[] args)
 	{
@@ -34,29 +38,34 @@ public final class MainApplication {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		randomTile.setRoad(true);
-		randomTile.notifyObservers();
+		
+		SharedTile newST = new SharedTile(SharedColor.BLUE, new SharedCoordinates(1, 2), SharedTile.Terrain.GRASS, false);
+		NewStateApplier.applyChanges(game, newST);
+		
+		/*randomTile.setColor(SharedColor.BLUE);
+		randomTile.notifyObservers();*/
 		//window.update();
 	}
 	
 	public static void newGame()
 	{
-		Tile[][] newTiles = new Tile[MAP_WIDTH][MAP_HEIGHT];
+		ModelTile[][] newTiles = new ModelTile[MAP_WIDTH][MAP_HEIGHT];
 		for (int i=0; i<MAP_WIDTH; i++)
 		{
 			for (int j=0; j<MAP_HEIGHT; j++)
 			{
-				Tile t = new Tile(i, j);
+				ModelTile t = new ModelTile(i, j);
+				t.setColor(SharedColor.YELLOW);
 				newTiles[i][j] = t;
 			}
 		}
 		newGame(newTiles);
 	}
 	
-	public static void newGame(Tile[][] tiles)
+	public static void newGame(ModelTile[][] tiles)
 	{
 		TileModificationHandler observer = new TileModificationHandler();
-		ArrayList<Tile> tileList = new ArrayList<Tile>();
+		ArrayList<ModelTile> tileList = new ArrayList<ModelTile>();
 		ImageTile displayedTiles[][] = new ImageTile[MAP_WIDTH][MAP_HEIGHT];
 		ModelViewMapping.initialize();
 		ModelViewMapping mapping = ModelViewMapping.singleton();
@@ -67,7 +76,7 @@ public final class MainApplication {
 		{
 			for (int j=0; j<height; j++)
 			{
-				Tile t = tiles[i][j];
+				ModelTile t = tiles[i][j];
 				tileList.add(t);
 				t.addObserver(observer);
 				if (i==2 && j==1)
@@ -75,7 +84,9 @@ public final class MainApplication {
 				
 				ImageTile td = new ImageTile();
 				displayedTiles[i][j] = td;
+				
 				mapping.addBinding(t, td);
+				TileModificationHandler.displayTile(t, td);
 			}
 		}
 		
