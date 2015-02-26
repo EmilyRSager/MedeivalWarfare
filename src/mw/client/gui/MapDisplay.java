@@ -34,7 +34,6 @@ public class MapDisplay
 	
 	public void update()
 	{
-		System.out.println("updating map display");
 		MinuetoColor color =  MinuetoColor.BLACK;
 		tiles[2][6].updateColor(color);
 	}
@@ -51,11 +50,11 @@ public class MapDisplay
 				{
 					if(i % 2 == 0)
 					{
-						window.draw(tiles[i][j].getTileImage(), i * 50, j * 50);
+						window.draw(tiles[i][j].getTileImage(), i * ImageTile.DEFAULT_TILE_WIDTH, j * ImageTile.DEFAULT_TILE_HEIGHT);
 					}
 					else
 					{
-						window.draw(tiles[i][j].getTileImage(), i * 50, j * 50 + 25);
+						window.draw(tiles[i][j].getTileImage(), i * ImageTile.DEFAULT_TILE_WIDTH, (j * ImageTile.DEFAULT_TILE_HEIGHT) + (.5 * ImageTile.DEFAULT_TILE_HEIGHT));
 					}
 				}
 			}
