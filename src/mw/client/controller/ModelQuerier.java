@@ -3,11 +3,13 @@ package mw.client.controller;
 import mw.client.model.Coordinates;
 import mw.client.model.Game;
 import mw.client.model.Tile;
+import mw.shared.SharedColor;
+import mw.shared.SharedTile.Terrain;
 
 public final class ModelQuerier {
 
 	
-	// object queries
+	// Game queries
 	
 	
 	public static Tile getTile(Game game, Coordinates coord)
@@ -25,7 +27,13 @@ public final class ModelQuerier {
 	*/
 	
 	
-	// boolean queries
+	// Tile queries
+	
+	public static SharedColor getTileColor(Tile t) {
+		return t.getColor();
+	}
+	
+	// Boolean queries
 	
 	
 	public static boolean hasUnit(Tile t) {

@@ -8,7 +8,10 @@ import mw.client.model.Tile;
 public final class ModelViewMapping {
 
 	
-	//	Generic Controller
+	/* ===============================
+	 * 		Generic Controller
+	 * ===============================
+	 */
 	
 	private static ModelViewMapping singleton = null;
 	
@@ -25,14 +28,30 @@ public final class ModelViewMapping {
 	}
 	
 	
-	//	ModelViewMapping
+	/* ===============================
+	 * 		ActionInterpreter 
+	 * ===============================
+	 */
 	
 	private HashMap<Tile, ImageTile> tileToTileDisplay;
+	
+	/* ========================
+	 * 		Constructors
+	 * ========================
+	 */
+	
 	
 	private ModelViewMapping()
 	{
 		tileToTileDisplay = new HashMap<Tile,ImageTile>();
 	}
+	
+	
+	/* ========================
+	 * 		Public methods
+	 * ========================
+	 */
+	
 	
 	public ImageTile getTileDisplay(Tile t) {
 		return tileToTileDisplay.get(t);
@@ -42,5 +61,4 @@ public final class ModelViewMapping {
 	{
 		tileToTileDisplay.put(t,td);
 	}
-	
 }

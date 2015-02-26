@@ -35,7 +35,11 @@ public final class GameMap {
 	// Queries
 	
 	public Tile getTile(Coordinates coord) {
-		return map.get(coord);
+		Tile ret = map.get(coord);
+		if (ret == null)
+			throw new IllegalArgumentException("Coordinates "+coord+" don't match any Tile in the map");
+		else
+			return ret;
 	}
 	
 	/*public void addTile(Tile t)

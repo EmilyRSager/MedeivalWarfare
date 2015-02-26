@@ -15,4 +15,20 @@ public final class Coordinates {
 	{
 		return x*300+y;
 	}
+	
+	@Override
+	public boolean equals(Object o)
+	{
+		if (o instanceof Coordinates)
+		{
+			Coordinates c = (Coordinates)o;
+			return x==c.x && y==c.y;
+		}
+		return false;
+	}
+	
+	@Override
+	public String toString() {
+		return "("+x+","+y+")";
+	}
 }

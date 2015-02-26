@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import mw.client.controller.CurrentClientState;
 import mw.client.controller.ModelViewMapping;
+import mw.client.controller.NewStateApplier;
 import mw.client.controller.TileModificationHandler;
 import mw.client.gui.GameWindow;
 import mw.client.gui.ImageTile;
@@ -12,6 +13,9 @@ import mw.client.model.Game;
 import mw.client.model.GameMap;
 import mw.client.model.Player;
 import mw.client.model.Tile;
+import mw.shared.SharedColor;
+import mw.shared.SharedCoordinates;
+import mw.shared.SharedTile;
 
 public final class MainApplication {
 
@@ -34,8 +38,12 @@ public final class MainApplication {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		randomTile.setRoad(true);
-		randomTile.notifyObservers();
+		
+		SharedTile newST = new SharedTile(SharedColor.BLUE, new SharedCoordinates(1, 2), SharedTile.Terrain.GRASS, false);
+		NewStateApplier.applyChanges(game, newST);
+		
+		/*randomTile.setColor(SharedColor.BLUE);
+		randomTile.notifyObservers();*/
 		//window.update();
 	}
 	
@@ -47,6 +55,7 @@ public final class MainApplication {
 			for (int j=0; j<MAP_HEIGHT; j++)
 			{
 				Tile t = new Tile(i, j);
+				t.setColor(SharedColor.YELLOW);
 				newTiles[i][j] = t;
 			}
 		}
@@ -75,7 +84,9 @@ public final class MainApplication {
 				
 				ImageTile td = new ImageTile();
 				displayedTiles[i][j] = td;
+				
 				mapping.addBinding(t, td);
+				TileModificationHandler.displayTile(t, td);
 			}
 		}
 		
