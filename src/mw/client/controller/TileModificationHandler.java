@@ -7,6 +7,12 @@ import mw.client.gui.ImageTile;
 import mw.client.model.ModelTile;
 import mw.shared.SharedColor;
 
+/**
+ * The TileModificationHandler is used to observe model tiles, and updates the display
+ * whenever a Tile it observers changes.
+ * @author Hugo Kapp
+ *
+ */
 public final class TileModificationHandler implements Observer {
 	
 	/* ========================
@@ -14,6 +20,11 @@ public final class TileModificationHandler implements Observer {
 	 * ========================
 	 */
 	
+	/**
+	 * Displays the state of the given ModelTile on the given ImageTile
+	 * @param modelTile the ModelTile to display
+	 * @param viewTile the ImageTile to display on
+	 */
 	public static void displayTile(ModelTile modelTile, ImageTile viewTile)
 	{
 		SharedColor newColor = ModelQuerier.getTileColor(modelTile);
@@ -25,7 +36,6 @@ public final class TileModificationHandler implements Observer {
 	 * 		Public methods
 	 * ========================
 	 */
-	
 	
 	@Override
 	public void update(Observable arg0, Object arg1) {
