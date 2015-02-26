@@ -54,7 +54,7 @@ public class MapDisplay
 					}
 					else
 					{
-						window.draw(tiles[i][j].getTileImage(), i * ImageTile.DEFAULT_TILE_WIDTH, (j * ImageTile.DEFAULT_TILE_HEIGHT) + (.5 * ImageTile.DEFAULT_TILE_HEIGHT));
+						window.draw(tiles[i][j].getTileImage(), i * ImageTile.DEFAULT_TILE_WIDTH, (j * ImageTile.DEFAULT_TILE_HEIGHT) + (int)(.5 * ImageTile.DEFAULT_TILE_HEIGHT));
 					}
 				}
 			}
