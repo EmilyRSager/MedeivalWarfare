@@ -9,12 +9,13 @@ import org.minueto.window.MinuetoWindow;
 public class GameWindow implements Observer {
 	private MinuetoWindow window;
 	private MapDisplay md;
+	public static final int DEFAULT_FRAME_WIDTH = 500;
+	public static final int DEFAULT_FRAME_HEIGHT = 525;
 	
 	public static void main(String[] args)
 	{
 		GameWindow gw = new GameWindow();
 		gw.render();
-		System.out.println("blah");
 		try 
 		{
 			Thread.sleep(500);
@@ -30,14 +31,14 @@ public class GameWindow implements Observer {
 	public GameWindow(MapDisplay mapDisp)
 	{
 		md = mapDisp;
-		window = new MinuetoFrame(500, 525, true);
+		window = new MinuetoFrame(DEFAULT_FRAME_WIDTH, DEFAULT_FRAME_HEIGHT, true);
 		window.setVisible(true);
 		mapDisp.setObserver(this);
 	}
 	
 	public GameWindow()	// only there for old testing purpose
 	{
-		this(new MapDisplay(10,10));
+		this(new MapDisplay(MainApplication.DEFAULT_MAP_WIDTH, MainApplication.DEFAULT_MAP_HEIGHT));
 	}
 	
 	public void render()

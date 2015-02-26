@@ -34,7 +34,6 @@ public class MapDisplay
 	
 	public void update()
 	{
-		System.out.println("updating map display");
 		MinuetoColor color =  MinuetoColor.BLACK;
 		tiles[2][6].updateColor(color);
 	}

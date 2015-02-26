@@ -14,11 +14,13 @@ import org.minueto.image.*;
  */
 public class ImageTile extends Observable {
 	private MinuetoImage image;
+	public static final int DEFAULT_TILE_WIDTH = 50;
+	public static final int DEFAULT_TILE_HEIGHT = 50;
 	
 	public ImageTile()
 	{
 		//image = ImageFileManager.getTileImage(TileType.DEFAULT);
-		image = new MinuetoImage(50, 50);
+		image = new MinuetoImage(DEFAULT_TILE_WIDTH, DEFAULT_TILE_HEIGHT);
 	}
 	
 	public MinuetoImage getTileImage()

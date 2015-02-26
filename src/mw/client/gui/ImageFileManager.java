@@ -21,7 +21,8 @@ public class ImageFileManager
 		{
 			String s = Files.readAllLines(Paths.get("srcpath.txt"), Charset.defaultCharset()).get(0);
 			System.out.println(s);
-			return s.replace('\\', '/');
+			s = s.replace('\\', '/');
+			return s.concat("/images/");
 		}
 		catch (IOException e)
 		{
@@ -34,10 +35,10 @@ public class ImageFileManager
 		switch(t)
 		{
 		case DEFAULT:
-			fileName = FOLDER + "/images/sampleTile.jpg";
+			fileName = FOLDER + "sampleTile.jpg";
 			break;
 		case GRASS:
-			fileName = FOLDER + "/images/grass.png";
+			fileName = FOLDER + "grass.png";
 			break;
 		}
 		try
