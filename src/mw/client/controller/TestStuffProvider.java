@@ -1,13 +1,12 @@
 package mw.client.controller;
 
+import mw.client.app.MainApplication;
 import mw.shared.SharedColor;
 import mw.shared.SharedCoordinates;
 import mw.shared.SharedTile;
 
 public final class TestStuffProvider {
-
-	private static final int GENEREAL_WIDTH = 10;
-	private static final int GENERAL_HEIGHT = 10;
+	
 	
 	public static SharedTile[][] getNewSharedTiles(int width, int height)
 	{
@@ -23,7 +22,7 @@ public final class TestStuffProvider {
 	}
 
 	public static SharedTile[][] getNewTiles() {
-		return getNewSharedTiles(GENEREAL_WIDTH, GENERAL_HEIGHT);
+		return getNewSharedTiles(MainApplication.DEFAULT_MAP_WIDTH, MainApplication.DEFAULT_MAP_HEIGHT);
 	}
 	
 	public static SharedTile getNewTile(int x, int y)
