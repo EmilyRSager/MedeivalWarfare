@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.lang.Math;
 
 import mw.client.controller.ModelViewMapping;
+import mw.client.gui.api.InterfaceComponent;
 import mw.client.model.ModelTile;
 import mw.shared.SharedColor;
 
