@@ -1,6 +1,7 @@
 package mw.client.app;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 import mw.client.controller.CurrentClientState;
 import mw.client.controller.ModelViewMapping;
@@ -20,42 +21,50 @@ import mw.shared.SharedTile;
 public final class MainApplication {
 
 	private static final Player PLAYER = null;
-	private final static int MAP_WIDTH = 10;
-	private final static int MAP_HEIGHT = 10;
+	public final static int DEFAULT_MAP_WIDTH = 10;
+	public final static int DEFAULT_MAP_HEIGHT = 10;
 	
 	private static GameWindow window;
 	private static Game game;
-	private static ModelTile randomTile;
+	//private static ModelTile randomTile;
 	
 	public static void main(String[] args)
 	{
 		newGame();
-		//window.render();
 		startDisplay();
+
+		waitABit();
+		testUpdate(SharedColor.BLUE);
+		waitABit();
+		testUpdate(SharedColor.YELLOW);
+	}
+	
+	public static void waitABit()
+	{
 		try {
 			Thread.sleep(500);
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		SharedTile newST = new SharedTile(SharedColor.BLUE, new SharedCoordinates(1, 2), SharedTile.Terrain.GRASS, false);
+	}
+	
+	public static void testUpdate(SharedColor c)
+	{
+		Random r = new Random();
+		SharedTile newST = new SharedTile(c, new SharedCoordinates(r.nextInt(DEFAULT_MAP_WIDTH), r.nextInt(DEFAULT_MAP_HEIGHT)), SharedTile.Terrain.GRASS, false);
 		NewStateApplier.applyChanges(game, newST);
-		
-		/*randomTile.setColor(SharedColor.BLUE);
-		randomTile.notifyObservers();*/
-		//window.update();
 	}
 	
 	public static void newGame()
 	{
-		ModelTile[][] newTiles = new ModelTile[MAP_WIDTH][MAP_HEIGHT];
-		for (int i=0; i<MAP_WIDTH; i++)
+		ModelTile[][] newTiles = new ModelTile[DEFAULT_MAP_WIDTH][DEFAULT_MAP_HEIGHT];
+		for (int i=0; i<DEFAULT_MAP_WIDTH; i++)
 		{
-			for (int j=0; j<MAP_HEIGHT; j++)
+			for (int j=0; j<DEFAULT_MAP_HEIGHT; j++)
 			{
 				ModelTile t = new ModelTile(i, j);
-				t.setColor(SharedColor.YELLOW);
+				t.setColor(SharedColor.GREEN);
 				newTiles[i][j] = t;
 			}
 		}
@@ -66,7 +75,7 @@ public final class MainApplication {
 	{
 		TileModificationHandler observer = new TileModificationHandler();
 		ArrayList<ModelTile> tileList = new ArrayList<ModelTile>();
-		ImageTile displayedTiles[][] = new ImageTile[MAP_WIDTH][MAP_HEIGHT];
+		ImageTile displayedTiles[][] = new ImageTile[DEFAULT_MAP_WIDTH][DEFAULT_MAP_HEIGHT];
 		ModelViewMapping.initialize();
 		ModelViewMapping mapping = ModelViewMapping.singleton();
 		
@@ -79,8 +88,8 @@ public final class MainApplication {
 				ModelTile t = tiles[i][j];
 				tileList.add(t);
 				t.addObserver(observer);
-				if (i==2 && j==1)
-					randomTile = t;
+				/*if (i==2 && j==1)
+					randomTile = t;*/
 				
 				ImageTile td = new ImageTile();
 				displayedTiles[i][j] = td;

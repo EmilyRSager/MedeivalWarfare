@@ -4,34 +4,43 @@ import mw.client.model.Coordinates;
 import mw.client.model.Game;
 import mw.client.model.ModelTile;
 import mw.shared.SharedColor;
-import mw.shared.SharedTile.Terrain;
 
+
+/**
+ * The ModelQuerier is the interface for the model part on the Client. All queries that
+ * need to be done and implies getting information from the model should pass through
+ * this controller.
+ * @author Hugo Kapp
+ *
+ */
 public final class ModelQuerier {
 
 	
 	// Game queries
 	
-	
+	/**
+	 * Returns the Tile designated by the given Coordinates, considering the given Game
+	 * @param game the game to get the Tile from
+	 * @param coord the coordinates of the Tile to retrieve
+	 * @return the Tile with coordinates coord in the Game game
+	 */
 	public static ModelTile getTile(Game game, Coordinates coord)
 	{
 		return game.getGameMap().getTile(coord);
 	}
 	
 	
-	/*public static Player getCurrentPlayer(Game g) {
-		return g.getCurrentPlayer();
-	}
-	
-	
-	public static SharedColor getCurrent
-	*/
-	
-	
 	// Tile queries
 	
+	/**
+	 * Returns the Color of the given Tile
+	 * @param t the Tile to get the Color from
+	 * @return the color of the tile t
+	 */
 	public static SharedColor getTileColor(ModelTile t) {
 		return t.getColor();
 	}
+	
 	
 	// Boolean queries
 	
@@ -49,40 +58,4 @@ public final class ModelQuerier {
 	public static boolean ownedByCurrentPlayer(Game game, ModelTile t) {
 		return t.getColor().equals(game.getCurrentPlayer().getColor());
 	}
-	
-	
-	//	Generic Controller
-	
-	/*private static ModelQuerier singleton = null;
-	
-	public static void initialize(Game currentGame) {
-		singleton = new ModelQuerier(currentGame);
-	}
-	
-	public static void clear() {
-		singleton = null;
-	}
-	
-	public static ModelQuerier singleton() {
-		return singleton;
-	}
-	
-	
-	// ModelQuerier
-	
-	private Game currentGame;
-	
-	private ModelQuerier(Game game)
-	{
-		currentGame = game;
-	}
-	
-	public Game getCurrentGame() {
-		return currentGame;
-	}
-	
-	public Tile getTile(Game game, Coordinates coord)
-	{
-		return game.getGameMap().getTile(coord);
-	}*/
 }

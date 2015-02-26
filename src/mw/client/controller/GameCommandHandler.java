@@ -4,9 +4,19 @@ import mw.client.app.MainApplication;
 import mw.client.model.ModelTile;
 import mw.shared.SharedTile;
 
+
+/**
+ * The GameCommandHandler controller is responsible for handling the different commands that
+ * could come from the server, modifying accordingly the model on the client
+ * @author Hugo Kapp
+ *
+ */
 public final class GameCommandHandler {
 
-
+	/**
+	 * Creates a new Game out of the given SharedTiles, and start displaying and interacting with the User
+	 * @param newTiles the SharedTiles that give the initial state for each Tile in the new Game
+	 */
 	public static void createNewGame(SharedTile[][] newTiles)
 	{
 		final int width = newTiles.length;
@@ -23,6 +33,10 @@ public final class GameCommandHandler {
 		MainApplication.startDisplay();
 	}
 	
+	/**
+	 * Applies the new state of the given SharedTile to the model
+	 * @param newState the new state of a Tile
+	 */
 	public static void newTileState(SharedTile newState)
 	{
 		NewStateApplier.applyChanges(CurrentClientState.getCurrentGame(), newState);
