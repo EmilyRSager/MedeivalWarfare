@@ -3,7 +3,12 @@ import java.util.Observer;
 import java.awt.Color;
 import java.lang.Math;
 
+import mw.client.controller.ModelViewMapping;
+import mw.client.model.ModelTile;
+import mw.shared.SharedColor;
+
 import org.minueto.MinuetoColor;
+import org.minueto.image.MinuetoImage;
 import org.minueto.window.*; 
 
 
@@ -12,12 +17,44 @@ import org.minueto.window.*;
  * @author Arthur Denefle
  *
  */
-public class MapDisplay 
+public class MapDisplay implements InterfaceComponent
 {
 	//public static final MinuetoColor color = new MinuetoColor(2);
 	private ImageTile[][] tiles;
 	private int tileWidth;
 	private int tileHeight;
+	
+	public MinuetoImage getImage()
+	{
+		MinuetoImage newImage = new MinuetoImage(this.getWidth(), this.getHeight());
+		for(int i = 0; i < tiles.length; i++)
+		{
+			for(int j = 0; j < tiles[i].length; j++)
+			{
+				if(i % 2 == 0)
+				{
+					newImage.draw(tiles[i][j].getTileImage(), i * ImageTile.DEFAULT_TILE_WIDTH, j * ImageTile.DEFAULT_TILE_HEIGHT);
+				}
+				else
+				{
+					newImage.draw(tiles[i][j].getTileImage(), i * ImageTile.DEFAULT_TILE_WIDTH, (j * ImageTile.DEFAULT_TILE_HEIGHT) + (int)(.5 * ImageTile.DEFAULT_TILE_HEIGHT));
+				}
+			}
+		}
+		return newImage;
+	}
+	
+	public void handleMouseClick(int x, int y, int button)
+	{
+		ImageTile clickedTile = this.getClickedTile(x, y);
+		ModelTile clickedModelTile = ModelViewMapping.singleton().getModelTile(clickedTile);
+		if(clickedModelTile != null)
+		{
+			clickedModelTile.setColor(SharedColor.RED);
+			clickedModelTile.notifyObservers();
+		}
+	}
+	
 	
 	public MapDisplay(int width, int height)
 	{

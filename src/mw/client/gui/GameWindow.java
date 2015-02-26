@@ -1,21 +1,29 @@
 package mw.client.gui;
 
+import java.awt.BorderLayout;
+import java.awt.FlowLayout;
 import java.util.Observable;
 import java.util.Observer;
+
+import javax.swing.JFrame;
+import javax.swing.JLabel;
 
 import mw.client.app.MainApplication;
 import mw.client.controller.ModelViewMapping;
 import mw.client.model.ModelTile;
 import mw.shared.SharedColor;
 
+import org.minueto.MinuetoColor;
 import org.minueto.MinuetoEventQueue;
 import org.minueto.handlers.MinuetoMouseHandler;
 import org.minueto.window.MinuetoFrame;
+import org.minueto.window.MinuetoPanel;
 import org.minueto.window.MinuetoWindow;
 
 public class GameWindow implements Observer {
-	private MinuetoWindow window;
+	private MinuetoFrame window;
 	private MapDisplay md;
+	private WindowComponent wComp;
 	public static final int DEFAULT_FRAME_WIDTH = 500;
 	public static final int DEFAULT_FRAME_HEIGHT = 525;
 	private MinuetoEventQueue queue;
@@ -39,8 +47,10 @@ public class GameWindow implements Observer {
 	public GameWindow(MapDisplay mapDisp)
 	{
 		md = mapDisp;
-		window = new MinuetoFrame(mapDisp.getWidth(), mapDisp.getHeight(), true);
+		window = new MinuetoFrame(md.getWidth(), md.getHeight(), true);
 		window.setVisible(true);
+		wComp = new WindowComponent(0, 0, md.getWidth(), md.getHeight(), md);
+		
 		mapDisp.setObserver(this);
 		MinuetoMouseHandler mouseHand = new MinuetoMouseHandler()
 			{
@@ -54,13 +64,14 @@ public class GameWindow implements Observer {
 				}
 				public void handleMouseRelease(int x, int y, int button)
 				{
-					ImageTile clickedTile = mapDisp.getClickedTile(x, y);
+					wComp.handleMouseClick(x, y, button);
+					/*ImageTile clickedTile = mapDisp.getClickedTile(x, y);
 					ModelTile clickedModelTile = ModelViewMapping.singleton().getModelTile(clickedTile);
 					if(clickedModelTile != null)
 					{
 						clickedModelTile.setColor(SharedColor.RED);
 						clickedModelTile.notifyObservers();
-					}
+					}*/
 				}
 			};
 		queue = new MinuetoEventQueue();
@@ -79,7 +90,7 @@ public class GameWindow implements Observer {
 	
 	public void render()
 	{
-		md.renderMap(window);
+		wComp.drawOn(window);
 	}
 	
 	public void update()	// old testing purpose method

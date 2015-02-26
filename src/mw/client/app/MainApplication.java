@@ -115,6 +115,7 @@ public final class MainApplication {
 		
 		MapDisplay mapdisp = new MapDisplay(displayedTiles);
 		window = new GameWindow(mapdisp);
+		
 
 		// Controllers setup
 		
