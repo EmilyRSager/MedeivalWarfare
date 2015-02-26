@@ -2,7 +2,7 @@ package mw.client.controller;
 
 import mw.client.model.Coordinates;
 import mw.client.model.Game;
-import mw.client.model.Tile;
+import mw.client.model.ModelTile;
 import mw.shared.SharedColor;
 import mw.shared.SharedTile.Terrain;
 
@@ -12,7 +12,7 @@ public final class ModelQuerier {
 	// Game queries
 	
 	
-	public static Tile getTile(Game game, Coordinates coord)
+	public static ModelTile getTile(Game game, Coordinates coord)
 	{
 		return game.getGameMap().getTile(coord);
 	}
@@ -29,24 +29,24 @@ public final class ModelQuerier {
 	
 	// Tile queries
 	
-	public static SharedColor getTileColor(Tile t) {
+	public static SharedColor getTileColor(ModelTile t) {
 		return t.getColor();
 	}
 	
 	// Boolean queries
 	
 	
-	public static boolean hasUnit(Tile t) {
-		return (t.getUnitType()!=Tile.UnitType.NONE);
+	public static boolean hasUnit(ModelTile t) {
+		return (t.getUnitType()!=ModelTile.UnitType.NONE);
 	}
 	
 	
-	public static boolean hasVillage(Tile t) {
-		return (t.getStructureType()!=Tile.StructureType.NONE);
+	public static boolean hasVillage(ModelTile t) {
+		return (t.getStructureType()!=ModelTile.StructureType.NONE);
 	}
 	
 	
-	public static boolean ownedByCurrentPlayer(Game game, Tile t) {
+	public static boolean ownedByCurrentPlayer(Game game, ModelTile t) {
 		return t.getColor().equals(game.getCurrentPlayer().getColor());
 	}
 	

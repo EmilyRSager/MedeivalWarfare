@@ -3,7 +3,7 @@ package mw.client.controller;
 import java.util.HashMap;
 
 import mw.client.gui.ImageTile;
-import mw.client.model.Tile;
+import mw.client.model.ModelTile;
 
 public final class ModelViewMapping {
 
@@ -33,7 +33,7 @@ public final class ModelViewMapping {
 	 * ===============================
 	 */
 	
-	private HashMap<Tile, ImageTile> tileToTileDisplay;
+	private HashMap<ModelTile, ImageTile> tileToTileDisplay;
 	
 	/* ========================
 	 * 		Constructors
@@ -43,7 +43,7 @@ public final class ModelViewMapping {
 	
 	private ModelViewMapping()
 	{
-		tileToTileDisplay = new HashMap<Tile,ImageTile>();
+		tileToTileDisplay = new HashMap<ModelTile,ImageTile>();
 	}
 	
 	
@@ -53,11 +53,11 @@ public final class ModelViewMapping {
 	 */
 	
 	
-	public ImageTile getTileDisplay(Tile t) {
+	public ImageTile getTileDisplay(ModelTile t) {
 		return tileToTileDisplay.get(t);
 	}
 	
-	public void addBinding(Tile t, ImageTile td)
+	public void addBinding(ModelTile t, ImageTile td)
 	{
 		tileToTileDisplay.put(t,td);
 	}

@@ -1,6 +1,5 @@
 package mw.client.model;
 
-import java.nio.channels.ScatteringByteChannel;
 import java.util.Observable;
 
 import mw.client.model.Village.VillageType;
@@ -13,7 +12,7 @@ import mw.shared.SharedColor;
  * @author Hugo KAPP
  *
  */
-public final class Tile extends Observable {
+public final class ModelTile extends Observable {
 	
 	public enum Terrain {GRASS, TREE, MEADOW, TOMBSTONE, SEA};
 	public enum UnitType {NONE, PEASANT, INFANTRY, SOLDIER, KNIGHT, WATCHTOWER};
@@ -33,7 +32,7 @@ public final class Tile extends Observable {
 	 * Constructs a new default Tile with coordinates (x,y). Default 
 	 * tiles are neutral, have grass, and don't have any unit or village on them.
 	 */
-	public Tile(int x, int y)
+	public ModelTile(int x, int y)
 	{
 		coord = new Coordinates(x, y);
 	}

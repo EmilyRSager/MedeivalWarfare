@@ -1,18 +1,18 @@
 package mw.client.controller;
 
 import mw.client.model.Coordinates;
-import mw.client.model.Tile;
-import mw.client.model.Tile.StructureType;
+import mw.client.model.ModelTile;
+import mw.client.model.ModelTile.StructureType;
 import mw.shared.SharedCoordinates;
 import mw.shared.SharedTile;
 
 public final class NetworkModelTranslator {
 
-	public static Tile translateSharedTile(SharedTile sharedTile)
+	public static ModelTile translateSharedTile(SharedTile sharedTile)
 	{
 		if (sharedTile==null)
 			return null;
-		Tile newTile = new Tile(sharedTile.getCoordinates().getX(), sharedTile.getCoordinates().getY());
+		ModelTile newTile = new ModelTile(sharedTile.getCoordinates().getX(), sharedTile.getCoordinates().getY());
 		newTile.setColor(sharedTile.getColor());
 		newTile.setRoad(sharedTile.hasRoad());
 		newTile.setStructureType(translateSharedVillageType(sharedTile.getVillage()));
@@ -28,58 +28,58 @@ public final class NetworkModelTranslator {
 		return new Coordinates(sharedCoord.getX(),sharedCoord.getY());
 	}
 	
-	public static Tile.Terrain translateSharedTerrain(SharedTile.Terrain sharedTerrain)
+	public static ModelTile.Terrain translateSharedTerrain(SharedTile.Terrain sharedTerrain)
 	{
 		switch (sharedTerrain)
 		{
 		case GRASS:
-			return Tile.Terrain.GRASS;
+			return ModelTile.Terrain.GRASS;
 			
 		case TREE:
-			return Tile.Terrain.TREE;
+			return ModelTile.Terrain.TREE;
 			
 		case MEADOW:
-			return Tile.Terrain.MEADOW;
+			return ModelTile.Terrain.MEADOW;
 			
 		case TOMBSTONE:
-			return Tile.Terrain.TOMBSTONE;
+			return ModelTile.Terrain.TOMBSTONE;
 			
 		case SEA:
-			return Tile.Terrain.SEA;
+			return ModelTile.Terrain.SEA;
 			
 		default:
 			throw new IllegalArgumentException("Undefined SharedTile.Terrain value "+sharedTerrain);
 		}
 	}
 	
-	public static Tile.UnitType translateSharedUnitType(SharedTile.UnitType sharedUT)
+	public static ModelTile.UnitType translateSharedUnitType(SharedTile.UnitType sharedUT)
 	{
 		switch (sharedUT)
 		{
 		case NONE:
-			return Tile.UnitType.NONE;
+			return ModelTile.UnitType.NONE;
 			
 		case PEASANT:
-			return Tile.UnitType.PEASANT;
+			return ModelTile.UnitType.PEASANT;
 			
 		case INFANTRY:
-			return Tile.UnitType.INFANTRY;
+			return ModelTile.UnitType.INFANTRY;
 			
 		case SOLDIER:
-			return Tile.UnitType.SOLDIER;
+			return ModelTile.UnitType.SOLDIER;
 			
 		case KNIGHT:
-			return Tile.UnitType.KNIGHT;
+			return ModelTile.UnitType.KNIGHT;
 			
 		case WATCHTOWER:
-			return Tile.UnitType.WATCHTOWER;
+			return ModelTile.UnitType.WATCHTOWER;
 			
 		default:
 			throw new IllegalArgumentException("Undefined SharedTile.UnitType value "+sharedUT);
 		}
 	}
 	
-	public static Tile.StructureType translateSharedVillageType(SharedTile.VillageType sharedVT)
+	public static ModelTile.StructureType translateSharedVillageType(SharedTile.VillageType sharedVT)
 	{
 		switch (sharedVT)
 		{
