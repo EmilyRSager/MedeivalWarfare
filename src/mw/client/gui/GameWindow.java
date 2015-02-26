@@ -8,6 +8,7 @@ import mw.client.controller.ModelViewMapping;
 import mw.client.model.ModelTile;
 import mw.shared.SharedColor;
 
+import org.minueto.MinuetoEventQueue;
 import org.minueto.handlers.MinuetoMouseHandler;
 import org.minueto.window.MinuetoFrame;
 import org.minueto.window.MinuetoWindow;
@@ -17,6 +18,7 @@ public class GameWindow implements Observer {
 	private MapDisplay md;
 	public static final int DEFAULT_FRAME_WIDTH = 500;
 	public static final int DEFAULT_FRAME_HEIGHT = 525;
+	private MinuetoEventQueue queue;
 	
 	/*public static void main(String[] args)
 	{
@@ -40,7 +42,7 @@ public class GameWindow implements Observer {
 		window = new MinuetoFrame(mapDisp.getWidth(), mapDisp.getHeight(), true);
 		window.setVisible(true);
 		mapDisp.setObserver(this);
-		MinuetoMouseHandler mouseH = new MinuetoMouseHandler()
+		MinuetoMouseHandler mouseHand = new MinuetoMouseHandler()
 			{
 				public void handleMouseMove(int x, int y)
 				{
@@ -55,8 +57,16 @@ public class GameWindow implements Observer {
 					ImageTile clickedTile = mapDisp.getClickedTile(x, y);
 					ModelTile clickedModelTile = ModelViewMapping.singleton().getModelTile(clickedTile);
 					clickedModelTile.setColor(SharedColor.RED);
+					clickedModelTile.notifyObservers();
 				}
 			};
+		queue = new MinuetoEventQueue();
+		window.registerMouseHandler(mouseHand, queue);
+	}
+	
+	public MinuetoEventQueue getEventQueue()
+	{
+		return this.queue;
 	}
 	
 	public GameWindow()	// only there for old testing purpose

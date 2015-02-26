@@ -3,6 +3,8 @@ package mw.client.app;
 import java.util.ArrayList;
 import java.util.Random;
 
+import org.minueto.MinuetoEventQueue;
+
 import mw.client.controller.CurrentClientState;
 import mw.client.controller.ModelViewMapping;
 import mw.client.controller.NewStateApplier;
@@ -38,6 +40,14 @@ public final class MainApplication {
 		testUpdate(SharedColor.BLUE);
 		waitABit();
 		testUpdate(SharedColor.YELLOW);
+		while(true)
+		{
+			MinuetoEventQueue queue = window.getEventQueue();
+			while(queue.hasNext())
+			{
+				queue.handle();
+			}
+		}
 	}
 	
 	public static void waitABit()
