@@ -3,6 +3,8 @@ package mw.client.gui;
 import java.util.Observable;
 import java.util.Observer;
 
+import mw.client.app.MainApplication;
+
 import org.minueto.window.MinuetoFrame;
 import org.minueto.window.MinuetoWindow;
 
@@ -12,7 +14,7 @@ public class GameWindow implements Observer {
 	public static final int DEFAULT_FRAME_WIDTH = 500;
 	public static final int DEFAULT_FRAME_HEIGHT = 525;
 	
-	public static void main(String[] args)
+	/*public static void main(String[] args)
 	{
 		GameWindow gw = new GameWindow();
 		gw.render();
@@ -26,12 +28,12 @@ public class GameWindow implements Observer {
 		}
 		
 		gw.update();
-	}
+	}*/
 	
 	public GameWindow(MapDisplay mapDisp)
 	{
 		md = mapDisp;
-		window = new MinuetoFrame(DEFAULT_FRAME_WIDTH, DEFAULT_FRAME_HEIGHT, true);
+		window = new MinuetoFrame(mapDisp.getWidth(), mapDisp.getHeight(), true);
 		window.setVisible(true);
 		mapDisp.setObserver(this);
 	}

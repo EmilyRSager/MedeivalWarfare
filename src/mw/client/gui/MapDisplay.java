@@ -71,5 +71,13 @@ public class MapDisplay
 			}
 		}
 	}
+	public int getWidth()
+	{
+		return this.tiles[0][0].getTileImage().getWidth() * this.tiles.length;
+	}
+	public int getHeight()
+	{
+		return this.tiles[0][0].getTileImage().getHeight() * this.tiles.length + tiles[0][0].getTileImage().getHeight() / 2;
+	}
 
 }
