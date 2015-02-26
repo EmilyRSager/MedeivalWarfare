@@ -44,17 +44,30 @@ public final class ModelQuerier {
 	
 	// Boolean queries
 	
-	
+	/**
+	 * Returns whether or not there is a unit on this tile
+	 * @param t the tile to look at
+	 * @return whether or not there is a unit on the tile t
+	 */
 	public static boolean hasUnit(ModelTile t) {
 		return (t.getUnitType()!=ModelTile.UnitType.NONE);
 	}
 	
-	
+	/**
+	 * Returns whether or not there is a village on this tile
+	 * @param t the tile to look at
+	 * @return whether or not there is a village on the tile t
+	 */
 	public static boolean hasVillage(ModelTile t) {
 		return (t.getStructureType()!=ModelTile.StructureType.NONE);
 	}
 	
-	
+	/**
+	 * Returns whether or not the given tile is owned by the current player of the given game
+	 * @param game the game to get the current player from
+	 * @param t the tile to do the query on
+	 * @return whether or not the tile t is owned by the current player of the Game game
+	 */
 	public static boolean ownedByCurrentPlayer(Game game, ModelTile t) {
 		return t.getColor().equals(game.getCurrentPlayer().getColor());
 	}

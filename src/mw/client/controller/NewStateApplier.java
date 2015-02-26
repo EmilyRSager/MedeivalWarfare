@@ -5,6 +5,11 @@ import mw.client.model.Game;
 import mw.client.model.ModelTile;
 import mw.shared.SharedTile;
 
+/**
+ * The NewStateApplier controller is responsible for decoding and applying the new state of a Tile 
+ * @author Hugo Kapp
+ *
+ */
 public final class NewStateApplier {
 	
 	public static void applyChanges(Game game, SharedTile newTileState)
