@@ -71,13 +71,21 @@ public class MapDisplay
 			}
 		}
 	}
+	
 	public int getWidth()
 	{
 		return this.tiles[0][0].getTileImage().getWidth() * this.tiles.length;
 	}
+	
 	public int getHeight()
 	{
 		return this.tiles[0][0].getTileImage().getHeight() * this.tiles.length + tiles[0][0].getTileImage().getHeight() / 2;
 	}
 
+	public ImageTile getClickedTile(int x, int y)
+	{
+		int xIndex = (int) x / this.tiles[0][0].getTileImage().getWidth();
+		int yIndex = (int) y / this.tiles[0][0].getTileImage().getHeight();
+		return this.tiles[xIndex][yIndex];
+	}
 }

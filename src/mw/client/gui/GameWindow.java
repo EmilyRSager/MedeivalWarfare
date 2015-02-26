@@ -4,7 +4,11 @@ import java.util.Observable;
 import java.util.Observer;
 
 import mw.client.app.MainApplication;
+import mw.client.controller.ModelViewMapping;
+import mw.client.model.ModelTile;
+import mw.shared.SharedColor;
 
+import org.minueto.handlers.MinuetoMouseHandler;
 import org.minueto.window.MinuetoFrame;
 import org.minueto.window.MinuetoWindow;
 
@@ -36,6 +40,23 @@ public class GameWindow implements Observer {
 		window = new MinuetoFrame(mapDisp.getWidth(), mapDisp.getHeight(), true);
 		window.setVisible(true);
 		mapDisp.setObserver(this);
+		MinuetoMouseHandler mouseH = new MinuetoMouseHandler()
+			{
+				public void handleMouseMove(int x, int y)
+				{
+					//Not being used	
+				}
+				public void handleMousePress(int x, int y, int button)
+				{
+					//Not being used
+				}
+				public void handleMouseRelease(int x, int y, int button)
+				{
+					ImageTile clickedTile = mapDisp.getClickedTile(x, y);
+					ModelTile clickedModelTile = ModelViewMapping.singleton().getModelTile(clickedTile);
+					clickedModelTile.setColor(SharedColor.RED);
+				}
+			};
 	}
 	
 	public GameWindow()	// only there for old testing purpose
