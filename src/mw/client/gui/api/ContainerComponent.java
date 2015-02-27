@@ -2,11 +2,9 @@ package mw.client.gui.api;
 
 import org.minueto.image.MinuetoImage;
 
-public class ContainerComponent implements InterfaceComponent {
+public class ContainerComponent extends WindowComponent {
 
 	private InterfaceComponent subComponent;
-	protected int coordX, coordY; 
-	private int width, height;
 	
 	/* ========================
 	 * 		Constructors
@@ -15,11 +13,8 @@ public class ContainerComponent implements InterfaceComponent {
 
 	public ContainerComponent(int x, int y, int width, int height, InterfaceComponent component)
 	{
+		super(x, y, width, height);
 		subComponent = component;
-		coordX=x;
-		coordY=y;
-		this.width=width;
-		this.height=height;
 	}
 
 	/* ==========================
