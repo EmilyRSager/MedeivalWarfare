@@ -37,6 +37,11 @@ public final class TextDisplay extends WindowComponent {
 		
 	}
 	
+	public void drawOn(MinuetoDrawingSurface canvas)
+	{
+		canvas.draw(label, coordX, coordY);
+	}
+	
 	/* ==========================
 	 * 		Public methods
 	 * ==========================

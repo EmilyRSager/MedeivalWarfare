@@ -10,6 +10,8 @@ import javax.swing.JLabel;
 
 import mw.client.app.MainApplication;
 import mw.client.controller.ModelViewMapping;
+import mw.client.gui.api.ContainerComponent;
+import mw.client.gui.api.TextDisplay;
 import mw.client.gui.api.WindowComponent;
 import mw.client.model.ModelTile;
 import mw.shared.SharedColor;
@@ -49,10 +51,10 @@ public class GameWindow implements Observer {
 	public GameWindow(MapDisplay mapDisp)
 	{
 		md = mapDisp;
-		window = new MinuetoFrame(md.getWidth(), md.getHeight(), true);
+		window = new MinuetoFrame(md.getWidth(), md.getHeight() + 50, true);
 		window.setVisible(true);
-		mapComp = new WindowComponent(0, 0, md.getWidth(), md.getHeight(), md);
-		textComp = new TextDisplay(0, md.getHeight() - 50, 200, 50, "This is a text component!");
+		mapComp = new ContainerComponent(0, 0, md.getWidth(), md.getHeight(), md);
+		textComp = new TextDisplay(0, 0, 200, 50, "This is a text component!");
 		
 		mapDisp.setObserver(this);
 		MinuetoMouseHandler mouseHand = new MinuetoMouseHandler()
