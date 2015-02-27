@@ -1,19 +1,61 @@
 package mw.client.gui;
 import java.util.Observer;
 import java.awt.Color;
+import java.lang.Math;
+
+import mw.client.controller.ModelViewMapping;
+import mw.client.gui.api.InterfaceComponent;
+import mw.client.model.ModelTile;
+import mw.shared.SharedColor;
 
 import org.minueto.MinuetoColor;
+import org.minueto.image.MinuetoImage;
 import org.minueto.window.*; 
+
 
 /**
  * The GameMap class contains all the functions required to visually represent the map in a game of Medieval Warfare.
  * @author Arthur Denefle
  *
  */
-public class MapDisplay 
+public class MapDisplay implements InterfaceComponent
 {
 	//public static final MinuetoColor color = new MinuetoColor(2);
 	private ImageTile[][] tiles;
+	private int tileWidth;
+	private int tileHeight;
+	
+	public MinuetoImage getImage()
+	{
+		MinuetoImage newImage = new MinuetoImage(this.getWidth(), this.getHeight());
+		for(int i = 0; i < tiles.length; i++)
+		{
+			for(int j = 0; j < tiles[i].length; j++)
+			{
+				if(i % 2 == 0)
+				{
+					newImage.draw(tiles[i][j].getTileImage(), i * ImageTile.DEFAULT_TILE_WIDTH, j * ImageTile.DEFAULT_TILE_HEIGHT);
+				}
+				else
+				{
+					newImage.draw(tiles[i][j].getTileImage(), i * ImageTile.DEFAULT_TILE_WIDTH, (j * ImageTile.DEFAULT_TILE_HEIGHT) + (int)(.5 * ImageTile.DEFAULT_TILE_HEIGHT));
+				}
+			}
+		}
+		return newImage;
+	}
+	
+	public void handleMouseClick(int x, int y, int button)
+	{
+		ImageTile clickedTile = this.getClickedTile(x, y);
+		ModelTile clickedModelTile = ModelViewMapping.singleton().getModelTile(clickedTile);
+		if(clickedModelTile != null)
+		{
+			clickedModelTile.setColor(SharedColor.RED);
+			clickedModelTile.notifyObservers();
+		}
+	}
+	
 	
 	public MapDisplay(int width, int height)
 	{
@@ -25,16 +67,19 @@ public class MapDisplay
 				tiles[i][j] = new ImageTile();
 			}
 		}
+		tileWidth = tiles[0][0].getTileImage().getWidth();
+		tileHeight = tiles[0][0].getTileImage().getHeight();
 	}
 	
 	public MapDisplay(ImageTile[][] givenTiles)
 	{
 		tiles = givenTiles;
+		tileWidth = tiles[0][0].getTileImage().getWidth();
+		tileHeight = tiles[0][0].getTileImage().getHeight();
 	}
 	
 	public void update()
 	{
-		System.out.println("updating map display");
 		MinuetoColor color =  MinuetoColor.BLACK;
 		tiles[2][6].updateColor(color);
 	}
@@ -51,11 +96,11 @@ public class MapDisplay
 				{
 					if(i % 2 == 0)
 					{
-						window.draw(tiles[i][j].getTileImage(), i * 50, j * 50);
+						window.draw(tiles[i][j].getTileImage(), i * ImageTile.DEFAULT_TILE_WIDTH, j * ImageTile.DEFAULT_TILE_HEIGHT);
 					}
 					else
 					{
-						window.draw(tiles[i][j].getTileImage(), i * 50, j * 50 + 25);
+						window.draw(tiles[i][j].getTileImage(), i * ImageTile.DEFAULT_TILE_WIDTH, (j * ImageTile.DEFAULT_TILE_HEIGHT) + (int)(.5 * ImageTile.DEFAULT_TILE_HEIGHT));
 					}
 				}
 			}
@@ -72,5 +117,41 @@ public class MapDisplay
 			}
 		}
 	}
+	
+	public int getWidth()
+	{
+		return this.tileWidth * this.tiles.length;
+	}
+	
+	public int getHeight()
+	{
+		return this.tileHeight * this.tiles.length + tileHeight / 2;
+	}
 
+	public ImageTile getClickedTile(int x, int y)
+	{
+		int xIndex = (int) x / tileWidth;
+		int yIndex;
+		if(xIndex % 2 == 0)
+		{
+			yIndex = (int) y / tileHeight;
+		}
+		else
+		{
+			yIndex = (int) Math.floor(((y - (tileHeight / 2)) / (double) tileHeight)); 
+		}
+		/*if(xIndex % 2 != 0 && y < tileHeight / 2)
+		{
+			return null;
+		}*/
+		//else if(xIndex % 2 == 0 && y > tileHeight() )
+		try
+		{
+			return this.tiles[xIndex][yIndex];
+		}
+		catch (ArrayIndexOutOfBoundsException e)
+		{
+			return null;
+		}
+	}
 }
