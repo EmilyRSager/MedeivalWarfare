@@ -10,7 +10,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 /**
- * Listens to a port and sets up client connections on unique sockets.
+ * Listens to a port and sets up ClientChannels on unique sockets.
  */
 public class MainServerThread extends Thread{
 	private static final int PORT_NUMBER = 6666;
@@ -44,7 +44,6 @@ public class MainServerThread extends Thread{
 	}
 	
 	public static void main(String[] args) {
-		MainServerThread m = new MainServerThread();
-		m.start();
+		new MainServerThread().start();
 	}
 }

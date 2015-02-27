@@ -13,14 +13,13 @@ import mw.shared.clientcommands.AbstractClientCommand;
 import mw.utilities.ClientCommandSerializerAndDeserializer;
 
 /**
- * The responsibility of the WriterThread is to send messages to one particular Client computer
- * over a DataOutputStream. It is initiated by a ClientOnServer instance, and runs until the Client computer
- * associated with that ClientOnServer disconnects from the server.
+ * Writes messages to one particular Client computer over a DataOutputStream.
+ * It is initiated by a ClientChannel instance, and runs until the Client computer
+ * associated with that ClientChannel disconnects from the server.
  */
 public class WriterThread extends Thread{
 	DataOutputStream aDataOutputStream;
 	BlockingQueue<AbstractClientCommand> aClientCommandQueue;
-	BlockingQueue<String> aClientTestQueue; //TEST!
 	private volatile boolean aIsRunning;
 
 	/**
@@ -30,7 +29,6 @@ public class WriterThread extends Thread{
 	public WriterThread(DataOutputStream pDataOutputStream){
 		aDataOutputStream = pDataOutputStream;
 		aClientCommandQueue = new LinkedBlockingQueue<AbstractClientCommand>();
-		aClientTestQueue = new LinkedBlockingQueue<String>();
 		aIsRunning = true;
 	}
 
@@ -40,8 +38,7 @@ public class WriterThread extends Thread{
 			while(aIsRunning) {
 				AbstractClientCommand lClientCommand = aClientCommandQueue.take();
 				
-				sendString(//send serialized form
-						ClientCommandSerializerAndDeserializer.getInstance().serialize(lClientCommand));
+				sendString(ClientCommandSerializerAndDeserializer.getInstance().serialize(lClientCommand));
 			}
 		} catch (InterruptedException e) {
 			//If the thread was interrupted, initiate clean up.
@@ -52,25 +49,8 @@ public class WriterThread extends Thread{
 	}
 
 	/**
-	 * TESTING PURPOSES ONLY!!! Enqueues pTestMessage to be sent when this WriterThread is available.
-	 * @param pMessage
-	 * @return void
-	 */
-	public void testSendString(String pTestMessage){
-		try {
-			aClientTestQueue.put(pTestMessage);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-
-	/**
-	 * pClientMessage is put in the ClientMessageQueue. This method is called by the GameMessageHandlerThread
-	 * after that thread has processed an AbstractServerMessage. The parameter pClientMessage
-	 * is sent when this WriterThread is available.
-	 * @param pClientMessage, some concrete message to be sent over aDataOutputStream.
-	 * @return void
+	 * Sends pClientCommand when this WriterThread is available
+	 * @param pClientCommand, a concrete message to be sent over aDataOutputStream.
 	 */
 	public void sendCommand(AbstractClientCommand pClientCommand){
 		try {
@@ -80,12 +60,19 @@ public class WriterThread extends Thread{
 			System.out.println("[Server] Closing the Writer Thread.");
 		}
 	}
+	
+	/**
+	 * Informs this thread to begin shutting down.
+	 * @param none
+	 * @return void
+	 */
+	public void shutDown(){
+		aIsRunning = false;
+	}
 
 	/**
-	 * The string is written over aDataOutputStream, which writes pMessage over a socket to
-	 * the corresponding client computer.
+	 * Writes pMessage to aDataOutputStream.
 	 * @param Serialized string to send.
-	 * @return void
 	 */
 	private void sendString(String pMessage){
 		try {
@@ -95,15 +82,6 @@ public class WriterThread extends Thread{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-	}
-
-	/**
-	 * Informs this thread to begin shutting down.
-	 * @param none
-	 * @return void
-	 */
-	public void shutDown(){
-		aIsRunning = false;
 	}
 
 	/**

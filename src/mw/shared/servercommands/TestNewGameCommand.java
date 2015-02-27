@@ -7,12 +7,12 @@ public class TestNewGameCommand extends AbstractServerCommand {
 	private final String aType = "TestNewGameCommand";
 
 	@Override
-	public boolean isValid(int pPlayerID) {
+	public boolean isValid(Integer pPlayerID) {
 		return true;
 	}
 
 	@Override
-	public void execute(int pPlayerID) {
+	public void execute(Integer pPlayerID) {
 		AdminCommandHandler.getInstance().testSentGameCommand();
 	}
 }

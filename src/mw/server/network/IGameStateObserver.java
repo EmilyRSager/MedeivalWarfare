@@ -5,7 +5,7 @@
 
 package mw.server.network;
 
-import mw.shared.SharedTile;
+import mw.client.model.Tile;
 
 /**
  * Defines the functionality that a GameStateObserver must provide. When Game moves
@@ -18,6 +18,6 @@ public interface IGameStateObserver {
 	 * Updates the state of a SharedTile in the view.
 	 * @param pSharedTile
 	 */
-	void updateTile(SharedTile pSharedTile);
+	void updateTile(Tile pTile);
 	
 }

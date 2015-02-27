@@ -7,7 +7,7 @@ package mw.server.network;
 
 import java.util.Set;
 
-import mw.shared.SharedTile;
+import mw.client.model.Tile;
 import mw.shared.clientcommands.AbstractClientCommand;
 import mw.shared.clientcommands.NewGameCommand;
 import mw.shared.clientcommands.UpdateTileCommand;
@@ -28,22 +28,26 @@ public class GameStateCommandDistributor implements IGameStateObserver {
 	}
 
 	/**
-	 * Builds an UpdatedTileClientMessage that is forwarded to every client that
-	 * is participating. 
+	 * Sends changed information about pTile to the set of clients involved in this game instance
 	 * @param pSharedTile, the tile whose state has changed in the Model
 	 * @return void
 	 */
 	@Override
-	public void updateTile(SharedTile pSharedTile) {
+	public void updateTile(Tile pTile) {
 		AbstractClientCommand lClientCommand = 
-				new UpdateTileCommand(pSharedTile);
+				new UpdateTileCommand(SharedTileTranslator.translateTile(pTile));
 		
 		distributeMessage(lClientCommand);
 	}
 	
-	public void newGame(SharedTile[][] pGameMap){
+	/**
+	 * Sends new game information about pGameMap to the set of clients involved in this game instance
+	 * @param pGameMap
+	 */
+	public void newGame(Tile[][] pGameMap){
+		
 		AbstractClientCommand lClientCommand = 
-				new NewGameCommand(pGameMap);
+				new NewGameCommand(SharedTileTranslator.translateMap(pGameMap));
 		
 		distributeMessage(lClientCommand);
 	}

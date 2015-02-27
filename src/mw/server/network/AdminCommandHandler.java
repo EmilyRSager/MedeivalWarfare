@@ -12,7 +12,7 @@ import mw.shared.clientcommands.UpdateTileCommand;
 /**
  * @singleton
  * Handles commands that do no involve changes in the state of GameLogic classes.
- * For example, this class handles sending chat messages, error messages, etc.
+ * For example, this class handles sending chat and error messages.
  */
 public class AdminCommandHandler {
 	private static AdminCommandHandler aAdminMessageDistributor;

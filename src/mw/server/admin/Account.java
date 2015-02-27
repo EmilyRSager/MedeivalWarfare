@@ -3,20 +3,27 @@
  * Feb 23, 2015
  */
 
-package mw.server.network;
+package mw.server.admin;
 
 import mw.client.model.Game;
 
 /**
- * Represents a user account in the MedeivalWarfare game system. Keeps track of relevant infromation,
+ * Represents a user account in the MedeivalWarfare game system. Keeps track of relevant information,
  * such as wins, losses, friends, etc.
+ * 
+ * TODO This class could be an observer of current game and be updated of necessary information.
  */
 public class Account {
 	private String aUserName;
 	private String aPassword;
 	private int aWins, aLosses;
-	private Game aCurrentGame; //this will need to be a reference to the GameController, whatever class Emily chooses for that.
+	private Game aCurrentGame;
 	
+	/**
+	 * Constructor
+	 * @param pUsername
+	 * @param pPassword
+	 */
 	public Account(String pUsername, String pPassword){
 		aUserName = pUsername;
 		aPassword = pPassword;
@@ -53,8 +60,8 @@ public class Account {
 	 * @param pPassword
 	 * @return true if this account has credentials equal to pUsername and pPassword
 	 */
-	public boolean hasCredentials(String pUsername, String pPassword){
-		return aUserName.equals(pUsername) && aPassword.equals(pPassword);
+	public boolean hasCredentials(String pPassword){
+		return aPassword.equals(pPassword);
 	}
 	
 	/**
@@ -82,7 +89,7 @@ public class Account {
 	 * increment number of losses
 	 */
 	public void incrementLosses(){
-		
+		aLosses++;
 	}
 	
 }

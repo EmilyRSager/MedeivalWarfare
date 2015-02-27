@@ -11,7 +11,7 @@ import java.util.concurrent.ConcurrentMap;
 
 /**
  * Provides a Globally accessible mapping between ClientIDs and ClientChannel classes.
- * The ServerMessageHandler will use this class to find Client's that need to receive messages,
+ * Different CommandHandlers will use this class to find Client's that need to receive messages,
  * based on their IDs.
  */
 public class ClientChannelManager {
@@ -50,7 +50,7 @@ public class ClientChannelManager {
 	 * @param the ClientID that of the ClientChannel to be returned
 	 * @return the ClientChannel that corresponds to pClientID
 	 */
-	public ClientChannel getChannel(int pClientID){
+	public ClientChannel getChannel(Integer pClientID){
 		return aClientChannelMap.get(pClientID);
 	}
 	
