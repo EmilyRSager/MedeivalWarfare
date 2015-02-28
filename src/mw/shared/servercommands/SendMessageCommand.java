@@ -33,7 +33,7 @@ public class SendMessageCommand extends AbstractServerCommand {
 	 * @see mw.shared.servercommands.AbstractNetworkMessage#isValid(int)
 	 */
 	@Override
-	public boolean isValid(int pClientID) {
+	public boolean isValid(Integer pClientID) {
 		//if not all recipients are available, the message is invalid. 
 		if(!ClientChannelManager.getInstance().containsAll(aRecipientClientIDs)){
 			return false;
@@ -55,7 +55,7 @@ public class SendMessageCommand extends AbstractServerCommand {
 	 * @see mw.shared.servercommands.AbstractNetworkMessage#execute(int)
 	 */
 	@Override
-	public void execute(int pClientID) {
+	public void execute(Integer pClientID) {
 		AdminCommandHandler.getInstance().distributeChatMessage(aMessage, aRecipientClientIDs);
 	}
 }

@@ -3,7 +3,7 @@
  * Feb 23, 2015
  */
 
-package mw.server.network;
+package mw.server.admin;
 
 import java.util.HashMap;
 
@@ -17,8 +17,16 @@ public class AccountManager {
 	/**
 	 * Constructor
 	 */
-	public AccountManager(){
+	private AccountManager(){
 		aAccountMap = new HashMap<Integer, Account>();
+	}
+	
+	public static AccountManager getInstance(){
+		if(aAccountManager == null){
+			aAccountManager = new AccountManager();
+		}
+		
+		return aAccountManager;
 	}
 	
 	/**
@@ -26,7 +34,7 @@ public class AccountManager {
 	 * @param pClientID
 	 * @param pAccount
 	 */
-	public void putAccounts(Integer pClientID, Account pAccount){
+	public void putAccount(Integer pClientID, Account pAccount){
 		aAccountMap.put(pClientID, pAccount);
 	}
 	

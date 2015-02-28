@@ -15,12 +15,12 @@ public class TestSharedTileCommand extends AbstractServerCommand {
 	private final String aType = "TestSharedTileCommand";
 
 	@Override
-	public boolean isValid(int pPlayerID) {
+	public boolean isValid(Integer pPlayerID) {
 		return true;
 	}
 
 	@Override
-	public void execute(int pPlayerID) {
+	public void execute(Integer pPlayerID) {
 		SharedTile lSharedTile = new SharedTile(SharedColor.GREY, new SharedCoordinates(0, 0), Terrain.GRASS, false);
 		AdminCommandHandler.getInstance().testSendSharedTileCommand(lSharedTile);
 	}

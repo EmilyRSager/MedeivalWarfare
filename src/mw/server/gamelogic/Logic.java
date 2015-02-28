@@ -29,4 +29,14 @@ public class Logic {
 		return VillageType.HOVEL;
 		
 	}
+	public static void clearTombstone(GraphNode pGraphNode)
+	{
+		Tile pTile = pGraphNode.getTile(); 
+		StructureType pStructureType = pTile.getStructureType(); 
+		if(pStructureType == StructureType.TOMBSTONE)
+		{
+			pTile.setStructureType(StructureType.TREE);
+		}
+		
+	}
 }
