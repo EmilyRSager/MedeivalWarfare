@@ -25,12 +25,17 @@ public class Village implements Cloneable, Serializable{
     public Village(Set<GraphNode> villageSet) 
     {
      aVillageNodes = villageSet; 
+     aGold = 0; 
+     aWood = 0; 
+     
     }
-    public Village(int pGold, int pWood)
+    public Village(Set <GraphNode> villageSet, int pGold, int pWood)
     {
-    	
+    	aVillageNodes = villageSet; 
+    	pGold = 7; 
+    	aGold = 0; 
     }
-    public void generateGold()
+    private void generateGold()
     {
     	int addGold = 0;  
     	for (GraphNode lGraphNode: aVillageNodes)
@@ -41,7 +46,13 @@ public class Village implements Cloneable, Serializable{
     	
     }
     public void upgradeVillage(VillageType pVillageType) throws NotEnoughIncomeException {
-        int upgradeCost = PriceCalculator.getUpgradePrice(pVillageType);
+        int upgradeCost = 0;
+		try {
+			upgradeCost = PriceCalculator.getUpgradePrice(pVillageType);
+		} catch (CantUpgradeException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
         
         if (aWood >= upgradeCost) {
             try {
@@ -63,21 +74,15 @@ public class Village implements Cloneable, Serializable{
      * replaces any Tombstones with trees
      */
     public void updateTiles() {
-        StructureType pStructureType;
-        boolean meadow;
-        for (Tile lTile : aTiles) {
-            pStructureType = lTile.getStructureType();
-            if (pStructureType.equals(StructureType.TOMBSTONE)) {
-                lTile.setStructureType(StructureType.TREE);
-                meadow = lTile.getMeadow();
-                if (meadow == true) {
-                    aGold += 2;
-                } else {
-                    aGold += 1;
-                }
-            }
+    
+    	
+        for (GraphNode lGraphNode : aVillageNodes) 
+        {
+        	Logic.clearTombstone(lGraphNode);
         }
-    }
+        generateGold();
+       }
+    
 
     /**
      * 
@@ -191,19 +196,4 @@ public class Village implements Cloneable, Serializable{
     {
       return aWood;
     }
-
-    /**
-     * This method should ONLY be called for getting equality
-     * @return
-     */
-	public ArrayList<Tile> getTiles() 
-	{  
-		return (ArrayList<Tile>) aTiles.clone(); 
-	}
-
-	
-
-
-    
-    
 }

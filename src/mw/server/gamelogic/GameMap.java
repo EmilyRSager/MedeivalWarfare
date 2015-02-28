@@ -1,6 +1,7 @@
 package mw.server.gamelogic;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
 
@@ -19,12 +20,19 @@ public class GameMap  {
 	 */
 	public void partition() 
 	{
-		Village temp;  
+	
 		for (GraphNode lGraphNode : graph.allNodes()) 
 		{
 			Tile lTile = lGraphNode.getTile(); 
 			lTile.setColor(RandomColorGenerator.generateRandomColor());
-			if (PathFinder.getVillage(lGraphNode, graph)
+		}
+		for (GraphNode lGraphNode : graph.allNodes())
+		{
+			Set<GraphNode> villageSet = PathFinder.getVillage(lGraphNode, graph); 
+			if (aVillages.contains((PathFinder.getVillage(lGraphNode, graph))))
+					{
+						aVillages.add(new Village(villageSet)); 
+					}
 		}
 	}
 	/**
@@ -47,7 +55,7 @@ public class GameMap  {
 	{
 		aNodes = new GraphNode[height][width];
 		setUpMap(height, width);
-		aVillages = new Set<Village>();
+		aVillages = new HashSet<Village>();
 	}
 
 	private void setUpMap(int height, int width)
