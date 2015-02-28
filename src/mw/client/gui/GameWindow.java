@@ -4,6 +4,7 @@ import java.util.Observable;
 import java.util.Observer;
 
 import mw.client.app.MainApplication;
+import mw.client.gui.api.AbstractButton;
 import mw.client.gui.api.ExtendedMinuetoColor;
 import mw.client.gui.api.TextDisplay;
 
@@ -20,7 +21,7 @@ public class GameWindow extends MinuetoFrame implements Observer {
 	//private AbstractWindowComponent mapComp;
 	//private AbstractWindowComponent textComp;.
 	private MapComponent mapComp;
-	private TextDisplay textComp;
+	private AbstractButton button;
 	public static final int DEFAULT_FRAME_WIDTH = 500;
 	public static final int DEFAULT_FRAME_HEIGHT = 525;
 	private MinuetoEventQueue queue;
@@ -38,9 +39,17 @@ public class GameWindow extends MinuetoFrame implements Observer {
 		md = mapDisp;
 		queue = new MinuetoEventQueue();
 		mapComp = new MapComponent(0, 0, 600, 600, md);
-		textComp = new TextDisplay(0, 600, "This is a text component!");
+		button = new AbstractButton(0,600,200,50,"Click me !") {
+			public void buttonClick(int mouseButton)
+			{
+				if (mouseButton==1)
+					System.out.println("I am clicked !");
+			}
+		};
 		
 		mapComp.setWindow(this);
+		this.registerMouseHandler(button, queue);
+		button.addObserver(this);
 		//this.setVisible(true);
 		
 		
@@ -110,7 +119,7 @@ public class GameWindow extends MinuetoFrame implements Observer {
 	{
 		this.clear(BACKGROUND_COLOR);
 		mapComp.drawOn(this);
-		textComp.drawOn(this);
+		button.drawOn(this);
 		super.render();
 	}
 	

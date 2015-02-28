@@ -1,6 +1,7 @@
 package mw.client.gui.api;
 
 import org.minueto.handlers.MinuetoMouseHandler;
+import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
 
 public class MouseClickHandler implements MinuetoMouseHandler {
 
@@ -38,21 +39,21 @@ public class MouseClickHandler implements MinuetoMouseHandler {
 	 */
 
 	@Override
-	public void handleMouseMove(int arg0, int arg1) {
+	public void handleMouseMove(int x, int y) {
 		if (clicking) {
-			clicking = area.containsPoint(arg0, arg1);
+			clicking = area.containsPoint(x, y);
 		}
 	}
 
 	@Override
-	public void handleMousePress(int arg0, int arg1, int arg2) {
-		clicking = area.containsPoint(arg0, arg1);
+	public void handleMousePress(int x, int y, int button) {
+		clicking = area.containsPoint(x, y);
 	}
 
 	@Override
-	public void handleMouseRelease(int arg0, int arg1, int arg2) {
+	public void handleMouseRelease(int x, int y, int button) {
 		if (clicking)
-			clickeable.handleMouseClick(arg0, arg1, arg2);
+			clickeable.handleMouseClick(x, y, button);
 	}
 
 

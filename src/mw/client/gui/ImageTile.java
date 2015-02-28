@@ -47,21 +47,13 @@ public class ImageTile extends Observable {
 	
 	public void updateColor(MinuetoColor c)
 	{
-		for(int i = 0; i < DEFAULT_TILE_WIDTH; i++)
-		{
-			for(int j = 0; j < DEFAULT_TILE_HEIGHT; j++)
-			{
-				this.image.setPixel(i, j, c);
-			}
-		}
-		setImage(image);
+		setImage(ExtendedMinuetoImage.coloredSquare(DEFAULT_TILE_WIDTH, DEFAULT_TILE_HEIGHT, c));
 		setChanged();
 		notifyObservers();
 	}
 	
 	public void setImage(MinuetoImage newImage)
 	{
-		image = newImage;
-		ExtendedMinuetoImage.drawBorder(newImage, ExtendedMinuetoColor.GREY);
+		image = ExtendedMinuetoImage.drawBorder(newImage, ExtendedMinuetoColor.GREY);
 	}
 }

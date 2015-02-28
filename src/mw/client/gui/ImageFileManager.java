@@ -22,10 +22,14 @@ public class ImageFileManager
 			String s = Files.readAllLines(Paths.get("srcpath.txt"), Charset.defaultCharset()).get(0);
 			System.out.println(s);
 			s = s.replace('\\', '/');
-			return s.concat("/images/");
+			if (s.charAt(s.length()-1)!='/')
+				s = s+'/';
+			return s.concat("images/");
 		}
 		catch (IOException e)
 		{
+			System.out.println("Error while loading the file 'srcpath.txt'");
+			System.exit(1);
 			return null;
 		}
 	}

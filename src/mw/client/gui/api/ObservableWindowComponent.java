@@ -76,6 +76,7 @@ public abstract class ObservableWindowComponent extends Observable implements Wi
 	@Override
 	public void drawOn(MinuetoDrawingSurface canvas)
 	{
+		//canvas.draw(getImage(), area.getLeftBorder(), area.getTopBorder());
 		canvas.draw(getImage().crop(0, 0, area.getWidth(), area.getHeight()), area.getLeftBorder(), area.getTopBorder());
 	}
 
