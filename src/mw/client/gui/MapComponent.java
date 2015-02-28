@@ -11,8 +11,8 @@ import org.minueto.image.MinuetoImage;
 public final class MapComponent extends ObservableWindowComponent implements
 		Clickeable, MinuetoKeyboardHandler {
 	
-	private static final int X_OFFSET_STEP = 5;
-	private static final int Y_OFFSET_STEP = 5;
+	private static final int X_OFFSET_STEP = 10;
+	private static final int Y_OFFSET_STEP = 10;
 	
 	private int xOffset, yOffset;
 	private final int minXOffset, minYOffset;

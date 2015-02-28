@@ -34,11 +34,11 @@ public class GameWindow extends MinuetoFrame implements Observer {
 	
 	public GameWindow(MapDisplay mapDisp)
 	{
-		super(400, 450, true);
+		super(600, 650, true);
 		md = mapDisp;
 		queue = new MinuetoEventQueue();
-		mapComp = new MapComponent(0, 0, 400, 400, md);
-		textComp = new TextDisplay(0, 400, "This is a text component!");
+		mapComp = new MapComponent(0, 0, 600, 600, md);
+		textComp = new TextDisplay(0, 600, "This is a text component!");
 		
 		mapComp.setWindow(this);
 		//this.setVisible(true);
