@@ -1,5 +1,6 @@
 package mw.client.controller;
 
+import mw.client.gui.api.ExtendedMinuetoColor;
 import mw.shared.SharedColor;
 
 import org.minueto.MinuetoColor;
@@ -28,7 +29,7 @@ public final class ModelGUITranslator {
 			return MinuetoColor.GREEN;
 			
 		case GREY:
-			return averageColors(MinuetoColor.BLACK, MinuetoColor.WHITE);
+			return ExtendedMinuetoColor.GREY;
 			
 		case RED:
 			return MinuetoColor.RED;
@@ -41,17 +42,5 @@ public final class ModelGUITranslator {
 		}
 	}
 
-	/**
-	 * Gives the average of two MinuetoColors, passed a arguments
-	 * @param a the first Color
-	 * @param b the second Color
-	 * @return the average of the two colors
-	 */
-	public static MinuetoColor averageColors(MinuetoColor a, MinuetoColor b)
-	{
-		int red = (a.getRed()+b.getRed())/2;
-		int green = (a.getGreen()+b.getGreen())/2;
-		int blue = (a.getBlue()+b.getBlue())/2;
-		return new MinuetoColor(red, green, blue);
-	}
+
 }

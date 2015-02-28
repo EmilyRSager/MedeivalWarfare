@@ -3,6 +3,8 @@ package mw.client.gui;
 import java.util.Observable;
 
 import mw.client.gui.ImageFileManager.TileType;
+import mw.client.gui.api.ExtendedMinuetoColor;
+import mw.client.gui.api.ExtendedMinuetoImage;
 
 import org.minueto.MinuetoColor;
 import org.minueto.image.*;
@@ -23,7 +25,7 @@ public class ImageTile extends Observable {
 	public ImageTile()
 	{
 		//image = ImageFileManager.getTileImage(TileType.DEFAULT);
-		image = new MinuetoImage(DEFAULT_TILE_WIDTH, DEFAULT_TILE_HEIGHT);
+		setImage(new MinuetoImage(DEFAULT_TILE_WIDTH, DEFAULT_TILE_HEIGHT));
 	}
 	/**
 	 * Getter for an ImageTile's MinuetoImage.
@@ -31,14 +33,14 @@ public class ImageTile extends Observable {
 	 */
 	public MinuetoImage getTileImage()
 	{
-		return this.image;
+		return image;
 	}
 	/**
 	 * 
 	 */
 	public void update()
 	{
-		this.image = ImageFileManager.getTileImage(TileType.GRASS);
+		setImage(ImageFileManager.getTileImage(TileType.GRASS));
 		setChanged();
 		notifyObservers();
 	}
@@ -52,8 +54,14 @@ public class ImageTile extends Observable {
 				this.image.setPixel(i, j, c);
 			}
 		}
-		
+		setImage(image);
 		setChanged();
 		notifyObservers();
+	}
+	
+	public void setImage(MinuetoImage newImage)
+	{
+		image = newImage;
+		ExtendedMinuetoImage.drawBorder(newImage, ExtendedMinuetoColor.GREY);
 	}
 }

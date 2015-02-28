@@ -1,63 +1,56 @@
 package mw.client.gui;
 
-import java.awt.BorderLayout;
-import java.awt.FlowLayout;
 import java.util.Observable;
 import java.util.Observer;
 
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-
 import mw.client.app.MainApplication;
-import mw.client.controller.ModelViewMapping;
-import mw.client.gui.api.ContainerComponent;
+import mw.client.gui.api.ExtendedMinuetoColor;
 import mw.client.gui.api.TextDisplay;
-import mw.client.gui.api.WindowComponent;
-import mw.client.model.ModelTile;
-import mw.shared.SharedColor;
 
 import org.minueto.MinuetoColor;
 import org.minueto.MinuetoEventQueue;
-import org.minueto.handlers.MinuetoMouseHandler;
 import org.minueto.window.MinuetoFrame;
-import org.minueto.window.MinuetoPanel;
-import org.minueto.window.MinuetoWindow;
 
-public class GameWindow implements Observer {
-	private MinuetoFrame window;
+public class GameWindow extends MinuetoFrame implements Observer {
+	
+	public static final MinuetoColor BACKGROUND_COLOR = ExtendedMinuetoColor.mixColors(MinuetoColor.BLACK, MinuetoColor.WHITE, 0.10);
+	
+	//private MinuetoFrame window;
 	private MapDisplay md;
-	private WindowComponent mapComp;
-	private WindowComponent textComp;
+	//private AbstractWindowComponent mapComp;
+	//private AbstractWindowComponent textComp;.
+	private MapComponent mapComp;
+	private TextDisplay textComp;
 	public static final int DEFAULT_FRAME_WIDTH = 500;
 	public static final int DEFAULT_FRAME_HEIGHT = 525;
 	private MinuetoEventQueue queue;
+	//private boolean displaying = false;
 	
-	/*public static void main(String[] args)
-	{
-		GameWindow gw = new GameWindow();
-		gw.render();
-		try 
-		{
-			Thread.sleep(500);
-		} 
-		catch (InterruptedException e) 
-		{
-			e.printStackTrace();
-		}
-		
-		gw.update();
-	}*/
+	/* ========================
+	 * 		Constructors
+	 * ========================
+	 */
+
 	
 	public GameWindow(MapDisplay mapDisp)
 	{
+		super(400, 450, true);
 		md = mapDisp;
-		window = new MinuetoFrame(md.getWidth(), md.getHeight() + 50, true);
-		window.setVisible(true);
-		mapComp = new ContainerComponent(0, 0, md.getWidth(), md.getHeight(), md);
-		textComp = new TextDisplay(0, 0, 200, 50, "This is a text component!");
+		queue = new MinuetoEventQueue();
+		mapComp = new MapComponent(0, 0, 400, 400, md);
+		textComp = new TextDisplay(0, 400, "This is a text component!");
 		
-		mapDisp.setObserver(this);
-		MinuetoMouseHandler mouseHand = new MinuetoMouseHandler()
+		mapComp.setWindow(this);
+		//this.setVisible(true);
+		
+		
+		//window = new MinuetoFrame();
+		//window.setVisible(true);
+		//mapComp = new ContainerComponent(0, 0, md.getWidth(), md.getHeight(), md);
+		
+		
+		//mapDisp.setObserver(this);
+		/*MinuetoMouseHandler mouseHand = new MinuetoMouseHandler()
 			{
 				public void handleMouseMove(int x, int y)
 				{
@@ -77,16 +70,10 @@ public class GameWindow implements Observer {
 					{
 						clickedModelTile.setColor(SharedColor.RED);
 						clickedModelTile.notifyObservers();
-					}*/
+					}
 				}
-			};
-		queue = new MinuetoEventQueue();
-		window.registerMouseHandler(mouseHand, queue);
-	}
-	
-	public MinuetoEventQueue getEventQueue()
-	{
-		return this.queue;
+			};*/
+		//this.registerMouseHandler(mouseHand, queue);
 	}
 	
 	public GameWindow()	// only there for old testing purpose
@@ -94,11 +81,37 @@ public class GameWindow implements Observer {
 		this(new MapDisplay(MainApplication.DEFAULT_MAP_WIDTH, MainApplication.DEFAULT_MAP_HEIGHT));
 	}
 	
+	
+	/* ==========================
+	 * 		Public methods
+	 * ==========================
+	 */
+
+	
+	/*public void startDisplay() {
+		setVisible(true);
+		displaying=true;
+		Thread displayThread = new Thread() {
+			public void run() {
+				
+			}
+		};
+		displayThread.start();
+	}*/
+	
+	
+	public MinuetoEventQueue getEventQueue()
+	{
+		return this.queue;
+	}
+	
+	@Override
 	public void render()
 	{
-		mapComp.drawOn(window);
-		textComp.drawOn(window);
-		window.render();
+		this.clear(BACKGROUND_COLOR);
+		mapComp.drawOn(this);
+		textComp.drawOn(this);
+		super.render();
 	}
 	
 	public void update()	// old testing purpose method
@@ -111,4 +124,57 @@ public class GameWindow implements Observer {
 	public void update(Observable o, Object arg) {
 		render();
 	}
+	
+	/* ==========================
+	 * 		Private methods
+	 * ==========================
+	 */
+
+
+	/* ==========================
+	 * 		Inherited methods
+	 * ==========================
+	 */
+
+
+	/* ========================
+	 * 		Static methods
+	 * ========================
+	 */
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+	
+	/*public static void main(String[] args)
+	{
+		GameWindow gw = new GameWindow();
+		gw.render();
+		try 
+		{
+			Thread.sleep(500);
+		} 
+		catch (InterruptedException e) 
+		{
+			e.printStackTrace();
+		}
+		
+		gw.update();
+	}*/
+	
+	
+	
+	
+	
+	
+	
+	
 }

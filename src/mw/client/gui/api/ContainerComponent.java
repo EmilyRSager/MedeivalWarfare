@@ -2,16 +2,16 @@ package mw.client.gui.api;
 
 import org.minueto.image.MinuetoImage;
 
-public class ContainerComponent extends WindowComponent {
+public class ContainerComponent extends AbstractWindowComponent {
 
-	private InterfaceComponent subComponent;
+	protected Displayable subComponent;
 	
 	/* ========================
 	 * 		Constructors
 	 * ========================
 	 */
 
-	public ContainerComponent(int x, int y, int width, int height, InterfaceComponent component)
+	public ContainerComponent(int x, int y, int width, int height, Displayable component)
 	{
 		super(x, y, width, height);
 		subComponent = component;
@@ -28,7 +28,7 @@ public class ContainerComponent extends WindowComponent {
 		return subComponent.getImage();
 	}
 
-	@Override
+	/*@Override
 	public void handleMouseClick(int x, int y, int button) {
 		if (x>=coordX
 				&& y>=coordY
@@ -37,5 +37,5 @@ public class ContainerComponent extends WindowComponent {
 		{
 			subComponent.handleMouseClick(x-coordX, y-coordY, button);
 		}
-	}
+	}*/
 }

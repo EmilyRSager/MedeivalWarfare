@@ -1,10 +1,10 @@
 package mw.client.gui;
 import java.util.Observer;
-import java.awt.Color;
 import java.lang.Math;
 
 import mw.client.controller.ModelViewMapping;
-import mw.client.gui.api.InterfaceComponent;
+import mw.client.gui.api.Clickeable;
+import mw.client.gui.api.Displayable;
 import mw.client.model.ModelTile;
 import mw.shared.SharedColor;
 
@@ -18,45 +18,20 @@ import org.minueto.window.*;
  * @author Arthur Denefle
  *
  */
-public class MapDisplay implements InterfaceComponent
+public class MapDisplay implements Displayable, Clickeable
 {
-	//public static final MinuetoColor color = new MinuetoColor(2);
+	
 	private ImageTile[][] tiles;
 	private int tileWidth;
 	private int tileHeight;
 	
-	public MinuetoImage getImage()
-	{
-		MinuetoImage newImage = new MinuetoImage(this.getWidth(), this.getHeight());
-		for(int i = 0; i < tiles.length; i++)
-		{
-			for(int j = 0; j < tiles[i].length; j++)
-			{
-				if(i % 2 == 0)
-				{
-					newImage.draw(tiles[i][j].getTileImage(), i * ImageTile.DEFAULT_TILE_WIDTH, j * ImageTile.DEFAULT_TILE_HEIGHT);
-				}
-				else
-				{
-					newImage.draw(tiles[i][j].getTileImage(), i * ImageTile.DEFAULT_TILE_WIDTH, (j * ImageTile.DEFAULT_TILE_HEIGHT) + (int)(.5 * ImageTile.DEFAULT_TILE_HEIGHT));
-				}
-			}
-		}
-		return newImage;
-	}
 	
-	public void handleMouseClick(int x, int y, int button)
-	{
-		ImageTile clickedTile = this.getClickedTile(x, y);
-		ModelTile clickedModelTile = ModelViewMapping.singleton().getModelTile(clickedTile);
-		if(clickedModelTile != null)
-		{
-			clickedModelTile.setColor(SharedColor.RED);
-			clickedModelTile.notifyObservers();
-		}
-	}
+	/* ========================
+	 * 		Constructors
+	 * ========================
+	 */
 	
-	
+
 	public MapDisplay(int width, int height)
 	{
 		tiles = new ImageTile[width][height];
@@ -77,13 +52,19 @@ public class MapDisplay implements InterfaceComponent
 		tileWidth = tiles[0][0].getTileImage().getWidth();
 		tileHeight = tiles[0][0].getTileImage().getHeight();
 	}
+
+	
+	/* ==========================
+	 * 		Public methods
+	 * ==========================
+	 */
+
 	
 	public void update()
 	{
 		MinuetoColor color =  MinuetoColor.BLACK;
 		tiles[2][6].updateColor(color);
 	}
-	
 	/**
 	 * The method renderMap's main functionality is to construct the map image by drawing the tiles on the window. 
 	 * @param tiles a double array of Tile objects to be displayed on the map.
@@ -154,4 +135,61 @@ public class MapDisplay implements InterfaceComponent
 			return null;
 		}
 	}
+	
+	public void setWindow(GameWindow window)
+	{
+		setObserver(window);
+	}
+	
+
+	public int getTileHeight() {
+		return tileHeight;
+	}
+	
+	/* ==========================
+	 * 		Inherited methods
+	 * ==========================
+	 */
+
+	
+	@Override
+	public MinuetoImage getImage()
+	{
+		MinuetoImage newImage = new MinuetoImage(this.getWidth(), this.getHeight());
+		for(int i = 0; i < tiles.length; i++)
+		{
+			for(int j = 0; j < tiles[i].length; j++)
+			{
+				if(i % 2 == 0)
+				{
+					newImage.draw(tiles[i][j].getTileImage(), i * ImageTile.DEFAULT_TILE_WIDTH, j * ImageTile.DEFAULT_TILE_HEIGHT);
+				}
+				else
+				{
+					newImage.draw(tiles[i][j].getTileImage(), i * ImageTile.DEFAULT_TILE_WIDTH, (j * ImageTile.DEFAULT_TILE_HEIGHT) + (int)(.5 * ImageTile.DEFAULT_TILE_HEIGHT));
+				}
+			}
+		}
+		return newImage;
+	}
+	
+	@Override
+	public void handleMouseClick(int x, int y, int button)
+	{
+		ImageTile clickedTile = this.getClickedTile(x, y);
+		ModelTile clickedModelTile = ModelViewMapping.singleton().getModelTile(clickedTile);
+		if(clickedModelTile != null)
+		{
+			clickedModelTile.setColor(SharedColor.RED);
+			clickedModelTile.notifyObservers();
+		}
+	}
+
+
+	/* ========================
+	 * 		Static methods
+	 * ========================
+	 */
+	
+	
 }

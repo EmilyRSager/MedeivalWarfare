@@ -14,13 +14,13 @@ public final class SwingTest {
 		JFrame window = new JFrame("Test window");
 		MinuetoPanel minu = new MinuetoPanel(100, 100);
 		
-		window.add(minu, BorderLayout.CENTER);
+		window.setContentPane(minu);
 		
 		window.pack();
 		
 		window.setVisible(true);
 		System.out.println("set window visible");
-		minu.setVisible(false);
+		minu.setVisible(true);
 		System.out.println("set visible");
 		//minu.setVisible(true);
 		

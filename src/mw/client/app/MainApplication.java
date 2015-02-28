@@ -125,6 +125,7 @@ public final class MainApplication {
 	
 	public static void startDisplay()
 	{
+		window.setVisible(true);
 		window.render();
 	}
 	
