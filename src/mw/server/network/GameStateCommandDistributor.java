@@ -7,7 +7,7 @@ package mw.server.network;
 
 import java.util.Set;
 
-import mw.client.model.Tile;
+import mw.server.gamelogic.Tile;
 import mw.shared.clientcommands.AbstractClientCommand;
 import mw.shared.clientcommands.NewGameCommand;
 import mw.shared.clientcommands.UpdateTileCommand;

@@ -5,7 +5,7 @@
 
 package mw.server.network;
 
-import mw.client.model.Tile;
+import mw.server.gamelogic.Tile;
 
 /**
  * Defines the functionality that a GameStateObserver must provide. When Game moves
