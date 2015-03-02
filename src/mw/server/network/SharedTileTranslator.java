@@ -5,7 +5,7 @@
 
 package mw.server.network;
 
-import mw.client.model.Tile;
+import mw.server.gamelogic.Tile;
 import mw.shared.SharedTile;
 
 public class SharedTileTranslator {
