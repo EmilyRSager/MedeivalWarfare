@@ -130,6 +130,9 @@ public final class ModelTile extends Observable {
 		return coord;
 	}
 	
+	public Terrain getTerrain() {
+		return terrain;
+	}
 	
 	public UnitType getUnitType() {
 		return unit;

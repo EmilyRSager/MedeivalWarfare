@@ -5,33 +5,78 @@ import org.minueto.handlers.MinuetoMouseHandler;
 import org.minueto.image.MinuetoImage;
 import org.minueto.image.MinuetoText;
 
-public abstract class AbstractButton extends ObservableWindowComponent implements MinuetoMouseHandler {
+/**
+ * The AbstractButton class provides an easy way to implement buttons. Whenever a click occurs, this class 
+ * will call the abstract method buttonClick(button), which defines what needs to be done when the button is
+ * clicked.
+ * @author Hugo
+ *
+ */
+public abstract class AbstractButton extends AbstractWindowComponent implements MinuetoMouseHandler {
 
 	public static final MinuetoColor DEFAULT_BORDER_COLOR = ExtendedMinuetoColor.DARK_GREY;
 	
-	private MinuetoImage image;
+	private static final int NORMAL_BORDER_THICKNESS = 1;
+	private static final int SELECTED_BORDER_THICKNESS = 2;
+	private static final int BORDER_MARGIN =1; 
+	private static final int TOTAL_MARGIN = SELECTED_BORDER_THICKNESS+BORDER_MARGIN;
+	
+	private MinuetoImage normalImage;
+	private MinuetoImage selectedImage;
 	private boolean clicking;
 	
-	public AbstractButton(int x, int y, int width, int height, String text) {
+	
+	/* ========================
+	 * 		Constructors
+	 * ========================
+	 */
+	
+	/**
+	 * Creates a new AbstractButton with a position and a text.
+	 * @param x the x coordinate of the new AbstractButton
+	 * @param y the y coordinate of the new AbstractButton
+	 * @param text the text of the new AbstractButton
+	 */
+	public AbstractButton(int x, int y, String text) {
 		super(x, y, 0, 0);
-		/*coordX=x;
-		coordY = y;
-		this.width=width;
-		this.height=height;*/
-		image = ExtendedMinuetoImage.drawBorder(new MinuetoText(text, TextDisplay.DEFAULT_FONT, TextDisplay.DEFAULT_TEXT_COLOR), DEFAULT_BORDER_COLOR);
-		System.out.println(image.getPixel(0, 0));
-		area.setWidth(image.getWidth());
-		area.setHeight(image.getHeight());
-		System.out.println(image.getWidth()+" "+image.getHeight());
+		
+		MinuetoImage textImage = new MinuetoText(text, TextDisplay.DEFAULT_FONT, TextDisplay.DEFAULT_TEXT_COLOR);
+		
+		area.setWidth(textImage.getWidth()+2*TOTAL_MARGIN);
+		area.setHeight(textImage.getHeight()+2*TOTAL_MARGIN);
+		
+
+		MinuetoImage basicImage = new MinuetoImage(getWidth(),getHeight());
+		basicImage.draw(textImage, TOTAL_MARGIN, TOTAL_MARGIN);
+		normalImage = ExtendedMinuetoImage.drawBorder(basicImage, DEFAULT_BORDER_COLOR, NORMAL_BORDER_THICKNESS);
+		selectedImage = ExtendedMinuetoImage.drawBorder(basicImage, DEFAULT_BORDER_COLOR, SELECTED_BORDER_THICKNESS);
+		
 		clicking = false;
 	}
+
+	/**
+	 * Creates a new AbstractButton with just a text. This constructor should only 
+	 * be called when the AbstractButton is going to be used inside a layout.
+	 * @param text
+	 */
+	public AbstractButton(String text)
+	{
+		this(0, 0, text);
+	}
+
+	
+	/* ==========================
+	 * 		Inherited methods
+	 * ==========================
+	 */
+
 	
 	@Override
 	public MinuetoImage getImage() {
 		if (clicking)
-			return ExtendedMinuetoImage.drawBorder(image, DEFAULT_BORDER_COLOR, 2);
+			return selectedImage;
 		else
-			return image;
+			return normalImage;
 	}
 
 	@Override
@@ -58,7 +103,16 @@ public abstract class AbstractButton extends ObservableWindowComponent implement
 
 	@Override
 	public void handleMouseMove(int x, int y) {
+		if (clicking && !area.containsPoint(x, y)) {
+			clicking = false;
+			setChanged();
+			notifyObservers();
+		}
 	}
 	
+	/**
+	 * Defines what needs to be done when this AbstractButton is clicked
+	 * @param mouseButton the mouse button that clicked on the button
+	 */
 	public abstract void buttonClick(int mouseButton);
 }

@@ -2,6 +2,7 @@ package mw.client.gui.api;
 
 import org.minueto.image.MinuetoImage;
 
+@Deprecated
 public class ContainerComponent extends AbstractWindowComponent {
 
 	protected Displayable subComponent;

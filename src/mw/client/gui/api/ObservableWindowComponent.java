@@ -4,7 +4,7 @@ import java.util.Observable;
 
 import org.minueto.image.MinuetoDrawingSurface;
 
-
+@Deprecated
 public abstract class ObservableWindowComponent extends Observable implements WindowComponent {
 
 	//protected final Observable observable;
@@ -79,6 +79,7 @@ public abstract class ObservableWindowComponent extends Observable implements Wi
 		//canvas.draw(getImage(), area.getLeftBorder(), area.getTopBorder());
 		canvas.draw(getImage().crop(0, 0, area.getWidth(), area.getHeight()), area.getLeftBorder(), area.getTopBorder());
 	}
+
 
 
 	/* ========================

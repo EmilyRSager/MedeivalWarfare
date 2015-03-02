@@ -1,5 +1,6 @@
 package mw.client.gui;
 
+import mw.client.gui.api.AbstractWindowComponent;
 import mw.client.gui.api.Clickeable;
 import mw.client.gui.api.MouseClickHandler;
 import mw.client.gui.api.ObservableWindowComponent;
@@ -8,7 +9,7 @@ import org.minueto.handlers.MinuetoKeyboard;
 import org.minueto.handlers.MinuetoKeyboardHandler;
 import org.minueto.image.MinuetoImage;
 
-public final class MapComponent extends ObservableWindowComponent implements
+public final class MapComponent extends AbstractWindowComponent implements
 		Clickeable, MinuetoKeyboardHandler {
 	
 	private static final int X_OFFSET_STEP = 10;
@@ -29,7 +30,7 @@ public final class MapComponent extends ObservableWindowComponent implements
 	public MapComponent(int x, int y, int width, int height, MapDisplay mapDisp) {
 		super(x, y, width, height);
 		this.mapDisp = mapDisp;
-		clickHandler = new MouseClickHandler(x, y, height, width, this);
+		clickHandler = new MouseClickHandler(area, this);
 		
 		minXOffset=0;
 		minYOffset=0;
@@ -50,8 +51,8 @@ public final class MapComponent extends ObservableWindowComponent implements
 	public void setWindow(GameWindow window)
 	{
 		mapDisp.setWindow(window);
-		window.registerMouseHandler(clickHandler, window.getEventQueue());
-		window.registerKeyboardHandler(this, window.getEventQueue());
+		window.registerMouseHandler(clickHandler);
+		window.registerKeyboardHandler(this);
 		this.addObserver(window);
 	}
 	

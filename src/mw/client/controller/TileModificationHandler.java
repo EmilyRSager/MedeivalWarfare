@@ -3,6 +3,8 @@ package mw.client.controller;
 import java.util.Observable;
 import java.util.Observer;
 
+import org.minueto.MinuetoColor;
+
 import mw.client.gui.ImageTile;
 import mw.client.model.ModelTile;
 import mw.shared.SharedColor;
@@ -27,8 +29,12 @@ public final class TileModificationHandler implements Observer {
 	 */
 	public static void displayTile(ModelTile modelTile, ImageTile viewTile)
 	{
-		SharedColor newColor = ModelQuerier.getTileColor(modelTile);
-		viewTile.updateColor(ModelGUITranslator.translateToMinuetoColor(newColor));
+		SharedColor newConceptualColor = ModelQuerier.getTileColor(modelTile);
+		MinuetoColor newColor = ModelGUITranslator.translateToMinuetoColor(newConceptualColor);
+		ModelTile.Terrain newTerrain = modelTile.getTerrain();
+		ModelTile.StructureType newStruct = modelTile.getStructureType();
+		ModelTile.UnitType newUnit = modelTile.getUnitType();
+		DisplayUpdater.updateImageTile(viewTile, newColor, newTerrain, newStruct, newUnit);
 	}
 	
 	
@@ -42,6 +48,7 @@ public final class TileModificationHandler implements Observer {
 		ModelTile modifiedTile = (ModelTile)arg0;
 		ImageTile tileDisplay = ModelViewMapping.singleton().getTileDisplay(modifiedTile);
 		TileModificationHandler.displayTile(modifiedTile, tileDisplay);
+		System.out.println("Updated the state of the tile at "+modifiedTile.getCoordinates());
 	}
 
 }

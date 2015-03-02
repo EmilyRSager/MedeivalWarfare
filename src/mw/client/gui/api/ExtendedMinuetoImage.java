@@ -1,7 +1,5 @@
 package mw.client.gui.api;
 
-import java.awt.image.BufferedImage;
-
 import org.minueto.MinuetoColor;
 import org.minueto.image.MinuetoImage;
 

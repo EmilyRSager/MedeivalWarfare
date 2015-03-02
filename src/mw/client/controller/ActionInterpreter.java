@@ -39,8 +39,9 @@ public final class ActionInterpreter /*implements Controller */{
 	
 	
 	private final Game game;
-	private ModelTile selectedTile;
-	private Collection<GameAction> possibleActions;	// Not a good solution !
+	private ModelTile selectedMTile;
+	private ImageTile selectedITile;
+	private Collection<GameAction> possibleActions;
 	
 	
 	/* ========================
@@ -52,7 +53,8 @@ public final class ActionInterpreter /*implements Controller */{
 	private ActionInterpreter(Game g)
 	{
 		game = g;
-		selectedTile = null;
+		selectedMTile = null;
+		selectedITile = null;
 		possibleActions = null;
 	}
 	
@@ -63,13 +65,15 @@ public final class ActionInterpreter /*implements Controller */{
 	 */
 	
 	
-	public void primarySelect(ImageTile target)
+	public void primarySelect(ImageTile dispTarget)
 	{
 		// get the Tile
-		ModelTile target;
-		if (isSelectable(target)) {
-			selectedTile = target;
-			// display the fact that it is selected
+		ModelTile modelTarget = ModelViewMapping.singleton().getModelTile(dispTarget);
+		if (isSelectable(modelTarget)) {
+			selectedMTile = modelTarget;
+			selectedITile = dispTarget;
+			DisplayUpdater.setSelected(dispTarget, true);
+			possibleActions = NetworkQueries.getPossibleMoves(selectedITile);
 		} else {
 			unselect();
 		}
@@ -86,7 +90,7 @@ public final class ActionInterpreter /*implements Controller */{
 	}
 	
 	
-	public void setPossibleActions(ModelTile concernedTile, Collection<GameAction> actions)
+	/*public void setPossibleActions(ModelTile concernedTile, Collection<GameAction> actions)
 	{
 		// Not a good solution !
 		if (selectedTile == concernedTile) {	// comparing the references on purpose
@@ -94,7 +98,7 @@ public final class ActionInterpreter /*implements Controller */{
 		} else {
 			// do nothing, the actions are just not the one we want
 		}
-	}
+	}*/
 
 	
 	/* ============================
@@ -112,9 +116,10 @@ public final class ActionInterpreter /*implements Controller */{
 	
 	private void unselect() 
 	{
-		if (selectedTile!=null) {
-			selectedTile = null;
-			// unselect on the display
+		if (selectedITile!=null) {
+			DisplayUpdater.setSelected(selectedITile, false);
+			selectedMTile = null;
+			selectedITile = null;
 		}
 	}
 	

@@ -6,26 +6,35 @@ import java.util.Observer;
 import mw.client.app.MainApplication;
 import mw.client.gui.api.AbstractButton;
 import mw.client.gui.api.ExtendedMinuetoColor;
+import mw.client.gui.api.GridLayout;
+import mw.client.gui.api.HorizontalLayout;
 import mw.client.gui.api.TextDisplay;
+import mw.client.gui.api.VerticalLayout;
 
 import org.minueto.MinuetoColor;
 import org.minueto.MinuetoEventQueue;
+import org.minueto.handlers.MinuetoKeyboardHandler;
+import org.minueto.handlers.MinuetoMouseHandler;
 import org.minueto.window.MinuetoFrame;
 
-public class GameWindow extends MinuetoFrame implements Observer {
+public class GameWindow implements Observer {
 	
 	public static final MinuetoColor BACKGROUND_COLOR = ExtendedMinuetoColor.mixColors(MinuetoColor.BLACK, MinuetoColor.WHITE, 0.10);
-	
-	//private MinuetoFrame window;
-	private MapDisplay md;
-	//private AbstractWindowComponent mapComp;
-	//private AbstractWindowComponent textComp;.
-	private MapComponent mapComp;
-	private AbstractButton button;
 	public static final int DEFAULT_FRAME_WIDTH = 500;
 	public static final int DEFAULT_FRAME_HEIGHT = 525;
-	private MinuetoEventQueue queue;
+	public static final int DEFAULT_MAP_WIDTH = 600;
+	public static final int DEFAULT_MAP_HEIGHT = 600;
+	
+	private final MinuetoFrame window;
+	private final MinuetoEventQueue queue;
+	private MapDisplay md;
+	private MapComponent mapComp;
+	private AbstractButton button;
+	private VerticalLayout windowLayout;
+	
 	//private boolean displaying = false;
+	//private AbstractWindowComponent mapComp;
+	//private AbstractWindowComponent textComp;.
 	
 	/* ========================
 	 * 		Constructors
@@ -35,11 +44,10 @@ public class GameWindow extends MinuetoFrame implements Observer {
 	
 	public GameWindow(MapDisplay mapDisp)
 	{
-		super(600, 650, true);
 		md = mapDisp;
 		queue = new MinuetoEventQueue();
-		mapComp = new MapComponent(0, 0, 600, 600, md);
-		button = new AbstractButton(0,600,200,50,"Click me !") {
+		mapComp = new MapComponent(0, 0, DEFAULT_MAP_WIDTH, DEFAULT_MAP_HEIGHT, md);
+		button = new AbstractButton(0,600,"Click me !") {
 			public void buttonClick(int mouseButton)
 			{
 				if (mouseButton==1)
@@ -47,10 +55,22 @@ public class GameWindow extends MinuetoFrame implements Observer {
 			}
 		};
 		
+		HorizontalLayout botLayout = new HorizontalLayout(0, 0, 2);
+		botLayout.addComponent(button);
+		botLayout.addComponent(new TextDisplay(0, 0, "Layouts are the best !"));
+		
+		windowLayout = new VerticalLayout(0, 0, 2);
+		windowLayout.addComponent(mapComp);
+		//windowLayout.addComponent(button);
+		windowLayout.addComponent(botLayout);
+		
+		window = new MinuetoFrame(windowLayout.getWidth(), windowLayout.getHeight(), true);
+		
 		mapComp.setWindow(this);
-		this.registerMouseHandler(button, queue);
+		this.registerMouseHandler(button);
 		button.addObserver(this);
-		//this.setVisible(true);
+		
+		window.setVisible(true);
 		
 		
 		//window = new MinuetoFrame();
@@ -114,13 +134,14 @@ public class GameWindow extends MinuetoFrame implements Observer {
 		return this.queue;
 	}
 	
-	@Override
 	public void render()
 	{
-		this.clear(BACKGROUND_COLOR);
-		mapComp.drawOn(this);
-		button.drawOn(this);
-		super.render();
+		window.clear(BACKGROUND_COLOR);
+		/*mapComp.drawOn(this);
+		button.drawOn(this);*/
+		windowLayout.drawOn(window);
+		//super.render();
+		window.render();
 	}
 	
 	public void update()	// old testing purpose method
@@ -129,9 +150,15 @@ public class GameWindow extends MinuetoFrame implements Observer {
 		render();
 	}
 
-	@Override
-	public void update(Observable o, Object arg) {
-		render();
+	public void registerMouseHandler(MinuetoMouseHandler h)
+	{
+		window.registerMouseHandler(h, queue);
+	}
+	
+
+	public void registerKeyboardHandler(MinuetoKeyboardHandler h) 
+	{
+		window.registerKeyboardHandler(h, queue);
 	}
 	
 	/* ==========================
@@ -144,6 +171,11 @@ public class GameWindow extends MinuetoFrame implements Observer {
 	 * 		Inherited methods
 	 * ==========================
 	 */
+
+	@Override
+	public void update(Observable o, Object arg) {
+		render();
+	}
 
 
 	/* ========================
