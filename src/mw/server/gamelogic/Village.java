@@ -32,8 +32,8 @@ public class Village implements Cloneable, Serializable{
 	public Village(Set <GraphNode> villageSet, int pGold, int pWood)
 	{
 		aVillageNodes = villageSet; 
-		pGold = 7; 
-		aGold = 0; 
+		aGold = pGold;
+		aWood = pWood;
 	}
 	
 	private void generateGold()
@@ -65,7 +65,7 @@ public class Village implements Cloneable, Serializable{
 		}
 		else 
 		{
-			throw new NotEnoughIncomeException(aGold - upgradeCost); 
+			throw new NotEnoughIncomeException(aWood - upgradeCost); 
 		}
 	}
 

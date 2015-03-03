@@ -5,7 +5,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.Stack;
 
-public class PathFinder 
+public class PathFinder //has classic DFS
 {
 	public static Set<GraphNode> getMovableTiles (GraphNode v, Graph g) 
 	{
@@ -43,11 +43,12 @@ public class PathFinder
 			{
 				if (TileGraphLogic.isVillageBoundary(v, lGraphNode) ) 
 				{
-					
-				}
 					villageSet.add(lGraphNode);
+				}
+					
 			}	
 		}
+		g.resetAll();
 		return villageSet;
 	}
 }
