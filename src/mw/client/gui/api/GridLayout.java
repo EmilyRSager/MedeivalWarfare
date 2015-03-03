@@ -10,6 +10,10 @@ import org.minueto.image.MinuetoImage;
  * of a grid, specified by a fixed number of rows and columns, that can be filled with WindowComponents.
  * The indexing of GridLayouts starts at 0 and ends at rows-1 or columns-1.
  * Note that a GridLayout is a WindowComponent, allowing nested layouts.
+ * /!\ When using nested layouts, fill the lowest-level ones before putting these in the top-level layouts.
+ * Ex : if layout A is in layout B and layout B is in layout C, A needs to be filled out before the call
+ * B.addComponent(A) can be done. Then, B needs to be filled out before the call C.addComponent(B) can be made,
+ * after which C can be filled out.
  * @author Hugo Kapp
  *
  */
@@ -20,6 +24,8 @@ public class GridLayout extends AbstractWindowComponent {
 	private final int rowCount, columnCount;
 	private int[] rowHeight;
 	private int[] columnWidth;
+	
+	private boolean packed;
 
 	/* ========================
 	 * 		Constructors
@@ -43,6 +49,7 @@ public class GridLayout extends AbstractWindowComponent {
 			components = new WindowComponent[rowCount][columnCount];
 			rowHeight = new int[rowCount];
 			columnWidth = new int[columnCount];
+			packed = true;
 		}
 		else
 			throw new IllegalArgumentException("Impossible to create a GridLayout with "+rows+" rows and "+columns+" columns");
@@ -75,10 +82,10 @@ public class GridLayout extends AbstractWindowComponent {
 	{
 		try {
 			components[row][column] = comp;
+			pack();
 		} catch (IndexOutOfBoundsException e) {
 			throw new IllegalArgumentException("("+row+","+column+") is not a valid location in a GridLayout with "+rowCount+" rows and "+columnCount+" columns");
 		}
-		pack();
 	}
 
 	/* ==========================
@@ -110,6 +117,7 @@ public class GridLayout extends AbstractWindowComponent {
 			yPos+=rowHeight[i];
 		}
 		area.setHeight(yPos);
+		packed=true;
 	}
 
 	/**
@@ -157,6 +165,8 @@ public class GridLayout extends AbstractWindowComponent {
 	@Override
 	public void drawOn(MinuetoDrawingSurface canvas)
 	{
+		if (!packed)
+			pack();
 		for (WindowComponent comp : MultiArrayIterable.toIterable(components))
 		{
 			if (comp!=null) {
@@ -169,7 +179,7 @@ public class GridLayout extends AbstractWindowComponent {
 	public void setPosition(int x, int y)
 	{
 		super.setPosition(x,y);
-		pack();
+		packed = false;
 	}
 	
 	/* ========================

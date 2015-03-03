@@ -71,4 +71,14 @@ public final class ModelQuerier {
 	public static boolean ownedByCurrentPlayer(Game game, ModelTile t) {
 		return t.getColor().equals(game.getCurrentPlayer().getColor());
 	}
+
+
+	public static int getVillageGold(ModelTile mtile) {
+		return mtile.getVillageGold();
+	}
+
+
+	public static int getVillageWood(ModelTile mtile) {
+		return mtile.getVillageWood();
+	}
 }

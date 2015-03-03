@@ -21,6 +21,13 @@ import org.minueto.window.*;
 public class MapDisplay implements Displayable, Clickeable
 {
 	
+	/*
+	 * [0,0] [0,1] [0,2]
+	 * [1,0] [1,1] [1,2]
+	 * [2,0] [2,1] [2,2]
+	 * 
+	 */
+	
 	private ImageTile[][] tiles;
 	private int tileWidth;
 	private int tileHeight;
@@ -106,7 +113,7 @@ public class MapDisplay implements Displayable, Clickeable
 	
 	public int getHeight()
 	{
-		return this.tileHeight * this.tiles.length + tileHeight / 2;
+		return this.tileHeight * this.tiles[0].length + tileHeight / 2;
 	}
 
 	public ImageTile getClickedTile(int x, int y)
