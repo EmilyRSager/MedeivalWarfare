@@ -40,7 +40,7 @@ public Game (ArrayList<Player> pPlayers, int mapID) throws TooManyPlayersExcepti
      myColors.push(Color.RED); 
      myColors.push(Color.YELLOW); 
      
-	for (Player lPlayer : aPlayers) 
+	for (Player lPlayer : aPlayers) //don't need to randomly assign colors because players come in randomly
 	{
 		if (!myColors.isEmpty())
 		{
@@ -152,13 +152,13 @@ public void hireVillager(Tile pTile, UnitType pUnitType)
    
     public void moveUnit(Unit pUnit, Tile pDestinationTile) 
     {
-    	//TODO 
+    	//TODO: required for the demo
     } 
     
 
     public void takeoverTile(Tile dest, Village invadingVillage) 
     {
-      //TODO 
+      //TODO: for the demo at least have the neutral tile takeover ready 
         
     }
 
