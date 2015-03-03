@@ -1,7 +1,6 @@
 package mw.server.gamelogic;
 
-public class Move 
+public class GameAction
 {
 
-	
 }
