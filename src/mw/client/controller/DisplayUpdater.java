@@ -1,5 +1,7 @@
 package mw.client.controller;
 
+import java.util.List;
+
 import org.minueto.MinuetoColor;
 
 import mw.client.gui.ImageTile;
@@ -14,6 +16,16 @@ public final class DisplayUpdater {
 	}
 
 	public static void setSelected(ImageTile t, boolean selected)
+	{
+		// TODO
+	}
+
+	public static void displayChoice(String choiceName, List<String> choices)
+	{
+		// TODO
+	}
+
+	public static void showVillageResources(int gold, int wood)
 	{
 		// TODO
 	}

@@ -23,7 +23,7 @@ import mw.shared.SharedTile;
 public final class MainApplication {
 
 	private static final Player PLAYER = null;
-	public final static int DEFAULT_MAP_WIDTH = 18;
+	public final static int DEFAULT_MAP_WIDTH = 12;
 	public final static int DEFAULT_MAP_HEIGHT = 18;
 
 	
@@ -63,7 +63,7 @@ public final class MainApplication {
 	public static void testUpdate(SharedColor c)
 	{
 		Random r = new Random();
-		SharedTile newST = new SharedTile(c, new SharedCoordinates(r.nextInt(DEFAULT_MAP_WIDTH), r.nextInt(DEFAULT_MAP_HEIGHT)), SharedTile.Terrain.GRASS, false);
+		SharedTile newST = new SharedTile(c, new SharedCoordinates(r.nextInt(DEFAULT_MAP_HEIGHT), r.nextInt(DEFAULT_MAP_WIDTH)), SharedTile.Terrain.GRASS, false);
 		NewStateApplier.applyChanges(game, newST);
 	}
 	
@@ -74,7 +74,7 @@ public final class MainApplication {
 		{
 			for (int j=0; j<DEFAULT_MAP_HEIGHT; j++)
 			{
-				ModelTile t = new ModelTile(i, j);
+				ModelTile t = new ModelTile(j, i);
 				t.setColor(SharedColor.GREEN);
 				newTiles[i][j] = t;
 			}
@@ -84,14 +84,15 @@ public final class MainApplication {
 	
 	public static void newGame(ModelTile[][] tiles)
 	{
+		final int width = tiles.length;
+		final int height = tiles[0].length;
+		
 		TileModificationHandler observer = new TileModificationHandler();
 		ArrayList<ModelTile> tileList = new ArrayList<ModelTile>();
-		ImageTile displayedTiles[][] = new ImageTile[DEFAULT_MAP_WIDTH][DEFAULT_MAP_HEIGHT];
+		ImageTile displayedTiles[][] = new ImageTile[width][height];
 		ModelViewMapping.initialize();
 		ModelViewMapping mapping = ModelViewMapping.singleton();
 		
-		final int width = tiles.length;
-		final int height = tiles[0].length;
 		for (int i=0; i<width; i++)
 		{
 			for (int j=0; j<height; j++)

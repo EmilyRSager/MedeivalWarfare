@@ -20,7 +20,6 @@ public final class MapComponent extends AbstractWindowComponent implements
 	private final int maxXOffset, maxYOffset;
 	private final MapDisplay mapDisp;
 	private final MouseClickHandler clickHandler;
-	private int keyPressed;
 
 	/* ========================
 	 * 		Constructors
@@ -36,10 +35,10 @@ public final class MapComponent extends AbstractWindowComponent implements
 		minYOffset=0;
 		maxXOffset=mapDisp.getWidth()-width;
 		maxYOffset=mapDisp.getHeight()-height;
+		
 		xOffset = minXOffset;
 		yOffset = minYOffset;
 		
-		keyPressed = 0;
 	}
 
 
@@ -101,8 +100,7 @@ public final class MapComponent extends AbstractWindowComponent implements
 
 	@Override
 	public void handleKeyType(char arg0) {
-		// TODO Auto-generated method stub
-
+		
 	}
 
 

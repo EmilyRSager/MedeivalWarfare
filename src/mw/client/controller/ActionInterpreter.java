@@ -1,6 +1,11 @@
 package mw.client.controller;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import mw.client.gui.ImageTile;
 import mw.client.model.*;
@@ -41,7 +46,8 @@ public final class ActionInterpreter /*implements Controller */{
 	private final Game game;
 	private ModelTile selectedMTile;
 	private ImageTile selectedITile;
-	private Collection<GameAction> possibleActions;
+	private PossibleActions/*Collection<GameAction>*/ possibleActions;
+	private Map<String, Map<String, GameAction>> currentChoices;
 	
 	
 	/* ========================
@@ -56,6 +62,7 @@ public final class ActionInterpreter /*implements Controller */{
 		selectedMTile = null;
 		selectedITile = null;
 		possibleActions = null;
+		currentChoices = new HashMap<String, Map<String, GameAction>>();
 	}
 	
 	
@@ -67,28 +74,45 @@ public final class ActionInterpreter /*implements Controller */{
 	
 	public void primarySelect(ImageTile dispTarget)
 	{
-		// get the Tile
+		unselect();
+		
 		ModelTile modelTarget = ModelViewMapping.singleton().getModelTile(dispTarget);
 		if (isSelectable(modelTarget)) {
 			selectedMTile = modelTarget;
 			selectedITile = dispTarget;
+			
 			DisplayUpdater.setSelected(dispTarget, true);
+			if (ModelQuerier.hasVillage(selectedMTile))
+			{
+				int gold = ModelQuerier.getVillageGold(selectedMTile);
+				int wood = ModelQuerier.getVillageWood(selectedMTile);
+				DisplayUpdater.showVillageResources(gold, wood);
+			}
+			
 			possibleActions = NetworkQueries.getPossibleMoves(selectedITile);
-		} else {
-			unselect();
+			displayPossibleActions();
 		}
-		// ask the Server for possible moves
-		// it will be stored later by some writer thread
 	}
 	
 	
 	public void secondarySelect(ImageTile dispTarget)
 	{
-		// get the Tile
-		ModelTile target;
-		
+		if (possibleActions!=null)
+		{
+			ModelTile modelTarget = ModelViewMapping.singleton().getModelTile(dispTarget);
+			GameAction desiredAction = new MoveAction(selectedMTile,modelTarget);
+			
+			if (possibleActions.contains(desiredAction)) {
+				Networking.sendCommand(new GameActionCommand(desiredAction));
+				unselect();
+			}
+		}
 	}
 	
+	public void notifyChoiceResult(String choiceTitle, String choseItem)
+	{
+		
+	}
 	
 	/*public void setPossibleActions(ModelTile concernedTile, Collection<GameAction> actions)
 	{
@@ -109,6 +133,8 @@ public final class ActionInterpreter /*implements Controller */{
 	
 	private boolean isSelectable(ModelTile target)
 	{
+		if (target==null)
+			return false;
 		boolean correctTileComponent = ModelQuerier.hasUnit(target) || ModelQuerier.hasVillage(target);
 		return correctTileComponent && ModelQuerier.ownedByCurrentPlayer(game, target);
 	}
@@ -120,6 +146,26 @@ public final class ActionInterpreter /*implements Controller */{
 			DisplayUpdater.setSelected(selectedITile, false);
 			selectedMTile = null;
 			selectedITile = null;
+		}
+		possibleActions = null;
+		currentChoices.clear();
+	}
+	
+	private void displayPossibleActions()
+	{
+		Set<VillageUpgradeAction> vUpgrade = possibleActions.getVillageUpgradeActions();
+		if (vUpgrade!=null && !vUpgrade.isEmpty())
+		{
+			List<String> choiceNames = new ArrayList<String>();
+			HashMap<String, GameAction> vuChoices = new HashMap<String, GameAction>();
+			for (VillageUpgradeAction vup : vUpgrade)
+			{
+				String choiceName = vup.getStructureType().stringValue();
+				choiceNames.add(choiceName);
+				vuChoices.put(choiceName, vup);
+			}
+			DisplayUpdater.displayChoice("Upgrade Village :", choiceNames);
+			currentChoices.put("Upgrade Village :", vuChoices);
 		}
 	}
 	

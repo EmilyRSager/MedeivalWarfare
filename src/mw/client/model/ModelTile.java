@@ -160,8 +160,23 @@ public final class ModelTile extends Observable {
 		}
 			
 	}
-	
 
+	public int getVillageGold()
+	{
+		if (village!=null)
+			return village.getGold();
+		else
+			throw new IllegalStateException("Impossible to get the gold of a tile that has no village");
+	}
+
+	public int getVillageWood()	
+	{
+		if (village!=null)
+			return village.getWood();
+		else
+			throw new IllegalStateException("Impossible to get the wood of a tile that has no village");
+	}
+	
 	public SharedColor getColor() {
 		return color;
 	}
@@ -194,6 +209,9 @@ public final class ModelTile extends Observable {
 	{
 		return coord.hashCode();
 	}
+
+
+
 
 
 	

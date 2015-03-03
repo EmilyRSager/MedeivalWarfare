@@ -10,6 +10,7 @@ import mw.client.gui.api.GridLayout;
 import mw.client.gui.api.HorizontalLayout;
 import mw.client.gui.api.TextDisplay;
 import mw.client.gui.api.VerticalLayout;
+import mw.shared.SharedColor;
 
 import org.minueto.MinuetoColor;
 import org.minueto.MinuetoEventQueue;
@@ -50,8 +51,10 @@ public class GameWindow implements Observer {
 		button = new AbstractButton(0,600,"Click me !") {
 			public void buttonClick(int mouseButton)
 			{
-				if (mouseButton==1)
+				if (mouseButton==1) {
 					System.out.println("I am clicked !");
+					MainApplication.testUpdate(SharedColor.BLUE);
+				}
 			}
 		};
 		
@@ -71,6 +74,7 @@ public class GameWindow implements Observer {
 		button.addObserver(this);
 		
 		window.setVisible(true);
+		window.setTitle("Medieval Warfare");
 		
 		
 		//window = new MinuetoFrame();

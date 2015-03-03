@@ -8,7 +8,7 @@ import org.minueto.image.MinuetoText;
 /**
  * The AbstractButton class provides an easy way to implement buttons. Whenever a click occurs, this class 
  * will call the abstract method buttonClick(button), which defines what needs to be done when the button is
- * clicked.
+ * clicked. In order for the buttons to be displayed correctly, the AbstractButton must be observed.
  * @author Hugo
  *
  */
@@ -49,6 +49,10 @@ public abstract class AbstractButton extends AbstractWindowComponent implements 
 		MinuetoImage basicImage = new MinuetoImage(getWidth(),getHeight());
 		basicImage.draw(textImage, TOTAL_MARGIN, TOTAL_MARGIN);
 		normalImage = ExtendedMinuetoImage.drawBorder(basicImage, DEFAULT_BORDER_COLOR, NORMAL_BORDER_THICKNESS);
+		/*normalImage.setPixel(NORMAL_BORDER_THICKNESS, NORMAL_BORDER_THICKNESS, DEFAULT_BORDER_COLOR);
+		normalImage.setPixel(getWidth()-NORMAL_BORDER_THICKNESS, NORMAL_BORDER_THICKNESS, DEFAULT_BORDER_COLOR);
+		normalImage.setPixel(getWidth()-NORMAL_BORDER_THICKNESS, getHeight()-NORMAL_BORDER_THICKNESS, DEFAULT_BORDER_COLOR);
+		normalImage.setPixel(NORMAL_BORDER_THICKNESS, getHeight()-NORMAL_BORDER_THICKNESS, DEFAULT_BORDER_COLOR);*/
 		selectedImage = ExtendedMinuetoImage.drawBorder(basicImage, DEFAULT_BORDER_COLOR, SELECTED_BORDER_THICKNESS);
 		
 		clicking = false;
