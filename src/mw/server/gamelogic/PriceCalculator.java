@@ -26,7 +26,7 @@ public class PriceCalculator
 		case TOWN:
 			return 8; 
 		case FORT:
-			throw new CantUpgradeException("Village Can't Upgrade"); 
+			throw new CantUpgradeException("Village Can't be Upgraded"); 
 		default:
 			return 8; 
 		}

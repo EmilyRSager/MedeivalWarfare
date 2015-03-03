@@ -1,9 +1,13 @@
 package mw.server.gamelogic;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Random;
 import java.util.Set;
 import java.util.Stack;
+
+import mw.client.model.Account;
+import mw.client.model.Coordinates;
 
 
 
@@ -26,7 +30,9 @@ public class Game extends RandomColorGenerator {
  * @throws TooManyPlayersException 
  */
 public Game (ArrayList<Player> pPlayers, int mapID) throws TooManyPlayersException {
-    aPlayers  = pPlayers;
+    
+		
+	aPlayers  = pPlayers;
     
      Stack <Color >myColors = new Stack <Color>(); 
      myColors.push(Color.BLUE); 
@@ -55,17 +61,9 @@ public Game (ArrayList<Player> pPlayers, int mapID) throws TooManyPlayersExcepti
         aMap.partition(); 
     }
 
-    public void upgradeUnit(Unit pUnit, UnitType newType) {
-        boolean success;
-        int upgradeCost;
-        Village villageRuling;
-        Tile tile;
-        UnitType unitType;
-        unitType = pUnit.getUnitType();
-        upgradeCost = PaymentManager.upgradeCost(unitType, newType);
-        tile = pUnit.getTile();
-        villageRuling = aCurrentPlayer.getVillageRuling(tile);
-        success = villageRuling.tryPayingGold(upgradeCost);
+    public void upgradeUnit(Unit pUnit, UnitType newType) 
+    {
+ 
     }
 
     /**
@@ -111,11 +109,12 @@ public Game (ArrayList<Player> pPlayers, int mapID) throws TooManyPlayersExcepti
     	return rArray; 
     }
  
-    public Set<Tile> move(Tile startTile)
+    public Collection<GameAction>  move(Tile startTile)
     {
-    	
+    	aMap.getPossibleMoves(startTile)
+    	Collection<Tile> possMoveTiles = PathFinder.getMovableTiles(startTile, aMap); 
     }
-    public ArrayList<Move> getValidMoves()
+    public Collection<GameAction> getValidMoves(Tile startTile)
     {
     	return null; 
     }
@@ -150,66 +149,32 @@ public void hireVillager(Tile pTile, UnitType pUnitType)
     }
 
     
-    //TODO -- Check if the unit is a knight, and act accordingly
-    public void moveUnit(Unit pUnit, Tile pDestinationTile) {
-        Tile crtTile;
-        boolean isPath;
-        Village crtVillage;
-        Village villageDest;
-        StructureType structureType;
-        crtTile = pUnit.getTile();
-        isPath = aMap.getPath(crtTile, pDestinationTile);
-        structureType = pDestinationTile.getStructureType();
-        
-        if (isPath) 
-        {
-        	if (structureType==StructureType.TOMBSTONE) {
-        		pDestinationTile.setStructureType(StructureType.NO_STRUCT); 
-        		pUnit.setTile(pDestinationTile);
-        	}
-        	crtVillage = crtTile.getVillage();
-        	if (structureType==StructureType.TREE) {
-        		pDestinationTile.setStructureType(StructureType.NO_STRUCT);
-        		pUnit.setTile(pDestinationTile);
-        		crtVillage.addWood(1);
-        	}
-        	villageDest = pDestinationTile.getVillage();
-        	if (villageDest==null) { // if the tile we want to go to is neutral land
-        		crtVillage.addTile(pDestinationTile);
-        	} 
-        }
-    }
+   
+    public void moveUnit(Unit pUnit, Tile pDestinationTile) 
+    {
+    	//TODO 
+    } 
+    
 
-    public void takeoverTile(Tile dest, Village invadingVillage) {
-        Village invadedVillage;
-        boolean canFuse;
-        int aWood;
-        StructureType structureType;
-        int aGold;
-        invadedVillage = dest.getVillage();
-        structureType = dest.getStructureType();
-        if (invadedVillage.getCapital().equals(dest)) {
-            aGold = invadedVillage.getAGold();
-            invadingVillage.addGold(aGold);
-            aWood = invadedVillage.getAWood();
-            invadingVillage.addWood(aWood);
-            dest.setStructureType(StructureType.NO_STRUCT);  //Structure Type should be none because the invading village will already have a Village
-        }
-        dest.setVillage(invadingVillage); //ugh the set village method is gonna suck 
-        invadedVillage.removeTile(dest);
-        invadingVillage.addTile(dest);
+    public void takeoverTile(Tile dest, Village invadingVillage) 
+    {
+      //TODO 
         
     }
 
-    public void buildRoad(Unit u) {
+    
+    public void buildRoad(Unit u) 
+    {
         UnitType unitType;
         unitType = u.getUnitType();
-        if (unitType == UnitType.PEASANT) {
+        if (unitType == UnitType.PEASANT) 
+        {
             u.setActionType(ActionType.BUILDINGROAD);
         }
     }
 
-    public void upgradeVillage(Village v, VillageType newType) {
+    public void upgradeVillage(Village v, VillageType newType) 
+    {
         try {
 			v.upgradeVillage(newType);
 		} catch (NotEnoughIncomeException e) {
@@ -218,26 +183,10 @@ public void hireVillager(Tile pTile, UnitType pUnitType)
 		}
     }
 
-    public void takeOverTile(Tile dest, Village invadingVillage) {
-        int aWood;
-        StructureType structureType;
-        boolean canFuse;
-        Village invadedVillage;
-        Tile capital;
-        int aGold;
-        invadedVillage = dest.getVillage();
-        structureType = dest.getStructureType();
-        capital = invadedVillage.getCapital();
-        if (dest.equals(capital)) {
-            aGold = invadedVillage.getAGold();
-            invadingVillage.addGold(aGold);
-            aWood = invadedVillage.getAWood();
-            invadingVillage.addWood(aWood);
-            dest.setStructureType(StructureType.NO_STRUCT); //should this be no struct? The invading village already has a structure type
-        }
-        dest.setVillage(invadingVillage);
-        invadingVillage.addTile(dest);
+    public void takeOverTile(Tile dest, Village invadingVillage)
+    {
+    	//TODO 
       
-        }
+    }
     }
 

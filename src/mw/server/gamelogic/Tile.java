@@ -20,7 +20,7 @@ public class Tile  extends AbstractGraphNode
     
     public Tile(StructureType pStructureType, int pX, int pY) 
     { 
-    	aX= pX; 
+    	aX = pX; 
     	aY = pY; 
     	aStructureType = pStructureType; 
     	myColor = Color.NEUTRAL;
