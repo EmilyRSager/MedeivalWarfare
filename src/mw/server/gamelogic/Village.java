@@ -11,7 +11,7 @@ import javax.annotation.Generated;
 
 /**
  * Village class definition.
- * @author emilysager
+ * @author emilysager, Abhishek Gupta
  */
 public class Village implements Cloneable, Serializable{
 
@@ -85,10 +85,12 @@ public class Village implements Cloneable, Serializable{
 
 	/**
 	 * produces meadow/road on the tile and resets the unit to be free 
+	 * assuming that the free state of the unit is "READY"
+	 * this function will do the update for all the units that are on tiles belonging to the village
 	 */
 	public void updateUnits()  
 	{
-		//TODO    atg
+		
 	}
 
 
