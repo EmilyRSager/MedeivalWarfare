@@ -40,11 +40,13 @@ public class Tile  extends Observable
     {
        myColor = c; 
        setChanged();
+     
     }
 
     public void setNeutral() {
         myColor = Color.NEUTRAL; 
         setChanged();
+       
     }
     public StructureType getStructureType() {
        return aStructureType;
@@ -52,6 +54,7 @@ public class Tile  extends Observable
     public void setStructureType(StructureType pStructureType) {
         pStructureType = aStructureType; 
         setChanged();
+       
     }
     public boolean getMeadow() {
       
@@ -60,6 +63,7 @@ public class Tile  extends Observable
     public void setHasMeadow(boolean pHasMeadow) {
        aHasMeadow = pHasMeadow; 
        setChanged();
+       
     }
     public Color getColor() 
     {
@@ -73,6 +77,7 @@ public class Tile  extends Observable
 	{
 		aUnit = pUnit; 
 		 setChanged();
+	
 	}
 	public boolean isProtected(UnitType pType)
 	{
@@ -81,8 +86,9 @@ public class Tile  extends Observable
 
 	public void setVillageType(VillageType pVillageType)
 	{
-		aVillageType = pVillageType; 
+		 aVillageType = pVillageType; 
 		 setChanged();
+
 	}
 	
 	public VillageType getVillageType()

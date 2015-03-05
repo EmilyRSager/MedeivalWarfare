@@ -1,9 +1,9 @@
 package mw.server.gamelogic;
 
-import java.io.Serializable;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Observable;
+import java.util.Observer;
 import java.util.Set;
 
 
@@ -17,11 +17,17 @@ public class Village extends Observable
 
 	private int aGold; 
 	private int aWood; 
-	private int aUpkeepCost;
 	private VillageType aVillageType; 
-	private Collection<GraphNode> aVillageNodes; 
+	private Collection<GraphNode> aVillageNodes;
+	private Collection<Observer> aObservers; 
 
 
+	@Override 
+	public synchronized void addObserver(Observer o) 
+	{
+		aObservers.add(o);
+	}
+	
 	public Village(Set<GraphNode> villageSet) 
 	{
 		aVillageNodes = villageSet; 
@@ -60,12 +66,13 @@ public class Village extends Observable
 		{ 
 			addGold +=Logic.getGoldGenerated(lGraphNode);  
 		}
-		aGold += addGold; 
+		addOrSubtractGold(addGold);
+		notifyObservers();
 	}
 	
 	
 
-	public void upgradeVillage(VillageType pVillageType) throws NotEnoughIncomeException {
+public void upgradeVillage(VillageType pVillageType) throws NotEnoughIncomeException {
 		int upgradeCost = 0;
 		try {
 			upgradeCost = PriceCalculator.getUpgradePrice(pVillageType);
@@ -90,6 +97,7 @@ public class Village extends Observable
 		{
 			throw new NotEnoughIncomeException(aWood - upgradeCost); 
 		}
+		notifyObservers();
 	}
 
 	/**
@@ -103,6 +111,7 @@ public class Village extends Observable
 			Logic.clearTombstone(lGraphNode);
 		}
 		generateGold();
+		notifyObservers(); 
 	}
 
 
@@ -137,6 +146,7 @@ public class Village extends Observable
 			}
 			
 		}
+		notifyObservers();
 	}
 
 
@@ -149,6 +159,7 @@ public class Village extends Observable
 	{
 		aGold = aGold + addGold; 
 		setChanged();
+	
 	}
 
 	/**
@@ -168,10 +179,11 @@ public class Village extends Observable
 	 * @precondition ONLY called either after removeTile from an enemy village, or on neutral land 
 	 * @param pTile
 	 */
-	public void addTile(GraphNode pGraphNode) 
+	public void addTile(Tile pTile) 
 	{
 		//TODO: needs to be implemented
 		//some type of search here to see if the village has fused
+		notifyObservers();
 	}
 	
 	/**
@@ -179,9 +191,10 @@ public class Village extends Observable
 	 * smaller villages then it is handled here 
 	 * @param t = tile to be removed
 	 */
-	public void removeTile(Tile t) 
+	public void removeTile(Tile pTile) 
 	{
 		/* TODO: needs to be implemented */
+		notifyObservers();
 	}
 
 	public VillageType getVillageType() 
@@ -199,22 +212,18 @@ public class Village extends Observable
 	 * @param goldCost 
 	 * @throws NotEnoughIncomeException
 	 */
-	public void tryPayingGold(int goldCost) throws NotEnoughIncomeException {
+	public void tryPayingGold(int goldCost) throws NotEnoughIncomeException
+	{
+		
 		if (aGold >= goldCost)
 		{
-			aGold = aGold - goldCost; 
+			addOrSubtractGold(-goldCost);
 		}
 		else 
 		{
 			throw new NotEnoughIncomeException((aGold-goldCost)); 
 		}
 	}
-
-	public Tile getCapital() {
-		/* TODO: No message view defined */
-		return null;
-	}
-
 	/**
 	 * getter for Village Gold
 	 * @return

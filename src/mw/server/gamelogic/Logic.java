@@ -26,7 +26,7 @@ public class Logic {
 	public static void  upgrade(VillageType aVillageType, Village v) throws CantUpgradeException
 	{
 		
-		VillageType myVillageType = aVillageType.NO_VILLAGE; 
+		VillageType myVillageType = VillageType.NO_VILLAGE; 
 		
 		switch (aVillageType) {
 		case HOVEL:

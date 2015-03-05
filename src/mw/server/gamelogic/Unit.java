@@ -36,6 +36,7 @@ public class Unit extends Observable {
     {
         aActionType = pActionType; 
         setChanged();
+        
     }
 
    

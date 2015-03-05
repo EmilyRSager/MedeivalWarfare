@@ -114,33 +114,36 @@ public Game (ArrayList<Player> pPlayers, int mapID) throws TooManyPlayersExcepti
     public CollectionOfPossibleActions tileIsClicked(Tile startTile)
     {
     	VillageType startVillageType = startTile.getVillageType(); 
-    	VillageType possUpgradeType = VillageType.NO_VILLAGE; 
+    	VillageType possVillageUpgradeType = VillageType.NO_VILLAGE; 
     	Unit pUnit = startTile.getUnit(); 
     	Collection<Tile> possMoveTiles = aMap.getPossibleMoves(startTile);
-    	Collection<UnitType> possUpgrade = wantToHireVillager(startTile);
+    	Collection<UnitType> possUnitUpgrade = wantToHireVillager(startTile);
     	Collection<ActionType> possActions = new ArrayList<ActionType>();
     	
-    	if (startVillageType !=  null)
-    	{
-    		try
+    	
+    		switch (startVillageType)
 			{
-				possUpgradeType = Logic.upgrade(startVillageType);
-			} 
-    		catch (CantUpgradeException e)
-			{
-				possUpgradeType = VillageType.NO_VILLAGE; 
-			} 
-    	}
-    	else 
-    	{
-    		possUpgradeType = VillageType.NO_VILLAGE;
-    	}
+			case HOVEL:
+				possVillageUpgradeType = VillageType.TOWN;
+				break;
+			case TOWN: 
+				possVillageUpgradeType = VillageType.FORT;
+				break; 
+			case FORT: 
+				possVillageUpgradeType = null;  
+				break;
+			default:
+				possVillageUpgradeType = VillageType.NO_VILLAGE; 
+				break;
+			}
+    		
+    
     	if (pUnit!=null)
     	{
     		possActions = Logic.getPossibleActions(pUnit, startTile);
     	}
     	
-    	CollectionOfPossibleActions possible = new CollectionOfPossibleActions(possMoveTiles, possUpgrade, possActions, possUpgradeType);
+    	CollectionOfPossibleActions possible = new CollectionOfPossibleActions(possMoveTiles, possUnitUpgrade, possActions, possUpgradeType);
     	return possible; 
     	
     	
@@ -161,6 +164,7 @@ public Game (ArrayList<Player> pPlayers, int mapID) throws TooManyPlayersExcepti
     {
     	Unit pUnit = new Unit(pUnitType); 
     	pTile.setUnit(pUnit);
+    	pTile.notifyObservers(); 
     }
     
     public void beginTurn() 
