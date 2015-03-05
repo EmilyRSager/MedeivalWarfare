@@ -1,5 +1,7 @@
 package mw.server.gamelogic;
 
+import java.util.Collection;
+
 public class PriceCalculator 
 {
 	public static int getUpgradePrice(Unit pUnit) throws CantUpgradeException
@@ -32,10 +34,45 @@ public class PriceCalculator
 		}
 	}
 	
-	//TODO: atg   create a upkeepcost Calculator
-	
+	/**
+	 * this will calculate the upkeep cost for a particular village - acts as a helper function to 
+	 * assist in admin of each turn
+	 * @param pVillage = the village for which the upkeep cost needs to be calculated
+	 * @return the amount in gold needed for the upkeep
+	 */
 	
 	public static int upkeepCostCalculator(Village pVillage){
-		return 0;
+		int totalUpkeepCost = 0;
+		Collection<GraphNode> lGraphNodesOfVillageCollection = pVillage.getVillageNodes();
+		for(GraphNode lNode: lGraphNodesOfVillageCollection){
+			Tile lTile = lNode.getTile();
+			Unit lUnit = lTile.getUnit();
+			
+			if (lUnit!=null) {
+				switch (lUnit.getUnitType()) {
+				case PEASANT:
+					totalUpkeepCost +=2;
+					break;
+
+				case INFANTRY:
+					totalUpkeepCost += 6;
+					break;
+				
+				case SOLDIER:
+					totalUpkeepCost += 18;
+					break;
+					
+				case KNIGHT:
+					totalUpkeepCost += 54;
+					break;
+					
+				default:
+					break;
+				}
+			}
+			
+		}
+		
+		return totalUpkeepCost;
 	}
 }
