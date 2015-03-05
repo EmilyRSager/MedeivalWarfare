@@ -36,6 +36,10 @@ public class Village implements Cloneable, Serializable{
 		aWood = pWood;
 	}
 	
+	public Collection<GraphNode> getVillageNodes(){
+		return aVillageNodes;
+	}
+	
 	private void generateGold()
 	{
 		int addGold = 0;  
@@ -96,20 +100,21 @@ public class Village implements Cloneable, Serializable{
 		for(GraphNode lNode: aVillageNodes){
 			Tile lTile = lNode.getTile();
 			Unit lUnit = lTile.getUnit();
-			ActionType lActionType = lUnit.getActionType();
 			
-			if (lActionType.equals(ActionType.CULTIVATING_END)) {
-				lTile.setHasMeadow(true);
-				lUnit.setActionType(ActionType.READY);
-			}
-			else if(lActionType.equals(ActionType.BUILDINGROAD)){
-				lTile.setStructureType(StructureType.ROAD);
-				lUnit.setActionType(ActionType.READY);
-			}
-			else if(lActionType.equals(ActionType.CHOPPINGTREE)){
-				lTile.setStructureType(StructureType.NO_STRUCT);
-				lUnit.setActionType(ActionType.READY);
-				addWood(1);
+			
+			if (lUnit!=null) {
+				ActionType lActionType = lUnit.getActionType();
+				if (lActionType.equals(ActionType.CULTIVATING_END)) {
+					lTile.setHasMeadow(true);
+					lUnit.setActionType(ActionType.READY);
+				} else if (lActionType.equals(ActionType.BUILDINGROAD)) {
+					lTile.setStructureType(StructureType.ROAD);
+					lUnit.setActionType(ActionType.READY);
+				} else if (lActionType.equals(ActionType.CHOPPINGTREE)) {
+					lTile.setStructureType(StructureType.NO_STRUCT);
+					lUnit.setActionType(ActionType.READY);
+					addWood(1);
+				}
 			}
 			
 		}
