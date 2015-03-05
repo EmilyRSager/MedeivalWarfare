@@ -38,6 +38,7 @@ public class Player {
     public void removeVillage(Village pVillage) 
     {
         aVillages.remove(pVillage); 
+        
     }
 
     public Collection<Village> getVillages() 

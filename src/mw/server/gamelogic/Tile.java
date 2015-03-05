@@ -1,10 +1,12 @@
 package mw.server.gamelogic;
 
+import java.util.Observable;
+
 /**
  * @author emilysager
  */
 
-public class Tile  extends AbstractGraphNode 
+public class Tile  extends Observable
 {
 	
 	private StructureType aStructureType; 
@@ -37,16 +39,19 @@ public class Tile  extends AbstractGraphNode
     public void setColor(Color c) 
     {
        myColor = c; 
+       setChanged();
     }
 
     public void setNeutral() {
         myColor = Color.NEUTRAL; 
+        setChanged();
     }
     public StructureType getStructureType() {
        return aStructureType;
     }
     public void setStructureType(StructureType pStructureType) {
         pStructureType = aStructureType; 
+        setChanged();
     }
     public boolean getMeadow() {
       
@@ -54,8 +59,10 @@ public class Tile  extends AbstractGraphNode
     }
     public void setHasMeadow(boolean pHasMeadow) {
        aHasMeadow = pHasMeadow; 
+       setChanged();
     }
-    public Color getColor() {
+    public Color getColor() 
+    {
         return myColor; 
     }
 	public Unit getUnit() 
@@ -65,6 +72,7 @@ public class Tile  extends AbstractGraphNode
 	public void setUnit(Unit pUnit)
 	{
 		aUnit = pUnit; 
+		 setChanged();
 	}
 	public boolean isProtected(UnitType pType)
 	{
@@ -74,8 +82,11 @@ public class Tile  extends AbstractGraphNode
 	public void setVillageType(VillageType pVillageType)
 	{
 		aVillageType = pVillageType; 
+		 setChanged();
 	}
-	public VillageType getVillageType() {
+	
+	public VillageType getVillageType()
+	{
 		return aVillageType; 
 		
 	}

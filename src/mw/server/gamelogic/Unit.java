@@ -1,5 +1,7 @@
 package mw.server.gamelogic;
 
+import java.util.Observable;
+
 
 
 
@@ -7,7 +9,7 @@ package mw.server.gamelogic;
 /**
  * @author emilysager
  */
-public class Unit {
+public class Unit extends Observable {
     
 	private UnitType aUnitType;
     private ActionType aActionType;
@@ -15,34 +17,25 @@ public class Unit {
     {
     	aUnitType = pUnitType; 
     }
-    
-    /**
-     * 
-     * @param pUnitType 
-     * Updates the unitType
-     */
-    public void setUnitType(UnitType pUnitType) 
-    {
-    	aActionType = ActionType.READY; 
-      aUnitType = pUnitType; 
-    }
 
     /**
      * 
      * @return unitType
      */
-    public UnitType getUnitType() {
-       
+    public UnitType getUnitType() 
+    {
         return aUnitType;
     }
 
-    public ActionType getActionType() {
-       
+    public ActionType getActionType() 
+    {
         return aActionType;
     }
 
-    public void setActionType(ActionType pActionType) {
+    public void setActionType(ActionType pActionType) 
+    {
         aActionType = pActionType; 
+        setChanged();
     }
 
    

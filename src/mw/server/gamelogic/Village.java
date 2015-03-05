@@ -1,12 +1,10 @@
 package mw.server.gamelogic;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Observable;
 import java.util.Set;
-
-import javax.annotation.Generated;
 
 
 
@@ -14,7 +12,8 @@ import javax.annotation.Generated;
  * Village class definition.
  * @author emilysager, Abhishek Gupta
  */
-public class Village implements Cloneable, Serializable{
+public class Village extends Observable
+{
 
 	private int aGold; 
 	private int aWood; 
@@ -36,13 +35,14 @@ public class Village implements Cloneable, Serializable{
 		aGold = pGold;
 		aWood = pWood;
 	}
-<<<<<<< Updated upstream
+
 	
-	public Collection<GraphNode> getVillageNodes(){
+	public Collection<GraphNode> getVillageNodes()
+	{
 		return aVillageNodes;
 	}
 	
-=======
+
 	public Set<Tile> getTiles ()
 	{
 		Set<Tile> myTiles = new HashSet<Tile>(); 
@@ -52,7 +52,7 @@ public class Village implements Cloneable, Serializable{
 		}
 		return myTiles; 
 	}
->>>>>>> Stashed changes
+
 	private void generateGold()
 	{
 		int addGold = 0;  
@@ -62,10 +62,14 @@ public class Village implements Cloneable, Serializable{
 		}
 		aGold += addGold; 
 	}
+	
+	
+
 	public void upgradeVillage(VillageType pVillageType) throws NotEnoughIncomeException {
 		int upgradeCost = 0;
 		try {
 			upgradeCost = PriceCalculator.getUpgradePrice(pVillageType);
+			
 		} catch (CantUpgradeException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
@@ -73,12 +77,14 @@ public class Village implements Cloneable, Serializable{
 
 		if (aWood >= upgradeCost) {
 			try {
-				aVillageType = Logic.upgrade(aVillageType);
+				Logic.upgrade(aVillageType, this);
+				addOrSubtractWood(-upgradeCost);
+				
 			} catch (CantUpgradeException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			aWood -= upgradeCost;
+			
 		}
 		else 
 		{
@@ -126,7 +132,7 @@ public class Village implements Cloneable, Serializable{
 				} else if (lActionType.equals(ActionType.CHOPPINGTREE)) {
 					lTile.setStructureType(StructureType.NO_STRUCT);
 					lUnit.setActionType(ActionType.READY);
-					addWood(1);
+					addOrSubtractWood(1);
 				}
 			}
 			
@@ -139,18 +145,20 @@ public class Village implements Cloneable, Serializable{
 	 * Adds the specified amount of gold to the village, maybe used in the context of takeOver village
 	 * @param addGold
 	 */
-	public void addGold(int addGold) 
+	public void addOrSubtractGold(int addGold) 
 	{
-		aGold += addGold; 
+		aGold = aGold + addGold; 
+		setChanged();
 	}
 
 	/**
 	 * Adds the specified amount of wood to the village, maybe used in the context of takeOver village
 	 * @param addWood
 	 */
-	public void addWood(int addWood) 
+	public void addOrSubtractWood(int addWood) 
 	{
-		aWood += addWood; 
+		aWood = aWood + addWood;
+		setChanged();
 	}
 
 

@@ -191,9 +191,7 @@ public Game (ArrayList<Player> pPlayers, int mapID) throws TooManyPlayersExcepti
     	}
     	else    		
     	{
-    		startTile.setUnit(null);
-    		pDestinationTile.setUnit(crtUnit);
-    		Logic.updateGameState(startTile, pDestinationTile);  
+    		Logic.updateGameState(crtUnit, startTile, pDestinationTile, this, aMap);  
     	}
     	
     } 
