@@ -23,7 +23,7 @@ import mw.shared.SharedTile;
 public final class MainApplication {
 
 	private static final Player PLAYER = null;
-	public final static int DEFAULT_MAP_WIDTH = 12;
+	public final static int DEFAULT_MAP_WIDTH = 18;
 	public final static int DEFAULT_MAP_HEIGHT = 18;
 
 	

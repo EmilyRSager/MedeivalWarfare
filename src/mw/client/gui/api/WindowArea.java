@@ -55,7 +55,7 @@ public final class WindowArea {
 	 * @return the coordinate of the right border of this WindowArea
 	 */
 	public int getRightBorder() {
-		return coordX+width;
+		return coordX+width-1;
 	}
 
 	/**
@@ -71,7 +71,7 @@ public final class WindowArea {
 	 * @return the coordinate of the bottom border of this WindowArea
 	 */
 	public int getBottomBorder() {
-		return coordY+height;
+		return coordY+height-1;
 	}
 
 	/**
