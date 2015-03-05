@@ -3,6 +3,7 @@ package mw.server.gamelogic;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.annotation.Generated;
@@ -35,11 +36,23 @@ public class Village implements Cloneable, Serializable{
 		aGold = pGold;
 		aWood = pWood;
 	}
+<<<<<<< Updated upstream
 	
 	public Collection<GraphNode> getVillageNodes(){
 		return aVillageNodes;
 	}
 	
+=======
+	public Set<Tile> getTiles ()
+	{
+		Set<Tile> myTiles = new HashSet<Tile>(); 
+		for (GraphNode lGraphNode : aVillageNodes)
+		{
+			myTiles.add(lGraphNode.getTile()); 
+		}
+		return myTiles; 
+	}
+>>>>>>> Stashed changes
 	private void generateGold()
 	{
 		int addGold = 0;  

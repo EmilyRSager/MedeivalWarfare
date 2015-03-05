@@ -2,12 +2,9 @@ package mw.server.gamelogic;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Random;
-import java.util.Set;
 import java.util.Stack;
 
-import mw.client.model.Account;
-import mw.client.model.Coordinates;
+
 
 
 
@@ -18,7 +15,7 @@ import mw.client.model.Coordinates;
 public class Game extends RandomColorGenerator {
     
     private ArrayList<Player> aPlayers;
-    private  GameMap aMap;  
+    private GameMap aMap;  
     private Player aCurrentPlayer;
 
 /**
@@ -73,16 +70,16 @@ public Game (ArrayList<Player> pPlayers, int mapID) throws TooManyPlayersExcepti
      * @throws CantUpgradeException
      * returns the list of units you can upgrade to, doesn't actually hire a villager 
      */
-    public ArrayList<UnitType> wantToHireVillager(Tile pTile) throws CantUpgradeException
+    public ArrayList<UnitType> wantToHireVillager(Tile pTile) 
     {
     	ArrayList<UnitType> rArray = new ArrayList<UnitType>();
+    	
     	if (pTile.getUnit().equals(null))
     	{
     		rArray.add(UnitType.INFANTRY); 
     		rArray.add(UnitType.KNIGHT); 
     		rArray.add(UnitType.PEASANT); 
-    		rArray.add(UnitType.SOLDIER); 
-    				
+    		rArray.add(UnitType.SOLDIER); 			
     	}
     	else 
     	{
@@ -103,21 +100,54 @@ public Game (ArrayList<Player> pPlayers, int mapID) throws TooManyPlayersExcepti
     		}
     		if (pTile.getUnit().getUnitType().equals(UnitType.KNIGHT)) 
     		{
-    			throw new CantUpgradeException("Cannot upgrade from Knight."); 
+    			return null; 
     		}
     	}
     	return rArray; 
     }
  
-    public Collection<GameAction>  move(Tile startTile)
+    /**
+     * 
+     * @param startTile
+     * @return
+     */
+    public CollectionOfPossibleActions tileIsClicked(Tile startTile)
     {
-    	aMap.getPossibleMoves(startTile)
-    	Collection<Tile> possMoveTiles = PathFinder.getMovableTiles(startTile, aMap); 
+    	VillageType startVillageType = startTile.getVillageType(); 
+    	VillageType possUpgradeType = VillageType.NO_VILLAGE; 
+    	Unit pUnit = startTile.getUnit(); 
+    	Collection<Tile> possMoveTiles = aMap.getPossibleMoves(startTile);
+    	Collection<UnitType> possUpgrade = wantToHireVillager(startTile);
+    	Collection<ActionType> possActions = new ArrayList<ActionType>();
+    	
+    	if (startVillageType !=  null)
+    	{
+    		try
+			{
+				possUpgradeType = Logic.upgrade(startVillageType);
+			} 
+    		catch (CantUpgradeException e)
+			{
+				possUpgradeType = VillageType.NO_VILLAGE; 
+			} 
+    	}
+    	else 
+    	{
+    		possUpgradeType = VillageType.NO_VILLAGE;
+    	}
+    	if (pUnit!=null)
+    	{
+    		possActions = Logic.getPossibleActions(pUnit, startTile);
+    	}
+    	
+    	CollectionOfPossibleActions possible = new CollectionOfPossibleActions(possMoveTiles, possUpgrade, possActions, possUpgradeType);
+    	return possible; 
+    	
+    	
+    	
+    	
     }
-    public Collection<GameAction> getValidMoves(Tile startTile)
-    {
-    	return null; 
-    }
+   
 /**
  * 
  * @param pTile
@@ -127,17 +157,19 @@ public Game (ArrayList<Player> pPlayers, int mapID) throws TooManyPlayersExcepti
  * 
  */
     //TODO add gold deduction from village
-public void hireVillager(Tile pTile, UnitType pUnitType)
+    public void hireVillager(Tile pTile, UnitType pUnitType)
     {
     	Unit pUnit = new Unit(pUnitType); 
     	pTile.setUnit(pUnit);
     }
-    public void beginTurn() {
-        ArrayList<Village> aCrtVillages;
+    
+    public void beginTurn() 
+    {
+        Collection<Village> aCrtVillages;
         aCrtVillages = aCurrentPlayer.getVillages();
         for (Village lVillage : aCrtVillages) {
-            lVillage.updateTiles();
             lVillage.updateUnits();
+            lVillage.updateTiles();
         }
     }
     /**
@@ -150,13 +182,24 @@ public void hireVillager(Tile pTile, UnitType pUnitType)
 
     
    
-    public void moveUnit(Unit pUnit, Tile pDestinationTile) 
+    public void moveUnit(Tile startTile, Tile pDestinationTile) 
     {
-    	//TODO: required for the demo
+    	Unit crtUnit = startTile.getUnit(); 
+    	if (crtUnit == null) 
+    	{
+    		return; 
+    	}
+    	else    		
+    	{
+    		startTile.setUnit(null);
+    		pDestinationTile.setUnit(crtUnit);
+    		Logic.updateGameState(startTile, pDestinationTile);  
+    	}
+    	
     } 
     
 
-    public void takeoverTile(Tile dest, Village invadingVillage) 
+    public void takeoverTile(Tile startTile, Tile pDestinationTile) 
     {
       //TODO: for the demo at least have the neutral tile takeover ready 
         
@@ -181,12 +224,6 @@ public void hireVillager(Tile pTile, UnitType pUnitType)
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-    }
-
-    public void takeOverTile(Tile dest, Village invadingVillage)
-    {
-    	//TODO 
-      
     }
     }
 

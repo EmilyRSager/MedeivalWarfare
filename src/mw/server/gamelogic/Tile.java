@@ -25,6 +25,7 @@ public class Tile  extends AbstractGraphNode
     	aStructureType = pStructureType; 
     	myColor = Color.NEUTRAL;
     	aHasMeadow = false; 
+    	aVillageType = VillageType.NO_VILLAGE; 
     }
 
     public int [] getTileCoordinates()
@@ -70,6 +71,10 @@ public class Tile  extends AbstractGraphNode
 		return false; 
 	}
 
+	public void setVillageType(VillageType pVillageType)
+	{
+		aVillageType = pVillageType; 
+	}
 	public VillageType getVillageType() {
 		return aVillageType; 
 		
