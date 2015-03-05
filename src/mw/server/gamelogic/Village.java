@@ -106,6 +106,11 @@ public class Village implements Cloneable, Serializable{
 				lTile.setStructureType(StructureType.ROAD);
 				lUnit.setActionType(ActionType.READY);
 			}
+			else if(lActionType.equals(ActionType.CHOPPINGTREE)){
+				lTile.setStructureType(StructureType.NO_STRUCT);
+				lUnit.setActionType(ActionType.READY);
+				aWood = aWood +1 ;
+			}
 			
 		}
 	}
