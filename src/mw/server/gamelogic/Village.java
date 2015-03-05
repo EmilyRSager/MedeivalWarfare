@@ -90,7 +90,17 @@ public class Village implements Cloneable, Serializable{
 	 */
 	public void updateUnits()  
 	{
-		
+		for(GraphNode lNode: aVillageNodes){
+			Tile lTile = lNode.getTile();
+			Unit lUnit = lTile.getUnit();
+			ActionType lActionType = lUnit.getActionType();
+			
+			if (lActionType.equals(ActionType.CULTIVATING_END)) {
+				lTile.setHasMeadow(true);
+				lUnit.setActionType(ActionType.READY);
+			}
+			
+		}
 	}
 
 

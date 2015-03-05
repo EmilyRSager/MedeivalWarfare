@@ -8,7 +8,8 @@ public enum ActionType {
     BUILDINGROAD,
     CHOPPINGTREE,
     CULTIVATING_BEGIN,
-    CULTIVATING_END,
+    CULTIVATING_END,  //TODO: check if we need both cultivate end and cultivate beginning, based on that 
+    					//change the updateUnits function in Village.java
     READY,
     MOVED
 }
