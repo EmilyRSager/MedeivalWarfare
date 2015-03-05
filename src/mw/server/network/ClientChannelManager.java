@@ -55,7 +55,6 @@ public class ClientChannelManager {
 	}
 	
 	/**
-	 * 
 	 * @param pClientIDs
 	 * @return set of ClientChannels
 	 */

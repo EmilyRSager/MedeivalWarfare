@@ -1,21 +1,22 @@
+
+
 package mw.shared.servercommands;
 
 import mw.server.gamelogic.Game;
-import mw.server.gamelogic.Action;
-import mw.server.network.GameController;
+import mw.server.gamelogic.GameAction;
 import mw.server.network.GameManager;
 
 
-public class MoveCommand extends AbstractServerCommand {
-	private final String aType = "GameMoveCommand";
-	private Action aMove;
+public class GameActionCommand extends AbstractServerCommand {
+	private final String aType = "GameActionCommand";
+	private GameAction aGameAction;
 	
 	/**
 	 * Constructor
-	 * @param pMove
+	 * @param pGameAction
 	 */
-	public MoveCommand(Action pMove) {
-		aMove = pMove;
+	public GameActionCommand(GameAction pGameAction) {
+		aGameAction = pGameAction;
 	}
 	
 	@Override
@@ -26,6 +27,7 @@ public class MoveCommand extends AbstractServerCommand {
 	@Override
 	public void execute(Integer pClientID) {
 		Game lGame = GameManager.getInstance().getGame(pClientID);
-		GameController.newMove(lGame, aMove);
+		
+		//TODO call controller
 	}
 }
