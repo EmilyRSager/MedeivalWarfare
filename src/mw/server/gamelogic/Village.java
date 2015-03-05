@@ -70,7 +70,7 @@ public class Village implements Cloneable, Serializable{
 	}
 
 	/**
-	 * goes through the village and adds gold to the village based the number of meadows/tiles 
+	 * goes through the village and adds gold to the village based on the number of meadows/tiles 
 	 * replaces any Tombstones with trees
 	 */
 	public void updateTiles() 
@@ -84,17 +84,17 @@ public class Village implements Cloneable, Serializable{
 
 
 	/**
-	 * 
+	 * produces meadow/road on the tile and resets the unit to be free 
 	 */
 	public void updateUnits()  
 	{
-		//TODO 
+		//TODO    atg
 	}
 
 
 
 	/**
-	 * Adds the specified amount of gold to the village
+	 * Adds the specified amount of gold to the village, maybe used in the context of takeOver village
 	 * @param addGold
 	 */
 	public void addGold(int addGold) 
@@ -103,7 +103,7 @@ public class Village implements Cloneable, Serializable{
 	}
 
 	/**
-	 * Adds the specified amount of wood to the village
+	 * Adds the specified amount of wood to the village, maybe used in the context of takeOver village
 	 * @param addWood
 	 */
 	public void addWood(int addWood) 
@@ -115,18 +115,23 @@ public class Village implements Cloneable, Serializable{
 	/**
 	 * add a specified Tile to a village, then check if adding that tile caused 
 	 * two villages under the same player to become one Mega-Village
-	 * ONLY called either after removeTile from an enemy village, or on neutral land 
+	 * @precondition ONLY called either after removeTile from an enemy village, or on neutral land 
 	 * @param pTile
 	 */
 	public void addTile(GraphNode pGraphNode) 
 	{
-		aVillageNodes.remove(pGraphNode);
+		//TODO: needs to be implemented
 		//some type of search here to see if the village has fused
 	}
-
+	
+	/**
+	 * remove a tile from the village, would also take care that if this tile is removed causing a split into
+	 * smaller villages then it is handled here 
+	 * @param t = tile to be removed
+	 */
 	public void removeTile(Tile t) 
 	{
-		/* TODO: No message view defined */
+		/* TODO: needs to be implemented */
 	}
 
 	public VillageType getVillageType() 
@@ -138,7 +143,10 @@ public class Village implements Cloneable, Serializable{
 	 * checks if there's enough gold to pay all villagers 
 	 * if there is then village gold is reduced by the cost
 	 * otherwise a NotEnoughIncomeException is thrown and dealt with in the calling class 
-	 * @param goldCost
+	 * 
+	 * check in price_calculator class for an upkeep cost calculator method instead of using this
+	 * 
+	 * @param goldCost 
 	 * @throws NotEnoughIncomeException
 	 */
 	public void tryPayingGold(int goldCost) throws NotEnoughIncomeException {
