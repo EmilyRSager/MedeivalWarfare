@@ -87,6 +87,9 @@ public class Village implements Cloneable, Serializable{
 	 * produces meadow/road on the tile and resets the unit to be free 
 	 * assuming that the free state of the unit is "READY"
 	 * this function will do the update for all the units that are on tiles belonging to the village
+	 * 
+	 * NOTE: Currently only handles cultivating meadow and building road, could be expanded to handle
+	 * collecting wood as well 
 	 */
 	public void updateUnits()  
 	{
@@ -97,6 +100,10 @@ public class Village implements Cloneable, Serializable{
 			
 			if (lActionType.equals(ActionType.CULTIVATING_END)) {
 				lTile.setHasMeadow(true);
+				lUnit.setActionType(ActionType.READY);
+			}
+			else if(lActionType.equals(ActionType.BUILDINGROAD)){
+				lTile.setStructureType(StructureType.ROAD);
 				lUnit.setActionType(ActionType.READY);
 			}
 			
