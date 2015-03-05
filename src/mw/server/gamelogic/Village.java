@@ -109,7 +109,7 @@ public class Village implements Cloneable, Serializable{
 			else if(lActionType.equals(ActionType.CHOPPINGTREE)){
 				lTile.setStructureType(StructureType.NO_STRUCT);
 				lUnit.setActionType(ActionType.READY);
-				aWood = aWood +1 ;
+				addWood(1);
 			}
 			
 		}

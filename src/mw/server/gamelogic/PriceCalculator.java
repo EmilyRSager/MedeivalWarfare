@@ -33,4 +33,9 @@ public class PriceCalculator
 	}
 	
 	//TODO: atg   create a upkeepcost Calculator
+	
+	
+	public static int upkeepCostCalculator(Village pVillage){
+		return 0;
+	}
 }
