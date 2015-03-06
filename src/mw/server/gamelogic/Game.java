@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Stack;
 
+import sun.print.resources.serviceui;
+
 
 
 
@@ -56,6 +58,11 @@ public Game (Collection<Player> pPlayers, int mapID) throws TooManyPlayersExcept
         }
         aMap.partition(); 
     }
+
+	public Tile [][] getGameTiles()
+	{
+		return aMap.getObservables(); 
+	}
 
     public void upgradeUnit(Unit pUnit, UnitType newType) 
     {
@@ -209,7 +216,7 @@ public Game (Collection<Player> pPlayers, int mapID) throws TooManyPlayersExcept
     
     public void buildRoad(Tile pTile) 
     {
-    	Unit u = pTile.getUnit(); 
+    	Unit u = pTile.getUnit();  
         UnitType unitType;
         unitType = u.getUnitType();
         if (unitType == UnitType.PEASANT) 

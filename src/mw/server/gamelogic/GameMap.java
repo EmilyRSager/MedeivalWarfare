@@ -14,6 +14,7 @@ import java.util.Set;
 public class GameMap  { 
 	private static Graph graph; 
 	private GraphNode[][] aNodes; 
+	private Tile [][] aTiles; 
 	private static Random rTreesAndMeadows = new Random(); 
 	private Collection<Village> aVillages; 
 	private HashMap<Tile, GraphNode> TileToNodeHashMap = new HashMap<Tile, GraphNode>(); 
@@ -61,6 +62,10 @@ public class GameMap  {
 		aVillages = new HashSet<Village>();
 	}
 
+	public Tile [] [] getObservables ()
+	{
+		return aTiles; 
+	}
 	private void setUpMap(int height, int width)
 	{
 		for (int i = 0; i< height; i++ )
@@ -68,6 +73,7 @@ public class GameMap  {
 			for (int j =0; j <width; j++)
 			{
 				aNodes[i][j] = new GraphNode(new Tile(StructureType.NO_STRUCT, i, j)); 
+				aTiles[i][j] = aNodes[i][j].getTile(); 
 				TileToNodeHashMap.put(aNodes[i][j].getTile(), aNodes[i][j]);
 			}
 		}
