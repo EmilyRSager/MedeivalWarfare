@@ -20,18 +20,16 @@ public class GameController {
 	 * @param pColumn
 	 */
 	
-	public static Game newGame(Collection<Integer> pIDs) throws TooManyPlayersException 
+	public static Game newGame(int numPlayers) throws TooManyPlayersException 
 	{
-		Collection<Player> gamePlayers = new ArrayList<Player>();
 		
-		
-		for (Integer i: pIDs)
+		int i = 0; 
+		Collection<Player> gamePlayers = new ArrayList <Player> (); 
+		while ( i < numPlayers)
 		{
-			Player lPlayer = new Player(i); 
-			gamePlayers.add(lPlayer); 
+			Player lPlayer = new Player(); 
+			gamePlayers.add(lPlayer);
 		}
-		
-	
 		Game crtGame = new Game(gamePlayers, 0); 
 		return crtGame;
 	}
