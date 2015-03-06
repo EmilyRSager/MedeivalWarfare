@@ -3,9 +3,10 @@
  * Feb 25, 2015
  */
 
-package mw.server.network;
+package mw.server.network.mappers;
 
 import java.util.HashMap;
+import java.util.Set;
 
 import mw.server.gamelogic.Game;
 
@@ -13,14 +14,14 @@ import mw.server.gamelogic.Game;
  * @singleton
  * Maps ClientIDs to the games they're currently playing in. This may not be a good solution.
  */
-public class GameManager {
-	private static GameManager aGameManager;
+public class GameMapper {
+	private static GameMapper aGameManager;
 	private HashMap<Integer, Game> aGameMap;
 	
 	/**
 	 * Constructor
 	 */
-	private GameManager() {
+	private GameMapper() {
 		aGameMap = new HashMap<Integer, Game>();
 	}
 	
@@ -28,16 +29,27 @@ public class GameManager {
 	 * Singleton implementation
 	 * @return static GameMangager instance
 	 */
-	public static GameManager getInstance(){
+	public static GameMapper getInstance(){
 		if(aGameManager == null){
-			aGameManager = new GameManager();
+			aGameManager = new GameMapper();
 		}
 		
 		return aGameManager;
 	}
 	
 	/**
-	 * puts a mapping between pClientID and pGame in a HashMap
+	 * Puts a mapping between each ClientID in pClientIDs and pGame
+	 * @param pClientIDs
+	 * @param pGame
+	 */
+	public void putGame(Set<Integer> pClientIDs, Game pGame){
+		for(Integer pClientID : pClientIDs){
+			aGameMap.put(pClientID, pGame);
+		}
+	}
+	
+	/**
+	 * Puts a mapping between pClientID and pGame in a HashMap
 	 * @param pClientID
 	 * @param pGame
 	 */

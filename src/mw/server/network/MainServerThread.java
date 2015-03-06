@@ -9,6 +9,8 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
+import mw.server.network.mappers.ClientChannelMapper;
+
 /**
  * Listens to a port and sets up ClientChannels on unique sockets.
  */
@@ -34,7 +36,7 @@ public class MainServerThread extends Thread{
 				System.out.println("[Server] Connected to " + lClientSocket.getLocalAddress());
 				
 				ClientChannel lClientChannel = new ClientChannel(lClientSocket);
-				ClientChannelManager.getInstance().putChannel(lClientChannel); //NOT THREADSAFE	
+				ClientChannelMapper.getInstance().putChannel(lClientChannel); //NOT THREADSAFE	
 			}
 			
 		} catch (IOException e) {

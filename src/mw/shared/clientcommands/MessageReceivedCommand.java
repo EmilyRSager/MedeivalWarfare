@@ -5,6 +5,9 @@
 
 package mw.shared.clientcommands;
 
+/**
+ * Holds a Chat Message to be sent to clients.
+ */
 public class MessageReceivedCommand extends AbstractClientCommand {
 	private final String aType = "MessageReceivedCommand";
 	private String aMessage;

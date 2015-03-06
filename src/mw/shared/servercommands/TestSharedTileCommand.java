@@ -5,7 +5,7 @@
 
 package mw.shared.servercommands;
 
-import mw.server.network.AdminCommandHandler;
+import mw.server.network.controllers.AdminCommandController;
 import mw.shared.SharedColor;
 import mw.shared.SharedCoordinates;
 import mw.shared.SharedTile;
@@ -22,6 +22,6 @@ public class TestSharedTileCommand extends AbstractServerCommand {
 	@Override
 	public void execute(Integer pPlayerID) {
 		SharedTile lSharedTile = new SharedTile(SharedColor.GREY, new SharedCoordinates(0, 0), Terrain.GRASS, false);
-		AdminCommandHandler.getInstance().testSendSharedTileCommand(lSharedTile);
+		AdminCommandController.getInstance().testSendSharedTileCommand(lSharedTile);
 	}
 }

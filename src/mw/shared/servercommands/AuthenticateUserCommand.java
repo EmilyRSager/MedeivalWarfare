@@ -6,8 +6,8 @@
 package mw.shared.servercommands;
 
 import mw.server.admin.Account;
-import mw.server.admin.AccountManager;
-import mw.server.network.AdminCommandHandler;
+import mw.server.mappings.AccountManager;
+import mw.server.network.controllers.AdminCommandHandler;
 
 public class AuthenticateUserCommand extends AbstractServerCommand {
 	private final String aType = "AuthenticateUserCommand";
@@ -28,8 +28,6 @@ public class AuthenticateUserCommand extends AbstractServerCommand {
 	public boolean isValid(Integer pClientID) {
 		/*
 		 * Need to load from a database at server startup. This might need to be a database query.
-		 * Also, it can not be a query by ClientID, it needs to be by username, the point 
-		 * of this class is to connect ClientIDs to Accounts.
 		 */
 		Account lAccount = AccountDatabase.getInstance().getAccount(aUsername);
 		if(lAccount.hasCredentials(aPassword)){
@@ -41,10 +39,10 @@ public class AuthenticateUserCommand extends AbstractServerCommand {
 
 	@Override
 	public void execute(Integer pClientID) {
-		AccountManager.getInstance().putAccounts(pClientID,
+		AccountMapper.getInstance().putAccounts(pClientID,
 				AccountDatabase.getInstance().getAccount(aUsername);
 		
-		AdminCommandHandler.getInstance().sendCommand(
+		AdminCommandController.getInstance().sendCommand(
 				new AccountVerifiedCommand());
 	}
 

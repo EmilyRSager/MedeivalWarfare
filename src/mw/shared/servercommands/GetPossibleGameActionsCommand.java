@@ -1,7 +1,7 @@
 package mw.shared.servercommands;
 
-import mw.server.network.GameManager;
-import mw.server.network.GetPossibleActionsController;
+import mw.server.network.controllers.GetPossibleActionsController;
+import mw.server.network.mappers.GameMapper;
 import mw.shared.SharedCoordinates;
 
 public class GetPossibleActionsCommand extends AbstractServerCommand {
@@ -30,7 +30,7 @@ public class GetPossibleActionsCommand extends AbstractServerCommand {
 	public void execute(Integer pClientID) {
 		GetPossibleActionsController.getPossibleActions(
 				pClientID,
-				GameManager.getInstance().getGame(pClientID),
+				GameMapper.getInstance().getGame(pClientID),
 				aSharedCoordinates
 				);
 		

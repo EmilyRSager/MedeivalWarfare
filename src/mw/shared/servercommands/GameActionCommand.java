@@ -4,7 +4,7 @@ package mw.shared.servercommands;
 
 import mw.server.gamelogic.Game;
 import mw.server.gamelogic.GameAction;
-import mw.server.network.GameManager;
+import mw.server.network.mappers.GameMapper;
 
 
 public class GameActionCommand extends AbstractServerCommand {
@@ -26,7 +26,7 @@ public class GameActionCommand extends AbstractServerCommand {
 
 	@Override
 	public void execute(Integer pClientID) {
-		Game lGame = GameManager.getInstance().getGame(pClientID);
+		Game lGame = GameMapper.getInstance().getGame(pClientID);
 		
 		//TODO call controller
 	}

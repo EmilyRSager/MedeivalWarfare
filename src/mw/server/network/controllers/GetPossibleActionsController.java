@@ -3,7 +3,7 @@
  * March 4, 2015
  */
 
-package mw.server.network;
+package mw.server.network.controllers;
 
 import mw.server.gamelogic.Game;
 import mw.server.gamelogic.GameController;

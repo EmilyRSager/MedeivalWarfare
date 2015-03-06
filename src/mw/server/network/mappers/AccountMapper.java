@@ -3,27 +3,29 @@
  * Feb 23, 2015
  */
 
-package mw.server.admin;
+package mw.server.network.mappers;
 
 import java.util.HashMap;
+
+import mw.server.admin.Account;
 
 /**
  * Provides maintaining a set of Accounts and mapping ClientIDs to those accounts.
  */
-public class AccountManager {
+public class AccountMapper {
 	private HashMap<Integer, Account> aAccountMap;
-	private static AccountManager aAccountManager;
+	private static AccountMapper aAccountManager;
 	
 	/**
 	 * Constructor
 	 */
-	private AccountManager(){
+	private AccountMapper(){
 		aAccountMap = new HashMap<Integer, Account>();
 	}
 	
-	public static AccountManager getInstance(){
+	public static AccountMapper getInstance(){
 		if(aAccountManager == null){
-			aAccountManager = new AccountManager();
+			aAccountManager = new AccountMapper();
 		}
 		
 		return aAccountManager;

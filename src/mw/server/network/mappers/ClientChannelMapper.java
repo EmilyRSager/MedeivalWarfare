@@ -2,23 +2,25 @@
  * @author Charlie Bloomfield
  * Feb 20, 2015
  */
-package mw.server.network;
+package mw.server.network.mappers;
 
 import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
+import mw.server.network.ClientChannel;
+
 /**
  * Provides a Globally accessible mapping between ClientIDs and ClientChannel classes.
  * Different CommandHandlers will use this class to find Client's that need to receive messages,
  * based on their IDs.
  */
-public class ClientChannelManager {
-	private static ClientChannelManager aClientChannelManagerInstance;
+public class ClientChannelMapper {
+	private static ClientChannelMapper aClientChannelManagerInstance;
 	private ConcurrentMap<Integer, ClientChannel> aClientChannelMap;
 	
-	private ClientChannelManager(){
+	private ClientChannelMapper(){
 		aClientChannelMap = new ConcurrentHashMap<Integer, ClientChannel>();
 	}
 	
@@ -27,9 +29,9 @@ public class ClientChannelManager {
 	 * @param none
 	 * @return the static ClientChannelManager instance
 	 */
-	public static ClientChannelManager getInstance(){
+	public static ClientChannelMapper getInstance(){
 		if(aClientChannelManagerInstance == null){
-			aClientChannelManagerInstance = new ClientChannelManager();
+			aClientChannelManagerInstance = new ClientChannelMapper();
 		}
 		
 		return aClientChannelManagerInstance;

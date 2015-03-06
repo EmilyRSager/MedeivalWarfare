@@ -12,9 +12,8 @@ import mw.shared.servercommands.AbstractServerCommand;
 
 /** 
  * @singleton
- * This class handles AbstractGameMessages. It does so by creating a thread which waits for 
- * AbstractServerCommands to become available in a BlockingQueue. It calls the verify method on each
- * AbstractServerCommand, and if valid, calls execute on each message.
+ * Creates a thread which waits for AbstractServerCommands to become available in a BlockingQueue.
+ * It calls the verify method on each AbstractServerCommand, and if valid, calls execute on each message.
  * 
  * TODO
  * If the AbstractServerCommand is not valid, it must initiate forwarding a message to the
@@ -78,7 +77,7 @@ public class ServerCommandHandler {
 					int lClientID = lServerCommandWrapper.getClientID();
 					
 					if(! lServerCommand.isValid(lClientID)){
-						//TODO how to deal with recovery?
+						
 					}
 					
 					else{
