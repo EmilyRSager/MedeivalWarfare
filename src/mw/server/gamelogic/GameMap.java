@@ -1,12 +1,11 @@
 package mw.server.gamelogic;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
 
-import com.sun.xml.internal.bind.v2.runtime.unmarshaller.Receiver;
+
 
 /**
  * GameMap class definition.
@@ -85,7 +84,7 @@ public class GameMap  {
 	/* Randomly generates trees with (20%) probability
 	 * Randomly generates meadows with (10%) probability
 	 */
-	private void randomlyGenerateTreesAndMeadows(Tile lTile) 
+	private void randomlyGenerateTreesAndMeadows(Tile lTile)  
 	{
 		//TODO: think of a fairer distribution of villages 
 		int k = rTreesAndMeadows.nextInt(9);
@@ -100,7 +99,12 @@ public class GameMap  {
 			lTile.setHasMeadow(true); 
 		}
 	}
-	
+	/**
+	 * Returns the set of tiles a unit can move to
+	 * May return an empty set 
+	 * @param startTile
+	 * @return
+	 */
 	public Set<Tile> getPossibleMoves(Tile startTile)
 	{
 		GraphNode temp = TileToNodeHashMap.get(startTile); 
@@ -118,7 +122,12 @@ public class GameMap  {
 		return PathFinder.getMovableTiles(start, graph); 
 	}
 
-	public Set<Tile> getVillage (Tile crt) 
+	/**
+	 * Returns the set of tiles that make up a village
+	 * @param crt
+	 * @return
+	 */
+	public Village getVillage (Tile crt) 
 	{
 		GraphNode temp = TileToNodeHashMap.get(crt); 
 		Set<GraphNode> villageNodes = getVillage(temp);
@@ -127,8 +136,18 @@ public class GameMap  {
 		{
 			toReturn.add(lGraphNode.getTile());
 		}
-		return toReturn; 
+		for (Village lVillage :aVillages)
+		{
+			Set<Tile> crtSet = lVillage.getTiles(); 
+			if (crtSet.contains(crt)) 
+			{
+				return lVillage; 
+			}
+		}
+		return null;
 	}
+	
+
 	private Set<GraphNode> getVillage(GraphNode crt)
 	{
 		return PathFinder.getVillage(crt, graph); 

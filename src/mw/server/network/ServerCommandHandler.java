@@ -65,11 +65,7 @@ public class ServerCommandHandler {
 			e.printStackTrace();
 		}
 	}
-	
-	public synchronized void testHandle(String pTestMessage){
-		ClientChannelManager.getInstance().getChannel(0).testSendString(pTestMessage); //TEST! Send message back to client 0 through pipeline
-	}
-	
+
 	/*
 	 * Nested Thread class ServerCommandHandlerThread handles all ServerCommands, for all games.
 	 */

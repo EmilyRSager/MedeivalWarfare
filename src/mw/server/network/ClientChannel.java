@@ -53,15 +53,6 @@ public class ClientChannel extends Thread{
 			e.printStackTrace();
 		}
 	}
-
-	/**
-	 * TESTING PURPOSES ONLY!!! Forwards pTestMesssage to writer thread
-	 * @param pMessage
-	 * @return void
-	 */
-	public void testSendString(String pTestMessage){
-		aWriterThread.testSendString(pTestMessage);
-	}
 	
 	/**
 	 * Forwards pClientMessage to the writer thread dedicated to writing messages

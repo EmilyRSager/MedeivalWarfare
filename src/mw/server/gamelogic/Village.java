@@ -1,33 +1,38 @@
 package mw.server.gamelogic;
 
-import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.Observable;
+import java.util.Observer;
 import java.util.Set;
-
-import javax.annotation.Generated;
 
 
 
 /**
  * Village class definition.
- * @author emilysager
+ * @author emilysager, Abhishek Gupta
  */
-public class Village implements Cloneable, Serializable{
+public class Village extends Observable
+{
 
 	private int aGold; 
 	private int aWood; 
-	private int aUpkeepCost;
 	private VillageType aVillageType; 
-	private Collection<GraphNode> aVillageNodes; 
+	private Collection<GraphNode> aVillageNodes;
+	private Collection<Observer> aObservers; 
 
 
+	@Override 
+	public synchronized void addObserver(Observer o) 
+	{
+		aObservers.add(o);
+	}
+	
 	public Village(Set<GraphNode> villageSet) 
 	{
 		aVillageNodes = villageSet; 
 		aGold = 0; 
 		aWood = 0; 
-
 	}
 	public Village(Set <GraphNode> villageSet, int pGold, int pWood)
 	{
@@ -35,7 +40,24 @@ public class Village implements Cloneable, Serializable{
 		aGold = pGold;
 		aWood = pWood;
 	}
+
 	
+	public Collection<GraphNode> getVillageNodes()
+	{
+		return aVillageNodes;
+	}
+	
+
+	public Set<Tile> getTiles ()
+	{
+		Set<Tile> myTiles = new HashSet<Tile>(); 
+		for (GraphNode lGraphNode : aVillageNodes)
+		{
+			myTiles.add(lGraphNode.getTile()); 
+		}
+		return myTiles; 
+	}
+
 	private void generateGold()
 	{
 		int addGold = 0;  
@@ -43,12 +65,17 @@ public class Village implements Cloneable, Serializable{
 		{ 
 			addGold +=Logic.getGoldGenerated(lGraphNode);  
 		}
-		aGold += addGold; 
+		addOrSubtractGold(addGold);
+		
 	}
-	public void upgradeVillage(VillageType pVillageType) throws NotEnoughIncomeException {
+	
+	
+
+public void upgradeVillage(VillageType pVillageType) throws NotEnoughIncomeException {
 		int upgradeCost = 0;
 		try {
 			upgradeCost = PriceCalculator.getUpgradePrice(pVillageType);
+			
 		} catch (CantUpgradeException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
@@ -56,17 +83,20 @@ public class Village implements Cloneable, Serializable{
 
 		if (aWood >= upgradeCost) {
 			try {
-				aVillageType = Logic.upgrade(aVillageType);
+				Logic.upgrade(aVillageType, this);
+				addOrSubtractWood(-upgradeCost);
+				
 			} catch (CantUpgradeException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			aWood -= upgradeCost;
+			
 		}
 		else 
 		{
 			throw new NotEnoughIncomeException(aWood - upgradeCost); 
 		}
+
 	}
 
 	/**
@@ -80,15 +110,42 @@ public class Village implements Cloneable, Serializable{
 			Logic.clearTombstone(lGraphNode);
 		}
 		generateGold();
+		notifyObservers(); 
 	}
 
 
 	/**
 	 * produces meadow/road on the tile and resets the unit to be free 
+	 * assuming that the free state of the unit is "READY"
+	 * this function will do the update for all the units that are on tiles belonging to the village
+	 * 
+	 * NOTE: Currently only handles cultivating meadow and building road, could be expanded to handle
+	 * collecting wood as well 
 	 */
 	public void updateUnits()  
 	{
-		//TODO    atg
+		for(GraphNode lNode: aVillageNodes){
+			Tile lTile = lNode.getTile();
+			Unit lUnit = lTile.getUnit();
+			
+			
+			if (lUnit!=null) {
+				ActionType lActionType = lUnit.getActionType();
+				if (lActionType.equals(ActionType.CULTIVATING_END)) {
+					lTile.setHasMeadow(true);
+					lUnit.setActionType(ActionType.READY);
+				} else if (lActionType.equals(ActionType.BUILDINGROAD)) {
+					lTile.setStructureType(StructureType.ROAD);
+					lUnit.setActionType(ActionType.READY);
+				} else if (lActionType.equals(ActionType.CHOPPINGTREE)) {
+					lTile.setStructureType(StructureType.NO_STRUCT);
+					lUnit.setActionType(ActionType.READY);
+					addOrSubtractWood(1);
+				}
+			}
+			
+		}
+
 	}
 
 
@@ -97,18 +154,19 @@ public class Village implements Cloneable, Serializable{
 	 * Adds the specified amount of gold to the village, maybe used in the context of takeOver village
 	 * @param addGold
 	 */
-	public void addGold(int addGold) 
+	public void addOrSubtractGold(int addGold) 
 	{
-		aGold += addGold; 
+		aGold = aGold + addGold; 
+	
 	}
 
 	/**
 	 * Adds the specified amount of wood to the village, maybe used in the context of takeOver village
 	 * @param addWood
 	 */
-	public void addWood(int addWood) 
+	public void addOrSubtractWood(int addWood) 
 	{
-		aWood += addWood; 
+		aWood = aWood + addWood;
 	}
 
 
@@ -118,7 +176,7 @@ public class Village implements Cloneable, Serializable{
 	 * @precondition ONLY called either after removeTile from an enemy village, or on neutral land 
 	 * @param pTile
 	 */
-	public void addTile(GraphNode pGraphNode) 
+	public void addTile(Tile pTile) 
 	{
 		//TODO: needs to be implemented
 		//some type of search here to see if the village has fused
@@ -129,7 +187,7 @@ public class Village implements Cloneable, Serializable{
 	 * smaller villages then it is handled here 
 	 * @param t = tile to be removed
 	 */
-	public void removeTile(Tile t) 
+	public void removeTile(Tile pTile) 
 	{
 		/* TODO: needs to be implemented */
 	}
@@ -149,22 +207,18 @@ public class Village implements Cloneable, Serializable{
 	 * @param goldCost 
 	 * @throws NotEnoughIncomeException
 	 */
-	public void tryPayingGold(int goldCost) throws NotEnoughIncomeException {
+	public void tryPayingGold(int goldCost) throws NotEnoughIncomeException
+	{
+		
 		if (aGold >= goldCost)
 		{
-			aGold = aGold - goldCost; 
+			addOrSubtractGold(-goldCost);
 		}
 		else 
 		{
 			throw new NotEnoughIncomeException((aGold-goldCost)); 
 		}
 	}
-
-	public Tile getCapital() {
-		/* TODO: No message view defined */
-		return null;
-	}
-
 	/**
 	 * getter for Village Gold
 	 * @return
