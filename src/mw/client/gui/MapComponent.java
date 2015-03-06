@@ -107,7 +107,12 @@ public final class MapComponent extends AbstractWindowComponent implements
 	@Override
 	public MinuetoImage getImage()
 	{
-		return mapDisp.getImage().crop(xOffset, yOffset, area.getWidth(), area.getHeight());
+		final int mapWidth = mapDisp.getWidth();
+		final int mapHeight = mapDisp.getHeight();
+		if (mapWidth > getWidth() && mapHeight > getHeight())
+			return mapDisp.getImage().crop(xOffset, yOffset, area.getWidth(), area.getHeight());
+		else
+			return mapDisp.getImage();
 	}
 
 
