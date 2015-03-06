@@ -13,6 +13,11 @@ public class Game extends RandomColorGenerator {
 	private Collection<Player> aPlayers;
 	private GameMap aMap;  
 	private Player aCurrentPlayer;
+	
+	public void printTiles()
+	{
+		aMap.printTiles(); 
+	}
 
 	/**
 	 * 
@@ -32,11 +37,14 @@ public class Game extends RandomColorGenerator {
 		myColors.push(Color.RED); 
 		myColors.push(Color.YELLOW); 
 
+		Collection <Color> availableColors = new ArrayList<Color>(); 
 		for (Player lPlayer : aPlayers) //don't need to randomly assign colors because players come in randomly
 		{
 			if (!myColors.isEmpty())
 			{
-				lPlayer.assignColor(myColors.pop());
+				lPlayer.assignColor(myColors.peek());
+				
+				availableColors.add(myColors.pop());
 			}
 			else
 			{
@@ -44,7 +52,7 @@ public class Game extends RandomColorGenerator {
 			}
 		}
 		if (mapID == 0) {
-			aMap = new GameMap(30, 10); 
+			aMap = new GameMap(30, 10, availableColors); 
 		} 
 		else { //Query our database of maps 
 
