@@ -1,5 +1,7 @@
 package mw.client.gui.api;
 
+import java.util.List;
+
 import mw.client.gui.Hexagon;
 import mw.client.gui.Hexagon.RelativePosition;
 
@@ -43,6 +45,21 @@ public final class ExtendedMinuetoImage /*extends MinuetoImage */{
 			newImg.drawLine(color, width-1-i, i, width-1-i, height-1-i);
 			newImg.drawLine(color, i, i, width-1-i, i);
 		}
+		return newImg;
+	}
+	
+	public static MinuetoImage drawHexBorder(MinuetoImage img, MinuetoColor color, Hexagon hex)
+	{
+		MinuetoImage newImg = (MinuetoImage) img.clone();
+		
+		final List<Hexagon.Point> vertices = hex.getVertices();
+		newImg.drawLine(color, vertices.get(0).x, vertices.get(0).y, vertices.get(1).x, vertices.get(1).y);
+		newImg.drawLine(color, vertices.get(1).x, vertices.get(1).y, vertices.get(2).x, vertices.get(2).y);
+		newImg.drawLine(color, vertices.get(2).x, vertices.get(2).y, vertices.get(3).x, vertices.get(3).y);
+		newImg.drawLine(color, vertices.get(3).x, vertices.get(3).y, vertices.get(4).x, vertices.get(4).y);
+		newImg.drawLine(color, vertices.get(4).x, vertices.get(4).y, vertices.get(5).x, vertices.get(5).y);
+		newImg.drawLine(color, vertices.get(5).x, vertices.get(5).y, vertices.get(0).x, vertices.get(0).y);
+		
 		return newImg;
 	}
 	

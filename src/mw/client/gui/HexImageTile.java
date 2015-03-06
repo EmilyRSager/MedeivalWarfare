@@ -12,8 +12,8 @@ import mw.client.gui.api.ExtendedMinuetoImage;
 
 public class HexImageTile extends Observable implements Displayable {
 	
-	public static final int DEFAULT_TILE_WIDTH = 70;
-	public static final int DEFAULT_TILE_HEIGHT = 70;
+	public static final int DEFAULT_TILE_WIDTH = 50;
+	public static final int DEFAULT_TILE_HEIGHT = 50;
 	
 	private final Hexagon hex;
 	private MinuetoImage image;
@@ -59,7 +59,7 @@ public class HexImageTile extends Observable implements Displayable {
 	
 	public void setImage(MinuetoImage newImage)
 	{
-		image = newImage;//ExtendedMinuetoImage.drawBorder(newImage, ExtendedMinuetoColor.GREY);
+		image = ExtendedMinuetoImage.drawHexBorder(newImage, ExtendedMinuetoColor.GREY, hex);
 	}
 
 	/* ==========================

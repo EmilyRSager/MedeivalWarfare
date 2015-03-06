@@ -1,6 +1,9 @@
 package mw.client.gui;
 
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.minueto.MinuetoColor;
 import org.minueto.image.MinuetoImage;
 import org.minueto.window.MinuetoFrame;
@@ -20,8 +23,8 @@ public class Hexagon {
 	
 	public static final MinuetoColor POINTS_COLOR = MinuetoColor.RED;
 	
-	private class Point {
-		public int x,y;
+	public static class Point {
+		public final int x,y;
 		public Point(int x, int y) {
 			this.x = x;
 			this.y = y;
@@ -80,6 +83,17 @@ public class Hexagon {
 	
 	public int getHexOffset() {
 		return offset;
+	}
+	
+	public List<Point> getVertices() {
+		ArrayList<Point> points = new ArrayList<Hexagon.Point>();
+		points.add(a);
+		points.add(b);
+		points.add(c);
+		points.add(d);
+		points.add(e);
+		points.add(f);
+		return points;
 	}
 	
 	/* ==========================
