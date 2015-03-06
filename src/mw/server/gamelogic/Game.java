@@ -62,6 +62,7 @@ public class Game extends RandomColorGenerator {
 	{
 		Unit pUnit = pTile.getUnit();
 		ArrayList<UnitType> possUpgrades = wantToHireVillager(pTile);
+		//TODO
 		
 		
 	}
@@ -230,6 +231,10 @@ public class Game extends RandomColorGenerator {
 			 // TODO Auto-generated catch block
 			 e.printStackTrace();
 		 }
+	 }
+	 public GameMap getGameMap()
+	 {
+		 return aMap; 
 	 }
 	 public Collection<Player> getPlayers() 
 	 {

@@ -9,7 +9,6 @@ public class CollectionOfPossibleActions
 	private Collection <ActionType>  aPossibleActions; 
 	VillageType aUpgradableVillage;
 	
-	
 	public CollectionOfPossibleActions (Collection<Tile> pMovable, Collection<UnitType> pUnitTypes, Collection<ActionType> pActionTypes, VillageType pVillageType)
 	{
 		aMovable = pMovable; 

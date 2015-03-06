@@ -62,7 +62,7 @@ public class GameMap  {
 		aVillages = new HashSet<Village>();
 	}
 
-	public Tile [] [] getObservables ()
+	public Tile [][] getObservables ()
 	{
 		return aTiles; 
 	}
