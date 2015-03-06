@@ -15,7 +15,7 @@ import mw.client.gui.api.MouseClickHandler;
 import mw.client.gui.api.WindowArea;
 import mw.client.model.ModelTile;
 import mw.shared.SharedColor;
-import mw.utilities.MultiArrayIterable;
+import mw.util.MultiArrayIterable;
 
 public class HexMapDisplay implements Displayable, Clickeable {
 
