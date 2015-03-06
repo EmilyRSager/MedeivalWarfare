@@ -14,7 +14,7 @@ import java.util.Stack;
  */
 public class Game extends RandomColorGenerator {
     
-    private ArrayList<Player> aPlayers;
+    private Collection<Player> aPlayers;
     private GameMap aMap;  
     private Player aCurrentPlayer;
 
@@ -26,12 +26,12 @@ public class Game extends RandomColorGenerator {
  * Game Constructor -- either randomly generates a new map or it Queries the database for a give map ID 
  * @throws TooManyPlayersException 
  */
-public Game (ArrayList<Player> pPlayers, int mapID) throws TooManyPlayersException {
+public Game (Collection<Player> pPlayers, int mapID) throws TooManyPlayersException {
     
 		
 	aPlayers  = pPlayers;
     
-     Stack <Color >myColors = new Stack <Color>(); 
+     Stack <Color> myColors = new Stack <Color>(); 
      myColors.push(Color.BLUE); 
      myColors.push(Color.GREEN);
      myColors.push(Color.RED); 
@@ -143,7 +143,7 @@ public Game (ArrayList<Player> pPlayers, int mapID) throws TooManyPlayersExcepti
     		possActions = Logic.getPossibleActions(pUnit, startTile);
     	}
     	
-    	CollectionOfPossibleActions possible = new CollectionOfPossibleActions(possMoveTiles, possUnitUpgrade, possActions, possUpgradeType);
+    	CollectionOfPossibleActions possible = new CollectionOfPossibleActions(possMoveTiles, possUnitUpgrade, possActions, possVillageUpgradeType);
     	return possible; 
     	
     	
@@ -208,8 +208,9 @@ public Game (ArrayList<Player> pPlayers, int mapID) throws TooManyPlayersExcepti
     }
 
     
-    public void buildRoad(Unit u) 
+    public void buildRoad(Tile pTile) 
     {
+    	Unit u = pTile.getUnit(); 
         UnitType unitType;
         unitType = u.getUnitType();
         if (unitType == UnitType.PEASANT) 

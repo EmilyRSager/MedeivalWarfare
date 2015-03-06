@@ -6,13 +6,13 @@
 package mw.server.network;
 
 import mw.server.gamelogic.Game;
-import mw.server.gamelogic.GameActionController;
+import mw.server.gamelogic.GameController;
 import mw.shared.SharedCoordinates;
 
 public class GetPossibleActionsController {
 	public static void getPossibleActions(Integer pClientID, Game pGame, SharedCoordinates pSharedCoordinates){
 		CollectionOfPossibleActions lPossibleGameActions = 
-				GameActionController.getPossibleGameActions(
+				GameController.getPossibleGameActions(
 						pGame, 
 						pSharedCoordinates.getX(), 
 						pSharedCoordinates.getY()
