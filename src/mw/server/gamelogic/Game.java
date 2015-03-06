@@ -52,7 +52,7 @@ public class Game extends RandomColorGenerator {
 			}
 		}
 		if (mapID == 0) {
-			aMap = new GameMap(30, 10, availableColors); 
+			aMap = new GameMap(12, 12, availableColors); 
 		} 
 		else { //Query our database of maps 
 
