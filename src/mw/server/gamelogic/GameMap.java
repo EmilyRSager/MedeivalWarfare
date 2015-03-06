@@ -1,14 +1,11 @@
 package mw.server.gamelogic;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
 
-import sun.security.action.GetBooleanAction;
 
-import com.sun.xml.internal.bind.v2.runtime.unmarshaller.Receiver;
 
 /**
  * GameMap class definition.
@@ -87,7 +84,7 @@ public class GameMap  {
 	/* Randomly generates trees with (20%) probability
 	 * Randomly generates meadows with (10%) probability
 	 */
-	private void randomlyGenerateTreesAndMeadows(Tile lTile) 
+	private void randomlyGenerateTreesAndMeadows(Tile lTile)  
 	{
 		//TODO: think of a fairer distribution of villages 
 		int k = rTreesAndMeadows.nextInt(9);

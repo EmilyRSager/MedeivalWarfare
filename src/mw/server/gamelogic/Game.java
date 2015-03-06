@@ -29,8 +29,7 @@ public class Game extends RandomColorGenerator {
 public Game (Collection<Player> pPlayers, int mapID) throws TooManyPlayersException {
     
 		
-	aPlayers  = pPlayers;
-    
+	 aPlayers  = pPlayers;
      Stack <Color> myColors = new Stack <Color>(); 
      myColors.push(Color.BLUE); 
      myColors.push(Color.GREEN);
@@ -181,7 +180,7 @@ public Game (Collection<Player> pPlayers, int mapID) throws TooManyPlayersExcept
      */
     public void beginRound()
     {
-    	//TODO 
+    	//TODO ABISHEK PLEASE DO THIS
     }
 
     

@@ -33,7 +33,6 @@ public class Village extends Observable
 		aVillageNodes = villageSet; 
 		aGold = 0; 
 		aWood = 0; 
-
 	}
 	public Village(Set <GraphNode> villageSet, int pGold, int pWood)
 	{
@@ -67,7 +66,7 @@ public class Village extends Observable
 			addGold +=Logic.getGoldGenerated(lGraphNode);  
 		}
 		addOrSubtractGold(addGold);
-		notifyObservers();
+		
 	}
 	
 	
@@ -97,7 +96,7 @@ public void upgradeVillage(VillageType pVillageType) throws NotEnoughIncomeExcep
 		{
 			throw new NotEnoughIncomeException(aWood - upgradeCost); 
 		}
-		notifyObservers();
+
 	}
 
 	/**
@@ -146,7 +145,7 @@ public void upgradeVillage(VillageType pVillageType) throws NotEnoughIncomeExcep
 			}
 			
 		}
-		notifyObservers();
+
 	}
 
 
@@ -158,7 +157,6 @@ public void upgradeVillage(VillageType pVillageType) throws NotEnoughIncomeExcep
 	public void addOrSubtractGold(int addGold) 
 	{
 		aGold = aGold + addGold; 
-		setChanged();
 	
 	}
 
@@ -169,7 +167,6 @@ public void upgradeVillage(VillageType pVillageType) throws NotEnoughIncomeExcep
 	public void addOrSubtractWood(int addWood) 
 	{
 		aWood = aWood + addWood;
-		setChanged();
 	}
 
 
@@ -183,7 +180,6 @@ public void upgradeVillage(VillageType pVillageType) throws NotEnoughIncomeExcep
 	{
 		//TODO: needs to be implemented
 		//some type of search here to see if the village has fused
-		notifyObservers();
 	}
 	
 	/**
@@ -194,7 +190,6 @@ public void upgradeVillage(VillageType pVillageType) throws NotEnoughIncomeExcep
 	public void removeTile(Tile pTile) 
 	{
 		/* TODO: needs to be implemented */
-		notifyObservers();
 	}
 
 	public VillageType getVillageType() 

@@ -35,6 +35,7 @@ public class GameController {
 		Game crtGame = new Game(gamePlayers, 0); 
 		return crtGame;
 	}
+	
 	public static Collection<CollectionOfPossibleActions> getPossibleGameActions(Game pGame, int pRow, int pColumn)
 	{
 		//TODO
