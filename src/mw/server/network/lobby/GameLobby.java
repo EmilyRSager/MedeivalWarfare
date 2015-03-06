@@ -3,7 +3,7 @@
  * Mar 5, 2015
  */
 
-package mw.server.lobby;
+package mw.server.network.lobby;
 
 import java.util.HashSet;
 import java.util.LinkedList;

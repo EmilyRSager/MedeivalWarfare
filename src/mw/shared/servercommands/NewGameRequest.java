@@ -5,7 +5,7 @@
 
 package mw.shared.servercommands;
 
-import mw.server.lobby.GameRequestController;
+import mw.server.network.lobby.GameRequestController;
 
 
 /**
