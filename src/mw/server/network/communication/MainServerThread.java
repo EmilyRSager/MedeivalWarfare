@@ -44,8 +44,4 @@ public class MainServerThread extends Thread{
 			e.printStackTrace();
 		}
 	}
-	
-	public static void main(String[] args) {
-		new MainServerThread().start();
-	}
 }
