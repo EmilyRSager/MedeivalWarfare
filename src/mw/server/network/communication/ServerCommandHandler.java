@@ -3,7 +3,7 @@
  * Feb 20, 2015
  * 
  */
-package mw.server.network;
+package mw.server.network.communication;
 
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -12,9 +12,8 @@ import mw.shared.servercommands.AbstractServerCommand;
 
 /** 
  * @singleton
- * This class handles AbstractGameMessages. It does so by creating a thread which waits for 
- * AbstractServerCommands to become available in a BlockingQueue. It calls the verify method on each
- * AbstractServerCommand, and if valid, calls execute on each message.
+ * Creates a thread which waits for AbstractServerCommands to become available in a BlockingQueue.
+ * It calls the verify method on each AbstractServerCommand, and if valid, calls execute on each message.
  * 
  * TODO
  * If the AbstractServerCommand is not valid, it must initiate forwarding a message to the
@@ -65,11 +64,7 @@ public class ServerCommandHandler {
 			e.printStackTrace();
 		}
 	}
-	
-	public synchronized void testHandle(String pTestMessage){
-		ClientChannelManager.getInstance().getChannel(0).testSendString(pTestMessage); //TEST! Send message back to client 0 through pipeline
-	}
-	
+
 	/*
 	 * Nested Thread class ServerCommandHandlerThread handles all ServerCommands, for all games.
 	 */
@@ -82,7 +77,7 @@ public class ServerCommandHandler {
 					int lClientID = lServerCommandWrapper.getClientID();
 					
 					if(! lServerCommand.isValid(lClientID)){
-						//TODO how to deal with recovery?
+						
 					}
 					
 					else{

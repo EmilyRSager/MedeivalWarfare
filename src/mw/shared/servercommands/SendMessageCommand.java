@@ -6,8 +6,8 @@ package mw.shared.servercommands;
 
 import java.util.Set;
 
-import mw.server.network.AdminCommandHandler;
-import mw.server.network.ClientChannelManager;
+import mw.server.network.controllers.AdminCommandController;
+import mw.server.network.mappers.ClientChannelMapper;
 
 /**
  * Initiates sending a message to several recipients by calling the proper server controllers.
@@ -35,7 +35,7 @@ public class SendMessageCommand extends AbstractServerCommand {
 	@Override
 	public boolean isValid(Integer pClientID) {
 		//if not all recipients are available, the message is invalid. 
-		if(!ClientChannelManager.getInstance().containsAll(aRecipientClientIDs)){
+		if(!ClientChannelMapper.getInstance().containsAll(aRecipientClientIDs)){
 			return false;
 		}
 		
@@ -56,6 +56,6 @@ public class SendMessageCommand extends AbstractServerCommand {
 	 */
 	@Override
 	public void execute(Integer pClientID) {
-		AdminCommandHandler.getInstance().distributeChatMessage(aMessage, aRecipientClientIDs);
+		AdminCommandController.getInstance().distributeChatMessage(aMessage, aRecipientClientIDs);
 	}
 }

@@ -1,4 +1,4 @@
-package mw.utilities;
+package mw.util;
 
 import java.util.Iterator;
 

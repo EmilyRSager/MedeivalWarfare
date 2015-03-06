@@ -1,6 +1,6 @@
 package mw.shared.servercommands;
 
-import mw.server.network.AdminCommandHandler;
+import mw.server.network.controllers.AdminCommandController;
 
 
 public class TestNewGameCommand extends AbstractServerCommand {
@@ -13,6 +13,6 @@ public class TestNewGameCommand extends AbstractServerCommand {
 
 	@Override
 	public void execute(Integer pPlayerID) {
-		AdminCommandHandler.getInstance().testSentGameCommand();
+		AdminCommandController.getInstance().testSentGameCommand();
 	}
 }

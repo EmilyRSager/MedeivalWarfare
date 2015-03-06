@@ -1,8 +1,10 @@
-package mw.server.network;
+package mw.server.network.controllers;
 
 import java.util.Set;
 
 import mw.client.controller.TestStuffProvider;
+import mw.server.network.communication.ClientChannel;
+import mw.server.network.mappers.ClientChannelMapper;
 import mw.shared.SharedTile;
 import mw.shared.clientcommands.AbstractClientCommand;
 import mw.shared.clientcommands.MessageReceivedCommand;
@@ -14,21 +16,21 @@ import mw.shared.clientcommands.UpdateTileCommand;
  * Handles commands that do no involve changes in the state of GameLogic classes.
  * For example, this class handles sending chat and error messages.
  */
-public class AdminCommandHandler {
-	private static AdminCommandHandler aAdminMessageDistributor;
-	private ClientChannelManager aClientChannelManager;
+public class AdminCommandController {
+	private static AdminCommandController aAdminMessageDistributor;
+	private ClientChannelMapper aClientChannelManager;
 	
-	private AdminCommandHandler(){
-		aClientChannelManager = ClientChannelManager.getInstance();
+	private AdminCommandController(){
+		aClientChannelManager = ClientChannelMapper.getInstance();
 	}
 	
 	/**
 	 * Singleton implementation
 	 * @return the static instance of AdminMessageDistributor
 	 */
-	public static AdminCommandHandler getInstance(){
+	public static AdminCommandController getInstance(){
 		if(aAdminMessageDistributor == null){
-			aAdminMessageDistributor = new AdminCommandHandler();
+			aAdminMessageDistributor = new AdminCommandController();
 		}
 		
 		return aAdminMessageDistributor;

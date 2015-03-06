@@ -6,7 +6,7 @@ import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
 
-import com.sun.xml.internal.bind.v2.runtime.unmarshaller.Receiver;
+
 
 /**
  * GameMap class definition.
@@ -15,28 +15,40 @@ import com.sun.xml.internal.bind.v2.runtime.unmarshaller.Receiver;
 public class GameMap  { 
 	private static Graph graph; 
 	private GraphNode[][] aNodes; 
+	private Tile [][] aTiles; 
 	private static Random rTreesAndMeadows = new Random(); 
 	private Collection<Village> aVillages; 
 	private HashMap<Tile, GraphNode> TileToNodeHashMap = new HashMap<Tile, GraphNode>(); 
- 
+	private Collection<Color> availableColors;
+
+	public  void printTiles()
+	{
+		for (Tile lTile: TileToNodeHashMap.keySet())
+		{
+			System.out.println(lTile.toString());
+		}
+	}
+
 	/**
 	 * Randomly Colors the Tiles 
 	 */
 	public void partition() 
 	{
-	
+		availableColors.add(Color.NEUTRAL);
+
 		for (GraphNode lGraphNode : graph.allNodes()) 
 		{
 			Tile lTile = lGraphNode.getTile(); 
-			lTile.setColor(RandomColorGenerator.generateRandomColor());
+
+			lTile.setColor(RandomColorGenerator.generateRandomColor(availableColors));
 		}
 		for (GraphNode lGraphNode : graph.allNodes())
 		{
 			Set<GraphNode> villageSet = PathFinder.getVillage(lGraphNode, graph); 
 			if (aVillages.contains((PathFinder.getVillage(lGraphNode, graph))))
-					{
-						aVillages.add(new Village(villageSet)); 
-					}
+			{
+				aVillages.add(new Village(villageSet)); 
+			}
 		}
 	}
 	/**
@@ -47,7 +59,9 @@ public class GameMap  {
 		int height = 10;
 		int width = 30; 
 		aNodes = new GraphNode[height][width];
+		aTiles = new Tile [height] [width];
 		setUpMap(height, width);
+		aVillages = new HashSet<Village>();
 	}
 	/**
 	 * @param height
@@ -55,24 +69,33 @@ public class GameMap  {
 	 * @param rGenerate
 	 * Generates a new map with specified dimensions 
 	 */
-	public GameMap(int height, int width)
+	public GameMap(int height, int width, Collection<Color>  pAvailableColors)
+
 	{
+		availableColors = pAvailableColors; 
 		aNodes = new GraphNode[height][width];
+		aTiles = new Tile [height] [width];
 		setUpMap(height, width);
 		aVillages = new HashSet<Village>();
 	}
 
+	public Tile [][] getObservables ()
+	{
+		return aTiles; 
+	}
 	private void setUpMap(int height, int width)
 	{
 		for (int i = 0; i< height; i++ )
 		{
 			for (int j =0; j <width; j++)
 			{
-				aNodes[i][j] = new GraphNode(new Tile(StructureType.NO_STRUCT, i, j)); 
-				TileToNodeHashMap.put(aNodes[i][j].getTile(), aNodes[i][j]);
+				aTiles[i][j] = new Tile(StructureType.NO_STRUCT, i, j); 
+				aNodes[i][j] = new GraphNode(aTiles[i][j]); 
+				//aTiles[i][j] = aNodes[i][j].getTile(); 
+				TileToNodeHashMap.put(aNodes[i][j].getTile(), aNodes[i][j]); //perhaps need an equals override for tile
 			}
 		}
-		
+
 		graph = new Graph(HexToGraph.ConvertFlatToppedHexes(aNodes));
 		for (GraphNode lGraphNode : graph.allNodes()) 
 		{	
@@ -85,7 +108,7 @@ public class GameMap  {
 	/* Randomly generates trees with (20%) probability
 	 * Randomly generates meadows with (10%) probability
 	 */
-	private void randomlyGenerateTreesAndMeadows(Tile lTile) 
+	private void randomlyGenerateTreesAndMeadows(Tile lTile)  
 	{
 		//TODO: think of a fairer distribution of villages 
 		int k = rTreesAndMeadows.nextInt(9);
@@ -100,7 +123,12 @@ public class GameMap  {
 			lTile.setHasMeadow(true); 
 		}
 	}
-	
+	/**
+	 * Returns the set of tiles a unit can move to
+	 * May return an empty set 
+	 * @param startTile
+	 * @return
+	 */
 	public Set<Tile> getPossibleMoves(Tile startTile)
 	{
 		GraphNode temp = TileToNodeHashMap.get(startTile); 
@@ -112,13 +140,18 @@ public class GameMap  {
 		}
 		return toReturn; 
 	}
-	
+
 	private Set<GraphNode> getPossibleMoves(GraphNode start)
 	{
 		return PathFinder.getMovableTiles(start, graph); 
 	}
 
-	public Set<Tile> getVillage (Tile crt) 
+	/**
+	 * Returns the set of tiles that make up a village
+	 * @param crt
+	 * @return
+	 */
+	public Village getVillage (Tile crt) 
 	{
 		GraphNode temp = TileToNodeHashMap.get(crt); 
 		Set<GraphNode> villageNodes = getVillage(temp);
@@ -127,8 +160,18 @@ public class GameMap  {
 		{
 			toReturn.add(lGraphNode.getTile());
 		}
-		return toReturn; 
+		for (Village lVillage :aVillages)
+		{
+			Set<Tile> crtSet = lVillage.getTiles(); 
+			if (crtSet.contains(crt)) 
+			{
+				return lVillage; 
+			}
+		}
+		return null;
 	}
+
+
 	private Set<GraphNode> getVillage(GraphNode crt)
 	{
 		return PathFinder.getVillage(crt, graph); 

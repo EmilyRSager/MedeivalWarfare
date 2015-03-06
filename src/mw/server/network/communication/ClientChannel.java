@@ -3,7 +3,7 @@
  * Feb 16, 2015
  */
 
-package mw.server.network;
+package mw.server.network.communication;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -52,15 +52,6 @@ public class ClientChannel extends Thread{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-	}
-
-	/**
-	 * TESTING PURPOSES ONLY!!! Forwards pTestMesssage to writer thread
-	 * @param pMessage
-	 * @return void
-	 */
-	public void testSendString(String pTestMessage){
-		aWriterThread.testSendString(pTestMessage);
 	}
 	
 	/**

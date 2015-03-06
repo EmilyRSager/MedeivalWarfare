@@ -3,6 +3,8 @@ package mw.client.network;
 import java.util.HashSet;
 import java.util.Set;
 
+import mw.client.gui.Hexagon;
+import mw.shared.servercommands.NewGameRequestCommand;
 import mw.shared.servercommands.TestNewGameCommand;
 
 public class NetworkTestDriver {
@@ -13,6 +15,6 @@ public class NetworkTestDriver {
 		lRecipientIDs.add(0);
 		
 		
-		s1.sendCommand(new TestNewGameCommand());
+		s1.sendCommand(new NewGameRequestCommand());
 	}
 }

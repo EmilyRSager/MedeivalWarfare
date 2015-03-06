@@ -2,7 +2,7 @@
  * @author Charlie Bloomfield
  * Feb 20, 2015
  */
-package mw.server.network;
+package mw.server.network.communication;
 
 import java.io.DataInputStream;
 import java.io.IOException;

@@ -1,13 +1,15 @@
 package mw.server.gamelogic;
 
-import java.io.Serializable;
+import java.util.Observable;
+
+
 
 
 
 /**
  * @author emilysager
  */
-public class Unit implements Serializable{
+public class Unit extends Observable {
     
 	private UnitType aUnitType;
     private ActionType aActionType;
@@ -15,32 +17,26 @@ public class Unit implements Serializable{
     {
     	aUnitType = pUnitType; 
     }
-    
-    /**
-     * 
-     * @param pUnitType 
-     * Updates the unitType
-     */
-    public void setUnitType(UnitType pUnitType) {
-      aUnitType = pUnitType; 
-    }
 
     /**
      * 
      * @return unitType
      */
-    public UnitType getUnitType() {
-       
+    public UnitType getUnitType() 
+    {
         return aUnitType;
     }
 
-    public ActionType getActionType() {
-       
+    public ActionType getActionType() 
+    {
         return aActionType;
     }
 
-    public void setActionType(ActionType pActionType) {
+    public void setActionType(ActionType pActionType) 
+    {
         aActionType = pActionType; 
+        setChanged();
+        
     }
 
    

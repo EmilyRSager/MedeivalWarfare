@@ -1,6 +1,6 @@
 package mw.client.gui.api;
 
-import mw.utilities.MultiArrayIterable;
+import mw.util.MultiArrayIterable;
 
 import org.minueto.image.MinuetoDrawingSurface;
 import org.minueto.image.MinuetoImage;
