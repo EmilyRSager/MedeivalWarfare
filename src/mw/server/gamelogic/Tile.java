@@ -2,6 +2,8 @@ package mw.server.gamelogic;
 
 import java.util.Observable;
 
+import com.google.gson.Gson;
+
 /**
  * @author emilysager
  */
@@ -28,6 +30,11 @@ public class Tile  extends Observable
     	myColor = Color.NEUTRAL;
     	aHasMeadow = false; 
     	aVillageType = VillageType.NO_VILLAGE; 
+    }
+    
+    @Override
+    public String toString(){
+    	return "{x:" + aX + " y:" + aY + " Structure:" + aStructureType + " Color: " + myColor + " meadow: " + aHasMeadow + "Village: "  + aVillageType + " }"; 
     }
 
     public int [] getTileCoordinates()
