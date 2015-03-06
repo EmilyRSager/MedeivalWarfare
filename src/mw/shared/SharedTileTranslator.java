@@ -57,7 +57,7 @@ public class SharedTileTranslator {
 	 * @param pVillageType
 	 * @return
 	 */
-	private static VillageType translateVillageType(mw.server.gamelogic.VillageType pVillageType){
+	public static VillageType translateVillageType(mw.server.gamelogic.VillageType pVillageType){
 		if(pVillageType == mw.server.gamelogic.VillageType.HOVEL){
 			return VillageType.HOVEL;
 		}
@@ -79,7 +79,7 @@ public class SharedTileTranslator {
 	 * @param pUnitType
 	 * @return SharedTile representation of the tile's occupying Unit
 	 */
-	private static SharedTile.UnitType translateUnitType(UnitType pUnitType){
+	public static SharedTile.UnitType translateUnitType(UnitType pUnitType){
 		
 		if(pUnitType == mw.server.gamelogic.UnitType.NO_UNIT){
 			return SharedTile.UnitType.NONE;
@@ -110,7 +110,7 @@ public class SharedTileTranslator {
 	 * @param pStructureType, pHasMeadow
 	 * @return 
 	 */
-	private static SharedTile.Terrain translateTerrain(StructureType pStructureType, boolean pHasMeadow){
+	public static SharedTile.Terrain translateTerrain(StructureType pStructureType, boolean pHasMeadow){
 		if(pStructureType == StructureType.NO_STRUCT){
 			return Terrain.GRASS;
 		}
@@ -137,7 +137,7 @@ public class SharedTileTranslator {
 	 * @param pCoordinates
 	 * @return
 	 */
-	private static SharedCoordinates translateCoordinates(int[] pCoordinates){
+	public static SharedCoordinates translateCoordinates(int[] pCoordinates){
 		return new SharedCoordinates(pCoordinates[0], pCoordinates[1]);
 	}
 
@@ -145,7 +145,7 @@ public class SharedTileTranslator {
 	 * @param pColor
 	 * @return
 	 */
-	private static SharedColor translateColor(Color pColor){
+	public static SharedColor translateColor(Color pColor){
 		SharedColor lSharedColor;
 		switch(pColor) {
 			case GREEN: 
