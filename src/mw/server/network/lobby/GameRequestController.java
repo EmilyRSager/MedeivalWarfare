@@ -71,13 +71,19 @@ public class GameRequestController {
 	private void createNewGame(){
 
 		//get the available clients
+		System.out.println("[Server] Initializing new game.");
 		Set<Integer> lClientIDs = aGameLobby.removeAvailableClients();
 		int lNumPlayers = lClientIDs.size();
+		
+		System.out.println("[Server] Number clients " + lNumPlayers + ".");
 
 		//create a game
 		Game lGame;
 		try {
+			System.out.println("[Server] Making new game request to GameController.");
 			lGame = GameController.newGame(lNumPlayers); //throws exception if too many players
+			
+			System.out.println("[Server] Received game from GameController.");
 			
 			/* Map the clients to the given Game.
 			 * TODO this may be unnesecary as there will be a mapping between ClientIDs and Players as well

@@ -11,6 +11,7 @@ import mw.server.gamelogic.StructureType;
 import mw.server.gamelogic.Tile;
 import mw.server.gamelogic.TileController;
 import mw.server.gamelogic.UnitType;
+import mw.shared.SharedTile.Terrain;
 import mw.shared.SharedTile.VillageType;
 
 public class SharedTileTranslator {

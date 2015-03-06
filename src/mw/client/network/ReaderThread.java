@@ -30,7 +30,7 @@ public class ReaderThread extends Thread {
 			}
 		}
 		catch(Exception e){
-			System.out.println("[Client] Error sending message.");
+			System.out.println("[Client] Error receiving message.");
 			e.printStackTrace();
 		}
 	}

@@ -29,8 +29,11 @@ public class GameController {
 		{
 			Player lPlayer = new Player(); 
 			gamePlayers.add(lPlayer);
+			i++; 
 		}
+		System.out.println("Game Controller about to create Game");
 		Game crtGame = new Game(gamePlayers, 0); 
+		System.out.println("Game created. ");
 		return crtGame;
 	}
 	
