@@ -3,7 +3,7 @@
  * Feb 19, 2015
  */
 
-package mw.server.network;
+package mw.server.network.communication;
 
 import java.io.IOException;
 import java.net.ServerSocket;

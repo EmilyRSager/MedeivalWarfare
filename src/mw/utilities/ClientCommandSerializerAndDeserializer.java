@@ -9,6 +9,7 @@ import java.util.HashMap;
 
 import mw.shared.clientcommands.AbstractClientCommand;
 import mw.shared.clientcommands.AcknowledgementCommand;
+import mw.shared.clientcommands.DisplayPossibleGameActionsCommand;
 import mw.shared.clientcommands.MessageReceivedCommand;
 import mw.shared.clientcommands.NewGameCommand;
 import mw.shared.clientcommands.UpdateTileCommand;
@@ -24,11 +25,11 @@ public class ClientCommandSerializerAndDeserializer {
 	private HashMap<String, Type> aTypeMap = new HashMap<String, Type>();
 	
 	private ClientCommandSerializerAndDeserializer() {
-		aTypeMap.put("MessageReceivedCommand", new TypeToken<MessageReceivedCommand>(){}.getType());
 		aTypeMap.put("AcknowledgementCommand", new TypeToken<AcknowledgementCommand>(){}.getType());
+		aTypeMap.put("DisplayPossibleGameActionsCommand", new TypeToken<DisplayPossibleGameActionsCommand>(){}.getType());
+		aTypeMap.put("MessageReceivedCommand", new TypeToken<MessageReceivedCommand>(){}.getType());
 		aTypeMap.put("NewGameCommand", new TypeToken<NewGameCommand>(){}.getType());
-		aTypeMap.put("UpdateTileCommand", new TypeToken<UpdateTileCommand>(){}.getType());
-		
+		aTypeMap.put("UpdateTileCommand", new TypeToken<UpdateTileCommand>(){}.getType());	
 	}
 	
 	/**

@@ -3,7 +3,7 @@
  * Feb 20, 2015
  * 
  */
-package mw.server.network;
+package mw.server.network.communication;
 
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;

@@ -4,7 +4,7 @@ import mw.server.network.controllers.GetPossibleActionsController;
 import mw.server.network.mappers.GameMapper;
 import mw.shared.SharedCoordinates;
 
-public class GetPossibleActionsCommand extends AbstractServerCommand {
+public class GetPossibleGameActionsCommand extends AbstractServerCommand {
 	private final String aType = "GetPossibleGamesActionsCommand";
 	private SharedCoordinates aSharedCoordinates;
 	
@@ -12,7 +12,7 @@ public class GetPossibleActionsCommand extends AbstractServerCommand {
 	 * Constructor
 	 * @param pSharedCoordinates
 	 */
-	public GetPossibleActionsCommand(SharedCoordinates pSharedCoordinates) {
+	public GetPossibleGameActionsCommand(SharedCoordinates pSharedCoordinates) {
 		aSharedCoordinates = pSharedCoordinates;
 	}
 	

@@ -9,7 +9,7 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
-import mw.server.network.ClientChannel;
+import mw.server.network.communication.ClientChannel;
 
 /**
  * Provides a Globally accessible mapping between ClientIDs and ClientChannel classes.

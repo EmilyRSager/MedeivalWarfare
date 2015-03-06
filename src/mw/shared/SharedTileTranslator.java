@@ -3,17 +3,14 @@
  * Feb 25, 2015
  */
 
-package mw.server.network;
+package mw.shared;
 
 import mw.server.gamelogic.Color;
+import mw.server.gamelogic.Game;
 import mw.server.gamelogic.StructureType;
 import mw.server.gamelogic.Tile;
 import mw.server.gamelogic.TileController;
 import mw.server.gamelogic.UnitType;
-import mw.shared.SharedColor;
-import mw.shared.SharedCoordinates;
-import mw.shared.SharedTile;
-import mw.shared.SharedTile.Terrain;
 import mw.shared.SharedTile.VillageType;
 
 public class SharedTileTranslator {
@@ -22,12 +19,12 @@ public class SharedTileTranslator {
 	 * @param pGameMap
 	 * @return SharedTile representation of pGameMap
 	 */
-	public static SharedTile[][] translateMap(Tile[][] pGameMap){
+	public static SharedTile[][] translateMap(Tile[][] pGameMap, Game pGame){
 		SharedTile[][] lGameMap = new SharedTile[pGameMap.length][pGameMap[0].length];
 		
 		for(int row = 0; row < pGameMap.length; row++){
 			for(int col = 0; col < pGameMap[0].length; col++){
-				lGameMap[row][col] = translateTile(pGameMap[row][col]);
+				lGameMap[row][col] = translateTile(pGameMap[row][col], pGame);
 			}
 		}
 
@@ -38,7 +35,7 @@ public class SharedTileTranslator {
 	 * @param pTile
 	 * @return SharedTile encoding of pTile
 	 */
-	public static SharedTile translateTile(Tile pTile){
+	public static SharedTile translateTile(Tile pTile, Game pGame){
 		SharedTile lSharedTile = new SharedTile(
 				translateColor(TileController.getColor(pTile)),
 				translateCoordinates(TileController.getCoordinates(pTile)),
@@ -46,11 +43,12 @@ public class SharedTileTranslator {
 						TileController.getStructureType(pTile),
 						TileController.hasRoad(pTile)
 						),
+						
 				TileController.hasRoad(pTile),
 				translateUnitType(TileController.getUnitType(pTile)),
 				translateVillageType(TileController.getVillageType(pTile)),
-				TileController.getGold(pTile),
-				TileController.getWood(pTile)
+				TileController.getGold(pTile, pGame),
+				TileController.getWood(pTile, pGame)
 				);
 		return lSharedTile;
 	}

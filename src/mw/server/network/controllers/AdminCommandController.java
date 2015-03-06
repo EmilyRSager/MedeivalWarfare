@@ -3,7 +3,7 @@ package mw.server.network.controllers;
 import java.util.Set;
 
 import mw.client.controller.TestStuffProvider;
-import mw.server.network.ClientChannel;
+import mw.server.network.communication.ClientChannel;
 import mw.server.network.mappers.ClientChannelMapper;
 import mw.shared.SharedTile;
 import mw.shared.clientcommands.AbstractClientCommand;

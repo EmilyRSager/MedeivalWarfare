@@ -1,7 +1,9 @@
 package mw.shared.clientcommands;
 
+import mw.server.gamelogic.CollectionOfPossibleActions;
 
-public class DisplayPossibleActionsCommand extends AbstractClientCommand {
+
+public class DisplayPossibleGameActionsCommand extends AbstractClientCommand {
 	private final String aType = "DisplayPossibleActionsCommand";
 	private CollectionOfPossibleActions aPossibleActions;
 	
@@ -9,7 +11,7 @@ public class DisplayPossibleActionsCommand extends AbstractClientCommand {
 	 * Constructor
 	 * @param pPossibleActions
 	 */
-	public DisplayPossibleActionsCommand(CollectionOfPossibleActions pPossibleActions) {
+	public DisplayPossibleGameActionsCommand(CollectionOfPossibleActions pPossibleActions) {
 		aPossibleActions = pPossibleActions;
 	}
 	

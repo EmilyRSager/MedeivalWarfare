@@ -7,11 +7,10 @@ package mw.shared.servercommands;
 
 import mw.server.network.lobby.GameRequestController;
 
-
 /**
  * 
  */
-public class NewGameRequest extends AbstractServerCommand {
+public class NewGameRequestCommand extends AbstractServerCommand {
 	private final String aType = "NewGameRequest";
 	
 	/**

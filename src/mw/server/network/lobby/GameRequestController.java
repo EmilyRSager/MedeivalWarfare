@@ -13,6 +13,7 @@ import mw.server.gamelogic.Game;
 import mw.server.gamelogic.GameController;
 import mw.server.gamelogic.Player;
 import mw.server.gamelogic.Tile;
+import mw.server.gamelogic.TooManyPlayersException;
 import mw.server.network.controllers.GameStateCommandDistributor;
 import mw.server.network.mappers.ClientChannelMapper;
 import mw.server.network.mappers.GameMapper;
@@ -74,30 +75,40 @@ public class GameRequestController {
 		int lNumPlayers = lClientIDs.size();
 
 		//create a game
-		Game lGame = GameController.newGame(lNumPlayers);
-
-		/*
-		 * Map the clients to the given Game.
-		 * TODO this may be unnesecary as there will be a mapping between ClientIDs and Players as well
-		 */
-		GameMapper.getInstance().putGame(lClientIDs, lGame); //add clients to Game Mapping
-
-		Collection<Player> lPlayers = lGame.getPlayers();
-		assignPlayers(lClientIDs, lPlayers);
-
-		//initialize game state observer
-		GameStateCommandDistributor lGameStateCommandDistributor = 
-				new GameStateCommandDistributor(lClientIDs);
-
-		Tile[][] lGameTiles = lGame.getGameTiles();
-		for(int i = 0; i < lGameTiles.length; i++){
-			for(int j = 0; j < lGameTiles[0].length; j++){
-				//add observer to each tile
-				lGameTiles[i][j].addObserver(lGameStateCommandDistributor);
+		Game lGame;
+		try {
+			lGame = GameController.newGame(lNumPlayers); //throws exception if too many players
+			
+			/* Map the clients to the given Game.
+			 * TODO this may be unnesecary as there will be a mapping between ClientIDs and Players as well
+			 */
+			GameMapper.getInstance().putGame(lClientIDs, lGame); //add clients to Game Mapping
+			
+			//map clients to players
+			Collection<Player> lPlayers = lGame.getPlayers();
+			assignPlayers(lClientIDs, lPlayers);
+			
+			//initialize game state observer
+			GameStateCommandDistributor lGameStateCommandDistributor = 
+					new GameStateCommandDistributor(lClientIDs, lGame);
+			
+			//attach observer to each tile
+			Tile[][] lGameTiles = lGame.getGameTiles();
+			for(int i = 0; i < lGameTiles.length; i++){
+				for(int j = 0; j < lGameTiles[0].length; j++){
+					//add observer to each tile
+					lGameTiles[i][j].addObserver(lGameStateCommandDistributor);
+				}
 			}
+			
+			//distribute the new Game to each client.
+			lGameStateCommandDistributor.newGame(lGame.getGameTiles());
+			
+		} catch (TooManyPlayersException e) {
+			System.out.println("[Server] Tried to create a Game with too many players.");
+			e.printStackTrace();
 		}
 
-		lGameStateCommandDistributor.newGame(lGame.getGameTiles());
 	}
 
 	/**
