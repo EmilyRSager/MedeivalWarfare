@@ -17,7 +17,14 @@ public final class DisplayUpdater {
 
 	public static void setSelected(ImageTile t, boolean selected)
 	{
-		// TODO
+		/*if(selected)
+		{
+			t.setBorderSelected(t.getTileImage());
+		}
+		else
+		{
+			t.setImage(t.getTileImage());
+		}*/
 	}
 
 	public static void displayChoice(String choiceName, List<String> choices)

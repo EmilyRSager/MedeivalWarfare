@@ -40,6 +40,8 @@ public final class MainApplication {
 		testUpdate(SharedColor.BLUE);
 		waitABit();
 		testUpdate(SharedColor.YELLOW);
+		waitABit();
+		
 		while(true)
 		{
 			MinuetoEventQueue queue = window.getEventQueue();

@@ -1,3 +1,4 @@
+
 package mw.client.controller;
 
 import mw.client.model.Coordinates;

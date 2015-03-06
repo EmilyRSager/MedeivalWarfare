@@ -5,6 +5,8 @@
 
 package mw.server.gamelogic;
 
+import mw.shared.SharedTile;
+
 public class TileController {
 
 	/**
@@ -51,8 +53,14 @@ public class TileController {
 	 * @param pTile
 	 * @return
 	 */
-	public static UnitType getUnitType(Tile pTile){
-		return pTile.getUnit().getUnitType();
+	public static UnitType getUnitType(Tile pTile) {
+		//TODO throw exception
+		Unit lUnit = pTile.getUnit();
+		if(lUnit != null){			
+			return pTile.getUnit().getUnitType();
+		}
+		
+		return UnitType.NO_UNIT;
 	}
 
 	/**
