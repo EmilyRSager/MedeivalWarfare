@@ -91,7 +91,7 @@ public class Game extends RandomColorGenerator {
 	{
 		ArrayList<UnitType> rArray = new ArrayList<UnitType>();
 
-		if (pTile.getUnit().equals(null))
+		if (pTile.getUnit()==(null))
 		{
 			rArray.add(UnitType.INFANTRY); 
 			rArray.add(UnitType.KNIGHT); 

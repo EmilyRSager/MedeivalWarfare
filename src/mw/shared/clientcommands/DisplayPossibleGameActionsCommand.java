@@ -7,8 +7,7 @@ import mw.shared.SharedPossibleGameActions;
 
 
 public class DisplayPossibleGameActionsCommand extends AbstractClientCommand {
-	private final String aType = "DisplayPossibleActionsCommand";
-	private PossibleGameActions aPossibleActions;
+	private final String aType = "DisplayPossibleGameActionsCommand";
 	private SharedPossibleGameActions aSharedPossibleGameActions;
 
 	public DisplayPossibleGameActionsCommand(SharedPossibleGameActions pSharedPossibleGameActions) {
