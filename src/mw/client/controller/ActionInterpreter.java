@@ -295,6 +295,7 @@ public final class ActionInterpreter /*implements Controller */{
 	private void askForPossibleMoves()
 	{
 		actionsReady = false;
-		NetworkQueries.getPossibleMoves(selectedITile);
+		SharedCoordinates target = ModelToNetworkTranslator.translateModelCoordinates(selectedMTile.getCoordinates());
+		NetworkController.getPossibleMoves(target);
 	}
 }
