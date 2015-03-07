@@ -5,6 +5,8 @@ import java.util.Observable;
 import mw.client.gui.ImageFileManager.TileType;
 import mw.client.gui.api.ExtendedMinuetoColor;
 import mw.client.gui.api.ExtendedMinuetoImage;
+import mw.shared.SharedColor;
+import mw.shared.SharedTile.*;
 
 import org.minueto.MinuetoColor;
 import org.minueto.image.*;
@@ -26,6 +28,12 @@ public class ImageTile extends Observable {
 	{
 		//image = ImageFileManager.getTileImage(TileType.DEFAULT);
 		setImage(new MinuetoImage(DEFAULT_TILE_WIDTH, DEFAULT_TILE_HEIGHT));
+	}
+	
+	public ImageTile(SharedColor c, VillageType v, UnitType u, Terrain t)
+	{
+		setImage(new MinuetoImage(DEFAULT_TILE_WIDTH, DEFAULT_TILE_HEIGHT));
+		
 	}
 	/**
 	 * Getter for an ImageTile's MinuetoImage.
