@@ -39,8 +39,12 @@ public class GameController {
 	
 	public static CollectionOfPossibleActions getPossibleGameActions(Game pGame, int pRow, int pColumn)
 	{
-		//TODO
-		return null;
+		
+		Coordinates mappingCoordinates = new Coordinates(pRow, pColumn);
+		Tile clicked = pGame.getTile(mappingCoordinates); 
+		return  pGame.tileIsClicked(clicked); 
+		
+		
 	}
 	
 	public static void updateGameState(MoveType pMoveType, Game pGame, int pRow1, int pColumn1, int pRow2, int pColumn2)

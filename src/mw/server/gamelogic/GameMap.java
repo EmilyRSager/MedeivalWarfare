@@ -18,9 +18,15 @@ public class GameMap  {
 	private Tile [][] aTiles; 
 	private static Random rTreesAndMeadows = new Random(); 
 	private Collection<Village> aVillages; 
-	private HashMap<Tile, GraphNode> TileToNodeHashMap = new HashMap<Tile, GraphNode>(); 
+	private HashMap<Tile, GraphNode> TileToNodeHashMap = new HashMap<Tile, GraphNode>();
+	private HashMap<Coordinates, Tile> CoordinatesToTileMap = new HashMap<Coordinates, Tile>(); 
 	private Collection<Color> availableColors;
 
+	public Tile getTile(Coordinates pCoord)
+	{
+		return CoordinatesToTileMap.get(pCoord);
+	}
+	
 	public  void printTiles()
 	{
 		for (Tile lTile: TileToNodeHashMap.keySet())
@@ -89,10 +95,12 @@ public class GameMap  {
 		{
 			for (int j =0; j <width; j++)
 			{
+				Coordinates crtCoord = new Coordinates(i, j); 
 				aTiles[i][j] = new Tile(StructureType.NO_STRUCT, i, j); 
 				aNodes[i][j] = new GraphNode(aTiles[i][j]); 
 				//aTiles[i][j] = aNodes[i][j].getTile(); 
-				TileToNodeHashMap.put(aNodes[i][j].getTile(), aNodes[i][j]); //perhaps need an equals override for tile
+				TileToNodeHashMap.put(aNodes[i][j].getTile(), aNodes[i][j]); 
+				CoordinatesToTileMap.put(crtCoord, aTiles[i][j]); 
 			}
 		}
 

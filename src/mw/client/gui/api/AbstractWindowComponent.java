@@ -51,12 +51,8 @@ public abstract class AbstractWindowComponent extends Observable implements Wind
 	@Override
 	public void drawOn(MinuetoDrawingSurface canvas)
 	{
-		MinuetoImage img = getImage();
-		final int imgWidth = img.getWidth();
-		final int imgHeight = img.getHeight();
-		if (imgWidth > getWidth() && imgHeight > getHeight())
-			img = img.crop(0, 0, area.getWidth(), area.getHeight());
-		canvas.draw(img, area.getLeftBorder(), area.getTopBorder());
+		MinuetoImage croppedImg = ExtendedMinuetoImage.cropToFitArea(getImage(), area);
+		canvas.draw(croppedImg, area.getLeftBorder(), area.getTopBorder());
 	}
 	
 	
