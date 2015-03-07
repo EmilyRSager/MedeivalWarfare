@@ -37,7 +37,7 @@ public class GameController {
 		return crtGame;
 	}
 	
-	public static Collection<CollectionOfPossibleActions> getPossibleGameActions(Game pGame, int pRow, int pColumn)
+	public static CollectionOfPossibleActions getPossibleGameActions(Game pGame, int pRow, int pColumn)
 	{
 		//TODO
 		return null;
