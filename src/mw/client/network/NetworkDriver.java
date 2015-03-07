@@ -8,5 +8,6 @@ import mw.shared.servercommands.NewGameRequestCommand;
 public class NetworkDriver {
 	public static void main(String[] args) {
 		NetworkController.initializeServerChannel(new ServerChannel());
+		NetworkController.requestNewGame();
 	}
 }
