@@ -3,8 +3,8 @@ package mw.client.network;
 import java.io.DataInputStream;
 import java.util.concurrent.BlockingQueue;
 
+import mw.serialization.ClientCommandSerializerAndDeserializer;
 import mw.shared.clientcommands.AbstractClientCommand;
-import mw.utilities.ClientCommandSerializerAndDeserializer;
 
 public class ReaderThread extends Thread {
 	DataInputStream aDataInputStream;

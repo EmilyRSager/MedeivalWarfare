@@ -2,7 +2,7 @@ package mw.shared;
 
 import java.util.Collection;
 
-public class PossibleGameActions {
+public class SharedPossibleGameActions {
 
 	private Collection<SharedCoordinates> possibleMoves; 
 	private Collection<SharedTile.UnitType> possibleUnitHireUpgrade;
@@ -15,7 +15,7 @@ public class PossibleGameActions {
 	 * ========================
 	 */
 	
-	public PossibleGameActions (Collection<SharedCoordinates> moves, Collection<SharedTile.UnitType> pUnitTypes, Collection<SharedActionType> pActionTypes, SharedTile.VillageType pVillageType)
+	public SharedPossibleGameActions (Collection<SharedCoordinates> moves, Collection<SharedTile.UnitType> pUnitTypes, Collection<SharedActionType> pActionTypes, SharedTile.VillageType pVillageType)
 	{
 		possibleMoves = moves;
 		possibleUnitHireUpgrade = pUnitTypes;

@@ -3,7 +3,7 @@
  * Feb 25, 2015
  */
 
-package mw.shared;
+package mw.server.network.translators;
 
 import mw.server.gamelogic.Color;
 import mw.server.gamelogic.Game;
@@ -11,6 +11,9 @@ import mw.server.gamelogic.StructureType;
 import mw.server.gamelogic.Tile;
 import mw.server.gamelogic.TileController;
 import mw.server.gamelogic.UnitType;
+import mw.shared.SharedColor;
+import mw.shared.SharedCoordinates;
+import mw.shared.SharedTile;
 import mw.shared.SharedTile.Terrain;
 import mw.shared.SharedTile.VillageType;
 

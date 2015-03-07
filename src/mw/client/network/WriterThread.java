@@ -9,8 +9,8 @@ import java.io.DataOutputStream;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
+import mw.serialization.ServerCommandSerializerAndDeserializer;
 import mw.shared.servercommands.AbstractServerCommand;
-import mw.utilities.ServerCommandSerializerAndDeserializer;
 
 public class WriterThread extends Thread {
 	DataOutputStream aDataOutputStream;	

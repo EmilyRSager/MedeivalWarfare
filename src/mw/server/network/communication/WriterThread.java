@@ -9,8 +9,8 @@ import java.io.IOException;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
+import mw.serialization.ClientCommandSerializerAndDeserializer;
 import mw.shared.clientcommands.AbstractClientCommand;
-import mw.utilities.ClientCommandSerializerAndDeserializer;
 
 /**
  * Writes messages to one particular Client computer over a DataOutputStream.

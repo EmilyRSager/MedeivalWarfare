@@ -7,8 +7,8 @@ package mw.server.network.communication;
 import java.io.DataInputStream;
 import java.io.IOException;
 
+import mw.serialization.ServerCommandSerializerAndDeserializer;
 import mw.shared.servercommands.AbstractServerCommand;
-import mw.utilities.ServerCommandSerializerAndDeserializer;
 
 /**
  * Listens to messages coming in from the client. It closes when the client disconnects 

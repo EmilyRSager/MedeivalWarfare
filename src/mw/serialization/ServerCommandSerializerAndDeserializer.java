@@ -2,7 +2,7 @@
  * @author Abhishek Gupta
  */
 
-package mw.utilities;
+package mw.serialization;
 
 import java.lang.reflect.Type;
 import java.util.HashMap;
