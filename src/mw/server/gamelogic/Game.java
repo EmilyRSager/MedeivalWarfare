@@ -61,6 +61,10 @@ public class Game extends RandomColorGenerator {
 		aMap.partition(); 
 	}
 
+	public Tile getTile(Coordinates pCoord)
+	{
+		return aMap.getTile(pCoord);
+	}
 	public Tile [][] getGameTiles()
 	{
 		return aMap.getObservables(); 

@@ -11,7 +11,7 @@ import java.util.concurrent.locks.ReentrantLock;
 
 import mw.client.gui.ImageTile;
 import mw.client.model.*;
-import mw.shared.PossibleGameActions;
+import mw.shared.SharedPossibleGameActions;
 import mw.shared.SharedActionType;
 import mw.shared.SharedCoordinates;
 import mw.shared.SharedTile;
@@ -76,7 +76,7 @@ public final class ActionInterpreter /*implements Controller */{
 	private final Game game;
 	private ModelTile selectedMTile;
 	private ImageTile selectedITile;
-	private PossibleGameActions possibleActions;
+	private SharedPossibleGameActions possibleActions;
 	//private Map<String, Map<String, GameAction>> currentChoices;
 	
 	private static final String vupChoiceName = "Select the type of village to upgrade to:";
@@ -178,7 +178,7 @@ public final class ActionInterpreter /*implements Controller */{
 		askForPossibleMoves();
 	}
 	
-	public void setPossibleActions(PossibleGameActions actions)
+	public void setPossibleActions(SharedPossibleGameActions actions)
 	{
 		possibleActionsLock.lock();
 		
