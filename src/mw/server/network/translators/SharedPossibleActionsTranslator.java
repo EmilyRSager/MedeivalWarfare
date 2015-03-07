@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import mw.server.gamelogic.ActionType;
-import mw.server.gamelogic.PossibleActions;
+import mw.server.gamelogic.PossibleGameActions;
 import mw.server.gamelogic.Tile;
 import mw.server.gamelogic.TileController;
 import mw.server.gamelogic.UnitType;
@@ -22,12 +22,7 @@ public abstract class SharedPossibleActionsTranslator {
 	 * 		Static methods
 	 * ========================
 	 */
-	
-<<<<<<< HEAD:src/mw/shared/ServerNetworkTranslator.java
-	public static PossibleGameActions translatePossibleGameActions(PossibleActions serverPossibleActions)
-=======
-	public static SharedPossibleGameActions translatePossibleGameActions(CollectionOfPossibleActions serverPossibleActions)
->>>>>>> origin/master:src/mw/server/network/translators/SharedPossibleActionsTranslator.java
+	public static SharedPossibleGameActions translatePossibleGameActions(PossibleGameActions serverPossibleActions)
 	{
 		Collection<SharedCoordinates> sharedMoves = new ArrayList<SharedCoordinates>();
 		Collection<Tile> serverMoves = serverPossibleActions.getMovableTiles();

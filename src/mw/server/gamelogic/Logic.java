@@ -93,7 +93,7 @@ public class Logic {
  */
 	public static void updateGameState(Unit crtUnit, Tile startTile, Tile pDestinationTile, Game pGame, GameMap pGameMap)
 	{
-		PossibleActions myActions = pGame.tileIsClicked(startTile); 
+		PossibleGameActions myActions = pGame.tileIsClicked(startTile); 
 		Collection<Tile> movableTiles = myActions.getMovableTiles(); 
 		StructureType destStructType = pDestinationTile.getStructureType();
 		UnitType crtUnitType = crtUnit.getUnitType(); 
