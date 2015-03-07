@@ -96,4 +96,18 @@ public final class ExtendedMinuetoImage /*extends MinuetoImage */{
 		return img;
 	}
 	
+	public static MinuetoImage cropToFitArea(MinuetoImage img, WindowArea area)
+	{
+		MinuetoImage retImg = (MinuetoImage) img.clone();
+		if (retImg.getWidth() > area.getWidth()) {
+			System.out.println("Cropping from width = "+retImg.getWidth()+" to "+area.getWidth());
+			retImg = retImg.crop(0, 0, area.getWidth(), retImg.getHeight());
+		}
+		if (retImg.getHeight() > area.getHeight()) {
+			System.out.println("Cropping from heihgt = "+retImg.getHeight()+" to "+area.getHeight());
+			retImg = retImg.crop(0, 0, retImg.getWidth(), area.getHeight());
+		}
+		return retImg;
+	}
+	
 }

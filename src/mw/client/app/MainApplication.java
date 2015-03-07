@@ -23,8 +23,8 @@ import mw.shared.SharedTile;
 public final class MainApplication {
 
 	private static final Player PLAYER = null;
-	public final static int DEFAULT_MAP_WIDTH = 18;
-	public final static int DEFAULT_MAP_HEIGHT = 18;
+	public final static int DEFAULT_MAP_WIDTH = 10;
+	public final static int DEFAULT_MAP_HEIGHT = 10;
 
 	
 	private static GameWindow window;
@@ -102,8 +102,6 @@ public final class MainApplication {
 				ModelTile t = tiles[i][j];
 				tileList.add(t);
 				t.addObserver(observer);
-				/*if (i==2 && j==1)
-					randomTile = t;*/
 				
 				ImageTile td = new ImageTile();
 				displayedTiles[i][j] = td;
