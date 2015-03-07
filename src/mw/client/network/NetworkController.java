@@ -16,6 +16,10 @@ public class NetworkController {
 		aServerChannel = pServerChannel;
 	}
 	
+	
+	/**
+	 * 
+	 */
 	public static void requestNewGame(){
 		aServerChannel.sendCommand(new NewGameRequestCommand());
 	}

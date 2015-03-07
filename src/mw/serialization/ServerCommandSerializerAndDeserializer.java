@@ -69,12 +69,9 @@ public class ServerCommandSerializerAndDeserializer{
 
 		String[] list = pGsonString.split("\"");  
 		
-		//System.out.println(pGsonString);
 		String typeParameter = list[3];
-		//System.out.println(typeParameter);
 		
 		aIncomingType = aTypeMap.get(typeParameter);
-		//System.out.println(aIncomingType);
 		
 		return aGsonDeserializer.fromJson(pGsonString, aIncomingType);
 		

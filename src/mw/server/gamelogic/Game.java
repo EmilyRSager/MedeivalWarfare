@@ -30,6 +30,7 @@ public class Game extends RandomColorGenerator {
 	public Game (Collection<Player> pPlayers, int mapID) throws TooManyPlayersException {
 
 
+
 		aPlayers  = pPlayers;
 		Stack <Color> myColors = new Stack <Color>(); 
 		myColors.push(Color.BLUE); 
