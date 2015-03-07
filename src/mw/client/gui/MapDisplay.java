@@ -2,6 +2,7 @@ package mw.client.gui;
 import java.util.Observer;
 import java.lang.Math;
 
+import mw.client.controller.ActionInterpreter;
 import mw.client.controller.ModelViewMapping;
 import mw.client.gui.api.Clickeable;
 import mw.client.gui.api.Displayable;
@@ -187,8 +188,10 @@ public class MapDisplay implements Displayable, Clickeable
 		ModelTile clickedModelTile = ModelViewMapping.singleton().getModelTile(clickedTile);
 		if(clickedModelTile != null)
 		{
-			clickedModelTile.setColor(SharedColor.RED);
-			clickedModelTile.notifyObservers();
+			if (button == 1)
+				ActionInterpreter.singleton().primarySelect(clickedTile);
+			/*clickedModelTile.setColor(SharedColor.RED);
+			clickedModelTile.notifyObservers();*/
 		}
 	}
 
