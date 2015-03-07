@@ -2,14 +2,14 @@ package mw.server.gamelogic;
 
 import java.util.Collection;
 
-public class CollectionOfPossibleActions
+public class PossibleActions
 {
 	private Collection<Tile> aMovable; 
 	private Collection<UnitType> aUpgradableUnits;   
 	private Collection <ActionType>  aPossibleActions; 
 	VillageType aUpgradableVillage;
 	
-	public CollectionOfPossibleActions (Collection<Tile> pMovable, Collection<UnitType> pUnitTypes, Collection<ActionType> pActionTypes, VillageType pVillageType)
+	public PossibleActions (Collection<Tile> pMovable, Collection<UnitType> pUnitTypes, Collection<ActionType> pActionTypes, VillageType pVillageType)
 	{
 		aMovable = pMovable; 
 		aUpgradableUnits = pUnitTypes;

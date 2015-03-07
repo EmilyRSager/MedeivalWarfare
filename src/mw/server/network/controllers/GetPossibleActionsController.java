@@ -11,7 +11,7 @@ import mw.shared.SharedCoordinates;
 
 public class GetPossibleActionsController {
 	public static void getPossibleActions(Integer pClientID, Game pGame, SharedCoordinates pSharedCoordinates){
-		CollectionOfPossibleActions lPossibleGameActions = 
+		PossibleActions lPossibleGameActions = 
 				GameController.getPossibleGameActions(
 						pGame, 
 						pSharedCoordinates.getX(), 

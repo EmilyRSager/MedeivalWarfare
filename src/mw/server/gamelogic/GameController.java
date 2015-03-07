@@ -37,7 +37,7 @@ public class GameController {
 		return crtGame;
 	}
 	
-	public static CollectionOfPossibleActions getPossibleGameActions(Game pGame, int pRow, int pColumn)
+	public static PossibleActions getPossibleGameActions(Game pGame, int pRow, int pColumn)
 	{
 		
 		Coordinates mappingCoordinates = new Coordinates(pRow, pColumn);

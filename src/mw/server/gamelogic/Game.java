@@ -127,7 +127,7 @@ public class Game extends RandomColorGenerator {
 	 * @param startTile
 	 * @return
 	 */
-	public CollectionOfPossibleActions tileIsClicked(Tile startTile)
+	public PossibleActions tileIsClicked(Tile startTile)
 	{
 		VillageType startVillageType = startTile.getVillageType(); 
 		VillageType possVillageUpgradeType = VillageType.NO_VILLAGE; 
@@ -159,7 +159,7 @@ public class Game extends RandomColorGenerator {
 			possActions = Logic.getPossibleActions(pUnit, startTile);
 		}
 
-		CollectionOfPossibleActions possible = new CollectionOfPossibleActions(possMoveTiles, possUnitUpgrade, possActions, possVillageUpgradeType);
+		PossibleActions possible = new PossibleActions(possMoveTiles, possUnitUpgrade, possActions, possVillageUpgradeType);
 		return possible; 
 
 
