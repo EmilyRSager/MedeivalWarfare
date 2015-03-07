@@ -241,17 +241,34 @@ public class GameMap  {
 	{
 		return PathFinder.getVillage(crt, graph); 
 	}
+	
+	public Collection<Tile> getNeighbors(Tile pTile)
+	{
+		GraphNode pGraphNode = TileToNodeHashMap.get(pTile);
+		Collection<GraphNode> pAdjNodes = pGraphNode.getAdjacentNodes(); 
+		Collection<Tile> rNeighbors = new ArrayList<Tile>(); 
+		for (GraphNode lGraphNode : pAdjNodes)
+		{
+			rNeighbors.add(lGraphNode.getTile());
+		}
+		
+		return rNeighbors;
+	}
 	/**
 	 * @param v1
 	 * @param v2
 	 * @return
 	 * Can Write after the demo
 	 */
+	
+
 	public boolean canFuse(Village v1, Village v2)
 	{
 		return false; 
 	}
 
+	
+	
 	/**
 	 * 
 	 * 
@@ -259,6 +276,7 @@ public class GameMap  {
 	 * @param invadingVillage
 	 * can write after the demo
 	 */
+
 	public void fuseVillages(Village invadedVillage, Village invadingVillage) 
 	{
 		// TODO Auto-generated method stub
