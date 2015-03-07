@@ -13,7 +13,7 @@ import mw.server.gamelogic.Game;
 import mw.server.gamelogic.Tile;
 import mw.server.network.communication.ClientChannel;
 import mw.server.network.mappers.ClientChannelMapper;
-import mw.shared.SharedTileTranslator;
+import mw.server.network.translators.SharedTileTranslator;
 import mw.shared.clientcommands.AbstractClientCommand;
 import mw.shared.clientcommands.NewGameCommand;
 import mw.shared.clientcommands.UpdateTileCommand;

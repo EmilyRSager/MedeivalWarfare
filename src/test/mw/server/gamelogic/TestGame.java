@@ -9,8 +9,8 @@ import mw.server.gamelogic.Game;
 import mw.server.gamelogic.Player;
 import mw.server.gamelogic.Tile;
 import mw.server.gamelogic.TooManyPlayersException;
+import mw.server.network.translators.SharedTileTranslator;
 import mw.shared.SharedTile;
-import mw.shared.SharedTileTranslator;
 
 public class TestGame {
 	public static void main(String[] args) {
