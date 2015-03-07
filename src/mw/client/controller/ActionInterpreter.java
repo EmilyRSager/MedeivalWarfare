@@ -11,6 +11,7 @@ import java.util.concurrent.locks.ReentrantLock;
 
 import mw.client.gui.ImageTile;
 import mw.client.model.*;
+import mw.client.network.NetworkController;
 import mw.shared.SharedPossibleGameActions;
 import mw.shared.SharedActionType;
 import mw.shared.SharedCoordinates;
@@ -117,10 +118,12 @@ public final class ActionInterpreter /*implements Controller */{
 	
 	public void primarySelect(ImageTile dispTarget)
 	{
+		System.out.println("Starting primary select");
 		unselect();
 		
 		ModelTile modelTarget = ModelViewMapping.singleton().getModelTile(dispTarget);
 		if (isSelectable(modelTarget)) {
+			System.out.println("Selecting the tile");
 			selectedMTile = modelTarget;
 			selectedITile = dispTarget;
 			
@@ -131,8 +134,9 @@ public final class ActionInterpreter /*implements Controller */{
 				int wood = ModelQuerier.getVillageWood(selectedMTile);
 				DisplayUpdater.showVillageResources(gold, wood);
 			}
-			
+			System.out.println("Before asking for the moves");
 			askForPossibleMoves();
+			System.out.println("Successfuly asked for the moves");
 		}
 	}
 	
@@ -214,7 +218,7 @@ public final class ActionInterpreter /*implements Controller */{
 		
 		possibleActions = null;
 		//waitingForActions = false;
-		actionsReady = false;
+		actionsReady = true;
 		
 		possibleActionsLock.unlock();
 	}
@@ -222,6 +226,7 @@ public final class ActionInterpreter /*implements Controller */{
 	private void unselect() 
 	{
 		waitForActions();
+		System.out.println("Waited for actions");
 		
 		if (selectedITile!=null) {
 			DisplayUpdater.setSelected(selectedITile, false);
@@ -280,7 +285,7 @@ public final class ActionInterpreter /*implements Controller */{
 		
 		if (/*waitingForActions &&*/ !actionsReady) {
 			try	{
-				possibleActionsReady.wait();
+				possibleActionsReady.await();
 			}
 			catch (InterruptedException e) {
 				e.printStackTrace();

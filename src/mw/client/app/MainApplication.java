@@ -5,6 +5,7 @@ import java.util.Random;
 
 import org.minueto.MinuetoEventQueue;
 
+import mw.client.controller.ActionInterpreter;
 import mw.client.controller.CurrentClientState;
 import mw.client.controller.ModelViewMapping;
 import mw.client.controller.NewStateApplier;
@@ -22,7 +23,8 @@ import mw.shared.SharedTile;
 
 public final class MainApplication {
 
-	private static final Player PLAYER = null;
+	private static final Player PLAYER = new Player(SharedColor.YELLOW, "player");
+	
 	public final static int DEFAULT_MAP_WIDTH = 10;
 	public final static int DEFAULT_MAP_HEIGHT = 10;
 	
@@ -121,8 +123,8 @@ public final class MainApplication {
 
 		// Controllers setup
 		
-		//ActionInterpreter.initialize(game);
 		CurrentClientState.setCurrentGame(game);
+		ActionInterpreter.initialize(game);
 	}
 	
 	public static void startDisplay()
