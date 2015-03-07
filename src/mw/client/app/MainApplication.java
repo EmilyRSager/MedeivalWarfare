@@ -139,6 +139,7 @@ public final class MainApplication {
 		
 		Thread displayThread = new Thread() {
 			public void run() {
+				startDisplay();
 				while(true)
 				{
 					MinuetoEventQueue queue = window.getEventQueue();
