@@ -5,6 +5,7 @@ import java.util.Random;
 
 import org.minueto.MinuetoEventQueue;
 
+import mw.client.controller.ActionInterpreter;
 import mw.client.controller.CurrentClientState;
 import mw.client.controller.ModelViewMapping;
 import mw.client.controller.NewStateApplier;
@@ -22,20 +23,22 @@ import mw.shared.SharedTile;
 
 public final class MainApplication {
 
-	private static final Player PLAYER = null;
-	public final static int DEFAULT_MAP_WIDTH = 18;
-	public final static int DEFAULT_MAP_HEIGHT = 18;
-
+	private static final Player PLAYER = new Player(SharedColor.YELLOW, "player");
+	
+	public final static int DEFAULT_MAP_WIDTH = 10;
+	public final static int DEFAULT_MAP_HEIGHT = 10;
+	
 	
 	private static GameWindow window;
 	private static Game game;
+	private static boolean displaying = false;
 	//private static ModelTile randomTile;
 	
 	public static void main(String[] args)
 	{
 		newGame();
 		startDisplay();
-
+		
 		waitABit();
 		testUpdate(SharedColor.BLUE);
 		waitABit();
@@ -102,8 +105,6 @@ public final class MainApplication {
 				ModelTile t = tiles[i][j];
 				tileList.add(t);
 				t.addObserver(observer);
-				/*if (i==2 && j==1)
-					randomTile = t;*/
 				
 				ImageTile td = new ImageTile();
 				displayedTiles[i][j] = td;
@@ -122,14 +123,36 @@ public final class MainApplication {
 
 		// Controllers setup
 		
-		//ActionInterpreter.initialize(game);
 		CurrentClientState.setCurrentGame(game);
+		ActionInterpreter.initialize(game);
 	}
 	
 	public static void startDisplay()
 	{
 		//window.setVisible(true);
 		window.render();
+		displaying = true;
+	}
+	
+	public static void concurrentlyDisplay()
+	{
+		if (displaying)
+			throw new IllegalStateException("Already displaying. A call to concurrentlyDisplay is illegal");
+		
+		Thread displayThread = new Thread() {
+			public void run() {
+				startDisplay();
+				while(true)
+				{
+					MinuetoEventQueue queue = window.getEventQueue();
+					while(queue.hasNext())
+					{
+						queue.handle();
+					}
+				}
+			}
+		};
+		displayThread.start();
 	}
 	
 }

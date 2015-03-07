@@ -1,18 +1,18 @@
 package mw.shared.clientcommands;
 
-import mw.server.gamelogic.CollectionOfPossibleActions;
+import mw.server.gamelogic.PossibleGameActions;
+import mw.client.controller.ActionInterpreter;
+import mw.shared.SharedPossibleGameActions;
+
 
 
 public class DisplayPossibleGameActionsCommand extends AbstractClientCommand {
-	private final String aType = "DisplayPossibleActionsCommand";
-	private CollectionOfPossibleActions aPossibleActions;
-	
-	/**
-	 * Constructor
-	 * @param pPossibleActions
-	 */
-	public DisplayPossibleGameActionsCommand(CollectionOfPossibleActions pPossibleActions) {
-		aPossibleActions = pPossibleActions;
+	private final String aType = "DisplayPossibleGameActionsCommand";
+	private SharedPossibleGameActions aSharedPossibleGameActions;
+
+	public DisplayPossibleGameActionsCommand(SharedPossibleGameActions pSharedPossibleGameActions) {
+		aSharedPossibleGameActions = pSharedPossibleGameActions;
+
 	}
 	
 	
@@ -23,13 +23,7 @@ public class DisplayPossibleGameActionsCommand extends AbstractClientCommand {
 
 	@Override
 	public void execute() {
-		//TODO
-		
-		/**
-		 * 1. Move Unit -> needs destination SharedCoordinates
-		 * 2. Upgrade Village -> needs SharedTile.StrucureType
-		 * 3. Hire Villager -> needs SharedTile.UnitType
-		 */
+		ActionInterpreter.singleton().setPossibleActions(aSharedPossibleGameActions);
 	}
 
 }

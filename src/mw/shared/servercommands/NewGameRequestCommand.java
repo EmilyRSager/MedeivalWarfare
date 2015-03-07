@@ -11,7 +11,7 @@ import mw.server.network.lobby.GameRequestController;
  * 
  */
 public class NewGameRequestCommand extends AbstractServerCommand {
-	private final String aType = "NewGameRequest";
+	private final String aType = "NewGameRequestCommand";
 	
 	/**
 	 * @param pClientID

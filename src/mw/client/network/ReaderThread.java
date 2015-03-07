@@ -3,8 +3,8 @@ package mw.client.network;
 import java.io.DataInputStream;
 import java.util.concurrent.BlockingQueue;
 
+import mw.serialization.ClientCommandSerializerAndDeserializer;
 import mw.shared.clientcommands.AbstractClientCommand;
-import mw.utilities.ClientCommandSerializerAndDeserializer;
 
 public class ReaderThread extends Thread {
 	DataInputStream aDataInputStream;
@@ -30,7 +30,7 @@ public class ReaderThread extends Thread {
 			}
 		}
 		catch(Exception e){
-			System.out.println("[Client] Error sending message.");
+			System.out.println("[Client] Error receiving message.");
 			e.printStackTrace();
 		}
 	}

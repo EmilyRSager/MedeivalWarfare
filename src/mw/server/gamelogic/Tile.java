@@ -2,7 +2,6 @@ package mw.server.gamelogic;
 
 import java.util.Observable;
 
-import com.google.gson.Gson;
 
 /**
  * @author emilysager

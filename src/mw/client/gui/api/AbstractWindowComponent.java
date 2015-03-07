@@ -3,6 +3,7 @@ package mw.client.gui.api;
 import java.util.Observable;
 
 import org.minueto.image.MinuetoDrawingSurface;
+import org.minueto.image.MinuetoImage;
 
 /**
  * The AbstractWindowComponent class provides a basic implementation for most of the methods inherited from 
@@ -50,7 +51,8 @@ public abstract class AbstractWindowComponent extends Observable implements Wind
 	@Override
 	public void drawOn(MinuetoDrawingSurface canvas)
 	{
-		canvas.draw(getImage().crop(0, 0, area.getWidth(), area.getHeight()), area.getLeftBorder(), area.getTopBorder());
+		MinuetoImage croppedImg = ExtendedMinuetoImage.cropToFitArea(getImage(), area);
+		canvas.draw(croppedImg, area.getLeftBorder(), area.getTopBorder());
 	}
 	
 	

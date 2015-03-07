@@ -5,7 +5,7 @@ import mw.server.network.mappers.GameMapper;
 import mw.shared.SharedCoordinates;
 
 public class GetPossibleGameActionsCommand extends AbstractServerCommand {
-	private final String aType = "GetPossibleGamesActionsCommand";
+	private final String aType = "GetPossibleGameActionsCommand";
 	private SharedCoordinates aSharedCoordinates;
 	
 	/**

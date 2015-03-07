@@ -30,6 +30,7 @@ public class Game extends RandomColorGenerator {
 	public Game (Collection<Player> pPlayers, int mapID) throws TooManyPlayersException {
 
 
+
 		aPlayers  = pPlayers;
 		Stack <Color> myColors = new Stack <Color>(); 
 		myColors.push(Color.BLUE); 
@@ -52,7 +53,7 @@ public class Game extends RandomColorGenerator {
 			}
 		}
 		if (mapID == 0) {
-			aMap = new GameMap(30, 10, availableColors); 
+			aMap = new GameMap(12, 12, availableColors); 
 		} 
 		else { //Query our database of maps 
 
@@ -61,6 +62,10 @@ public class Game extends RandomColorGenerator {
 		aMap.partition(); 
 	}
 
+	public Tile getTile(Coordinates pCoord)
+	{
+		return aMap.getTile(pCoord);
+	}
 	public Tile [][] getGameTiles()
 	{
 		return aMap.getObservables(); 
@@ -86,7 +91,7 @@ public class Game extends RandomColorGenerator {
 	{
 		ArrayList<UnitType> rArray = new ArrayList<UnitType>();
 
-		if (pTile.getUnit().equals(null))
+		if (pTile.getUnit()==(null))
 		{
 			rArray.add(UnitType.INFANTRY); 
 			rArray.add(UnitType.KNIGHT); 
@@ -123,7 +128,7 @@ public class Game extends RandomColorGenerator {
 	 * @param startTile
 	 * @return
 	 */
-	public CollectionOfPossibleActions tileIsClicked(Tile startTile)
+	public PossibleGameActions tileIsClicked(Tile startTile)
 	{
 		VillageType startVillageType = startTile.getVillageType(); 
 		VillageType possVillageUpgradeType = VillageType.NO_VILLAGE; 
@@ -155,7 +160,7 @@ public class Game extends RandomColorGenerator {
 			possActions = Logic.getPossibleActions(pUnit, startTile);
 		}
 
-		CollectionOfPossibleActions possible = new CollectionOfPossibleActions(possMoveTiles, possUnitUpgrade, possActions, possVillageUpgradeType);
+		PossibleGameActions possible = new PossibleGameActions(possMoveTiles, possUnitUpgrade, possActions, possVillageUpgradeType);
 		return possible; 
 
 

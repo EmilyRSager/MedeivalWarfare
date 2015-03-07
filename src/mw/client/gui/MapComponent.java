@@ -2,6 +2,7 @@ package mw.client.gui;
 
 import mw.client.gui.api.AbstractWindowComponent;
 import mw.client.gui.api.Clickeable;
+import mw.client.gui.api.ExtendedMinuetoImage;
 import mw.client.gui.api.MouseClickHandler;
 import mw.client.gui.api.ObservableWindowComponent;
 
@@ -33,8 +34,8 @@ public final class MapComponent extends AbstractWindowComponent implements
 		
 		minXOffset=0;
 		minYOffset=0;
-		maxXOffset=mapDisp.getWidth()-width;
-		maxYOffset=mapDisp.getHeight()-height;
+		maxXOffset = Math.max(mapDisp.getWidth()-width, 0);
+		maxYOffset = Math.max(mapDisp.getHeight()-height, 0);
 		
 		xOffset = minXOffset;
 		yOffset = minYOffset;
@@ -107,7 +108,8 @@ public final class MapComponent extends AbstractWindowComponent implements
 	@Override
 	public MinuetoImage getImage()
 	{
-		return mapDisp.getImage().crop(xOffset, yOffset, area.getWidth(), area.getHeight());
+		final MinuetoImage img = mapDisp.getImage();
+		return img.crop(xOffset, yOffset, Math.min(area.getWidth(), img.getWidth()), Math.min(area.getHeight(), img.getHeight()));
 	}
 
 

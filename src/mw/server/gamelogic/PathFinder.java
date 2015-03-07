@@ -44,6 +44,12 @@ public class PathFinder //has classic DFS
 				if (TileGraphLogic.isVillageBoundary(v, lGraphNode) ) 
 				{
 					villageSet.add(lGraphNode);
+					
+				}
+				if (!TileGraphLogic.isVillageBoundary(v, lGraphNode))
+				{
+					villageSet.add(lGraphNode);
+					S.push(lGraphNode);
 				}
 					
 			}	

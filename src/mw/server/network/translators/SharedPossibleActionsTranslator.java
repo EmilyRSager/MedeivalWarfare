@@ -1,15 +1,20 @@
-package mw.shared;
+package mw.server.network.translators;
 
 import java.util.ArrayList;
 import java.util.Collection;
 
 import mw.server.gamelogic.ActionType;
-import mw.server.gamelogic.CollectionOfPossibleActions;
+import mw.server.gamelogic.PossibleGameActions;
 import mw.server.gamelogic.Tile;
 import mw.server.gamelogic.TileController;
 import mw.server.gamelogic.UnitType;
+import mw.shared.SharedActionType;
+import mw.shared.SharedCoordinates;
+import mw.shared.SharedPossibleGameActions;
+import mw.shared.SharedTile;
+import mw.shared.SharedTile.VillageType;
 
-public abstract class ServerNetworkTranslator {
+public abstract class SharedPossibleActionsTranslator {
 
 
 
@@ -17,8 +22,7 @@ public abstract class ServerNetworkTranslator {
 	 * 		Static methods
 	 * ========================
 	 */
-	
-	public static PossibleGameActions translatePossibleGameActions(CollectionOfPossibleActions serverPossibleActions)
+	public static SharedPossibleGameActions translatePossibleGameActions(PossibleGameActions serverPossibleActions)
 	{
 		Collection<SharedCoordinates> sharedMoves = new ArrayList<SharedCoordinates>();
 		Collection<Tile> serverMoves = serverPossibleActions.getMovableTiles();
@@ -40,7 +44,7 @@ public abstract class ServerNetworkTranslator {
 		
 		SharedTile.VillageType sharedVT = SharedTileTranslator.translateVillageType(serverPossibleActions.getVillageUpgrade());
 		
-		return new PossibleGameActions(sharedMoves, sharedUT, sharedAT, sharedVT);
+		return new SharedPossibleGameActions(sharedMoves, sharedUT, sharedAT, sharedVT);
 	}
 	
 	public static SharedActionType translateActionType(ActionType at) {

@@ -29,15 +29,20 @@ public class GameController {
 		{
 			Player lPlayer = new Player(); 
 			gamePlayers.add(lPlayer);
+			i++; 
 		}
-		Game crtGame = new Game(gamePlayers, 0); 
+		Game crtGame = new Game(gamePlayers, 0);
 		return crtGame;
 	}
 	
-	public static Collection<CollectionOfPossibleActions> getPossibleGameActions(Game pGame, int pRow, int pColumn)
+	public static PossibleGameActions getPossibleGameActions(Game pGame, int pRow, int pColumn)
 	{
-		//TODO
-		return null;
+		
+		Coordinates mappingCoordinates = new Coordinates(pRow, pColumn);
+		Tile clicked = pGame.getTile(mappingCoordinates); 
+		return  pGame.tileIsClicked(clicked); 
+		
+		
 	}
 	
 	public static void updateGameState(MoveType pMoveType, Game pGame, int pRow1, int pColumn1, int pRow2, int pColumn2)

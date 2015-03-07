@@ -3,6 +3,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Random;
 import java.util.Set;
 
@@ -10,7 +11,7 @@ import java.util.Set;
 
 /**
  * GameMap class definition.
- * @author emilysager
+ * @author emilysager, Abhishek Gupta
  */
 public class GameMap  { 
 	private static Graph graph; 
@@ -18,9 +19,15 @@ public class GameMap  {
 	private Tile [][] aTiles; 
 	private static Random rTreesAndMeadows = new Random(); 
 	private Collection<Village> aVillages; 
-	private HashMap<Tile, GraphNode> TileToNodeHashMap = new HashMap<Tile, GraphNode>(); 
+	private HashMap<Tile, GraphNode> TileToNodeHashMap = new HashMap<Tile, GraphNode>();
+	private HashMap<Coordinates, Tile> CoordinatesToTileMap = new HashMap<Coordinates, Tile>(); 
 	private Collection<Color> availableColors;
 
+	public Tile getTile(Coordinates pCoord)
+	{
+		return CoordinatesToTileMap.get(pCoord);
+	}
+	
 	public  void printTiles()
 	{
 		for (Tile lTile: TileToNodeHashMap.keySet())
@@ -29,6 +36,60 @@ public class GameMap  {
 		}
 	}
 
+	/**
+	 * this method can be called at the beginning of a turn to create new trees as defined in the 
+	 * design spec
+	 */
+	public void treeGrowthGeneration(){
+		
+		//following just to make it easier to iterate over, can be removed 
+		ArrayList<GraphNode> lGraphNodes = new ArrayList<GraphNode>();
+		for(int i=0; i<aNodes.length; i++){
+			for(int j=0; j<(aNodes[i].length); j++){
+				lGraphNodes.add(aNodes[i][j]);
+			}
+		}
+		Random rand1 = new Random();
+		Random rand2 = new Random();
+		
+		for(GraphNode lNode: lGraphNodes){
+			if (lNode.getTile().getStructureType().equals(StructureType.TREE)) {
+				//we are only picking those tiles from the map that have a tree on them 
+				
+				ArrayList<GraphNode> lNeighbors = (ArrayList<GraphNode>) lNode.getAdjacentNodes();
+				//TODO: why doesn't it work without the casting ?? 
+				ArrayList<Tile> lTiles = new ArrayList<Tile>();
+				for(GraphNode lNode2: lNeighbors){
+					lTiles.add(lNode2.getTile());
+					
+				}
+				ArrayList<Tile> lNeighboringEmptyOrMeadowTiles = new ArrayList<Tile>();
+				for(Tile lTile: lTiles ){
+					StructureType lStructureType = lTile.getStructureType();
+					if (lStructureType.equals(StructureType.NO_STRUCT) || lStructureType.equals(StructureType.TREE) ) {
+						lNeighboringEmptyOrMeadowTiles.add(lTile);
+					}
+				}
+				//above gives us all the neigboring tiles which are empty or have a tree on them 
+				int max=lNeighboringEmptyOrMeadowTiles.size();
+				
+				int randomNum1 = rand1.nextInt(max) ; //a random number from here will give
+														//an equal likelihood of picking a required tile
+				
+				int randomNum2 = rand2.nextInt(2); //gives 50 % chance of actually putting a tree on that tile
+				
+				Tile randomlyPickedTile = lNeighboringEmptyOrMeadowTiles.get(randomNum1);
+				
+				if(randomNum2==1){
+					randomlyPickedTile.setStructureType(StructureType.TREE);
+				}
+			}
+		}
+		
+	}
+	
+	
+	
 	/**
 	 * Randomly Colors the Tiles 
 	 */
@@ -89,10 +150,12 @@ public class GameMap  {
 		{
 			for (int j =0; j <width; j++)
 			{
+				Coordinates crtCoord = new Coordinates(i, j); 
 				aTiles[i][j] = new Tile(StructureType.NO_STRUCT, i, j); 
 				aNodes[i][j] = new GraphNode(aTiles[i][j]); 
 				//aTiles[i][j] = aNodes[i][j].getTile(); 
-				TileToNodeHashMap.put(aNodes[i][j].getTile(), aNodes[i][j]); //perhaps need an equals override for tile
+				TileToNodeHashMap.put(aNodes[i][j].getTile(), aNodes[i][j]); 
+				CoordinatesToTileMap.put(crtCoord, aTiles[i][j]); 
 			}
 		}
 
@@ -105,7 +168,9 @@ public class GameMap  {
 		}
 	}
 
-	/* Randomly generates trees with (20%) probability
+	/**
+	 * this method used only when initializing the game map at the beginning of the game
+	 *  Randomly generates trees with (20%) probability
 	 * Randomly generates meadows with (10%) probability
 	 */
 	private void randomlyGenerateTreesAndMeadows(Tile lTile)  
@@ -176,17 +241,34 @@ public class GameMap  {
 	{
 		return PathFinder.getVillage(crt, graph); 
 	}
+	
+	public Collection<Tile> getNeighbors(Tile pTile)
+	{
+		GraphNode pGraphNode = TileToNodeHashMap.get(pTile);
+		Collection<GraphNode> pAdjNodes = pGraphNode.getAdjacentNodes(); 
+		Collection<Tile> rNeighbors = new ArrayList<Tile>(); 
+		for (GraphNode lGraphNode : pAdjNodes)
+		{
+			rNeighbors.add(lGraphNode.getTile());
+		}
+		
+		return rNeighbors;
+	}
 	/**
 	 * @param v1
 	 * @param v2
 	 * @return
 	 * Can Write after the demo
 	 */
+	
+
 	public boolean canFuse(Village v1, Village v2)
 	{
 		return false; 
 	}
 
+	
+	
 	/**
 	 * 
 	 * 
@@ -194,6 +276,7 @@ public class GameMap  {
 	 * @param invadingVillage
 	 * can write after the demo
 	 */
+
 	public void fuseVillages(Village invadedVillage, Village invadingVillage) 
 	{
 		// TODO Auto-generated method stub

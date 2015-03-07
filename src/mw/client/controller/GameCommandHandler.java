@@ -30,7 +30,7 @@ public final class GameCommandHandler {
 			}
 		}
 		MainApplication.newGame(gameTiles);
-		MainApplication.startDisplay();
+		MainApplication.concurrentlyDisplay();
 	}
 	
 	/**

@@ -1,13 +1,14 @@
 package mw.client.model;
 
-import java.awt.Color;
+import mw.shared.SharedColor;
+
 
 public final class Player{
 	
-	private final Color color;
+	private final SharedColor color;
 	private final String name;
 	
-	public Player(Color c, String name)
+	public Player(SharedColor c, String name)
 	{
 		color=c;
 		this.name = name;
@@ -17,7 +18,7 @@ public final class Player{
 	//	GETTERS
 	
 	
-	public Color getColor()
+	public SharedColor getColor()
 	{
 		return color;
 	}
