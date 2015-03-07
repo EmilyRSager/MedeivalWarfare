@@ -25,17 +25,18 @@ public final class MainApplication {
 	private static final Player PLAYER = null;
 	public final static int DEFAULT_MAP_WIDTH = 10;
 	public final static int DEFAULT_MAP_HEIGHT = 10;
-
+	
 	
 	private static GameWindow window;
 	private static Game game;
+	private static boolean displaying = false;
 	//private static ModelTile randomTile;
 	
 	public static void main(String[] args)
 	{
 		newGame();
 		startDisplay();
-
+		
 		waitABit();
 		testUpdate(SharedColor.BLUE);
 		waitABit();
@@ -128,6 +129,27 @@ public final class MainApplication {
 	{
 		//window.setVisible(true);
 		window.render();
+		displaying = true;
+	}
+	
+	public static void concurrentlyDisplay()
+	{
+		if (displaying)
+			throw new IllegalStateException("Already displaying. A call to concurrentlyDisplay is illegal");
+		
+		Thread displayThread = new Thread() {
+			public void run() {
+				while(true)
+				{
+					MinuetoEventQueue queue = window.getEventQueue();
+					while(queue.hasNext())
+					{
+						queue.handle();
+					}
+				}
+			}
+		};
+		displayThread.start();
 	}
 	
 }
