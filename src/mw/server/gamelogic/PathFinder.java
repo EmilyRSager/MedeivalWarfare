@@ -37,10 +37,12 @@ public class PathFinder //has classic DFS
     	Stack<GraphNode> S = new Stack <GraphNode>();  
 		Set<GraphNode> villageSet = new HashSet<GraphNode>(); 
 		S.push(v);
+		villageSet.add(v);
 		while (!S.isEmpty())
 		{
 			GraphNode crt =  S.pop(); 
 			crt.setVisited(); 
+			
 			
 			for(GraphNode lGraphNode : g.getAdjacentNodes(crt))
 			{
@@ -48,6 +50,7 @@ public class PathFinder //has classic DFS
 				{
 					continue; 
 				}
+				
 				if (TileGraphLogic.isVillageBoundary(v, lGraphNode) && TileGraphLogic.tilesAreSameColor(v, lGraphNode)) 
 				{
 					
