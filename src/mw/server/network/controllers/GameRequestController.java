@@ -3,7 +3,7 @@
  * Mar 5, 2015
  */
 
-package mw.server.network.lobby;
+package mw.server.network.controllers;
 
 import java.util.Collection;
 import java.util.Iterator;
@@ -14,7 +14,7 @@ import mw.server.gamelogic.GameController;
 import mw.server.gamelogic.Player;
 import mw.server.gamelogic.Tile;
 import mw.server.gamelogic.TooManyPlayersException;
-import mw.server.network.controllers.GameStateCommandDistributor;
+import mw.server.network.lobby.GameLobby;
 import mw.server.network.mappers.ClientChannelMapper;
 import mw.server.network.mappers.GameMapper;
 import mw.server.network.mappers.PlayerMapper;
