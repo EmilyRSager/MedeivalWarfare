@@ -1,10 +1,13 @@
 package mw.client.network;
 
 import mw.shared.SharedCoordinates;
-import mw.shared.servercommands.AbstractServerCommand;
+import mw.shared.servercommands.AuthenticateUserCommand;
 import mw.shared.servercommands.GetPossibleGameActionsCommand;
-import mw.shared.servercommands.NewGameRequestCommand;
+import mw.shared.servercommands.RequestNewGameCommand;
 
+/**
+ * Provides access to the network so clients can send commands to the Game Server.
+ */
 public class NetworkController {
 	private static ServerChannel aServerChannel;
 	
@@ -16,12 +19,21 @@ public class NetworkController {
 		aServerChannel = pServerChannel;
 	}
 	
+	/**
+	 * 
+	 * @param pUsername
+	 * @param pPassword
+	 */
+	public static void authenticateUser(String pUsername, String pPassword){
+		aServerChannel.sendCommand(new AuthenticateUserCommand(pUsername, pPassword));
+	}
+	
 	
 	/**
 	 * 
 	 */
 	public static void requestNewGame(){
-		aServerChannel.sendCommand(new NewGameRequestCommand());
+		aServerChannel.sendCommand(new RequestNewGameCommand());
 	}
 	
 	/**

@@ -5,13 +5,13 @@
 
 package mw.shared.servercommands;
 
-import mw.server.network.lobby.GameRequestController;
+import mw.server.network.controllers.GameRequestController;
 
 /**
  * 
  */
-public class NewGameRequestCommand extends AbstractServerCommand {
-	private final String aType = "NewGameRequestCommand";
+public class RequestNewGameCommand extends AbstractServerCommand {
+	private final String aType = "RequestNewGameCommand";
 	
 	/**
 	 * @param pClientID

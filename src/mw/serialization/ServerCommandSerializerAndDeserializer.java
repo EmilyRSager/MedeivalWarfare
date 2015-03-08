@@ -11,7 +11,7 @@ import mw.shared.servercommands.AbstractServerCommand;
 import mw.shared.servercommands.AuthenticateUserCommand;
 import mw.shared.servercommands.GameActionCommand;
 import mw.shared.servercommands.GetPossibleGameActionsCommand;
-import mw.shared.servercommands.NewGameRequestCommand;
+import mw.shared.servercommands.RequestNewGameCommand;
 import mw.shared.servercommands.SendMessageCommand;
 import mw.shared.servercommands.TestNewGameCommand;
 import mw.shared.servercommands.TestSharedTileCommand;
@@ -30,7 +30,7 @@ public class ServerCommandSerializerAndDeserializer{
 		aTypeMap.put("AuthenticateUserCommand", new TypeToken<AuthenticateUserCommand>(){}.getType());
 		aTypeMap.put("GameActionCommand", new TypeToken<GameActionCommand>(){}.getType());
 		aTypeMap.put("GetPossibleGameActionsCommand", new TypeToken<GetPossibleGameActionsCommand>(){}.getType());
-		aTypeMap.put("NewGameRequestCommand", new TypeToken<NewGameRequestCommand>(){}.getType());
+		aTypeMap.put("RequestNewGameCommand", new TypeToken<RequestNewGameCommand>(){}.getType());
 		aTypeMap.put("SendMessageCommand", new TypeToken<SendMessageCommand>(){}.getType());
 		
 		//TEST commands
