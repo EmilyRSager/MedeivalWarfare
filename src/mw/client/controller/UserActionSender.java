@@ -3,11 +3,13 @@ package mw.client.controller;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
 
-import mw.client.model.Game;
 import mw.client.model.ModelTile;
 import mw.client.network.NetworkController;
+import mw.shared.SharedActionType;
 import mw.shared.SharedCoordinates;
 import mw.shared.SharedPossibleGameActions;
+import mw.shared.SharedTile.UnitType;
+import mw.shared.SharedTile.VillageType;
 
 public class UserActionSender {
 
@@ -71,7 +73,7 @@ public class UserActionSender {
 		actionsReady = false;
 		waitingForActions = true;
 		SharedCoordinates targetCoord = getCoordinates(clickedTile);
-		NetworkController.getPossibleMoves(targetCoord);
+		NetworkController.getPossibleGameActions(targetCoord);
 	}
 	
 	
@@ -128,7 +130,24 @@ public class UserActionSender {
 		else
 			return false;
 	}
-	
+
+	public void sendUpgradeVillage(ModelTile villageTile, VillageType vt)
+	{
+		SharedCoordinates coord = getCoordinates(villageTile);
+		NetworkController.upgradeVillage(coord, vt);
+	}
+
+	public void sendUnitHire(ModelTile unitTile, UnitType ut)
+	{
+		SharedCoordinates coord = getCoordinates(unitTile);
+		NetworkController.hireUnit(coord, ut);
+	}
+
+	public void sendUnitAction(ModelTile unitTile, SharedActionType at)
+	{
+		SharedCoordinates coord = getCoordinates(unitTile);
+		NetworkController.setActionType(coord, at);
+	}
 	
 	/* ==========================
 	 * 		Private methods
@@ -171,5 +190,6 @@ public class UserActionSender {
 	{
 		return ModelToNetworkTranslator.translateModelCoordinates(ModelQuerier.getCoordinates(mtile));
 	}
+
 
 }

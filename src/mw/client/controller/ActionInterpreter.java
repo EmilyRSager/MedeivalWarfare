@@ -1,21 +1,12 @@
 package mw.client.controller;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.concurrent.locks.Condition;
-import java.util.concurrent.locks.ReentrantLock;
-
 import mw.client.gui.ImageTile;
 import mw.client.model.*;
-import mw.client.network.NetworkController;
 import mw.shared.SharedPossibleGameActions;
 import mw.shared.SharedActionType;
-import mw.shared.SharedCoordinates;
 import mw.shared.SharedTile;
+import mw.shared.SharedTile.UnitType;
 import mw.shared.SharedTile.VillageType;
 
 public final class ActionInterpreter {
@@ -58,16 +49,11 @@ public final class ActionInterpreter {
 	private SharedPossibleGameActions possibleActions;
 	//private Map<String, Map<String, GameAction>> currentChoices;
 	
-	private static final String vupChoiceName = "Select the type of village to upgrade to:";
-	private Choice<SharedTile.VillageType> villageUpgradeChoice;
-
-	private static final String uactChoiceName = "Select an action:";
-	private Choice<SharedActionType> unitActionChoice;
-
-	private static final String uhireupChoiceName = "Select a type of unit to hire:";
-	private Choice<SharedTile.UnitType> unitUpgradeHireChoice;
+	
 	
 	private final UserActionSender actionSender;
+	private final ChoiceCenter choiceCenter;
+	
 	
 	/* ========================
 	 * 		Constructors
@@ -83,6 +69,8 @@ public final class ActionInterpreter {
 		
 		UserActionSender.initialize();
 		actionSender = UserActionSender.singleton();
+		
+		choiceCenter = new ChoiceCenter();
 		
 		clearSelect();
 	}
@@ -148,32 +136,24 @@ public final class ActionInterpreter {
 	
 	public void notifyChoiceResult(String choiceTitle, String choseItem)
 	{
-		if (choiceTitle.equals(vupChoiceName))
-		{
-			SharedCoordinates src = getCurrentCoordinates();
-			VillageType vt = getChoiceResult(villageUpgradeChoice, choseItem);
-			NetworkController.upgradeVillage(src,vt);
-		}
-		else if (choiceTitle.equals(uhireupChoiceName))
-		{
-			SharedCoordinates src = getCurrentCoordinates();
-			SharedTile.UnitType ut = getChoiceResult(unitUpgradeHireChoice, choseItem);
-			NetworkController.hireUnit(src,ut);
-		}
-		else if (choiceTitle.equals(uactChoiceName))
-		{
-			SharedCoordinates src = getCurrentCoordinates();
-			SharedActionType at = getChoiceResult(unitActionChoice, choseItem);
-			NetworkController.setUnitAction(src,at);
-		}
-		else {
-			throw new IllegalArgumentException("The pair (choiceTitle=\""+choiceTitle+"\", choseItem=\""+choseItem+") is invalid");
-		}
-		
-		actionSender.askForPossibleMoves();
+		choiceCenter.handleChoiceResult(choiceTitle, choseItem, this);		
+		actionSender.askForPossibleMoves(selectedMTile);
 	}
 	
+	public void notifyVillageUpgradeChoiceResult(VillageType vt)
+	{
+		actionSender.sendUpgradeVillage(selectedMTile, vt);
+	}
 
+	public void notifyUnitHireChoiceResult(UnitType ut)
+	{
+		actionSender.sendUnitHire(selectedMTile, ut);
+	}
+	
+	public void notifyUnitActionChoiceResult(SharedActionType at)
+	{
+		actionSender.sendUnitAction(selectedMTile, at);
+	}
 	
 	/* ============================
 	 * 		Private methods
@@ -191,9 +171,7 @@ public final class ActionInterpreter {
 	
 	private void clearSelect() 
 	{
-		villageUpgradeChoice = null;
-		unitActionChoice = null;
-		unitUpgradeHireChoice = null;
+		choiceCenter.clear();
 		
 		actionSender.clearPossibleActions();
 	}
@@ -211,47 +189,24 @@ public final class ActionInterpreter {
 	
 	private void displayPossibleActions()
 	{
-		displayVillageChoice(possibleActions.getVillageUpgrade());
-		displayUnitTypeChoice(possibleActions.getUnitUpgrade());
-		displayUnitActionChoice(possibleActions.getUnitActions());
+		SharedTile.VillageType vt = possibleActions.getVillageUpgrade();
+		if (vt != null && vt != VillageType.NONE) {
+			choiceCenter.displayVillageChoice(vt);
+		}
+		
+		Collection<UnitType> uts = possibleActions.getUnitUpgrade();
+		if (uts != null) {
+			choiceCenter.displayUnitTypeChoice(uts);
+		}
+		
+		Collection<SharedActionType> ats = possibleActions.getUnitActions();
+		if (ats != null) {
+			choiceCenter.displayUnitActionChoice(ats);
+		}
 	}
 	
 
-	private void displayVillageChoice(VillageType vt)
-	{
-		if (vt != null && vt != VillageType.NONE)
-		{
-			List<VillageType> vtList = new ArrayList<VillageType>();
-			vtList.add(vt);
-			villageUpgradeChoice = new Choice<SharedTile.VillageType>(vtList);
-			DisplayUpdater.displayChoice(vupChoiceName, villageUpgradeChoice.itemsToString());
-		}
-	}
 	
-	private void displayUnitTypeChoice(Collection<SharedTile.UnitType> ut)
-	{
-		if (ut != null)
-		{
-			unitUpgradeHireChoice = new Choice<SharedTile.UnitType>(ut);
-			DisplayUpdater.displayChoice(uhireupChoiceName, unitUpgradeHireChoice.itemsToString());
-		}
-	}
-
-	private void displayUnitActionChoice(Collection<SharedActionType> unitActions)
-	{
-		if (unitActions!=null)
-		{
-			unitActionChoice = new Choice<SharedActionType>(unitActions);
-			DisplayUpdater.displayChoice(uactChoiceName, unitActionChoice.itemsToString());
-		}
-	}
-	
-	private <T> T getChoiceResult(Choice<T> choice, String strRes)
-	{
-		if (choice == null)
-			throw new IllegalArgumentException("No choice available, impossible to select anything");
-		return choice.getItem(strRes);
-	}
 	
 	
 }

@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-public abstract class AbstractUserChoice<ItemType> {
+public class UserChoice<ItemType> {
 	
 	private final Collection<ItemType> items;
 	
@@ -14,7 +14,7 @@ public abstract class AbstractUserChoice<ItemType> {
 	 */
 	
 
-	public AbstractUserChoice(Collection<ItemType> choiceItems)
+	public UserChoice(Collection<ItemType> choiceItems)
 	{
 		items = choiceItems;
 	}
