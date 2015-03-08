@@ -46,6 +46,7 @@ public class MoveUnitCommand extends AbstractServerCommand {
 				aSourceCoordinates.getY(),
 				aDestinationCoordinates.getX(),
 				aDestinationCoordinates.getY()
+				);
 
 	}
 
