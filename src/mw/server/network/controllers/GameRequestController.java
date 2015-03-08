@@ -83,8 +83,6 @@ public class GameRequestController {
 		try {
 			lGame = GameController.newGame(lNumPlayers); //throws exception if too many players
 
-			System.out.println("[Server] Received game from GameController.");
-
 			/* Map the clients to the given Game.
 			 * TODO this may be unnesecary as there will be a mapping between ClientIDs and Players as well
 			 */
