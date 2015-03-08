@@ -99,7 +99,6 @@ public class GameMap  {
 		for (GraphNode lGraphNode : graph.allNodes()) 
 		{
 			Tile lTile = lGraphNode.getTile(); 
-
 			lTile.setColor(RandomColorGenerator.generateRandomColor(availableColors));
 		}
 		for (GraphNode lGraphNode : graph.allNodes())
@@ -108,6 +107,20 @@ public class GameMap  {
 			if (aVillages.contains((PathFinder.getVillage(lGraphNode, graph))))
 			{
 				aVillages.add(new Village(villageSet)); 
+			}
+		
+		}
+		int i = 0; 
+		for (Village lVillage : aVillages)
+		{
+			for (Tile lTile: lVillage.getTiles())
+			{
+				if (i%2 == 0) 
+				{
+					lTile.setVillageType(VillageType.HOVEL);
+					i++; 
+					break; 	
+				}
 			}
 		}
 	}
@@ -152,7 +165,6 @@ public class GameMap  {
 				Coordinates crtCoord = new Coordinates(i, j); 
 				aTiles[i][j] = new Tile(StructureType.NO_STRUCT, i, j); 
 				aNodes[i][j] = new GraphNode(aTiles[i][j]); 
-				//aTiles[i][j] = aNodes[i][j].getTile(); 
 				TileToNodeHashMap.put(aNodes[i][j].getTile(), aNodes[i][j]); 
 				CoordinatesToTileMap.put(crtCoord, aTiles[i][j]); 
 			}
