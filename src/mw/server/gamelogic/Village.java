@@ -41,6 +41,11 @@ public class Village extends Observable
 		aObservers.add(o);
 	}
 	
+	public void setVillageType(VillageType pVillageType)
+	{
+		aVillageType = pVillageType;
+	}
+	
 	public Village(Set<GraphNode> villageSet) 
 	{
 		aVillageNodes = villageSet; 

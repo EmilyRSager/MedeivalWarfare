@@ -127,10 +127,26 @@ public class GameMap  {
 			}
 		}
 		
+	//for testing 
 		for (Village v: aVillages)
 		{
 			System.out.println(v.toString()); 
 		}
+		int i = 0; 
+		
+	for (Village lVillage: aVillages)
+	{
+		//only runs 1X per village
+		for (Tile lTile: lVillage.getTiles())
+		{
+		
+				lTile.setVillageType(VillageType.HOVEL);
+				lVillage.setVillageType(VillageType.HOVEL);
+				break; 
+			 	
+		}
+	} 
+		
 	}
 	/**
 	 * Generates a new map with default 300 tiles 
