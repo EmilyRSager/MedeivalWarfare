@@ -199,7 +199,7 @@ public class GameWindow implements Observer {
 	
 
 	
-	/*public static void main(String[] args)
+	public static void main(String[] args)
 	{
 		GameWindow gw = new GameWindow();
 		gw.render();
@@ -213,7 +213,7 @@ public class GameWindow implements Observer {
 		}
 		
 		gw.update();
-	}*/
+	}
 	
 	
 	
