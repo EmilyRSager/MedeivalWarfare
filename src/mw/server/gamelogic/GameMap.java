@@ -121,6 +121,10 @@ public class GameMap  {
 					i++; 
 					break; 	
 				}
+				else 
+				{
+					i++; 
+				}
 			}
 		}
 	}
