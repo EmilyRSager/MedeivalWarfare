@@ -3,6 +3,7 @@ package mw.client.controller;
 import mw.client.model.Coordinates;
 import mw.client.model.Game;
 import mw.client.model.ModelTile;
+import mw.client.model.Player;
 import mw.shared.SharedColor;
 
 
@@ -29,6 +30,10 @@ public final class ModelQuerier {
 		return game.getGameMap().getTile(coord);
 	}
 	
+	public static void setCurrentPlayerColor(Game game, SharedColor color)
+	{
+		game.setPlayer(new Player(color,""));
+	}
 	
 	// Tile queries
 	
@@ -80,5 +85,9 @@ public final class ModelQuerier {
 
 	public static int getVillageWood(ModelTile mtile) {
 		return mtile.getVillageWood();
+	}
+	
+	public static Coordinates getCoordinates(ModelTile mtile) {
+		return mtile.getCoordinates();
 	}
 }
