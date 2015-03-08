@@ -30,10 +30,12 @@ public class ImageTile extends Observable {
 		setImage(new MinuetoImage(DEFAULT_TILE_WIDTH, DEFAULT_TILE_HEIGHT));
 	}
 	
-	public ImageTile(SharedColor c, VillageType v, UnitType u, Terrain t)
+	public ImageTile(MinuetoColor c, VillageType v, UnitType u, Terrain t)
 	{
-		setImage(new MinuetoImage(DEFAULT_TILE_WIDTH, DEFAULT_TILE_HEIGHT));
-		
+		setImage(ExtendedMinuetoImage.coloredSquare(DEFAULT_TILE_WIDTH, DEFAULT_TILE_HEIGHT, c));
+		image.draw(getTerrainImage(t), 0, 0);
+		image.draw(getUnitImage(u), 0, 0);
+		image.draw(getVillageImage(v), 0, 0);
 	}
 	/**
 	 * Getter for an ImageTile's MinuetoImage.
@@ -65,8 +67,8 @@ public class ImageTile extends Observable {
 		image = ExtendedMinuetoImage.drawBorder(newImage, ExtendedMinuetoColor.GREY);
 	}
 	
-	/*public void setBorderSelected(MinuetoImage selectedImage)
+	public void setBorderSelected(MinuetoImage selectedImage)
 	{
 		image = ExtendedMinuetoImage.drawBorder(selectedImage, ExtendedMinuetoColor.LIGHT_GREY);
-	}*/
+	}
 }
