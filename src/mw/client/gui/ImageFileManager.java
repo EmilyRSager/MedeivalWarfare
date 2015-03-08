@@ -61,7 +61,7 @@ public class ImageFileManager
 		return null;
 	}
 	
-	public MinuetoImage getTerrainImage(Terrain t)
+	public static MinuetoImage getTerrainImage(Terrain t)
 	{
 		String fileName = null;
 		switch (t)
@@ -96,7 +96,7 @@ public class ImageFileManager
 		return null;
 	}
 	
-	public MinuetoImage getUnitImage(UnitType u)
+	public static MinuetoImage getUnitImage(UnitType u)
 	{
 		String fileName = null;
 		switch (u)
@@ -132,7 +132,7 @@ public class ImageFileManager
 		}
 		return null;
 	}
-	public MinuetoImage getVillageImage(VillageType v)
+	public static MinuetoImage getVillageImage(VillageType v)
 	{
 		String fileName = null;
 		switch(v)
