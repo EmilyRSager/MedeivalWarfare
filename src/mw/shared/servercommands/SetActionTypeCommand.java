@@ -5,6 +5,8 @@
 
 package mw.shared.servercommands;
 
+import mw.server.gamelogic.GameController;
+import mw.server.network.mappers.GameMapper;
 import mw.shared.SharedActionType;
 import mw.shared.SharedCoordinates;
 
@@ -39,7 +41,11 @@ public class SetActionTypeCommand extends AbstractServerCommand {
 	 */
 	@Override
 	public void execute(Integer pClientID) {
-		// TODO Auto-generated method stub
+		GameController.setActionType(
+				GameMapper.getInstance().getGame(pClientID),
+				aUnitCoordinates.getX(),
+				aUnitCoordinates.getY(),
+				//TODO translate aActionType
 
 	}
 

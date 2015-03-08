@@ -35,7 +35,6 @@ public class NetworkController {
 		aServerChannel.sendCommand(new AuthenticateUserCommand(pUsername, pPassword));
 	}
 	
-	
 	/**
 	 * 
 	 */
@@ -44,14 +43,12 @@ public class NetworkController {
 	}
 	
 	/**
-	 * 
-	 * @param pUnitCoordinates
-	 * @param pActionType
+	 * Does something
+	 * @param pAbstractServerCommand
 	 */
-	public static void setActionType(SharedCoordinates pUnitCoordinates, SharedActionType pActionType){
-		aServerChannel.sendCommand(new SetActionTypeCommand(pUnitCoordinates, pActionType));
+	public static void getPossibleGameActions(SharedCoordinates pSharedCoordinates){
+		aServerChannel.sendCommand(new GetPossibleGameActionsCommand(pSharedCoordinates));
 	}
-	
 	/**
 	 * 
 	 * @param pUnitCoordinates
@@ -59,6 +56,25 @@ public class NetworkController {
 	 */
 	public static void hireUnit(SharedCoordinates pUnitCoordinates, SharedTile.UnitType pUnitType){
 		aServerChannel.sendCommand(new HireUnitCommand(pUnitCoordinates, pUnitType));
+	}
+	
+	/**
+	 * 
+	 * @param pSourceCoordinates
+	 * @param pDestinationCoordinates
+	 */
+	public static void moveUnit(SharedCoordinates pSourceCoordinates, SharedCoordinates pDestinationCoordinates){
+		aServerChannel.sendCommand(new MoveUnitCommand(pSourceCoordinates, pDestinationCoordinates));
+	}
+	
+	
+	/**
+	 * 
+	 * @param pUnitCoordinates
+	 * @param pActionType
+	 */
+	public static void setActionType(SharedCoordinates pUnitCoordinates, SharedActionType pActionType){
+		aServerChannel.sendCommand(new SetActionTypeCommand(pUnitCoordinates, pActionType));
 	}
 	
 	/**
@@ -79,20 +95,5 @@ public class NetworkController {
 		aServerChannel.sendCommand(new UpgradeVillageCommand(pVillageCoordinates, pVillageType));
 	}
 	
-	/**
-	 * 
-	 * @param pSourceCoordinates
-	 * @param pDestinationCoordinates
-	 */
-	public static void moveUnit(SharedCoordinates pSourceCoordinates, SharedCoordinates pDestinationCoordinates){
-		aServerChannel.sendCommand(new MoveUnitCommand(pSourceCoordinates, pDestinationCoordinates));
-	}
 	
-	/**
-	 * Does something
-	 * @param pAbstractServerCommand
-	 */
-	public static void getPossibleGameActions(SharedCoordinates pSharedCoordinates){
-		aServerChannel.sendCommand(new GetPossibleGameActionsCommand(pSharedCoordinates));
-	}
 }

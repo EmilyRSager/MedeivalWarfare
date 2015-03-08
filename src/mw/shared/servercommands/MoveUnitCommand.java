@@ -5,6 +5,8 @@
 
 package mw.shared.servercommands;
 
+import mw.server.gamelogic.GameController;
+import mw.server.network.mappers.GameMapper;
 import mw.shared.SharedCoordinates;
 
 /**
@@ -38,7 +40,12 @@ public class MoveUnitCommand extends AbstractServerCommand {
 	 */
 	@Override
 	public void execute(Integer pClientID) {
-		// TODO Auto-generated method stub
+		GameController.moveUnit(
+				GameMapper.getInstance().getGame(pClientID),
+				aSourceCoordinates.getX(),
+				aSourceCoordinates.getY(),
+				aDestinationCoordinates.getX(),
+				aDestinationCoordinates.getY()
 
 	}
 

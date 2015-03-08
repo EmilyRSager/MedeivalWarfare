@@ -5,6 +5,8 @@
 
 package mw.shared.servercommands;
 
+import mw.server.gamelogic.GameController;
+import mw.server.network.mappers.GameMapper;
 import mw.shared.SharedCoordinates;
 import mw.shared.SharedTile;
 
@@ -37,7 +39,12 @@ public class UpgradeVillageCommand extends AbstractServerCommand {
 	 */
 	@Override
 	public void execute(Integer pClientID) {
-		// TODO Auto-generated method stub
+		GameController.upgradeVillage(
+				GameMapper.getInstance().getGame(pClientID),
+				aVillageCoordinates.getX(),
+				aVillageCoordinates.getY(),
+				//TODO translate aVilageType
+				);
 
 	}
 
