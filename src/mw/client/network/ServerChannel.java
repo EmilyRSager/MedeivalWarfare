@@ -13,11 +13,7 @@ import java.net.Socket;
 import mw.shared.servercommands.AbstractServerCommand;
 
 public class ServerChannel extends Thread{
-<<<<<<< HEAD
-	private static final String SERVER_NAME = "localhost";
-=======
-	private static final String SERVER_NAME = "142.157.179.24";
->>>>>>> origin/master
+	private static final String SERVER_NAME = "142.157.71.8";
 	private static final int PORT = 6666;
 
 	private Socket aSocket;

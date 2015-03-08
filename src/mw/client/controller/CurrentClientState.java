@@ -1,6 +1,7 @@
 package mw.client.controller;
 
 import mw.client.model.Game;
+import mw.shared.SharedColor;
 
 
 /**
@@ -29,6 +30,11 @@ public final class CurrentClientState {
 	 */
 	public static Game getCurrentGame() {
 		return currentGame;
+	}
+	
+	public static void setCurrentPlayerColor(SharedColor color)
+	{
+		ModelQuerier.setCurrentPlayerColor(currentGame,color);
 	}
 	
 }

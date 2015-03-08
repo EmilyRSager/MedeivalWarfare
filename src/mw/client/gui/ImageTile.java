@@ -33,9 +33,9 @@ public class ImageTile extends Observable {
 	public ImageTile(MinuetoColor c, VillageType v, UnitType u, Terrain t)
 	{
 		setImage(ExtendedMinuetoImage.coloredSquare(DEFAULT_TILE_WIDTH, DEFAULT_TILE_HEIGHT, c));
-		image.draw(getTerrainImage(t), 0, 0);
-		image.draw(getUnitImage(u), 0, 0);
-		image.draw(getVillageImage(v), 0, 0);
+		image.draw(ImageFileManager.getTerrainImage(t), 0, 0);
+		image.draw(ImageFileManager.getUnitImage(u), 0, 0);
+		image.draw(ImageFileManager.getVillageImage(v), 0, 0);
 	}
 	/**
 	 * Getter for an ImageTile's MinuetoImage.

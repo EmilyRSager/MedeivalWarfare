@@ -3,7 +3,7 @@ package mw.client.model;
 public final class Game {
 
 	private final GameMap map;
-	private final Player currentPlayer;
+	private Player currentPlayer;
 	
 	
 	// Constructors
@@ -25,5 +25,9 @@ public final class Game {
 	
 	public Player getCurrentPlayer() {
 		return currentPlayer;
+	}
+	
+	public void setPlayer(Player p) {
+		currentPlayer = p;
 	}
 }

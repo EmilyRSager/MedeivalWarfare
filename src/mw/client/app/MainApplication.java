@@ -89,8 +89,8 @@ public final class MainApplication {
 	
 	public static void newGame(ModelTile[][] tiles)
 	{
-		final int width = tiles.length;
-		final int height = tiles[0].length;
+		final int width = tiles[0].length;
+		final int height = tiles.length;
 		
 		TileModificationHandler observer = new TileModificationHandler();
 		ArrayList<ModelTile> tileList = new ArrayList<ModelTile>();
@@ -102,7 +102,7 @@ public final class MainApplication {
 		{
 			for (int j=0; j<height; j++)
 			{
-				ModelTile t = tiles[i][j];
+				ModelTile t = tiles[j][i];
 				tileList.add(t);
 				t.addObserver(observer);
 				
