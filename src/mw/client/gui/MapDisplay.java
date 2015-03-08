@@ -6,11 +6,13 @@ import mw.client.controller.ActionInterpreter;
 import mw.client.controller.ModelViewMapping;
 import mw.client.gui.api.Clickeable;
 import mw.client.gui.api.Displayable;
+import mw.client.gui.api.TextDisplay;
 import mw.client.model.ModelTile;
 import mw.shared.SharedColor;
 
 import org.minueto.MinuetoColor;
 import org.minueto.image.MinuetoImage;
+import org.minueto.image.MinuetoText;
 import org.minueto.window.*; 
 
 
@@ -171,10 +173,12 @@ public class MapDisplay implements Displayable, Clickeable
 				if(i % 2 == 0)
 				{
 					newImage.draw(tiles[i][j].getTileImage(), i * ImageTile.DEFAULT_TILE_WIDTH, j * ImageTile.DEFAULT_TILE_HEIGHT);
+					newImage.draw(new MinuetoText(""+j+","+i, TextDisplay.DEFAULT_FONT, MinuetoColor.BLACK),  i * ImageTile.DEFAULT_TILE_WIDTH, j * ImageTile.DEFAULT_TILE_HEIGHT);
 				}
 				else
 				{
 					newImage.draw(tiles[i][j].getTileImage(), i * ImageTile.DEFAULT_TILE_WIDTH, (j * ImageTile.DEFAULT_TILE_HEIGHT) + (int)(.5 * ImageTile.DEFAULT_TILE_HEIGHT));
+					newImage.draw(new MinuetoText(""+j+","+i, TextDisplay.DEFAULT_FONT, MinuetoColor.BLACK), i * ImageTile.DEFAULT_TILE_WIDTH, (j * ImageTile.DEFAULT_TILE_HEIGHT) + (int)(.5 * ImageTile.DEFAULT_TILE_HEIGHT));
 				}
 			}
 		}
