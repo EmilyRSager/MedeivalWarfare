@@ -12,6 +12,7 @@ import mw.shared.clientcommands.AcknowledgementCommand;
 import mw.shared.clientcommands.DisplayPossibleGameActionsCommand;
 import mw.shared.clientcommands.MessageReceivedCommand;
 import mw.shared.clientcommands.NewGameCommand;
+import mw.shared.clientcommands.SetColorCommand;
 import mw.shared.clientcommands.UpdateTileCommand;
 
 import com.google.gson.Gson;
@@ -29,6 +30,7 @@ public class ClientCommandSerializerAndDeserializer {
 		aTypeMap.put("DisplayPossibleGameActionsCommand", new TypeToken<DisplayPossibleGameActionsCommand>(){}.getType());
 		aTypeMap.put("MessageReceivedCommand", new TypeToken<MessageReceivedCommand>(){}.getType());
 		aTypeMap.put("NewGameCommand", new TypeToken<NewGameCommand>(){}.getType());
+		aTypeMap.put("SetColorCommand", new TypeToken<SetColorCommand>(){}.getType());
 		aTypeMap.put("UpdateTileCommand", new TypeToken<UpdateTileCommand>(){}.getType());	
 	}
 	

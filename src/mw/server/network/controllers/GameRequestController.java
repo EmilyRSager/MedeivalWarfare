@@ -9,21 +9,26 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.Set;
 
+import mw.server.gamelogic.Color;
 import mw.server.gamelogic.Game;
 import mw.server.gamelogic.GameController;
 import mw.server.gamelogic.Player;
 import mw.server.gamelogic.Tile;
 import mw.server.gamelogic.TooManyPlayersException;
+import mw.server.network.communication.ClientChannel;
 import mw.server.network.lobby.GameLobby;
 import mw.server.network.mappers.ClientChannelMapper;
 import mw.server.network.mappers.GameMapper;
 import mw.server.network.mappers.PlayerMapper;
+import mw.server.network.translators.SharedTileTranslator;
 import mw.shared.clientcommands.AbstractClientCommand;
 import mw.shared.clientcommands.AcknowledgementCommand;
+import mw.shared.clientcommands.SetColorCommand;
 
 /**
  * Manages game requests by maintaining a set of game lobbies and creating games when there
- * are sufficient clients available to create a Game.
+ * are sufficient clients available to create a Game. Handles assigning clients to GamePlayers
+ * and informing the clients of their Colors.
  */
 public class GameRequestController {
 	private GameLobby aGameLobby; //later on there will be a set of available of
@@ -69,35 +74,30 @@ public class GameRequestController {
 	 * to each client involved in the game.
 	 */
 	private void createNewGame(){
-
-		//get the available clients
 		System.out.println("[Server] Initializing new game.");
 		Set<Integer> lClientIDs = aGameLobby.removeAvailableClients();
 		int lNumPlayers = lClientIDs.size();
-		
-		System.out.println("[Server] Number clients " + lNumPlayers + ".");
 
 		//create a game
 		Game lGame;
 		try {
-			System.out.println("[Server] Making new game request to GameController.");
 			lGame = GameController.newGame(lNumPlayers); //throws exception if too many players
-			
+
 			System.out.println("[Server] Received game from GameController.");
-			
+
 			/* Map the clients to the given Game.
 			 * TODO this may be unnesecary as there will be a mapping between ClientIDs and Players as well
 			 */
 			GameMapper.getInstance().putGame(lClientIDs, lGame); //add clients to Game Mapping
-			
+
 			//map clients to players
 			Collection<Player> lPlayers = lGame.getPlayers();
-			assignPlayers(lClientIDs, lPlayers);
-			
+			assignClientsToPlayers(lClientIDs, lPlayers);
+
 			//initialize game state observer
 			GameStateCommandDistributor lGameStateCommandDistributor = 
 					new GameStateCommandDistributor(lClientIDs, lGame);
-			
+
 			//attach observer to each tile
 			Tile[][] lGameTiles = lGame.getGameTiles();
 			for(int i = 0; i < lGameTiles.length; i++){
@@ -106,10 +106,10 @@ public class GameRequestController {
 					lGameTiles[i][j].addObserver(lGameStateCommandDistributor);
 				}
 			}
-			
+
 			//distribute the new Game to each client.
 			lGameStateCommandDistributor.newGame(lGame.getGameTiles());
-			
+
 		} catch (TooManyPlayersException e) {
 			System.out.println("[Server] Tried to create a Game with too many players.");
 			e.printStackTrace();
@@ -118,20 +118,31 @@ public class GameRequestController {
 	}
 
 	/**
-	 * Assigns a Client to a given players in the Game
+	 * Assigns a ClientID to a given Player in the Game and informs each Client of its color.
 	 * @param pPlayers
 	 * @param pClientIDs
 	 */
-	private void assignPlayers(Set<Integer> pClientIDs, Collection<Player> pPlayers){
+	private void assignClientsToPlayers(Set<Integer> pClientIDs, Collection<Player> pPlayers){
 		Iterator<Integer> lClientIDIterator = pClientIDs.iterator();
 		Iterator<Player> lPlayerIterator = pPlayers.iterator();
 
 		//TODO check they're the same size
 		while(lClientIDIterator.hasNext()){
-			PlayerMapper.getInstance().putPlayer(
-					lClientIDIterator.next(),
-					lPlayerIterator.next()
-					);
+			Integer lClientID = lClientIDIterator.next();
+			Player lPlayer = lPlayerIterator.next();
+			
+			//store client to player mapping
+			PlayerMapper.getInstance().putPlayer(lClientID, lPlayer);
+			
+			//get player color
+			Color lPlayerColor = lPlayer.getPlayerColor();
+			
+			//get client channel associated with current player
+			ClientChannel lClientChannel = ClientChannelMapper.getInstance().getChannel(lClientID);
+			
+			//send command to client informing it of its color
+			lClientChannel.sendCommand(
+					new SetColorCommand(SharedTileTranslator.translateColor(lPlayerColor)));
 		}
 	}
 
