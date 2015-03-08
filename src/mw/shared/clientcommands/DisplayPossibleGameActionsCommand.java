@@ -5,6 +5,7 @@
 
 package mw.shared.clientcommands;
 
+import mw.client.controller.UserActionSender;
 import mw.shared.SharedPossibleGameActions;
 
 /**

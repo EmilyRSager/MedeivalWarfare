@@ -90,7 +90,6 @@ public class GameRequestController {
 
 			//map clients to players
 			Collection<Player> lPlayers = lGame.getPlayers();
-			assignClientsToPlayers(lClientIDs, lPlayers);
 
 			//initialize game state observer
 			GameStateCommandDistributor lGameStateCommandDistributor = 
@@ -107,6 +106,7 @@ public class GameRequestController {
 
 			//distribute the new Game to each client.
 			lGameStateCommandDistributor.newGame(lGame.getGameTiles());
+			assignClientsToPlayers(lClientIDs, lPlayers);
 
 		} catch (TooManyPlayersException e) {
 			System.out.println("[Server] Tried to create a Game with too many players.");
