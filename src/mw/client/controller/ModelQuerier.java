@@ -81,4 +81,8 @@ public final class ModelQuerier {
 	public static int getVillageWood(ModelTile mtile) {
 		return mtile.getVillageWood();
 	}
+	
+	public static Coordinates getCoordinates(ModelTile mtile) {
+		return mtile.getCoordinates();
+	}
 }

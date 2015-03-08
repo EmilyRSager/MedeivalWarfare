@@ -342,12 +342,26 @@ public final class TileGraphLogic {
 	}
 	public static boolean isVillageBoundary(GraphNode startNode, GraphNode pNode )
 	{
-		
-		if(startNode.getTile().getColor() == pNode.getTile().getColor())
+		Collection<GraphNode> pAdjNodes = pNode.getAdjacentNodes(); 
+		boolean areAllNeighborsSameColor = true; 
+		for (GraphNode lGraphNode : pAdjNodes)
+		{
+			if (!(lGraphNode.getTile().getColor() == startNode.getTile().getColor()))
+			{
+				areAllNeighborsSameColor = false; 
+			}
+		}
+		return areAllNeighborsSameColor; 
+	
+	}
+	public static boolean tilesAreSameColor(GraphNode startNode, GraphNode pNode)
+	{
+		if (startNode.getTile().getColor() == pNode.getTile().getColor())
 		{
 			return true; 
 		}
-		return false;
+		return false; 
 	}
 }
+
 

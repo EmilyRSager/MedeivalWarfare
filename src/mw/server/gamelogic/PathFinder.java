@@ -33,23 +33,34 @@ public class PathFinder //has classic DFS
    
     public static Set<GraphNode> getVillage(GraphNode v, Graph g)
     {
+    	System.out.println("Called PathFinder");
     	Stack<GraphNode> S = new Stack <GraphNode>();  
 		Set<GraphNode> villageSet = new HashSet<GraphNode>(); 
+		S.push(v);
 		while (!S.isEmpty())
 		{
 			GraphNode crt =  S.pop(); 
 			crt.setVisited(); 
+			
 			for(GraphNode lGraphNode : g.getAdjacentNodes(crt))
 			{
-				if (TileGraphLogic.isVillageBoundary(v, lGraphNode) ) 
+				if (!TileGraphLogic.tilesAreSameColor(v, lGraphNode))
 				{
+					continue; 
+				}
+				if (TileGraphLogic.isVillageBoundary(v, lGraphNode) && TileGraphLogic.tilesAreSameColor(v, lGraphNode)) 
+				{
+					
 					villageSet.add(lGraphNode);
 					
 				}
-				if (!TileGraphLogic.isVillageBoundary(v, lGraphNode))
+				if (!TileGraphLogic.isVillageBoundary(v, lGraphNode) && TileGraphLogic.tilesAreSameColor(v, lGraphNode))
 				{
-					villageSet.add(lGraphNode);
-					S.push(lGraphNode);
+					if (!lGraphNode.isVisited())
+					{
+						villageSet.add(lGraphNode);
+						S.push(lGraphNode);
+					}
 				}
 					
 			}	

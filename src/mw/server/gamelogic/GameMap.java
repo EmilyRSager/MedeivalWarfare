@@ -96,36 +96,40 @@ public class GameMap  {
 	{
 		availableColors.add(Color.NEUTRAL);
 
+		//assign colors to the tiles
 		for (GraphNode lGraphNode : graph.allNodes()) 
 		{
 			Tile lTile = lGraphNode.getTile(); 
 			lTile.setColor(RandomColorGenerator.generateRandomColor(availableColors));
 		}
+		
+		//initializes villages
 		for (GraphNode lGraphNode : graph.allNodes())
 		{
 			Set<GraphNode> villageSet = PathFinder.getVillage(lGraphNode, graph); 
-			if (aVillages.contains((PathFinder.getVillage(lGraphNode, graph))))
+			boolean villageAlreadyExists = false; 
+			
+			//makes sure a village doesn't already exist to avoid duplicate references 
+			for (Village lVillage: aVillages)
 			{
-				aVillages.add(new Village(villageSet)); 
+				if (lVillage.getVillageNodes().equals(villageSet))
+				{
+					villageAlreadyExists = true; 
+				}
 			}
 		
-		}
-		int i = 0; 
-		for (Village lVillage : aVillages)
-		{
-			for (Tile lTile: lVillage.getTiles())
+			if (!villageAlreadyExists)
 			{
-				if (i%2 == 0) 
-				{
-					lTile.setVillageType(VillageType.HOVEL);
-					i++; 
-					break; 	
-				}
-				else 
-				{
-					i++; 
-				}
+				System.out.println("Village Created"); 
+				Village v = new Village (villageSet);
+				aVillages.add(v); 
+				villageAlreadyExists = false; 
 			}
+		}
+		
+		for (Village v: aVillages)
+		{
+			System.out.println(v.toString()); 
 		}
 	}
 	/**
