@@ -10,7 +10,8 @@ public class PathFinder //has classic DFS
 	public static Set<GraphNode> getMovableTiles (GraphNode v, Graph g) 
 	{
 		Stack<GraphNode> S = new Stack <GraphNode>();  
-		Set<GraphNode> canMoveHere = new HashSet<GraphNode>(); 
+		Set<GraphNode> canMoveHere = new HashSet<GraphNode>();
+		S.push(v); 
 		while (!S.isEmpty())
 		{
 			GraphNode crt =  S.pop(); 
@@ -23,6 +24,7 @@ public class PathFinder //has classic DFS
 				}
 				if (!TileGraphLogic.isPathOver(v, lGraphNode))
 				{
+					canMoveHere.add(lGraphNode);
 					S.push(lGraphNode); 
 				}
 			}	
