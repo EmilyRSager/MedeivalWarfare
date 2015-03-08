@@ -18,7 +18,7 @@ import mw.shared.SharedCoordinates;
 import mw.shared.SharedTile;
 import mw.shared.SharedTile.VillageType;
 
-public final class ActionInterpreter /*implements Controller */{
+public final class ActionInterpreter {
 
 	
 	/* ===============================
@@ -49,29 +49,7 @@ public final class ActionInterpreter /*implements Controller */{
 	 * 		ActionInterpreter 
 	 * ===============================
 	 */
-	
-	private class Choice<ItemType> {
-		private Collection<ItemType> items;
-		
-		public Choice(Collection<ItemType> choiceItems) {
-			items = choiceItems;
-		}
-		
-		public ItemType getItem(String name) {
-			for (ItemType item : items) {
-				if (item.toString().equals(name))
-					return item;
-			}
-			throw new IllegalArgumentException("No item with the name "+name+" in this choice");
-		}
-		
-		public List<String> itemsToString() {
-			List<String> ret = new ArrayList<String>();
-			for (ItemType item : items)
-				ret.add(item.toString());
-			return ret;
-		}
-	}
+
 	
 	
 	private final Game game;
@@ -89,11 +67,7 @@ public final class ActionInterpreter /*implements Controller */{
 	private static final String uhireupChoiceName = "Select a type of unit to hire:";
 	private Choice<SharedTile.UnitType> unitUpgradeHireChoice;
 	
-	
-	private final ReentrantLock possibleActionsLock = new ReentrantLock();
-	private final Condition possibleActionsReady = possibleActionsLock.newCondition();
-	//private boolean waitingForActions;
-	private boolean actionsReady;
+	private final UserActionSender actionSender;
 	
 	/* ========================
 	 * 		Constructors
@@ -106,6 +80,10 @@ public final class ActionInterpreter /*implements Controller */{
 		game = g;
 		selectedMTile = null;
 		selectedITile = null;
+		
+		UserActionSender.initialize();
+		actionSender = UserActionSender.singleton();
+		
 		clearSelect();
 	}
 	
@@ -122,7 +100,8 @@ public final class ActionInterpreter /*implements Controller */{
 		unselect();
 		
 		ModelTile modelTarget = ModelViewMapping.singleton().getModelTile(dispTarget);
-		if (isSelectable(modelTarget)) {
+		if (isSelectable(modelTarget))
+		{
 			System.out.println("Selecting the tile");
 			selectedMTile = modelTarget;
 			selectedITile = dispTarget;
@@ -134,8 +113,9 @@ public final class ActionInterpreter /*implements Controller */{
 				int wood = ModelQuerier.getVillageWood(selectedMTile);
 				DisplayUpdater.showVillageResources(gold, wood);
 			}
+			
 			System.out.println("Before asking for the moves");
-			askForPossibleMoves();
+			actionSender.askForPossibleMoves(selectedMTile);
 			System.out.println("Successfuly asked for the moves");
 		}
 	}
@@ -145,54 +125,54 @@ public final class ActionInterpreter /*implements Controller */{
 	{
 		if (dispTarget==null)
 			unselect();
-		else {
-			waitForActions();
+		else 
+		{
+			possibleActions = actionSender.getPossibleActions();
+
 			if (possibleActions!=null)
 			{
 				ModelTile modelTarget = ModelViewMapping.singleton().getModelTile(dispTarget);
-				SharedCoordinates coordTarget = Translator.translateToSharedCoordinates(modelTarget.getCoordinates());
-				//GameAction desiredAction = new MoveAction(selectedMTile,modelTarget);
-				
-				if (possibleActions.getMovableTiles().contains(coordTarget)) {
-					Networking.sendCommand(new MoveAction(coordTarget));
+
+				boolean res = actionSender.tryMoveUnit(selectedMTile, modelTarget);
+				if (res)
 					unselect();
-				}
 			}
 		}
 	}
 	
+	public void handleNewPossibleActions(SharedPossibleGameActions newActions)
+	{
+		possibleActions = newActions;
+		displayPossibleActions();
+	}
+	
 	public void notifyChoiceResult(String choiceTitle, String choseItem)
 	{
-		if (choiceTitle.equals(vupChoiceName)) {
+		if (choiceTitle.equals(vupChoiceName))
+		{
+			SharedCoordinates src = getCurrentCoordinates();
 			VillageType vt = getChoiceResult(villageUpgradeChoice, choseItem);
-			Networking.sendCommand();
+			NetworkController.upgradeVillage(src,vt);
 		}
-		else if (choiceTitle.equals(uhireupChoiceName)) {
+		else if (choiceTitle.equals(uhireupChoiceName))
+		{
+			SharedCoordinates src = getCurrentCoordinates();
 			SharedTile.UnitType ut = getChoiceResult(unitUpgradeHireChoice, choseItem);
-			Networking.sendCommand();
+			NetworkController.hireUnit(src,ut);
 		}
-		else if (choiceTitle.equals(uactChoiceName)) {
+		else if (choiceTitle.equals(uactChoiceName))
+		{
+			SharedCoordinates src = getCurrentCoordinates();
 			SharedActionType at = getChoiceResult(unitActionChoice, choseItem);
-			Networking.sendCommand();
+			NetworkController.setUnitAction(src,at);
 		}
 		else {
 			throw new IllegalArgumentException("The pair (choiceTitle=\""+choiceTitle+"\", choseItem=\""+choseItem+") is invalid");
 		}
 		
-		askForPossibleMoves();
+		actionSender.askForPossibleMoves();
 	}
 	
-	public void setPossibleActions(SharedPossibleGameActions actions)
-	{
-		possibleActionsLock.lock();
-		
-		possibleActions = actions;
-		displayPossibleActions();
-		actionsReady = true;
-		possibleActionsReady.signalAll();
-		
-		possibleActionsLock.unlock();
-	}
 
 	
 	/* ============================
@@ -209,24 +189,17 @@ public final class ActionInterpreter /*implements Controller */{
 		return correctTileComponent && ModelQuerier.ownedByCurrentPlayer(game, target);
 	}
 	
-	private void clearSelect() {
+	private void clearSelect() 
+	{
 		villageUpgradeChoice = null;
 		unitActionChoice = null;
 		unitUpgradeHireChoice = null;
 		
-		possibleActionsLock.lock();
-		
-		possibleActions = null;
-		//waitingForActions = false;
-		actionsReady = true;
-		
-		possibleActionsLock.unlock();
+		actionSender.clearPossibleActions();
 	}
 	
 	private void unselect() 
 	{
-		waitForActions();
-		System.out.println("Waited for actions");
 		
 		if (selectedITile!=null) {
 			DisplayUpdater.setSelected(selectedITile, false);
@@ -280,27 +253,5 @@ public final class ActionInterpreter /*implements Controller */{
 		return choice.getItem(strRes);
 	}
 	
-	private void waitForActions() {
-		possibleActionsLock.lock();
-		
-		if (/*waitingForActions &&*/ !actionsReady) {
-			try	{
-				possibleActionsReady.await();
-			}
-			catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-		}
-		//waitingForActions = false;
-		actionsReady = true;
-		
-		possibleActionsLock.unlock();
-	}
 	
-	private void askForPossibleMoves()
-	{
-		actionsReady = false;
-		SharedCoordinates target = ModelToNetworkTranslator.translateModelCoordinates(selectedMTile.getCoordinates());
-		NetworkController.getPossibleMoves(target);
-	}
 }
