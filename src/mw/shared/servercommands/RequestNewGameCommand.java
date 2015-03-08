@@ -17,7 +17,7 @@ public class RequestNewGameCommand extends AbstractServerCommand {
 	 * @param pClientID
 	 * @see mw.shared.servercommands.AbstractServerCommand#isValid(java.lang.Integer)
 	 */
-	@Override
+	@Override	
 	public boolean isValid(Integer pClientID) {
 		return true;
 	}
