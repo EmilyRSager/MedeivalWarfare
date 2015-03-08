@@ -18,10 +18,23 @@ public class Village extends Observable
 	private int aGold; 
 	private int aWood; 
 	private VillageType aVillageType; 
-	private Collection<GraphNode> aVillageNodes;
+	private Collection<GraphNode> aVillageNodes = new HashSet<GraphNode>();
 	private Collection<Observer> aObservers; 
 
 
+	@Override
+	public String toString() 
+	{
+		String myString = "The village tiles are: ";
+		
+		for (GraphNode lGraphNode : aVillageNodes)
+		{
+			myString += lGraphNode.getTile().toString();
+		}
+		myString += "/n";
+	return myString; 
+		
+	};
 	@Override 
 	public synchronized void addObserver(Observer o) 
 	{
