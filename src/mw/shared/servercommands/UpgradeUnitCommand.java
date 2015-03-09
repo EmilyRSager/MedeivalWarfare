@@ -5,6 +5,9 @@
 
 package mw.shared.servercommands;
 
+import mw.server.gamelogic.GameController;
+import mw.server.network.mappers.GameMapper;
+import mw.server.network.translators.NetworkToModelTranslator;
 import mw.shared.SharedCoordinates;
 import mw.shared.SharedTile;
 
@@ -41,7 +44,12 @@ public class UpgradeUnitCommand extends AbstractServerCommand {
 	 */
 	@Override
 	public void execute(Integer pClientID) {
-		// TODO Auto-generated method stub
+		GameController.upgradeUnit(
+				GameMapper.getInstance().getGame(pClientID),
+				aUnitCoordinates.getX(),
+				aUnitCoordinates.getY(),
+				NetworkToModelTranslator.translateUnitType(aUnitType)
+				);
 
 	}
 

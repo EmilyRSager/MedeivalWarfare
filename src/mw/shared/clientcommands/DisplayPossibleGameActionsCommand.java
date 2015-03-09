@@ -1,11 +1,16 @@
+/**
+ * @author Charlie Blooomfield
+ * March 8, 2015
+ */
+
 package mw.shared.clientcommands;
 
-import mw.server.gamelogic.PossibleGameActions;
-import mw.client.controller.ActionInterpreter;
+import mw.client.controller.UserActionSender;
 import mw.shared.SharedPossibleGameActions;
 
-
-
+/**
+ * 
+ */
 public class DisplayPossibleGameActionsCommand extends AbstractClientCommand {
 	private final String aType = "DisplayPossibleGameActionsCommand";
 	private SharedPossibleGameActions aSharedPossibleGameActions;
@@ -15,7 +20,6 @@ public class DisplayPossibleGameActionsCommand extends AbstractClientCommand {
 
 	}
 	
-	
 	@Override
 	public boolean isValid() {
 		return true;
@@ -23,7 +27,7 @@ public class DisplayPossibleGameActionsCommand extends AbstractClientCommand {
 
 	@Override
 	public void execute() {
-		ActionInterpreter.singleton().setPossibleActions(aSharedPossibleGameActions);
+		UserActionSender.singleton().setPossibleActions(aSharedPossibleGameActions);
 	}
 
 }

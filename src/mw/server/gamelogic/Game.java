@@ -224,6 +224,10 @@ public class Game extends RandomColorGenerator {
 
 	 }
 
+	 public void setActionType(Tile pTile)
+	 {
+		 //TODO 
+	 }
 
 	 public void buildRoad(Tile pTile) 
 	 {
@@ -238,6 +242,7 @@ public class Game extends RandomColorGenerator {
 
 	 public void upgradeVillage(Village v, VillageType newType) 
 	 {
+		 
 		 try {
 			 v.upgradeVillage(newType);
 		 } catch (NotEnoughIncomeException e) {
@@ -252,6 +257,11 @@ public class Game extends RandomColorGenerator {
 	 public Collection<Player> getPlayers() 
 	 {
 		 return aPlayers; 
+	 }
+	 
+	 public Village getVillage(Tile pTile)
+	 {
+		 return aMap.getVillage(pTile);
 	 }
 }
 
