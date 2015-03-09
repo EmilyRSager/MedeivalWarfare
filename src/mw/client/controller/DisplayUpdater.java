@@ -5,6 +5,7 @@ import java.util.List;
 import org.minueto.MinuetoColor;
 
 import mw.client.gui.ImageTile;
+import mw.client.gui.api.ExtendedMinuetoColor;
 import mw.client.model.ModelTile;
 import mw.shared.SharedTile.*;
 
@@ -20,11 +21,11 @@ public final class DisplayUpdater {
 	{
 		if(selected)
 		{
-			t.setBorderSelected(t.getTileImage(), c);
+			t.drawBorder(MinuetoColor.WHITE);
 		}
 		else
 		{
-			t.setImage(t.getTileImage());
+			t.drawBorder(ExtendedMinuetoColor.GREY);
 		}
 	}
 

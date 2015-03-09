@@ -74,8 +74,13 @@ public class ImageTile extends Observable {
 		image = ExtendedMinuetoImage.drawBorder(newImage, ExtendedMinuetoColor.GREY);
 	}
 	
-	public void setBorderSelected(MinuetoImage selectedImage, MinuetoColor c)
+	/*public void setBorderSelected(MinuetoImage selectedImage, MinuetoColor c)
 	{
 		image = ExtendedMinuetoImage.drawBorder(selectedImage, c);
+	}*/
+	
+	public void drawBorder(MinuetoColor c)
+	{
+		image = ExtendedMinuetoImage.drawBorder(image, c);
 	}
 }
