@@ -140,13 +140,13 @@ public class ImageFileManager
 		case NONE:
 			break;
 		case HOVEL:
-			fileName = FOLDER;
+			fileName = FOLDER + "hovel.png";
 			break;
 		case TOWN:
-			fileName = FOLDER;
+			fileName = FOLDER + "town.png";
 			break;
 		case FORT:
-			fileName = FOLDER;
+			fileName = FOLDER + "fort.png";
 			break;
 		}
 		try

@@ -18,8 +18,8 @@ import org.minueto.image.*;
  */
 public class ImageTile extends Observable {
 	private MinuetoImage image;
-	public static final int DEFAULT_TILE_WIDTH = 50;
-	public static final int DEFAULT_TILE_HEIGHT = 50;
+	public static final int DEFAULT_TILE_WIDTH = 80;
+	public static final int DEFAULT_TILE_HEIGHT = 80;
 	
 	/**
 	 * Default ImageTile constructor, creates an ImageTile with a blank MinuetoImage.
@@ -48,7 +48,14 @@ public class ImageTile extends Observable {
 	/**
 	 * 
 	 */
-	public void update()
+	public void updateImage(MinuetoColor c, Terrain t, VillageType v, UnitType u)
+	{
+		setImage(ExtendedMinuetoImage.coloredSquare(DEFAULT_TILE_WIDTH, DEFAULT_TILE_HEIGHT, c));
+		image.draw(ImageFileManager.getTerrainImage(t), 0, 0);
+		image.draw(ImageFileManager.getUnitImage(u), 0, 0);
+		image.draw(ImageFileManager.getVillageImage(v), 0, 0);
+	}
+	
 	{
 		setImage(ImageFileManager.getTileImage(TileType.GRASS));
 		setChanged();
@@ -67,8 +74,8 @@ public class ImageTile extends Observable {
 		image = ExtendedMinuetoImage.drawBorder(newImage, ExtendedMinuetoColor.GREY);
 	}
 	
-	public void setBorderSelected(MinuetoImage selectedImage)
+	public void setBorderSelected(MinuetoImage selectedImage, MinuetoColor c)
 	{
-		image = ExtendedMinuetoImage.drawBorder(selectedImage, ExtendedMinuetoColor.LIGHT_GREY);
+		image = ExtendedMinuetoImage.drawBorder(selectedImage, c);
 	}
 }
