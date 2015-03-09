@@ -5,9 +5,12 @@
 
 package mw.server.network.communication;
 
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.Properties;
 
 import mw.server.network.mappers.ClientChannelMapper;
 
@@ -15,8 +18,33 @@ import mw.server.network.mappers.ClientChannelMapper;
  * Listens to a port and sets up ClientChannels on unique sockets.
  */
 public class MainServerThread extends Thread{
-	private static final int PORT_NUMBER = 6666;
-	ServerSocket aServerSocket;
+	private int PORT_NUMBER;
+	private ServerSocket aServerSocket;
+	
+	/**
+	 * Loads port number from config file
+	 */
+	public MainServerThread() {
+		Properties lProperties = new Properties();
+		InputStream lInputStream = null;
+		
+		//parse port number from config file
+		try{
+			lInputStream = new FileInputStream("config.properties");
+			lProperties.load(lInputStream);
+			PORT_NUMBER = Integer.parseInt(lProperties.getProperty("serverport"));
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			if (lInputStream != null) {
+				try {
+					lInputStream.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+	}
 	
 	/**
 	 * Opens a server socket for MainServer to listen to. When a client
