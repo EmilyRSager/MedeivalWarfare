@@ -9,17 +9,19 @@ import java.util.Stack;
  * @author emilysager
  */
 public class Game extends RandomColorGenerator {
-
+	private static final int DEFAULT_WIDTH = 12;
+	private static final int DEFAULT_HEIGHT = 12;
 	private Collection<Player> aPlayers;
 	private GameMap aMap;  
 	private Player aCurrentPlayer;
-
+	
 	/**
-	 * Calls the toString() method on all the tiles in a game
+	 * Overloaded constructor passes default dimensions to main constructor
+	 * @param pPlayers
+	 * @throws TooManyPlayersException
 	 */
-	public void printTiles()
-	{
-		aMap.printTiles(); 
+	public Game(Collection<Player> pPlayers) throws TooManyPlayersException {
+		this(pPlayers, DEFAULT_WIDTH, DEFAULT_HEIGHT);
 	}
 
 	/**
@@ -30,10 +32,8 @@ public class Game extends RandomColorGenerator {
 	 * Game Constructor -- either randomly generates a new map or it Queries the database for a give map ID 
 	 * @throws TooManyPlayersException 
 	 */
-	public Game (Collection<Player> pPlayers, int mapID) throws TooManyPlayersException {
-
-
-
+	public Game (Collection<Player> pPlayers, int pWidth, int pHeight) throws TooManyPlayersException {
+		
 		aPlayers  = pPlayers;
 		Stack <Color> myColors = new Stack <Color>(); 
 		myColors.push(Color.BLUE); 
@@ -55,16 +55,19 @@ public class Game extends RandomColorGenerator {
 				throw new TooManyPlayersException(); 
 			}
 		}
-		if (mapID == 0) {
-			aMap = new GameMap(12, 12, availableColors); 
-		} 
-		else { //Query our database of maps 
-
-			aMap = MapBase.getMap(mapID);
-		}
+		
+		aMap = new GameMap(pWidth, pHeight, availableColors); 
 		aMap.partition(); 
 	}
-
+	
+	/**
+	 * Calls the toString() method on all the tiles in a game
+	 */
+	public void printTiles()
+	{
+		aMap.printTiles(); 
+	}
+	
 	/**
 	 *  returns the tile in a game with specified coordinates
 	 * @param pCoord

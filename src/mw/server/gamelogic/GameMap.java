@@ -23,13 +23,28 @@ public class GameMap  {
 	private HashMap<Tile, GraphNode> TileToNodeHashMap = new HashMap<Tile, GraphNode>();
 	private HashMap<Coordinates, Tile> CoordinatesToTileMap = new HashMap<Coordinates, Tile>(); 
 	private Collection<Color> availableColors;
-
+	
+	/**
+	 * @param height
+	 * @param width
+	 * @param rGenerate
+	 * Generates a new map with specified dimensions 
+	 */
+	public GameMap(int height, int width, Collection<Color>  pAvailableColors)
+	{
+		availableColors = pAvailableColors; 
+		aNodes = new GraphNode[height][width];
+		aTiles = new Tile [height] [width];
+		setUpMap(height, width);
+		aVillages = new HashSet<Village>();
+	}
+	
 	public Tile getTile(Coordinates pCoord)
 	{
 		return CoordinatesToTileMap.get(pCoord);
 	}
 
-	public  void printTiles()
+	public void printTiles()
 	{
 		for (Tile t : MultiArrayIterable.toIterable(aTiles)){
 			System.out.println(t.toString());
@@ -142,38 +157,11 @@ public class GameMap  {
 		}
 
 	}
-	/**
-	 * Generates a new map with default 300 tiles 
-	 */
-	public GameMap () 
-	{
-		int height = 10;
-		int width = 30; 
-		aNodes = new GraphNode[height][width];
-		aTiles = new Tile [height] [width];
-		setUpMap(height, width);
-		aVillages = new HashSet<Village>();
-	}
-	/**
-	 * @param height
-	 * @param width
-	 * @param rGenerate
-	 * Generates a new map with specified dimensions 
-	 */
-	public GameMap(int height, int width, Collection<Color>  pAvailableColors)
-
-	{
-		availableColors = pAvailableColors; 
-		aNodes = new GraphNode[height][width];
-		aTiles = new Tile [height] [width];
-		setUpMap(height, width);
-		aVillages = new HashSet<Village>();
-	}
 	
-/**
- * For adding observers to every tile in a game
- * @return
- */
+	/**
+	 * For adding observers to every tile in a game
+	 * @return
+	 */
 	public Tile [][] getObservables ()
 	{
 		return aTiles; 
