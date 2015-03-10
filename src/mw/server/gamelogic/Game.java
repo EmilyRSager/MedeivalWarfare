@@ -25,11 +25,9 @@ public class Game extends RandomColorGenerator {
 	}
 
 	/**
-	 * 
 	 * @param pPlayers
-	 * @param mapID
-	 * @param colors
-	 * Game Constructor -- either randomly generates a new map or it Queries the database for a give map ID 
+	 * @param pWidth
+	 * @param pHeight
 	 * @throws TooManyPlayersException 
 	 */
 	public Game (Collection<Player> pPlayers, int pWidth, int pHeight) throws TooManyPlayersException {

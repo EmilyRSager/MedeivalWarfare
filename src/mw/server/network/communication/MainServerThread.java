@@ -12,6 +12,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Properties;
 
+import mw.client.files.ProjectFolder;
 import mw.server.network.mappers.ClientChannelMapper;
 
 /**
