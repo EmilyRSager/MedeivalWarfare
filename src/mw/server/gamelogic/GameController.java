@@ -35,11 +35,9 @@ public class GameController {
 	 * @param pGame
 	 * @return the current player of pGame
 	 */
-	public static Player getCurrentPlayer(Game pGame){
-		Player lCurrentPlayer = null;
-		
-		//TODO ask emily
-		
+	public static Player getCurrentPlayer(Game pGame)
+	{
+		Player lCurrentPlayer = pGame.getCurrentPlayer();
 		return lCurrentPlayer;
 	}
 	
@@ -65,8 +63,9 @@ public class GameController {
 	 * @param pGame
 	 * @return
 	 */
-	public static void endTurn(Game pGame){
-		
+	public static void endTurn(Game pGame)
+	{
+		pGame.endTurn();
 	}
 
 	/**
