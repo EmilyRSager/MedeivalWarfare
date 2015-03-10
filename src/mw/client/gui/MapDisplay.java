@@ -6,10 +6,15 @@ import org.minueto.MinuetoColor;
 import org.minueto.MinuetoEventQueue;
 import org.minueto.image.MinuetoImage;
 import org.minueto.window.MinuetoFrame;
+
+import mw.client.controller.ActionInterpreter;
+import mw.client.controller.ModelViewMapping;
 import mw.client.gui.api.Clickeable;
 import mw.client.gui.api.Displayable;
 import mw.client.gui.api.MouseClickHandler;
 import mw.client.gui.api.WindowArea;
+import mw.client.model.ModelTile;
+import mw.shared.SharedColor;
 import mw.util.MultiArrayIterable;
 
 public class MapDisplay implements Displayable, Clickeable {
@@ -201,19 +206,14 @@ public class MapDisplay implements Displayable, Clickeable {
 	@Override
 	public void handleMouseClick(int x, int y, int button)
 	{
-		ImageTile clickedTile = getClickedTile(x, y);
-		if (clickedTile!=null) {
-			clickedTile.updateColor(MinuetoColor.BLUE);
-		}
-
-		
-		/*HexImageTile clickedTile = this.getClickedTile(x, y);
+		ImageTile clickedTile = this.getClickedTile(x, y);
 		ModelTile clickedModelTile = ModelViewMapping.singleton().getModelTile(clickedTile);
 		if(clickedModelTile != null)
 		{
-			clickedModelTile.setColor(SharedColor.RED);
-			clickedModelTile.notifyObservers();
-		}*/
+			ActionInterpreter.singleton().primarySelect(clickedTile);
+			/*clickedModelTile.setColor(SharedColor.BLUE);
+			clickedModelTile.notifyObservers();*/
+		}
 	}
 
 

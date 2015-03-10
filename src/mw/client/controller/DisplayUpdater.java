@@ -19,7 +19,7 @@ public final class DisplayUpdater {
 		tileDisp.updateImage(newImage);
 	}
 
-	public static void setSelected(ImageTile t, boolean selected, MinuetoColor c)
+	public static void setSelected(ImageTile t, boolean selected)
 	{
 		if(selected)
 		{

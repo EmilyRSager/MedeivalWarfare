@@ -17,8 +17,13 @@ import org.minueto.image.MinuetoImageFile;
 
 public class ImageFileManager 
 {
+	private static final int STRUCT_ICON_SIZE = ImageTile.DEFAULT_TILE_WIDTH - 10;
+	private static final int UNIT_ICON_SIZE = ImageTile.DEFAULT_TILE_WIDTH - 10;
+	
 	private static final String FOLDER = initializeFolder();
-	private static final int ICON_SIZE = ImageTile.DEFAULT_TILE_WIDTH - 10;
+	private static final String STRUCT_FOLDER = FOLDER + STRUCT_ICON_SIZE+"x"+STRUCT_ICON_SIZE+"/";
+	private static final String UNIT_FOLDER = FOLDER + UNIT_ICON_SIZE+"x"+UNIT_ICON_SIZE+"/";
+	
 	
 	public enum TileType { DEFAULT, GRASS };
 	
@@ -34,8 +39,7 @@ public class ImageFileManager
 			
 			s = s.concat("images/");
 
-			s += "useable/";
-			s += ICON_SIZE+"x"+ICON_SIZE+"/";	// gives 60x60/ or 80x80/ or ...
+			s += "unused/";
 			
 			System.out.println("Image folder is "+s);
 			return s;
@@ -51,10 +55,15 @@ public class ImageFileManager
 	{
 		MinuetoImage newImage = ExtendedMinuetoImage.coloredHexagon(ImageTile.DEFAULT_TILE_WIDTH, ImageTile.DEFAULT_TILE_HEIGHT, c);
 		//newImage = ExtendedMinuetoImage.drawInTheMiddleOf(newImage, ImageFileManager.getTerrainImage(t));
-		//newImage = ExtendedMinuetoImage.drawInTheMiddleOf(newImage, ImageFileManager.getUnitImage(u));
+		
+		MinuetoImage unitImg = ImageFileManager.getUnitImage(u);
+		if (unitImg != null)
+			newImage = ExtendedMinuetoImage.drawInTheMiddleOf(newImage, unitImg);
+		
 		MinuetoImage structImg = ImageFileManager.getStructureImage(s);
 		if (structImg != null)
 			newImage = ExtendedMinuetoImage.drawInTheMiddleOf(newImage, structImg);
+		
 		return newImage;		
 	}
 	
@@ -99,21 +108,21 @@ public class ImageFileManager
 		switch (u)
 		{
 		case NONE:
-			break;
+			return null;
 		case PEASANT:
-			fileName = FOLDER;
+			fileName = UNIT_FOLDER + "peasant3.png";
 			break;
 		case INFANTRY:
-			fileName = FOLDER;
+			fileName = UNIT_FOLDER;
 			break;
 		case SOLDIER:
-			fileName = FOLDER;
+			fileName = UNIT_FOLDER;
 			break;
 		case KNIGHT:
-			fileName = FOLDER;
+			fileName = UNIT_FOLDER;
 			break;
 		case WATCHTOWER:
-			fileName = FOLDER;
+			fileName = UNIT_FOLDER;
 			break;
 		}
 		try
@@ -125,7 +134,7 @@ public class ImageFileManager
 		{
 			System.out.println("Could not load image!");
 			e.printStackTrace();
-			System.exit(1);
+			System.exit(-1);
 		}
 		return null;
 	}
@@ -137,13 +146,13 @@ public class ImageFileManager
 		case NONE:
 			return null;
 		case HOVEL:
-			fileName = FOLDER + "hovel.png";
+			fileName = STRUCT_FOLDER + "hovel.png";
 			break;
 		case TOWN:
-			fileName = FOLDER + "town.png";
+			fileName = STRUCT_FOLDER + "town.png";
 			break;
 		case FORT:
-			fileName = FOLDER + "fort.png";
+			fileName = STRUCT_FOLDER + "fort.png";
 			break;
 		}
 		try

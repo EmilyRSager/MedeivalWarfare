@@ -8,31 +8,6 @@ public final class ExtendedMinuetoColor {
 	public static final MinuetoColor DARK_GREY = mixColors(MinuetoColor.BLACK, MinuetoColor.WHITE, 0.75);
 	public static final MinuetoColor LIGHT_GREY = mixColors(MinuetoColor.BLACK, MinuetoColor.WHITE, 0.25);
 	
-	/* ========================
-	 * 		Constructors
-	 * ========================
-	 */
-
-
-
-	/* ==========================
-	 * 		Public methods
-	 * ==========================
-	 */
-
-
-	/* ==========================
-	 * 		Private methods
-	 * ==========================
-	 */
-
-
-	/* ==========================
-	 * 		Inherited methods
-	 * ==========================
-	 */
-
-
 
 	/* ========================
 	 * 		Static methods

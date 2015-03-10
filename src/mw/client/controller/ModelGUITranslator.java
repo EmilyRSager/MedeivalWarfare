@@ -20,26 +20,36 @@ public final class ModelGUITranslator {
 	 */
 	public static MinuetoColor translateToMinuetoColor(SharedColor sc)
 	{
+		MinuetoColor color;
 		switch (sc)
 		{
 		case BLUE:
-			return MinuetoColor.BLUE;
+			color = MinuetoColor.BLUE;
+			color = ExtendedMinuetoColor.mixColors(color, MinuetoColor.WHITE, 0.75);
+			break;
 			
 		case GREEN:
-			return MinuetoColor.GREEN;
+			color = MinuetoColor.GREEN;
+			break;
 			
 		case GREY:
-			return ExtendedMinuetoColor.GREY;
+			color = ExtendedMinuetoColor.GREY;
+			break;
 			
 		case RED:
-			return MinuetoColor.RED;
+			color = MinuetoColor.RED;
+			break;
 			
 		case YELLOW:
-			return MinuetoColor.YELLOW;
+			color = MinuetoColor.YELLOW;
+			break;
 			
 			default:
 				throw new IllegalArgumentException("Unrecognized SharedColor value : "+sc);
 		}
+		
+		color = color.darken(0.05);
+		return color;
 	}
 
 
