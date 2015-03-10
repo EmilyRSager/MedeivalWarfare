@@ -39,7 +39,7 @@ public class MultiArrayIterable {
 	 * ========================
 	 */
 
-	public static <E> Iterable<E> toIterable(E[][] array)
+	public static <E> Iterable<E> toIterable(final E[][] array)
 	{
 		return new Iterable<E>() {
 

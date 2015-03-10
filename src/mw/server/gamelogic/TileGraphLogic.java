@@ -240,9 +240,11 @@ public final class TileGraphLogic {
 		UnitType pUnitType = pUnit.getUnitType(); 
 		for (Tile lTile : destinationNeighbors)
 		{
-			if (lTile.getUnit().getUnitType().ordinal() >= pUnitType.ordinal())
-			{
-				return false; 
+			Unit lUnit = lTile.getUnit();
+			if (lUnit != null){
+				if(lUnit.getUnitType().ordinal() >= pUnitType.ordinal()) {
+					return false;
+				}
 			}
 		}
 		if (isWatchtowerGuardingTile(destinationTile, destinationNeighbors))

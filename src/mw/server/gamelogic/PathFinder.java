@@ -35,7 +35,6 @@ public class PathFinder //has classic DFS
    
     public static Set<GraphNode> getVillage(GraphNode v, Graph g)
     {
-    	System.out.println("Called PathFinder");
     	Stack<GraphNode> S = new Stack <GraphNode>();  
 		Set<GraphNode> villageSet = new HashSet<GraphNode>(); 
 		S.push(v);
