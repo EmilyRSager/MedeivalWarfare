@@ -30,6 +30,11 @@ public class Hexagon {
 		}
 	}
 	
+	// just a little bit of caching
+	private static int lastAskedWidth = -1;
+	private static int lastAskedHeight = -1;
+	private static Hexagon lastAskedHexagon = null;
+	
 	private Point a,b,c,d,e,f;
 	private int offset;
 	private WindowArea squaredArea;
@@ -40,12 +45,16 @@ public class Hexagon {
 	 * ========================
 	 */
 
-	public Hexagon(int size) {
+	private Hexagon(int size) {
 		this(size, size);
 	}
 	
-	public Hexagon(int width, int height) {
+	private Hexagon(int width, int height) 
+	{
 		this(new WindowArea(0,0,width,height));
+		lastAskedWidth = width;
+		lastAskedHeight = height;
+		lastAskedHexagon = this;
 	}
 	
 	private Hexagon(WindowArea squaredArea) {
@@ -121,8 +130,10 @@ public class Hexagon {
 		} while(Math.abs(old_ab-old_fa) >= Math.abs(new_ab-new_fa));
 
 		offset = offset-1;
+		
 		System.out.println("offset = "+offset);
 		System.out.println("[a,b] = "+old_ab+", [f,a] = "+old_fa);
+		
 		a = new Point(a.x+offset,  a.y);
 		b = new Point(b.x-offset, b.y);
 		d = new Point(d.x-offset, d.y);
@@ -218,6 +229,16 @@ public class Hexagon {
 	 * ========================
 	 */
 
+	public static Hexagon getHexagon(int size) {
+		return getHexagon(size, size);
+	}
+	
+	public static Hexagon getHexagon(int width, int height) {
+		if (lastAskedWidth == width && lastAskedHeight == height)
+			return lastAskedHexagon;
+		else
+			return new Hexagon(width, height);
+	}
 	
 	private static double distanceBetween(Point start, Point end)
 	{

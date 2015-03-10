@@ -22,8 +22,8 @@ public final class ExtendedMinuetoImage /*extends MinuetoImage */{
 	
 	public static MinuetoImage drawInTheMiddleOf(MinuetoImage bigImg, MinuetoImage smallImg)
 	{
-		final int xPos = bigImg.getWidth() - smallImg.getWidth();
-		final int yPos = bigImg.getHeight() - smallImg.getHeight();
+		final int xPos = (bigImg.getWidth() - smallImg.getWidth())/2;
+		final int yPos = (bigImg.getHeight() - smallImg.getHeight())/2;
 		if (xPos < 0 || yPos < 0)
 			throw new IllegalArgumentException("The small image is too big to be drawn on the big image : "
 															+smallImg.getWidth()+"x"+smallImg.getHeight()+" > "
@@ -120,7 +120,7 @@ public final class ExtendedMinuetoImage /*extends MinuetoImage */{
 	}
 	
 	public static MinuetoImage coloredHexagon(int width, int height, MinuetoColor color) {
-		return coloredHexagon(new Hexagon(width,height), color);
+		return coloredHexagon(Hexagon.getHexagon(width,height), color);
 	}
 	
 	public static MinuetoImage coloredHexagon(Hexagon hex, MinuetoColor color)

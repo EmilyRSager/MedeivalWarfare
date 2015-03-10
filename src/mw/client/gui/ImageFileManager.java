@@ -18,6 +18,7 @@ import org.minueto.image.MinuetoImageFile;
 public class ImageFileManager 
 {
 	private static final String FOLDER = initializeFolder();
+	private static final int ICON_SIZE = ImageTile.DEFAULT_TILE_WIDTH - 10;
 	
 	public enum TileType { DEFAULT, GRASS };
 	
@@ -26,11 +27,18 @@ public class ImageFileManager
 		try
 		{
 			String s = Files.readAllLines(Paths.get("srcpath.txt"), Charset.defaultCharset()).get(0);
-			System.out.println(s);
 			s = s.replace('\\', '/');
+			
 			if (s.charAt(s.length()-1)!='/')
 				s = s+'/';
-			return s.concat("images/");
+			
+			s = s.concat("images/");
+
+			s += "useable/";
+			s += ICON_SIZE+"x"+ICON_SIZE+"/";	// gives 60x60/ or 80x80/ or ...
+			
+			System.out.println("Image folder is "+s);
+			return s;
 		}
 		catch (IOException e)
 		{

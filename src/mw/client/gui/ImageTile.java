@@ -15,6 +15,7 @@ public class ImageTile extends Observable implements Displayable {
 	
 	public static final int DEFAULT_TILE_WIDTH = 70;
 	public static final int DEFAULT_TILE_HEIGHT = 70;
+	public static final Hexagon DEFAULT_HEXAGON = Hexagon.getHexagon(DEFAULT_TILE_WIDTH, DEFAULT_TILE_HEIGHT);
 	
 	private final Hexagon hex;
 	private MinuetoImage image;
@@ -25,13 +26,12 @@ public class ImageTile extends Observable implements Displayable {
 	 * ========================
 	 */
 
-	public ImageTile()
-	{
-		this(DEFAULT_TILE_WIDTH, DEFAULT_TILE_HEIGHT);
+	public ImageTile() {
+		this(DEFAULT_HEXAGON);
 	}
 
 	public ImageTile(int width, int height) {
-		this(new Hexagon(width, height));
+		this(Hexagon.getHexagon(width, height));
 	}
 	
 	public ImageTile(Hexagon hex) {
@@ -55,8 +55,8 @@ public class ImageTile extends Observable implements Displayable {
 	
 	public void updateImage(MinuetoImage newImage)
 	{
-		image = newImage;
-		drawBorder(ExtendedMinuetoColor.GREY);
+		setImage(newImage);
+		//drawBorder(ExtendedMinuetoColor.GREY);
 		setChanged();
 		notifyObservers();
 	}
@@ -68,9 +68,10 @@ public class ImageTile extends Observable implements Displayable {
 		notifyObservers();
 	}
 	
-	public void setImage(MinuetoImage newImage)
+	private void setImage(MinuetoImage newImage)
 	{
-		image = ExtendedMinuetoImage.drawHexBorder(newImage, ExtendedMinuetoColor.GREY, hex);
+		image = newImage;
+		drawBorder(ExtendedMinuetoColor.GREY);
 	}
 
 	public void drawBorder(MinuetoColor c)

@@ -47,7 +47,7 @@ public class MapDisplay implements Displayable, Clickeable {
 		tiles = nTiles;
 		tileWidth = tiles[0][0].getImage().getWidth();
 		tileHeight = tiles[0][0].getImage().getHeight();
-		hex = new Hexagon(tileWidth, tileHeight);
+		hex = Hexagon.getHexagon(tileWidth, tileHeight);
 	}
 	
 	public MapDisplay(ImageTile[][] givenTiles)
@@ -55,7 +55,7 @@ public class MapDisplay implements Displayable, Clickeable {
 		tiles = givenTiles;
 		tileWidth = tiles[0][0].getImage().getWidth();
 		tileHeight = tiles[0][0].getImage().getHeight();
-		hex = new Hexagon(tileWidth, tileHeight);
+		hex = Hexagon.getHexagon(tileWidth, tileHeight);
 	}
 
 	
