@@ -45,7 +45,7 @@ public final class TileGraphLogic {
 	{
 		Tile destinationTile = pCrt.getTile(); 
 		Tile startTile = pStart.getTile();
-		Unit pUnit = startTile.getUnit(); 
+		
 		if (isNeutralLand(destinationTile)) 
 		{
 			return true; 

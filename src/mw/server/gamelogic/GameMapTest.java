@@ -1,10 +1,8 @@
 package mw.server.gamelogic;
 
-import static org.junit.Assert.*;
+
 
 import java.util.ArrayList;
-
-
 
 import org.junit.Test;
 
@@ -24,7 +22,7 @@ public class GameMapTest
 		try
 		{
 			Game g = new Game(pPlayers,0);
-		//g.printTiles();
+		g.printTiles();
 		} catch (TooManyPlayersException e)
 		{
 			// TODO Auto-generated catch block

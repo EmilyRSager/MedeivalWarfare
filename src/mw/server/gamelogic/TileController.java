@@ -5,7 +5,7 @@
 
 package mw.server.gamelogic;
 
-import mw.shared.SharedTile;
+
 
 public class TileController {
 

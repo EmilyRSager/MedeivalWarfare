@@ -132,7 +132,7 @@ public class GameMap  {
 		{
 			System.out.println(v.toString()); 
 		}
-		int i = 0; 
+
 
 		for (Village lVillage: aVillages)
 		{
@@ -175,11 +175,21 @@ public class GameMap  {
 		setUpMap(height, width);
 		aVillages = new HashSet<Village>();
 	}
-
+	
+/**
+ * For adding observers to every tile in a game
+ * @return
+ */
 	public Tile [][] getObservables ()
 	{
 		return aTiles; 
 	}
+	
+	/**
+	 * Sets up a map with given height and width
+	 * @param height
+	 * @param width
+	 */
 	private void setUpMap(int height, int width)
 	{
 		for (int i = 0; i< height; i++ )
@@ -241,6 +251,11 @@ public class GameMap  {
 		return toReturn; 
 	}
 
+	/**
+	 * Gets all possible GraphNodes that you can move a unit to 
+	 * @param start
+	 * @return
+	 */
 	private Set<GraphNode> getPossibleMoves(GraphNode start)
 	{
 		return PathFinder.getMovableTiles(start, graph); 

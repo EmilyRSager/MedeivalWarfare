@@ -1,5 +1,5 @@
 package mw.server.gamelogic;
-import java.util.Map;
+
 
 
 
@@ -9,8 +9,8 @@ import java.util.Map;
  */
 public class MapBase {
     
-    private Map<Integer, GameMap> myMap;
-    private static MapBase singleton;
+   // private Map<Integer, GameMap> myMap;
+   // private static MapBase singleton;
     
     public static GameMap getMap(int mapID) {
         /* TODO: No message view defined */

@@ -3,6 +3,7 @@
  */
 package mw.server.gamelogic;
 
+@SuppressWarnings("serial")
 public class TooManyPlayersException extends Exception {
 	
 	String pMessage; 
