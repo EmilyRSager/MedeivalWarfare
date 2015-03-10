@@ -204,16 +204,20 @@ public class GameMap  {
 	private void randomlyGenerateTreesAndMeadows(Tile lTile)  
 	{
 		//TODO: think of a fairer distribution of villages 
-		int k = rTreesAndMeadows.nextInt(9);
-		//line below may not be needed
-		//lTile.setColor(RandomColorGenerator.generateRandomColor());
-		if(k == 4 || k == 7)    //2 numbers have been randomly picked to assign 20% prob of getting a tree
-		{
-			lTile.setStructureType(StructureType.TREE);
-		}
-		else if (k == 2)	//10% prob of getting a meadow on the tile 
-		{	
-			lTile.setHasMeadow(true); 
+		
+		
+		
+		if (lTile.getStructureType().equals(StructureType.NO_STRUCT) && lTile.getVillageType().equals(VillageType.NO_VILLAGE)) {
+			int k = rTreesAndMeadows.nextInt(9);
+			//line below may not be needed
+			//lTile.setColor(RandomColorGenerator.generateRandomColor());
+			if (k == 4 || k == 7) //2 numbers have been randomly picked to assign 20% prob of getting a tree
+			{
+				lTile.setStructureType(StructureType.TREE);
+			} else if (k == 2) //10% prob of getting a meadow on the tile 
+			{
+				lTile.setHasMeadow(true);
+			}
 		}
 	}
 	/**
