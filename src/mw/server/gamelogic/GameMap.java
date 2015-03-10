@@ -23,13 +23,28 @@ public class GameMap  {
 	private HashMap<Tile, GraphNode> TileToNodeHashMap = new HashMap<Tile, GraphNode>();
 	private HashMap<Coordinates, Tile> CoordinatesToTileMap = new HashMap<Coordinates, Tile>(); 
 	private Collection<Color> availableColors;
-
+	
+	/**
+	 * @param height
+	 * @param width
+	 * @param rGenerate
+	 * Generates a new map with specified dimensions 
+	 */
+	public GameMap(int height, int width, Collection<Color>  pAvailableColors)
+	{
+		availableColors = pAvailableColors; 
+		aNodes = new GraphNode[height][width];
+		aTiles = new Tile [height] [width];
+		setUpMap(height, width);
+		aVillages = new HashSet<Village>();
+	}
+	
 	public Tile getTile(Coordinates pCoord)
 	{
 		return CoordinatesToTileMap.get(pCoord);
 	}
 
-	public  void printTiles()
+	public void printTiles()
 	{
 		for (Tile t : MultiArrayIterable.toIterable(aTiles)){
 			System.out.println(t.toString());
@@ -66,7 +81,7 @@ public class GameMap  {
 				ArrayList<Tile> lNeighboringEmptyOrMeadowTiles = new ArrayList<Tile>();
 				for(Tile lTile: lTiles ){
 					StructureType lStructureType = lTile.getStructureType();
-					if (lStructureType.equals(StructureType.NO_STRUCT) || lStructureType.equals(StructureType.TREE) ) {
+					if (lStructureType.equals(StructureType.NO_STRUCT) || lStructureType.equals(StructureType.TREE) || lTile.getVillageType().equals(VillageType.NO_VILLAGE) ) {
 						lNeighboringEmptyOrMeadowTiles.add(lTile);
 					}
 				}
@@ -136,44 +151,18 @@ public class GameMap  {
 
 				lTile.setVillageType(VillageType.HOVEL);
 				lVillage.setVillageType(VillageType.HOVEL);
+				lVillage.setCapital(lTile);
 				break; 
 
 			}
 		}
 
 	}
-	/**
-	 * Generates a new map with default 300 tiles 
-	 */
-	public GameMap () 
-	{
-		int height = 10;
-		int width = 30; 
-		aNodes = new GraphNode[height][width];
-		aTiles = new Tile [height] [width];
-		setUpMap(height, width);
-		aVillages = new HashSet<Village>();
-	}
-	/**
-	 * @param height
-	 * @param width
-	 * @param rGenerate
-	 * Generates a new map with specified dimensions 
-	 */
-	public GameMap(int height, int width, Collection<Color>  pAvailableColors)
-
-	{
-		availableColors = pAvailableColors; 
-		aNodes = new GraphNode[height][width];
-		aTiles = new Tile [height] [width];
-		setUpMap(height, width);
-		aVillages = new HashSet<Village>();
-	}
 	
-/**
- * For adding observers to every tile in a game
- * @return
- */
+	/**
+	 * For adding observers to every tile in a game
+	 * @return
+	 */
 	public Tile [][] getObservables ()
 	{
 		return aTiles; 
@@ -215,16 +204,20 @@ public class GameMap  {
 	private void randomlyGenerateTreesAndMeadows(Tile lTile)  
 	{
 		//TODO: think of a fairer distribution of villages 
-		int k = rTreesAndMeadows.nextInt(9);
-		//line below may not be needed
-		//lTile.setColor(RandomColorGenerator.generateRandomColor());
-		if(k == 4 || k == 7)    //2 numbers have been randomly picked to assign 20% prob of getting a tree
-		{
-			lTile.setStructureType(StructureType.TREE);
-		}
-		else if (k == 2)	//10% prob of getting a meadow on the tile 
-		{	
-			lTile.setHasMeadow(true); 
+		
+		
+		
+		if (lTile.getStructureType().equals(StructureType.NO_STRUCT) && lTile.getVillageType().equals(VillageType.NO_VILLAGE)) {
+			int k = rTreesAndMeadows.nextInt(9);
+			//line below may not be needed
+			//lTile.setColor(RandomColorGenerator.generateRandomColor());
+			if (k == 4 || k == 7) //2 numbers have been randomly picked to assign 20% prob of getting a tree
+			{
+				lTile.setStructureType(StructureType.TREE);
+			} else if (k == 2) //10% prob of getting a meadow on the tile 
+			{
+				lTile.setHasMeadow(true);
+			}
 		}
 	}
 	/**

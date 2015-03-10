@@ -19,7 +19,7 @@ public class TileController {
 		{
 			GameMap crtMap = pGame.getGameMap();  
 			Village crtVillage = crtMap.getVillage(pTile); 
-			int gold = crtVillage.getAGold(); 
+			int gold = crtVillage.getGold(); 
 			return gold; 
 		}
 		else
@@ -39,7 +39,7 @@ public class TileController {
 		{
 			GameMap crtMap = pGame.getGameMap(); 
 			Village crtVillage = crtMap.getVillage(pTile); 
-			int wood = crtVillage.getAWood(); 
+			int wood = crtVillage.getWood(); 
 			return wood; 
 		}
 		else

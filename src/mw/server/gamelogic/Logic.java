@@ -1,7 +1,6 @@
 package mw.server.gamelogic;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Set;
 
 
@@ -13,9 +12,10 @@ public class Logic {
 		{
 			return 2;
 		}
-		else {
+		else 
+		{
 			return 1;
-			} 
+		} 
 	}
 	private static boolean isMeadowOnTile(Tile pTile)
 	{
@@ -93,27 +93,27 @@ public class Logic {
  */
 	public static void updateGameState(Unit crtUnit, Tile startTile, Tile pDestinationTile, Game pGame, GameMap pGameMap)
 	{
-		//PossibleGameActions myActions = pGame.tileIsClicked(startTile); 
-		//Collection<Tile> movableTiles = myActions.getMovableTiles(); 
+		/*
+		  	PossibleGameActions myActions = pGame.tileIsClicked(startTile); 
+			Collection<Tile> movableTiles = myActions.getMovableTiles(); 
+			if (!movableTiles.contains(pDestinationTile))
+			{
+				return; 
+			}
+		 */
 		StructureType destStructType = pDestinationTile.getStructureType();
 		UnitType crtUnitType = crtUnit.getUnitType(); 
-		/*if (!movableTiles.contains(pDestinationTile))
+		if (isNeutral(pDestinationTile))
 		{
-			return; 
-		}
-		else
-		{
-			if (isNeutral(pDestinationTile))
-			{
 				pGame.takeoverTile(startTile, pDestinationTile);
-			}
-		} */
+		} 
 		if (tilesAreSameColor(startTile, pDestinationTile))
 		{	
 
 			switch (crtUnitType)
 			{
 			case PEASANT:
+				System.out.println("Peasant: ");
 				switch (destStructType)
 				{
 
@@ -121,12 +121,14 @@ public class Logic {
 					Village crt = pGameMap.getVillage(startTile);
 					if (crt !=null)
 					{
+						System.out.println("Crt!=Null");
 						crt.addOrSubtractWood(1);
 					}
-					
 					pDestinationTile.setUnit(crtUnit);
+					pDestinationTile.setStructureType(StructureType.NO_STRUCT);
 					startTile.setUnit(null);
 					crtUnit.setActionType(ActionType.MOVED);
+					
 					break;
 
 				case TOMBSTONE: 

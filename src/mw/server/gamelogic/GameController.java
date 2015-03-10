@@ -31,7 +31,7 @@ public class GameController {
 			gamePlayers.add(lPlayer);
 			i++; 
 		}
-		Game crtGame = new Game(gamePlayers, 0);
+		Game crtGame = new Game(gamePlayers);
 		return crtGame;
 	}
 
