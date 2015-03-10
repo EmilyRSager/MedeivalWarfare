@@ -13,8 +13,8 @@ import mw.client.model.ModelTile.*;
 
 public class ImageTile extends Observable implements Displayable {
 	
-	public static final int DEFAULT_TILE_WIDTH = 50;
-	public static final int DEFAULT_TILE_HEIGHT = 50;
+	public static final int DEFAULT_TILE_WIDTH = 70;
+	public static final int DEFAULT_TILE_HEIGHT = 70;
 	
 	private final Hexagon hex;
 	private MinuetoImage image;

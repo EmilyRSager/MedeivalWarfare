@@ -42,9 +42,11 @@ public class ImageFileManager
 	public static MinuetoImage getTileImage(MinuetoColor c, Terrain t, StructureType s, UnitType u)
 	{
 		MinuetoImage newImage = ExtendedMinuetoImage.coloredHexagon(ImageTile.DEFAULT_TILE_WIDTH, ImageTile.DEFAULT_TILE_HEIGHT, c);
-		newImage = ExtendedMinuetoImage.drawInTheMiddleOf(newImage, ImageFileManager.getTerrainImage(t));
-		newImage = ExtendedMinuetoImage.drawInTheMiddleOf(newImage, ImageFileManager.getUnitImage(u));
-		newImage = ExtendedMinuetoImage.drawInTheMiddleOf(newImage, ImageFileManager.getStructureImage(s));
+		//newImage = ExtendedMinuetoImage.drawInTheMiddleOf(newImage, ImageFileManager.getTerrainImage(t));
+		//newImage = ExtendedMinuetoImage.drawInTheMiddleOf(newImage, ImageFileManager.getUnitImage(u));
+		MinuetoImage structImg = ImageFileManager.getStructureImage(s);
+		if (structImg != null)
+			newImage = ExtendedMinuetoImage.drawInTheMiddleOf(newImage, structImg);
 		return newImage;		
 	}
 	
@@ -125,7 +127,7 @@ public class ImageFileManager
 		switch(s)
 		{
 		case NONE:
-			break;
+			return null;
 		case HOVEL:
 			fileName = FOLDER + "hovel.png";
 			break;
