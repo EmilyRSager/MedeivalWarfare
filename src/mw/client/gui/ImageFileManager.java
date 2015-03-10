@@ -18,11 +18,11 @@ import org.minueto.image.MinuetoImageFile;
 public class ImageFileManager 
 {
 	private static final int STRUCT_ICON_SIZE = ImageTile.DEFAULT_TILE_WIDTH - 10;
-	private static final int UNIT_ICON_SIZE = ImageTile.DEFAULT_TILE_WIDTH - 10;
+	private static final int UNIT_ICON_SIZE = ImageTile.DEFAULT_TILE_WIDTH - 0;
 	
 	private static final String FOLDER = initializeFolder();
-	private static final String STRUCT_FOLDER = FOLDER + STRUCT_ICON_SIZE+"x"+STRUCT_ICON_SIZE+"/";
-	private static final String UNIT_FOLDER = FOLDER + UNIT_ICON_SIZE+"x"+UNIT_ICON_SIZE+"/";
+	private static final String STRUCT_FOLDER = getImageSizeFolder(STRUCT_ICON_SIZE);
+	private static final String UNIT_FOLDER = getImageSizeFolder(UNIT_ICON_SIZE);
 	
 	
 	public enum TileType { DEFAULT, GRASS };
@@ -51,6 +51,13 @@ public class ImageFileManager
 			return null;
 		}
 	}
+	
+	private static String getImageSizeFolder(int size)
+	{
+		return FOLDER + size + "x" + size + "/";
+	}
+	
+	
 	public static MinuetoImage getTileImage(MinuetoColor c, Terrain t, StructureType s, UnitType u)
 	{
 		MinuetoImage newImage = ExtendedMinuetoImage.coloredHexagon(ImageTile.DEFAULT_TILE_WIDTH, ImageTile.DEFAULT_TILE_HEIGHT, c);
@@ -113,13 +120,13 @@ public class ImageFileManager
 			fileName = UNIT_FOLDER + "peasant.png";
 			break;
 		case INFANTRY:
-			fileName = UNIT_FOLDER;
+			fileName = UNIT_FOLDER + "infantry.png";
 			break;
 		case SOLDIER:
-			fileName = UNIT_FOLDER;
+			fileName = UNIT_FOLDER + "soldier.png";
 			break;
 		case KNIGHT:
-			fileName = UNIT_FOLDER;
+			fileName = UNIT_FOLDER + "knight.png";
 			break;
 		case WATCHTOWER:
 			fileName = UNIT_FOLDER;

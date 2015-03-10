@@ -71,8 +71,8 @@ public final class MainApplication {
 		SharedTile newST = new SharedTile(c,
 					new SharedCoordinates(r.nextInt(DEFAULT_MAP_HEIGHT), r.nextInt(DEFAULT_MAP_WIDTH)),
 					SharedTile.Terrain.GRASS, false,
-					SharedTile.UnitType.PEASANT, 
-					SharedTile.VillageType.NONE, 0, 0);
+					SharedTile.UnitType.NONE, 
+					SharedTile.VillageType.FORT, 0, 0);
 		NewStateApplier.applyChanges(game, newST);
 	}
 	
