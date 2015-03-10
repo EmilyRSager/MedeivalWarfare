@@ -44,6 +44,10 @@ public final class MapComponent extends AbstractWindowComponent implements
 		
 	}
 
+	public MapComponent(int width, int height, MapDisplay mapDisp) {
+		this(0, 0, width, height, mapDisp);
+	}
+	
 
 	/* ==========================
 	 * 		Public methods

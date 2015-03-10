@@ -30,7 +30,7 @@ public class MainServerThread extends Thread{
 		
 		//parse port number from config file
 		try{
-			lInputStream = new FileInputStream("config.properties");
+			lInputStream = new FileInputStream(ProjectFolder.getPath() + "config.properties");
 			lProperties.load(lInputStream);
 			PORT_NUMBER = Integer.parseInt(lProperties.getProperty("serverport"));
 		} catch (IOException e) {
