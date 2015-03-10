@@ -33,7 +33,7 @@ public final class DisplayUpdater {
 
 	public static void displayChoice(String choiceName, List<String> choices)
 	{
-		// TODO
+		
 	}
 
 	public static void showVillageResources(int gold, int wood)
