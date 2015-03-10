@@ -151,6 +151,7 @@ public class GameMap  {
 
 				lTile.setVillageType(VillageType.HOVEL);
 				lVillage.setVillageType(VillageType.HOVEL);
+				lVillage.setCapital(lTile);
 				break; 
 
 			}
