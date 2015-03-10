@@ -55,7 +55,8 @@ public class ImageTile extends Observable implements Displayable {
 	
 	public void updateImage(MinuetoImage newImage)
 	{
-		ExtendedMinuetoImage.drawInTheMiddleOf(image, newImage);
+		image = newImage;
+		drawBorder(ExtendedMinuetoColor.GREY);
 		setChanged();
 		notifyObservers();
 	}
@@ -72,6 +73,10 @@ public class ImageTile extends Observable implements Displayable {
 		image = ExtendedMinuetoImage.drawHexBorder(newImage, ExtendedMinuetoColor.GREY, hex);
 	}
 
+	public void drawBorder(MinuetoColor c)
+	{
+		image = ExtendedMinuetoImage.drawHexBorder(image, c, hex);
+	}
 	/* ==========================
 	 * 		Private methods
 	 * ==========================
