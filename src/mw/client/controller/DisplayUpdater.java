@@ -6,15 +6,14 @@ import org.minueto.MinuetoColor;
 
 import mw.client.gui.ImageTile;
 import mw.client.gui.api.ExtendedMinuetoColor;
-import mw.client.model.ModelTile;
-import mw.shared.SharedTile.*;
+import mw.client.model.ModelTile.*;
 
 public final class DisplayUpdater {
 	
 	public static void updateImageTile(ImageTile tileDisp, MinuetoColor color,
-			Terrain terrain, VillageType vill, UnitType unit)
+			Terrain terrain, StructureType struct, UnitType unit)
 	{
-		tileDisp.updateImage(color, terrain, vill, unit);
+		tileDisp.updateImage(color, terrain, struct, unit);
 	}
 
 	public static void setSelected(ImageTile t, boolean selected, MinuetoColor c)

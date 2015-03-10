@@ -5,8 +5,12 @@ import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
-import mw.shared.SharedTile.*;
+import mw.client.gui.api.ExtendedMinuetoImage;
+import mw.client.model.ModelTile;
+import mw.client.model.ModelTile.*;
 
+
+import org.minueto.MinuetoColor;
 import org.minueto.MinuetoFileException;
 import org.minueto.image.MinuetoImage;
 import org.minueto.image.MinuetoImageFile;
@@ -35,30 +39,13 @@ public class ImageFileManager
 			return null;
 		}
 	}
-	public static MinuetoImage getTileImage(TileType t)
+	public static MinuetoImage getTileImage(MinuetoColor c, Terrain t, StructureType s, UnitType u)
 	{
-		String fileName = null;
-		switch(t)
-		{
-		case DEFAULT:
-			fileName = FOLDER + "sampleTile.jpg";
-			break;
-		case GRASS:
-			fileName = FOLDER + "grass.png";
-			break;
-		}
-		try
-		{
-			MinuetoImage image = new MinuetoImageFile(fileName);
-			return image;
-		}
-		catch (MinuetoFileException e)
-		{
-			System.out.println("Could not load image!");
-			e.printStackTrace();
-			System.exit(1);
-		}
-		return null;
+		MinuetoImage newImage = ExtendedMinuetoImage.coloredHexagon(ImageTile.DEFAULT_TILE_WIDTH, ImageTile.DEFAULT_TILE_HEIGHT, c);
+		newImage.draw(ImageFileManager.getTerrainImage(t), 0, 0);
+		newImage.draw(ImageFileManager.getUnitImage(u), 0, 0);
+		newImage.draw(ImageFileManager.getStructureImage(s), 0, 0);
+		return newImage;		
 	}
 	
 	public static MinuetoImage getTerrainImage(Terrain t)
@@ -132,10 +119,10 @@ public class ImageFileManager
 		}
 		return null;
 	}
-	public static MinuetoImage getVillageImage(VillageType v)
+	public static MinuetoImage getStructureImage(StructureType s)
 	{
 		String fileName = null;
-		switch(v)
+		switch(s)
 		{
 		case NONE:
 			break;

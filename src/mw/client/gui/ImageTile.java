@@ -9,6 +9,7 @@ import mw.client.gui.ImageFileManager.TileType;
 import mw.client.gui.api.Displayable;
 import mw.client.gui.api.ExtendedMinuetoColor;
 import mw.client.gui.api.ExtendedMinuetoImage;
+import mw.client.model.ModelTile.*;
 
 public class ImageTile extends Observable implements Displayable {
 	
@@ -38,14 +39,23 @@ public class ImageTile extends Observable implements Displayable {
 		setImage(new MinuetoImage(hex.getWidth(), hex.getHeight()));
 	}
 	
+	/* ========================
+	 * 		Getter methods
+	 * ========================
+	 */
+	
+	public Hexagon getHexagon()
+	{
+		return hex;
+	}
 	/* ==========================
 	 * 		Public methods
 	 * ==========================
 	 */
 	
-	public void update()
+	public void updateImage(MinuetoColor c, Terrain t, StructureType s, UnitType u)
 	{
-		setImage(ImageFileManager.getTileImage(TileType.GRASS));
+		MinuetoImage 
 		setChanged();
 		notifyObservers();
 	}
