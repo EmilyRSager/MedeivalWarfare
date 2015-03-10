@@ -39,7 +39,7 @@ public class ImageFileManager
 			
 			s = s.concat("images/");
 
-			s += "unused/";
+			s += "used/";
 			
 			System.out.println("Image folder is "+s);
 			return s;
@@ -110,7 +110,7 @@ public class ImageFileManager
 		case NONE:
 			return null;
 		case PEASANT:
-			fileName = UNIT_FOLDER + "peasant3.png";
+			fileName = UNIT_FOLDER + "peasant.png";
 			break;
 		case INFANTRY:
 			fileName = UNIT_FOLDER;
