@@ -148,11 +148,11 @@ public class GameWindow implements Observer {
 		window.render();
 	}
 	
-	public void update()	// old testing purpose method
+	/*public void update()	// old testing purpose method
 	{
 		md.update();
 		render();
-	}
+	}*/
 
 	public void registerMouseHandler(MinuetoMouseHandler h)
 	{
@@ -212,7 +212,7 @@ public class GameWindow implements Observer {
 			e.printStackTrace();
 		}
 		
-		gw.update();
+		//gw.update();
 	}
 	
 	

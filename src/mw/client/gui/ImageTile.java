@@ -2,60 +2,48 @@ package mw.client.gui;
 
 import java.util.Observable;
 
+import org.minueto.MinuetoColor;
+import org.minueto.image.MinuetoImage;
+
 import mw.client.gui.ImageFileManager.TileType;
+import mw.client.gui.api.Displayable;
 import mw.client.gui.api.ExtendedMinuetoColor;
 import mw.client.gui.api.ExtendedMinuetoImage;
-import mw.shared.SharedColor;
-import mw.shared.SharedTile.*;
 
-import org.minueto.MinuetoColor;
-import org.minueto.image.*;
-
-/**
- * This class defines the ImageTile object 
- * @author Arthur Denefle
- *
- */
-public class ImageTile extends Observable {
-	private MinuetoImage image;
-	public static final int DEFAULT_TILE_WIDTH = 80;
-	public static final int DEFAULT_TILE_HEIGHT = 80;
+public class ImageTile extends Observable implements Displayable {
 	
-	/**
-	 * Default ImageTile constructor, creates an ImageTile with a blank MinuetoImage.
+	public static final int DEFAULT_TILE_WIDTH = 50;
+	public static final int DEFAULT_TILE_HEIGHT = 50;
+	
+	private final Hexagon hex;
+	private MinuetoImage image;
+	
+
+	/* ========================
+	 * 		Constructors
+	 * ========================
 	 */
+
 	public ImageTile()
 	{
-		//image = ImageFileManager.getTileImage(TileType.DEFAULT);
-		setImage(new MinuetoImage(DEFAULT_TILE_WIDTH, DEFAULT_TILE_HEIGHT));
+		this(DEFAULT_TILE_WIDTH, DEFAULT_TILE_HEIGHT);
+	}
+
+	public ImageTile(int width, int height) {
+		this(new Hexagon(width, height));
 	}
 	
-	public ImageTile(MinuetoColor c, VillageType v, UnitType u, Terrain t)
-	{
-		setImage(ExtendedMinuetoImage.coloredSquare(DEFAULT_TILE_WIDTH, DEFAULT_TILE_HEIGHT, c));
-		image.draw(ImageFileManager.getTerrainImage(t), 0, 0);
-		image.draw(ImageFileManager.getUnitImage(u), 0, 0);
-		image.draw(ImageFileManager.getVillageImage(v), 0, 0);
-	}
-	/**
-	 * Getter for an ImageTile's MinuetoImage.
-	 * @return MinuetoImage
-	 */
-	public MinuetoImage getTileImage()
-	{
-		return image;
-	}
-	/**
-	 * 
-	 */
-	public void updateImage(MinuetoColor c, Terrain t, VillageType v, UnitType u)
-	{
-		setImage(ExtendedMinuetoImage.coloredSquare(DEFAULT_TILE_WIDTH, DEFAULT_TILE_HEIGHT, c));
-		image.draw(ImageFileManager.getTerrainImage(t), 0, 0);
-		image.draw(ImageFileManager.getUnitImage(u), 0, 0);
-		image.draw(ImageFileManager.getVillageImage(v), 0, 0);
+	public ImageTile(Hexagon hex) {
+		this.hex = hex;
+		setImage(new MinuetoImage(hex.getWidth(), hex.getHeight()));
 	}
 	
+	/* ==========================
+	 * 		Public methods
+	 * ==========================
+	 */
+	
+	public void update()
 	{
 		setImage(ImageFileManager.getTileImage(TileType.GRASS));
 		setChanged();
@@ -64,23 +52,37 @@ public class ImageTile extends Observable {
 	
 	public void updateColor(MinuetoColor c)
 	{
-		setImage(ExtendedMinuetoImage.coloredSquare(DEFAULT_TILE_WIDTH, DEFAULT_TILE_HEIGHT, c));
+		setImage(ExtendedMinuetoImage.coloredHexagon(hex, c));
 		setChanged();
 		notifyObservers();
 	}
 	
 	public void setImage(MinuetoImage newImage)
 	{
-		image = ExtendedMinuetoImage.drawBorder(newImage, ExtendedMinuetoColor.GREY);
+		image = ExtendedMinuetoImage.drawHexBorder(newImage, ExtendedMinuetoColor.GREY, hex);
 	}
-	
-	/*public void setBorderSelected(MinuetoImage selectedImage, MinuetoColor c)
+
+	/* ==========================
+	 * 		Private methods
+	 * ==========================
+	 */
+
+
+	/* ==========================
+	 * 		Inherited methods
+	 * ==========================
+	 */
+
+	@Override
+	public MinuetoImage getImage()
 	{
-		image = ExtendedMinuetoImage.drawBorder(selectedImage, c);
-	}*/
-	
-	public void drawBorder(MinuetoColor c)
-	{
-		image = ExtendedMinuetoImage.drawBorder(image, c);
+		return image;
 	}
+
+
+	/* ========================
+	 * 		Static methods
+	 * ========================
+	 */
+
 }

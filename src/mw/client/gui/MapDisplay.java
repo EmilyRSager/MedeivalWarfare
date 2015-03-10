@@ -1,29 +1,25 @@
 package mw.client.gui;
-import java.util.Observer;
-import java.lang.Math;
 
-import mw.client.controller.ActionInterpreter;
+import java.util.Observer;
+
+import org.minueto.MinuetoColor;
+import org.minueto.MinuetoEventQueue;
+import org.minueto.image.MinuetoImage;
+import org.minueto.window.MinuetoFrame;
+import org.minueto.window.MinuetoWindow;
+
 import mw.client.controller.ModelViewMapping;
 import mw.client.gui.api.Clickeable;
 import mw.client.gui.api.Displayable;
-import mw.client.gui.api.TextDisplay;
+import mw.client.gui.api.MouseClickHandler;
+import mw.client.gui.api.WindowArea;
 import mw.client.model.ModelTile;
 import mw.shared.SharedColor;
+import mw.util.MultiArrayIterable;
 
-import org.minueto.MinuetoColor;
-import org.minueto.image.MinuetoImage;
-import org.minueto.image.MinuetoText;
-import org.minueto.window.*; 
+public class MapDisplay implements Displayable, Clickeable {
 
 
-/**
- * The GameMap class contains all the functions required to visually represent the map in a game of Medieval Warfare.
- * @author Arthur Denefle
- *
- */
-public class MapDisplay implements Displayable, Clickeable
-{
-	
 	/*
 	 * [0,0] [0,1] [0,2]
 	 * [1,0] [1,1] [1,2]
@@ -32,8 +28,9 @@ public class MapDisplay implements Displayable, Clickeable
 	 */
 	
 	private ImageTile[][] tiles;
-	private int tileWidth;
-	private int tileHeight;
+	private final int tileWidth;
+	private final int tileHeight;
+	private final Hexagon hex;
 	
 	
 	/* ========================
@@ -44,23 +41,26 @@ public class MapDisplay implements Displayable, Clickeable
 
 	public MapDisplay(int width, int height)
 	{
-		tiles = new ImageTile[width][height];
-		for(int i = 0; i < tiles.length; i++)
+		ImageTile[][] nTiles = new ImageTile[width][height];
+		for(int i = 0; i < nTiles.length; i++)
 		{
-			for(int j = 0; j < tiles[i].length; j++)
+			for(int j = 0; j < nTiles[i].length; j++)
 			{
-				tiles[i][j] = new ImageTile();
+				nTiles[i][j] = new ImageTile();
 			}
 		}
-		tileWidth = tiles[0][0].getTileImage().getWidth();
-		tileHeight = tiles[0][0].getTileImage().getHeight();
+		tiles = nTiles;
+		tileWidth = tiles[0][0].getImage().getWidth();
+		tileHeight = tiles[0][0].getImage().getHeight();
+		hex = new Hexagon(tileWidth, tileHeight);
 	}
 	
 	public MapDisplay(ImageTile[][] givenTiles)
 	{
 		tiles = givenTiles;
-		tileWidth = tiles[0][0].getTileImage().getWidth();
-		tileHeight = tiles[0][0].getTileImage().getHeight();
+		tileWidth = tiles[0][0].getImage().getWidth();
+		tileHeight = tiles[0][0].getImage().getHeight();
+		hex = new Hexagon(tileWidth, tileHeight);
 	}
 
 	
@@ -70,16 +70,7 @@ public class MapDisplay implements Displayable, Clickeable
 	 */
 
 	
-	public void update()
-	{
-		MinuetoColor color =  MinuetoColor.BLACK;
-		tiles[2][6].updateColor(color);
-	}
-	/**
-	 * The method renderMap's main functionality is to construct the map image by drawing the tiles on the window. 
-	 * @param tiles a double array of Tile objects to be displayed on the map.
-	 */
-	public void renderMap(MinuetoWindow window)
+	/*public void renderMap(MinuetoWindow window)
 	{
 			for(int i = 0; i < tiles.length; i++)
 			{
@@ -87,31 +78,26 @@ public class MapDisplay implements Displayable, Clickeable
 				{
 					if(i % 2 == 0)
 					{
-						window.draw(tiles[i][j].getTileImage(), i * ImageTile.DEFAULT_TILE_WIDTH, j * ImageTile.DEFAULT_TILE_HEIGHT);
+						window.draw(tiles[i][j].getImage(), i * ImageTile.DEFAULT_TILE_WIDTH, j * ImageTile.DEFAULT_TILE_HEIGHT);
 					}
 					else
 					{
-						window.draw(tiles[i][j].getTileImage(), i * ImageTile.DEFAULT_TILE_WIDTH, (j * ImageTile.DEFAULT_TILE_HEIGHT) + (int)(.5 * ImageTile.DEFAULT_TILE_HEIGHT));
+						window.draw(tiles[i][j].getImage(), i * ImageTile.DEFAULT_TILE_WIDTH, (j * ImageTile.DEFAULT_TILE_HEIGHT) + (int)(.5 * ImageTile.DEFAULT_TILE_HEIGHT));
 					}
 				}
 			}
 			window.render();
-	}
+	}*/
 	
 	public void setObserver(Observer o)
 	{
-		for(int i = 0; i < tiles.length; i++)
-		{
-			for(int j = 0; j < tiles[i].length; j++)
-			{
-				tiles[i][j].addObserver(o);
-			}
-		}
+		for (ImageTile t : MultiArrayIterable.toIterable(tiles))
+			t.addObserver(o);
 	}
 	
 	public int getWidth()
 	{
-		return this.tileWidth * this.tiles.length;
+		return (tileWidth-hex.getHexOffset()) * tiles.length + hex.getHexOffset();
 	}
 	
 	public int getHeight()
@@ -121,24 +107,59 @@ public class MapDisplay implements Displayable, Clickeable
 
 	public ImageTile getClickedTile(int x, int y)
 	{
-		int xIndex = (int) x / tileWidth;
+		int xIndex = (int) x / (tileWidth-hex.getHexOffset());
 		int yIndex;
-		if(xIndex % 2 == 0)
-		{
-			yIndex = (int) y / tileHeight;
-		}
-		else
-		{
-			yIndex = (int) Math.floor(((y - (tileHeight / 2)) / (double) tileHeight)); 
-		}
-		/*if(xIndex % 2 != 0 && y < tileHeight / 2)
-		{
-			return null;
+		
+		boolean oddRow = (xIndex % 2 == 1);
+		int yTopMove = 1;
+		int yBotMove = 0;
+		/*if () {
+			//yIndex = (int) y / tileHeight;
+			oddRow=false;
 		}*/
-		//else if(xIndex % 2 == 0 && y > tileHeight() )
+		if (oddRow) {
+			y = y-(tileHeight/2);
+			if (y<0)
+				return null;
+			yTopMove=1-yTopMove;
+			yBotMove = 1-yBotMove;
+			//yIndex = (int) Math.floor(((y - (tileHeight / 2)) / (double) tileHeight)); 
+		}
+		
+		yIndex = y/tileHeight;
+		
+		int relX = x % (tileWidth-hex.getHexOffset());
+		int relY = y % tileHeight;
+		
+		System.out.println("Relative = ("+relX+","+relY+")");
+		Hexagon.RelativePosition relPos = hex.locatePoint(relX, relY);
+		System.out.println(relPos + " of "+xIndex+","+yIndex);
+		switch(relPos)
+		{
+		case TOP_LEFT:
+			xIndex--;
+			yIndex-=yTopMove;
+			break;
+			
+		case TOP_RIGHT:
+			xIndex++;
+			yIndex-=yTopMove;
+			break;
+			
+		case BOT_RIGHT:
+			xIndex++;
+			yIndex+=yBotMove;
+			break;
+			
+		case BOT_LEFT:
+			xIndex--;
+			yIndex+=yBotMove;
+			break;
+		}
+		
 		try
 		{
-			return this.tiles[xIndex][yIndex];
+			return tiles[xIndex][yIndex];
 		}
 		catch (ArrayIndexOutOfBoundsException e)
 		{
@@ -166,20 +187,17 @@ public class MapDisplay implements Displayable, Clickeable
 	public MinuetoImage getImage()
 	{
 		MinuetoImage newImage = new MinuetoImage(this.getWidth(), this.getHeight());
+		int xPos, yPos;
 		for(int i = 0; i < tiles.length; i++)
 		{
+			xPos = i*(tileWidth-hex.getHexOffset());
 			for(int j = 0; j < tiles[i].length; j++)
 			{
-				if(i % 2 == 0)
-				{
-					newImage.draw(tiles[i][j].getTileImage(), i * ImageTile.DEFAULT_TILE_WIDTH, j * ImageTile.DEFAULT_TILE_HEIGHT);
-					newImage.draw(new MinuetoText(""+j+","+i, TextDisplay.DEFAULT_FONT, MinuetoColor.BLACK),  i * ImageTile.DEFAULT_TILE_WIDTH, j * ImageTile.DEFAULT_TILE_HEIGHT);
-				}
+				if (i%2 == 0)
+					yPos = j*tileHeight;
 				else
-				{
-					newImage.draw(tiles[i][j].getTileImage(), i * ImageTile.DEFAULT_TILE_WIDTH, (j * ImageTile.DEFAULT_TILE_HEIGHT) + (int)(.5 * ImageTile.DEFAULT_TILE_HEIGHT));
-					newImage.draw(new MinuetoText(""+j+","+i, TextDisplay.DEFAULT_FONT, MinuetoColor.BLACK), i * ImageTile.DEFAULT_TILE_WIDTH, (j * ImageTile.DEFAULT_TILE_HEIGHT) + (int)(.5 * ImageTile.DEFAULT_TILE_HEIGHT));
-				}
+					yPos = (j * tileHeight) + (int)(.5 * tileHeight);
+				newImage.draw(tiles[i][j].getImage(), xPos, yPos);
 			}
 		}
 		return newImage;
@@ -188,16 +206,19 @@ public class MapDisplay implements Displayable, Clickeable
 	@Override
 	public void handleMouseClick(int x, int y, int button)
 	{
-		ImageTile clickedTile = this.getClickedTile(x, y);
+		ImageTile clickedTile = getClickedTile(x, y);
+		if (clickedTile!=null) {
+			clickedTile.updateColor(MinuetoColor.BLUE);
+		}
+
+		
+		/*HexImageTile clickedTile = this.getClickedTile(x, y);
 		ModelTile clickedModelTile = ModelViewMapping.singleton().getModelTile(clickedTile);
 		if(clickedModelTile != null)
 		{
-			System.out.println(button);
-			if (button == 1)
-				ActionInterpreter.singleton().primarySelect(clickedTile);
-			/*clickedModelTile.setColor(SharedColor.RED);
-			clickedModelTile.notifyObservers();*/
-		}
+			clickedModelTile.setColor(SharedColor.RED);
+			clickedModelTile.notifyObservers();
+		}*/
 	}
 
 
@@ -206,5 +227,36 @@ public class MapDisplay implements Displayable, Clickeable
 	 * ========================
 	 */
 	
+	public static void main(String[] args)
+	{
+		final int width = 10;
+		final int height = 10;
+		ImageTile[][] tiles = new ImageTile[width][height];
+		for (int i=0; i<width; i++)
+		{
+			for (int j=0; j<height; j++)
+			{
+				tiles[i][j] = new ImageTile();
+				tiles[i][j].updateColor(MinuetoColor.RED);
+			}
+		}
+		MapDisplay mapDisp = new MapDisplay(tiles);
+		
+		MinuetoFrame window = new MinuetoFrame(mapDisp.getWidth(), mapDisp.getHeight(), true);
+		window.setVisible(true);
+		window.draw(mapDisp.getImage(), 0, 0);
+		window.render();
+		MinuetoEventQueue queue = new MinuetoEventQueue();
+		window.registerMouseHandler(new MouseClickHandler(new WindowArea(0, 0, mapDisp.getWidth(), mapDisp.getHeight()), mapDisp), queue);
+		
+		while(true)
+		{
+			while(queue.hasNext()) {
+				queue.handle();
+				window.draw(mapDisp.getImage(), 0, 0);
+				window.render();
+			}
+		}
+	}
 	
 }

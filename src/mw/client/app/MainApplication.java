@@ -25,8 +25,8 @@ public final class MainApplication {
 
 	private static final Player PLAYER = new Player(SharedColor.YELLOW, "player");
 	
-	public final static int DEFAULT_MAP_WIDTH = 10;
-	public final static int DEFAULT_MAP_HEIGHT = 10;
+	public final static int DEFAULT_MAP_WIDTH = 18;
+	public final static int DEFAULT_MAP_HEIGHT = 18;
 	
 	
 	private static GameWindow window;
