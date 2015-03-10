@@ -13,6 +13,7 @@ import java.io.InputStream;
 import java.net.Socket;
 import java.util.Properties;
 
+import mw.client.files.ProjectFolder;
 import mw.shared.servercommands.AbstractServerCommand;
 
 public class ServerChannel extends Thread{
@@ -34,7 +35,7 @@ public class ServerChannel extends Thread{
 		
 		//parse server ip address and port number from config file
 		try{
-			lInputStream = new FileInputStream("config.properties");
+			lInputStream = new FileInputStream(ProjectFolder.getPath() + "config.properties");
 			lProperties.load(lInputStream);
 			PORT_NUMBER = Integer.parseInt(lProperties.getProperty("serverport"));
 			SERVER_IP_ADDRESS = lProperties.getProperty("serveripaddress");
