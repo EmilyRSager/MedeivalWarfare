@@ -27,4 +27,9 @@ public interface WindowComponent extends Drawable {
 	 * @param y the new y coordinate of this WindowComponent
 	 */
 	public void setPosition(int x, int y);
+	
+	/*public void setSize(int newWidth, int newHeight);
+	
+	public int getMinWidth();
+	public int getMinHeight();*/
 }
