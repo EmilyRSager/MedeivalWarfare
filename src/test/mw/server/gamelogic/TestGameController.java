@@ -10,10 +10,17 @@ public class TestGameController {
 	@Test
 	public void setSetActionType() throws TooManyPlayersException{
 		Game lGame = GameController.newGame(3);
-		GameController.hireUnit(lGame, 0, 0, UnitType.PEASANT);
-		
 		
 		Tile[][] lTiles = lGame.getGameTiles();
+		
+		while (!(lGame.getVillage(lTiles[0][0])).equals(lGame.getVillage(lTiles[1][1])))
+		{
+			lGame = GameController.newGame(3);
+			lTiles = lGame.getGameTiles();
+
+		}
+	
+		GameController.hireUnit(lGame, 0, 0, UnitType.PEASANT);
 		
 		//GameController.upgradeUnit(lGame, 0, 0, UnitType.INFANTRY);
 
@@ -21,7 +28,6 @@ public class TestGameController {
 		lTiles[1][0].setColor(Color.GREEN);
 		lTiles[1][1].setColor(Color.GREEN);
 		lTiles[0][0].setColor(Color.GREEN);
-		
 		
 		
 		lTiles[1][0].setVillageType(VillageType.NO_VILLAGE);
@@ -48,6 +54,8 @@ public class TestGameController {
 		System.out.println(lTiles[0][0].toString());
 		System.out.println(lTiles[1][1].toString());
 		System.out.println(lGame.getVillage(lTiles[1][1]).getWood());
+		
+		
 	}
 
 }
