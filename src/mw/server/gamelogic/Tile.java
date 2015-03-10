@@ -20,6 +20,8 @@ public class Tile  extends Observable
     private int aX; 
     private int aY; 
     private Color myColor;
+    private int aWood; 
+    private int aGold; 
 
    
     
@@ -31,7 +33,10 @@ public class Tile  extends Observable
     	aStructureType = pStructureType; 
     	myColor = Color.NEUTRAL;
     	aHasMeadow = false; 
-    	aVillageType = VillageType.NO_VILLAGE; 
+    	aVillageType = VillageType.NO_VILLAGE;
+    	aGold = 0;
+    	aWood = 0; 
+    	
     }
     
     public boolean hasUnit()
@@ -62,7 +67,8 @@ public class Tile  extends Observable
         setChanged();
        
     }
-    public StructureType getStructureType() {
+    public StructureType getStructureType() 
+    {
        return aStructureType;
     }
  
@@ -99,13 +105,49 @@ public class Tile  extends Observable
 	{
 		return false; 
 	}
+	
+	public void setWood(int pWood)
+	{
+		if (aVillageType != VillageType.NO_VILLAGE)
+		{
+			aWood = pWood;
+		}
+		setChanged();
+	}
+	public void setGold(int pGold)
+	{
+		if (aVillageType != VillageType.NO_VILLAGE)
+		{
+			aGold = pGold;
+		}
+		setChanged();
+	}
 
+	public int getGold()
+	{
+		return aGold; 
+	}
+	
+	public int getWood() 
+	{
+		return aWood;
+	}
+	
 	public void setVillageType(VillageType pVillageType)
 	{
 		 aVillageType = pVillageType; 
+		 if (aVillageType != VillageType.NO_VILLAGE) 
+		 {
+			 setStructureType(StructureType.VILLAGE_CAPITAL);
+			 
+		 }
+		 if (pVillageType == VillageType.NO_VILLAGE)
+		 {
+			 setStructureType(StructureType.NO_STRUCT);
+		 }
 		 setChanged();
-
 	}
+	
 	
 	public VillageType getVillageType()
 	{
