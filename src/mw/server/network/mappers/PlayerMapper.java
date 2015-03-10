@@ -19,6 +19,9 @@ public class PlayerMapper {
 	private static PlayerMapper aPlayerManagerInstance;
 	private HashMap<Integer, Player> aPlayerMap;
 	
+	//TODO for now, maintain a mapping from Players to Clients for simplicity. Seems super inelegant, not sure if this should be changed
+	private HashMap<Player, Integer> aClientMap;
+	
 	private PlayerMapper(){
 		aPlayerMap = new HashMap<Integer, Player>();
 	}
@@ -43,6 +46,7 @@ public class PlayerMapper {
 	 */
 	public void putPlayer(Integer pClientID, Player pPlayer){
 		aPlayerMap.put(pClientID, pPlayer);
+		aClientMap.put(pPlayer, pClientID);
 	}
 	
 	/**
@@ -89,11 +93,21 @@ public class PlayerMapper {
 	}
 	
 	/**
-	 * Removes the client specified by ClientID from the
+	 * Removes the client specified by ClientID from the Player map
 	 * @param pClientID
 	 * @return none
 	 */
 	public void removePlayer(int pClientID){
-		aPlayerManagerInstance.removePlayer(pClientID);
+		Player lPlayer = aPlayerMap.get(pClientID);
+		aPlayerMap.remove(pClientID);
+		aClientMap.remove(lPlayer);
+	}
+	
+	/**
+	 * @param pPlayer
+	 * @return Client associated with pPlayer
+	 */
+	public Integer getClient(Player pPlayer){
+		return aClientMap.get(pPlayer);
 	}
 }
