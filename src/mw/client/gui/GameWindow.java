@@ -1,5 +1,6 @@
 package mw.client.gui;
 
+import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -48,7 +49,7 @@ public class GameWindow implements Observer {
 		md = mapDisp;
 		queue = new MinuetoEventQueue();
 		mapComp = new MapComponent(0, 0, DEFAULT_MAP_WIDTH, DEFAULT_MAP_HEIGHT, md);
-		button = new AbstractButton(0,600,"Click me !") {
+		button = new AbstractButton("Click me !") {
 			public void buttonClick(int mouseButton)
 			{
 				if (mouseButton==1) {
@@ -165,6 +166,17 @@ public class GameWindow implements Observer {
 		window.registerKeyboardHandler(h, queue);
 	}
 	
+	public VerticalLayout createChoiceLayout(String choiceName, List<String> choices)
+	{
+		VerticalLayout choiceLayout = new VerticalLayout(choices.size() + 1);
+		TextDisplay choiceTitle = new TextDisplay(choiceName);
+		choiceLayout.addComponent(choiceTitle);
+		for(int i = 0; i < choices.size(); i++)
+		{
+			AbstractButton choiceButton = new AbstractButton(choices.get(i));
+			
+		}
+	}
 	/* ==========================
 	 * 		Private methods
 	 * ==========================
