@@ -17,24 +17,12 @@ public class Village extends Observable
 
 	private int aGold; 
 	private int aWood; 
+	private Tile aCapital; 
 	private VillageType aVillageType; 
 	private Collection<GraphNode> aVillageNodes = new HashSet<GraphNode>();
 	private Collection<Observer> aObservers; 
 
 
-	@Override
-	public String toString() 
-	{
-		String myString = "The village tiles are: ";
-
-		for (GraphNode lGraphNode : aVillageNodes)
-		{
-			myString += lGraphNode.getTile().toString();
-		}
-		myString += "/n";
-		return myString; 
-
-	};
 	@Override 
 	public synchronized void addObserver(Observer o) 
 	{
@@ -60,6 +48,12 @@ public class Village extends Observable
 	}
 
 
+	public void setCapital(Tile pCapital)
+	{
+		aCapital = pCapital;
+		aCapital.setWood(aWood);
+		aCapital.setGold(aGold);
+	}
 	public Collection<GraphNode> getVillageNodes()
 	{
 		return aVillageNodes;
@@ -175,6 +169,7 @@ public class Village extends Observable
 	public void addOrSubtractGold(int addGold) 
 	{
 		aGold = aGold + addGold; 
+		aCapital.setGold(aGold);
 
 	}
 
@@ -185,6 +180,7 @@ public class Village extends Observable
 	public void addOrSubtractWood(int addWood) 
 	{
 		aWood = aWood + addWood;
+		aCapital.setWood(aWood);
 	}
 
 
@@ -241,7 +237,7 @@ public class Village extends Observable
 	 * getter for Village Gold
 	 * @return
 	 */
-	public int getAGold() 
+	public int getGold() 
 	{
 
 		return aGold;
@@ -251,8 +247,22 @@ public class Village extends Observable
 	 * getter for Village Wood
 	 * @return
 	 */
-	public int getAWood() 
+	public int getWood() 
 	{
 		return aWood;
+	}
+	
+	@Override
+	public String toString() 
+	{
+		String myString = "The village tiles are: ";
+		
+		for (GraphNode lGraphNode : aVillageNodes)
+		{
+			myString += lGraphNode.getTile().toString();
+		}
+		myString += "/n";
+		return myString; 
+		
 	}
 }
