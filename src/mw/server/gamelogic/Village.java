@@ -26,26 +26,26 @@ public class Village extends Observable
 	public String toString() 
 	{
 		String myString = "The village tiles are: ";
-		
+
 		for (GraphNode lGraphNode : aVillageNodes)
 		{
 			myString += lGraphNode.getTile().toString();
 		}
 		myString += "/n";
-	return myString; 
-		
+		return myString; 
+
 	};
 	@Override 
 	public synchronized void addObserver(Observer o) 
 	{
 		aObservers.add(o);
 	}
-	
+
 	public void setVillageType(VillageType pVillageType)
 	{
 		aVillageType = pVillageType;
 	}
-	
+
 	public Village(Set<GraphNode> villageSet) 
 	{
 		aVillageNodes = villageSet; 
@@ -59,12 +59,12 @@ public class Village extends Observable
 		aWood = pWood;
 	}
 
-	
+
 	public Collection<GraphNode> getVillageNodes()
 	{
 		return aVillageNodes;
 	}
-	
+
 
 	public Set<Tile> getTiles ()
 	{
@@ -84,16 +84,16 @@ public class Village extends Observable
 			addGold +=Logic.getGoldGenerated(lGraphNode);  
 		}
 		addOrSubtractGold(addGold);
-		
-	}
-	
-	
 
-public void upgradeVillage(VillageType pVillageType) throws NotEnoughIncomeException {
+	}
+
+
+
+	public void upgradeVillage(VillageType pVillageType) throws NotEnoughIncomeException {
 		int upgradeCost = 0;
 		try {
 			upgradeCost = PriceCalculator.getUpgradePrice(pVillageType);
-			
+
 		} catch (CantUpgradeException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
@@ -103,12 +103,12 @@ public void upgradeVillage(VillageType pVillageType) throws NotEnoughIncomeExcep
 			try {
 				Logic.upgrade(aVillageType, this);
 				addOrSubtractWood(-upgradeCost);
-				
+
 			} catch (CantUpgradeException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			
+
 		}
 		else 
 		{
@@ -145,8 +145,8 @@ public void upgradeVillage(VillageType pVillageType) throws NotEnoughIncomeExcep
 		for(GraphNode lNode: aVillageNodes){
 			Tile lTile = lNode.getTile();
 			Unit lUnit = lTile.getUnit();
-			
-			
+
+
 			if (lUnit!=null) {
 				ActionType lActionType = lUnit.getActionType();
 				if (lActionType.equals(ActionType.CULTIVATING_END)) {
@@ -161,7 +161,7 @@ public void upgradeVillage(VillageType pVillageType) throws NotEnoughIncomeExcep
 					addOrSubtractWood(1);
 				}
 			}
-			
+
 		}
 
 	}
@@ -175,7 +175,7 @@ public void upgradeVillage(VillageType pVillageType) throws NotEnoughIncomeExcep
 	public void addOrSubtractGold(int addGold) 
 	{
 		aGold = aGold + addGold; 
-	
+
 	}
 
 	/**
@@ -199,7 +199,7 @@ public void upgradeVillage(VillageType pVillageType) throws NotEnoughIncomeExcep
 		//TODO: needs to be implemented
 		//some type of search here to see if the village has fused
 	}
-	
+
 	/**
 	 * remove a tile from the village, would also take care that if this tile is removed causing a split into
 	 * smaller villages then it is handled here 
@@ -227,7 +227,7 @@ public void upgradeVillage(VillageType pVillageType) throws NotEnoughIncomeExcep
 	 */
 	public void tryPayingGold(int goldCost) throws NotEnoughIncomeException
 	{
-		
+
 		if (aGold >= goldCost)
 		{
 			addOrSubtractGold(-goldCost);
