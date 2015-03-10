@@ -53,9 +53,9 @@ public class ImageTile extends Observable implements Displayable {
 	 * ==========================
 	 */
 	
-	public void updateImage(MinuetoColor c, Terrain t, StructureType s, UnitType u)
+	public void updateImage(MinuetoImage newImage)
 	{
-		MinuetoImage 
+		ExtendedMinuetoImage.drawInTheMiddleOf(image, newImage);
 		setChanged();
 		notifyObservers();
 	}

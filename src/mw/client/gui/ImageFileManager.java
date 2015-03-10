@@ -42,9 +42,9 @@ public class ImageFileManager
 	public static MinuetoImage getTileImage(MinuetoColor c, Terrain t, StructureType s, UnitType u)
 	{
 		MinuetoImage newImage = ExtendedMinuetoImage.coloredHexagon(ImageTile.DEFAULT_TILE_WIDTH, ImageTile.DEFAULT_TILE_HEIGHT, c);
-		newImage.draw(ImageFileManager.getTerrainImage(t), 0, 0);
-		newImage.draw(ImageFileManager.getUnitImage(u), 0, 0);
-		newImage.draw(ImageFileManager.getStructureImage(s), 0, 0);
+		newImage = ExtendedMinuetoImage.drawInTheMiddleOf(newImage, ImageFileManager.getTerrainImage(t));
+		newImage = ExtendedMinuetoImage.drawInTheMiddleOf(newImage, ImageFileManager.getUnitImage(u));
+		newImage = ExtendedMinuetoImage.drawInTheMiddleOf(newImage, ImageFileManager.getStructureImage(s));
 		return newImage;		
 	}
 	
