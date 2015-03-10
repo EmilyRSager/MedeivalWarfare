@@ -1,5 +1,6 @@
 package mw.client.controller;
 
+import mw.client.gui.GameWindow;
 import mw.client.model.Game;
 import mw.shared.SharedColor;
 
@@ -13,7 +14,7 @@ import mw.shared.SharedColor;
 public final class CurrentClientState {
 
 	private static Game currentGame = null;
-	
+	private static GameWindow currentGameWindow = null;
 	
 	/**
 	 * Changes the current game
@@ -37,9 +38,13 @@ public final class CurrentClientState {
 		ModelQuerier.setCurrentPlayerColor(currentGame,color);
 	}
 	
-	public static GameWindow getCurrentGameWindow()
-	{
-		// TODO
+	
+	public static void setCurrentGameWindow(GameWindow window) {
+		currentGameWindow = window;
+	}
+	
+	public static GameWindow getCurrentGameWindow() {
+		return currentGameWindow;
 	}
 	
 }
