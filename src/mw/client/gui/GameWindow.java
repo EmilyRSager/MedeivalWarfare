@@ -32,7 +32,7 @@ public class GameWindow implements Observer {
 	private final MinuetoEventQueue queue;
 	private MapDisplay md;
 	private MapComponent mapComp;
-	private AbstractButton button;
+	//private AbstractButton button;
 	private VerticalLayout windowLayout;
 	private HorizontalLayout controlBarLayout;
 	
@@ -51,7 +51,7 @@ public class GameWindow implements Observer {
 		md = mapDisp;
 		queue = new MinuetoEventQueue();
 		mapComp = new MapComponent(0, 0, DEFAULT_MAP_WIDTH, DEFAULT_MAP_HEIGHT, md);
-		button = new AbstractButton("Click me !") {
+		/*button = new AbstractButton("Click me !") {
 			public void buttonClick(int mouseButton)
 			{
 				if (mouseButton==1) {
@@ -63,20 +63,21 @@ public class GameWindow implements Observer {
 		
 		HorizontalLayout botLayout = new HorizontalLayout(0, 0, 2);
 		botLayout.addComponent(button);
-		botLayout.addComponent(new TextDisplay(0, 0, "Layouts are the best !"));
+		botLayout.addComponent(new TextDisplay(0, 0, "Layouts are the best !"));*/
 		
 		windowLayout = new VerticalLayout(0, 0, 2);
+		windowLayout.addObserver(this);
 		controlBarLayout = new HorizontalLayout(3);
 		windowLayout.addComponent(mapComp, 0);
 		windowLayout.addComponent(controlBarLayout, 1);
 		//windowLayout.addComponent(button);
-		windowLayout.addComponent(botLayout);
+		//windowLayout.addComponent(botLayout);
 		
 		window = new MinuetoFrame(windowLayout.getWidth(), windowLayout.getHeight(), true);
 		
 		mapComp.setWindow(this);
-		this.registerMouseHandler(button);
-		button.addObserver(this);
+		//this.registerMouseHandler(button);
+		//button.addObserver(this);
 		
 		window.setVisible(true);
 		window.setTitle("Medieval Warfare");
@@ -170,20 +171,6 @@ public class GameWindow implements Observer {
 		window.registerKeyboardHandler(h, queue);
 	}
 	
-	public void addChoiceComponent(ChoiceType choiceType, VerticalLayout choiceLayout)
-	{
-		
-		switch (choiceType)
-		{
-		case VILLAGE_UPGRADE:
-			controlBarLayout.addComponent(choiceLayout, 1);
-			break;
-		case UNIT_HIRE:
-		case UNIT_ACTION:
-			controlBarLayout.addComponent(choiceLayout, 2);
-			break;
-		}
-	}
 	
 	public void displayVillageResources(int gold, int wood)
 	{
@@ -195,7 +182,7 @@ public class GameWindow implements Observer {
 		controlBarLayout.addComponent(resourceLayout, 0);
 	}
 	
-	public static VerticalLayout createChoiceLayout(ChoiceType choiceType, List<String> choices)
+	public void addChoiceLayout(ChoiceType choiceType, List<String> choices)
 	{
 		VerticalLayout choiceLayout = new VerticalLayout(choices.size() + 1);
 		TextDisplay choiceTitle = new TextDisplay(getChoiceTitle(choiceType));
@@ -213,10 +200,19 @@ public class GameWindow implements Observer {
 						}
 					}
 				};
-			
+			this.registerMouseHandler(choiceButton);
 			choiceLayout.addComponent(choiceButton);
 		}
-		return choiceLayout;
+		switch (choiceType)
+		{
+		case VILLAGE_UPGRADE:
+			controlBarLayout.addComponent(choiceLayout, 1);
+			break;
+		case UNIT_HIRE:
+		case UNIT_ACTION:
+			controlBarLayout.addComponent(choiceLayout, 2);
+			break;
+		}
 	}
 	/* ==========================
 	 * 		Private methods
