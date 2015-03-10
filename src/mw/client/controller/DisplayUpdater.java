@@ -5,6 +5,7 @@ import java.util.List;
 import org.minueto.MinuetoColor;
 import org.minueto.image.MinuetoImage;
 
+import mw.client.controller.ChoiceCenter.ChoiceType;
 import mw.client.gui.GameWindow;
 import mw.client.gui.ImageFileManager;
 import mw.client.gui.ImageTile;
