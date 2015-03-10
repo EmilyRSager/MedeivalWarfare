@@ -5,7 +5,6 @@ import java.util.Observable;
 import mw.client.gui.ImageFileManager.TileType;
 import mw.client.gui.api.ExtendedMinuetoColor;
 import mw.client.gui.api.ExtendedMinuetoImage;
-import mw.shared.SharedColor;
 import mw.shared.SharedTile.*;
 
 import org.minueto.MinuetoColor;
@@ -16,6 +15,7 @@ import org.minueto.image.*;
  * @author Arthur Denefle
  *
  */
+@Deprecated
 public class SquareImageTile extends Observable {
 	private MinuetoImage image;
 	public static final int DEFAULT_TILE_WIDTH = 80;

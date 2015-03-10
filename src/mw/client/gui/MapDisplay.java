@@ -6,15 +6,10 @@ import org.minueto.MinuetoColor;
 import org.minueto.MinuetoEventQueue;
 import org.minueto.image.MinuetoImage;
 import org.minueto.window.MinuetoFrame;
-import org.minueto.window.MinuetoWindow;
-
-import mw.client.controller.ModelViewMapping;
 import mw.client.gui.api.Clickeable;
 import mw.client.gui.api.Displayable;
 import mw.client.gui.api.MouseClickHandler;
 import mw.client.gui.api.WindowArea;
-import mw.client.model.ModelTile;
-import mw.shared.SharedColor;
 import mw.util.MultiArrayIterable;
 
 public class MapDisplay implements Displayable, Clickeable {

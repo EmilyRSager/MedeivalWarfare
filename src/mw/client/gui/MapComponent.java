@@ -3,7 +3,6 @@ package mw.client.gui;
 import mw.client.gui.api.AbstractWindowComponent;
 import mw.client.gui.api.Clickeable;
 import mw.client.gui.api.MouseClickHandler;
-import mw.client.gui.api.ObservableWindowComponent;
 import mw.client.gui.api.WindowArea;
 
 import org.minueto.MinuetoColor;

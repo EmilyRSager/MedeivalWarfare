@@ -16,7 +16,7 @@ public final class ModelTile extends Observable {
 	
 	public enum Terrain {GRASS, TREE, MEADOW, TOMBSTONE, SEA};
 	public enum UnitType {NONE, PEASANT, INFANTRY, SOLDIER, KNIGHT, WATCHTOWER};
-	public enum StructureType {NONE, HOVEL, TOWN, FORT}; 
+	public enum StructureType {NONE, HOVEL, TOWN, FORT};
 	
 	
 	private final Coordinates coord;

@@ -35,7 +35,7 @@ public final class TileModificationHandler implements Observer {
 		ModelTile.StructureType newStruct = modelTile.getStructureType();
 		ModelTile.UnitType newUnit = modelTile.getUnitType();
 		
-		//DisplayUpdater.updateImageTile(viewTile, newColor, newTerrain, newStruct, newUnit);
+		DisplayUpdater.updateImageTile(viewTile, newColor, newTerrain, newStruct, newUnit);
 	}
 	
 	

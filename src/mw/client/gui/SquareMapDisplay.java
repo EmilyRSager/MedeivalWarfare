@@ -21,6 +21,7 @@ import org.minueto.window.*;
  * @author Arthur Denefle
  *
  */
+@Deprecated
 public class SquareMapDisplay implements Displayable, Clickeable
 {
 	

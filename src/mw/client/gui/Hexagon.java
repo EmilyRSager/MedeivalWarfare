@@ -8,7 +8,6 @@ import org.minueto.MinuetoColor;
 import org.minueto.image.MinuetoImage;
 import org.minueto.window.MinuetoFrame;
 
-import mw.client.gui.api.ExtendedMinuetoImage;
 import mw.client.gui.api.WindowArea;
 
 public class Hexagon {

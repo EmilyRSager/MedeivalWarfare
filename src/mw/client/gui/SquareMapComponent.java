@@ -2,14 +2,12 @@ package mw.client.gui;
 
 import mw.client.gui.api.AbstractWindowComponent;
 import mw.client.gui.api.Clickeable;
-import mw.client.gui.api.ExtendedMinuetoImage;
 import mw.client.gui.api.MouseClickHandler;
-import mw.client.gui.api.ObservableWindowComponent;
-
 import org.minueto.handlers.MinuetoKeyboard;
 import org.minueto.handlers.MinuetoKeyboardHandler;
 import org.minueto.image.MinuetoImage;
 
+@Deprecated
 public final class SquareMapComponent extends AbstractWindowComponent implements
 		Clickeable, MinuetoKeyboardHandler {
 	
