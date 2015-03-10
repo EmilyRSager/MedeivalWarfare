@@ -13,9 +13,9 @@ import mw.client.model.ModelTile.*;
 public final class DisplayUpdater {
 	
 	public static void updateImageTile(ImageTile tileDisp, MinuetoColor color,
-			Terrain terrain, StructureType struct, UnitType unit)
+			Terrain terrain, StructureType struct, UnitType unit, boolean hasRoad)
 	{
-		MinuetoImage newImage = ImageFileManager.getTileImage(color, terrain, struct, unit);
+		MinuetoImage newImage = ImageFileManager.getTileImage(color, terrain, struct, unit, hasRoad);
 		tileDisp.updateImage(newImage);
 	}
 

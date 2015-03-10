@@ -100,8 +100,7 @@ public final class ModelTile extends Observable {
 	public void setVillageGold(int newGold)
 	{
 		if (village==null) {
-			village = new Village();
-			setChanged();
+			throw new IllegalStateException("There needs to be a village in order to set the village gold");
 		}
 		if (village.getGold()!=newGold) {
 			village.setGold(newGold);
@@ -112,8 +111,7 @@ public final class ModelTile extends Observable {
 	public void setVillageWood(int newWood)
 	{
 		if (village == null) {
-			village = new Village();
-			setChanged();
+			throw new IllegalStateException("There needs to be a village in order to set the village wood");
 		}
 		if (village.getWood() != newWood) {
 			village.setWood(newWood);
@@ -179,6 +177,10 @@ public final class ModelTile extends Observable {
 	
 	public SharedColor getColor() {
 		return color;
+	}
+	
+	public boolean hasRoad() {
+		return hasRoad;
 	}
 	
 	//	Static methods

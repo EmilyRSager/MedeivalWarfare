@@ -19,10 +19,14 @@ public class ImageFileManager
 {
 	private static final int STRUCT_ICON_SIZE = ImageTile.DEFAULT_TILE_WIDTH - 10;
 	private static final int UNIT_ICON_SIZE = ImageTile.DEFAULT_TILE_WIDTH - 0;
+	private static final int TERRAIN_ICON_SIZE = ImageTile.DEFAULT_TILE_WIDTH - 10;
+	private static final int ROAD_ICON_SIZE = ImageTile.DEFAULT_TILE_WIDTH;
 	
 	private static final String FOLDER = initializeFolder();
 	private static final String STRUCT_FOLDER = getImageSizeFolder(STRUCT_ICON_SIZE);
 	private static final String UNIT_FOLDER = getImageSizeFolder(UNIT_ICON_SIZE);
+	private static final String TERRAIN_FOLDER = getImageSizeFolder(TERRAIN_ICON_SIZE);
+	private static final String ROAD_FOLDER = getImageSizeFolder(ROAD_ICON_SIZE);
 	
 	
 	public enum TileType { DEFAULT, GRASS };
@@ -58,10 +62,16 @@ public class ImageFileManager
 	}
 	
 	
-	public static MinuetoImage getTileImage(MinuetoColor c, Terrain t, StructureType s, UnitType u)
+	public static MinuetoImage getTileImage(MinuetoColor c, Terrain t, StructureType s, UnitType u, boolean road)
 	{
 		MinuetoImage newImage = ExtendedMinuetoImage.coloredHexagon(ImageTile.DEFAULT_TILE_WIDTH, ImageTile.DEFAULT_TILE_HEIGHT, c);
-		//newImage = ExtendedMinuetoImage.drawInTheMiddleOf(newImage, ImageFileManager.getTerrainImage(t));
+		
+		if (road)
+			newImage = ExtendedMinuetoImage.drawInTheMiddleOf(newImage, getRoadImage());
+		
+		MinuetoImage terrainImg = ImageFileManager.getTerrainImage(t);
+		if (terrainImg != null)
+			newImage = ExtendedMinuetoImage.drawInTheMiddleOf(newImage, terrainImg);
 		
 		MinuetoImage unitImg = ImageFileManager.getUnitImage(u);
 		if (unitImg != null)
@@ -80,19 +90,20 @@ public class ImageFileManager
 		switch (t)
 		{
 		case GRASS:
-			fileName = FOLDER;
-			break;
+			return null;
+			/*fileName = FOLDER;
+			break;*/
 		case TREE:
-			fileName = FOLDER;
+			fileName = TERRAIN_FOLDER + "tree.png" ;
 			break;
 		case MEADOW:
-			fileName = FOLDER;
+			fileName = TERRAIN_FOLDER + "meadow.png";
 			break;
 		case TOMBSTONE:
-			fileName = FOLDER;
+			fileName = TERRAIN_FOLDER + "tombstone.png";
 			break;
 		case SEA:
-			fileName = FOLDER;
+			fileName = TERRAIN_FOLDER;
 			break;
 		}
 		try
@@ -129,7 +140,7 @@ public class ImageFileManager
 			fileName = UNIT_FOLDER + "knight.png";
 			break;
 		case WATCHTOWER:
-			fileName = UNIT_FOLDER;
+			fileName = UNIT_FOLDER + "watchtower.png";
 			break;
 		}
 		try
@@ -174,5 +185,22 @@ public class ImageFileManager
 			System.exit(1);
 		}
 		return null;
+	}
+	
+	public static MinuetoImage getRoadImage()
+	{
+		try
+		{
+			String fileName = ROAD_FOLDER + "road.png";
+			MinuetoImage image = new MinuetoImageFile(fileName);
+			return image;
+		}
+		catch (MinuetoFileException e)
+		{
+			System.out.println("Could not load image!");
+			e.printStackTrace();
+			System.exit(1);
+			return null;
+		}
 	}
 }

@@ -28,8 +28,10 @@ public final class NetworkModelTranslator {
 		newTile.setStructureType(translateSharedVillageType(sharedTile.getVillage()));
 		newTile.setTerrain(translateSharedTerrain(sharedTile.getTerrain()));
 		newTile.setUnitType(translateSharedUnitType(sharedTile.getUnitType()));
-		newTile.setVillageGold(sharedTile.getVillageGold());
-		newTile.setVillageWood(sharedTile.getVillageWood());
+		if (sharedTile.getVillage() != SharedTile.VillageType.NONE) {
+			newTile.setVillageGold(sharedTile.getVillageGold());
+			newTile.setVillageWood(sharedTile.getVillageWood());
+		}
 		return newTile;
 	}
 	

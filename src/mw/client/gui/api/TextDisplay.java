@@ -41,6 +41,16 @@ public final class TextDisplay extends AbstractWindowComponent {
 		area.setWidth(label.getWidth()+2*BORDER_MARGIN);
 	}
 	
+	/**
+	 * Creates a new TextDisplay with just a text. This constructor should only be called when the TextDisplay is going
+	 * to be used in a Layout.
+	 * @param text the text of the new TextDisplay
+	 */
+	public TextDisplay(String text)
+	{
+		this(0,0,text);
+	}
+	
 	/* ==========================
 	 * 		Public methods
 	 * ==========================
