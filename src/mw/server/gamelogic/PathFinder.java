@@ -7,6 +7,11 @@ import java.util.Stack;
 
 public class PathFinder //has classic DFS
 {
+	/**
+	 * @param v
+	 * @param g
+	 * @return set of tiles the a unit associated with GraphNode v can move to
+	 */
 	public static Set<GraphNode> getMovableTiles (GraphNode v, Graph g) 
 	{
 		Stack<GraphNode> S = new Stack <GraphNode>();  

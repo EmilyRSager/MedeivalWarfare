@@ -15,7 +15,7 @@ public final class TileGraphLogic {
 		Tile crtTile = pCrt.getTile(); 
 		Tile startTile = pStart.getTile();
 		Collection<Tile> pCrtNeighbors = getNeighbors(pCrt); 
-		if (isUnitOnTile(startTile))
+		if (startTile.hasUnit())
 		{
 			Unit pUnit = startTile.getUnit();
 			if (isSeaTile(crtTile))
@@ -56,7 +56,7 @@ public final class TileGraphLogic {
 		}
 		else 
 		{ 
-			if (isUnitOnTile(destinationTile))
+			if (destinationTile.hasUnit())
 			{
 				return true; 
 			}
@@ -147,7 +147,7 @@ public final class TileGraphLogic {
 	private static boolean moveUnitWithinVillage(Unit pUnit, Tile destinationTile, Collection<Tile> destinationNeighbors )
 	{
 
-		if (isUnitOnTile(destinationTile))
+		if (destinationTile.hasUnit())
 		{
 			return false; 
 		}
@@ -184,7 +184,7 @@ public final class TileGraphLogic {
 		{
 			return false; 
 		}
-		if (isUnitOnTile(destinationTile))
+		if (destinationTile.hasUnit())
 		{
 			return unitCanTakeOver(pUnit, destinationTile.getUnit()); 
 		}
@@ -284,14 +284,7 @@ public final class TileGraphLogic {
 		}
 		return true; 
 	}
-	private static boolean isUnitOnTile(Tile pTile)
-	{
-		if (pTile.getUnit()!=null)
-		{
-			return true; 
-		}
-		return false;
-	}
+
 	private static boolean isCapitalOnTile(Tile pTile)
 	{
 		if (pTile.getStructureType() == StructureType.VILLAGE_CAPITAL)
