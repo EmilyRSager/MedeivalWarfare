@@ -5,6 +5,7 @@ import java.util.List;
 import org.minueto.MinuetoColor;
 import org.minueto.image.MinuetoImage;
 
+import mw.client.controller.ChoiceCenter.ChoiceType;
 import mw.client.gui.GameWindow;
 import mw.client.gui.ImageFileManager;
 import mw.client.gui.ImageTile;
@@ -35,14 +36,13 @@ public final class DisplayUpdater {
 
 	public static void displayChoice(ChoiceType choiceType, List<String> choices)
 	{
-		VerticalLayout choiceLayout = GameWindow.createChoiceLayout(choiceType, choices);
 		GameWindow window = CurrentClientState.getCurrentGameWindow();
-		window.addChoiceComponent(choiceType, choiceLayout);
+		window.addChoiceLayout(choiceType, choices);
 	}
 
 	public static void showVillageResources(int gold, int wood)
 	{
-		GameWindow window = CurrentClientStat.getCurrentGameWindow();
+		GameWindow window = CurrentClientState.getCurrentGameWindow();
 		window.displayVillageResources(gold, wood);
 	}
 	

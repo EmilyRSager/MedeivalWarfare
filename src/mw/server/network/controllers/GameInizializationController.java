@@ -23,21 +23,23 @@ import mw.server.network.mappers.PlayerMapper;
 import mw.server.network.translators.SharedTileTranslator;
 import mw.shared.clientcommands.AbstractClientCommand;
 import mw.shared.clientcommands.AcknowledgementCommand;
+import mw.shared.clientcommands.NotifyBeginTurnCommand;
 import mw.shared.clientcommands.SetColorCommand;
+import mw.util.MultiArrayIterable;
 
 /**
  * Manages game requests by maintaining a set of game lobbies and creating games when there
  * are sufficient clients available to create a Game. Handles assigning clients to GamePlayers
  * and informing the clients of their Colors.
  */
-public class GameRequestController {
+public class GameInizializationController {
 	private GameLobby aGameLobby; //later on there will be a set of available of
-	private static GameRequestController aGameRequestController;
+	private static GameInizializationController aGameRequestController;
 
 	/**
 	 * Constructor
 	 */
-	private GameRequestController(){
+	private GameInizializationController(){
 		aGameLobby = new GameLobby();
 	}
 
@@ -45,9 +47,9 @@ public class GameRequestController {
 	 * Singleton implementation
 	 * @return static GameRequestController instance
 	 */
-	public static GameRequestController getInstance(){
+	public static GameInizializationController getInstance(){
 		if(aGameRequestController == null){
-			aGameRequestController = new GameRequestController();
+			aGameRequestController = new GameInizializationController();
 		}
 
 		return aGameRequestController;
@@ -97,22 +99,24 @@ public class GameRequestController {
 
 			//attach observer to each tile
 			Tile[][] lGameTiles = lGame.getGameTiles();
-			for(int i = 0; i < lGameTiles.length; i++){
-				for(int j = 0; j < lGameTiles[0].length; j++){
-					//add observer to each tile
-					lGameTiles[i][j].addObserver(lGameStateCommandDistributor);
-				}
+			for(Tile lTile : MultiArrayIterable.toIterable(lGameTiles)){
+				//add observer to each tile
+				lTile.addObserver(lGameStateCommandDistributor);
 			}
 
 			//distribute the new Game to each client.
 			lGameStateCommandDistributor.newGame(lGame.getGameTiles());
 			assignClientsToPlayers(lClientIDs, lPlayers);
 
+			//Inform client that it is his turn
+			Integer lCurrentClientID = PlayerMapper.getInstance().getClient(GameController.getCurrentPlayer(lGame));
+			ClientChannelMapper.getInstance().getChannel(lCurrentClientID).sendCommand(new NotifyBeginTurnCommand());
+
+
 		} catch (TooManyPlayersException e) {
 			System.out.println("[Server] Tried to create a Game with too many players.");
 			e.printStackTrace();
 		}
-
 	}
 
 	/**
@@ -128,16 +132,16 @@ public class GameRequestController {
 		while(lClientIDIterator.hasNext()){
 			Integer lClientID = lClientIDIterator.next();
 			Player lPlayer = lPlayerIterator.next();
-			
+
 			//store client to player mapping
 			PlayerMapper.getInstance().putPlayer(lClientID, lPlayer);
-			
+
 			//get player color
 			Color lPlayerColor = lPlayer.getPlayerColor();
-			
+
 			//get client channel associated with current player
 			ClientChannel lClientChannel = ClientChannelMapper.getInstance().getChannel(lClientID);
-			
+
 			//send command to client informing it of its color
 			lClientChannel.sendCommand(
 					new SetColorCommand(SharedTileTranslator.translateColor(lPlayerColor)));
