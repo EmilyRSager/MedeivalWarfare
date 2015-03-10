@@ -37,4 +37,9 @@ public final class CurrentClientState {
 		ModelQuerier.setCurrentPlayerColor(currentGame,color);
 	}
 	
+	public static GameWindow getCurrentGameWindow()
+	{
+		// TODO
+	}
+	
 }
