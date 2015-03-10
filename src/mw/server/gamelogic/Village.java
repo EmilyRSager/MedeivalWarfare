@@ -46,6 +46,7 @@ public class Village extends Observable
 		aGold = pGold;
 		aWood = pWood;
 	}
+	
 
 
 	public void setCapital(Tile pCapital)
