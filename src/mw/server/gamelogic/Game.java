@@ -13,7 +13,10 @@ public class Game extends RandomColorGenerator {
 	private Collection<Player> aPlayers;
 	private GameMap aMap;  
 	private Player aCurrentPlayer;
-	
+
+	/**
+	 * Calls the toString() method on all the tiles in a game
+	 */
 	public void printTiles()
 	{
 		aMap.printTiles(); 
@@ -44,7 +47,7 @@ public class Game extends RandomColorGenerator {
 			if (!myColors.isEmpty())
 			{
 				lPlayer.assignColor(myColors.peek());
-				
+
 				availableColors.add(myColors.pop());
 			}
 			else
@@ -62,26 +65,46 @@ public class Game extends RandomColorGenerator {
 		aMap.partition(); 
 	}
 
+	/**
+	 *  returns the tile in a game with specified coordinates
+	 * @param pCoord
+	 * @return
+	 */
 	public Tile getTile(Coordinates pCoord)
 	{
 		return aMap.getTile(pCoord);
 	}
+	/**
+	 * Returns all the tiles in the game in a 2D array 
+	 * [i][j] indices correspond with x y coordinates
+	 * @return
+	 */
 	public Tile [][] getGameTiles()
 	{
 		return aMap.getObservables(); 
 	}
 
-	public void upgradeUnit(Tile pTile) 
+	/**
+	 * 
+	 * @param pTile
+	 * @param pUnitType
+	 */
+	public void upgradeUnit(Tile pTile, UnitType pUnitType) 
 	{
 		Unit pUnit = pTile.getUnit();
-		ArrayList<UnitType> possUpgrades = wantToHireVillager(pTile);
-		//TODO
-		
-		
+		if (pUnit!=null)
+		{
+			ArrayList<UnitType> possUpgrades = wantToHireVillager(pTile);
+			if (possUpgrades.contains(pUnitType))
+			{
+				pUnit.setUnitType(pUnitType);
+				pTile.setUnit(pUnit);
+				pTile.notifyObservers(); 
+			}
+		}
 	}
 
 	/**
-	 * 
 	 * @param pTile
 	 * @return
 	 * @throws CantUpgradeException
@@ -124,7 +147,8 @@ public class Game extends RandomColorGenerator {
 	}
 
 	/**
-	 * 
+	 * Generates all the possible moves when a given tile is clicked
+	 * Moves include: Upgrading Villages, Moving Units, Upgrading Units, Units performing actions 
 	 * @param startTile
 	 * @return
 	 */
@@ -176,14 +200,18 @@ public class Game extends RandomColorGenerator {
 	 * includes upgradeVillager 
 	 * 
 	 */
-	//TODO add gold deduction from village
+
 	public void hireVillager(Tile pTile, UnitType pUnitType)
 	{
 		Unit pUnit = new Unit(pUnitType); 
 		pTile.setUnit(pUnit);
 		pTile.notifyObservers(); 
+		//TODO add gold deduction from village
 	}
 
+	/**
+	 * Updates the state of the game at the beginning of a Unit's turn
+	 */
 	public void beginTurn() 
 	{
 		Collection<Village> aCrtVillages;
@@ -196,72 +224,108 @@ public class Game extends RandomColorGenerator {
 	/**
 	 * Generates trees on tiles 
 	 */
-	 public void beginRound()
-	 {
-		 //TODO ABISHEK PLEASE DO THIS
-	 }
+	public void beginRound()
+	{
+		//TODO ABISHEK PLEASE DO THIS
+	}
 
 
 
-	 public void moveUnit(Tile startTile, Tile pDestinationTile) 
-	 {
-		 Unit crtUnit = startTile.getUnit(); 
-		 if (crtUnit == null) 
-		 {
-			 return; 
-		 }
-		 else    		
-		 {
-			 Logic.updateGameState(crtUnit, startTile, pDestinationTile, this, aMap);  
-		 }
+	/**
+	 * Moves a unit from a start to destination tile
+	 * Game State changes are calculated in the Logic class
+	 * @param startTile
+	 * @param pDestinationTile
+	 */
+	public void moveUnit(Tile startTile, Tile pDestinationTile) 
+	{
+		Unit crtUnit = startTile.getUnit(); 
+		if (crtUnit == null) 
+		{
+			return; 
+		}
+		else    		
+		{
+			Logic.updateGameState(crtUnit, startTile, pDestinationTile, this, aMap);  
+		}
 
-	 } 
+	} 
 
+	/**
+	 * A Unit moves to land not under its control 
+	 * @param startTile
+	 * @param pDestinationTile
+	 */
+	public void takeoverTile(Tile startTile, Tile pDestinationTile) 
+	{
+		//TODO: for the demo at least have the neutral tile takeover ready 
 
-	 public void takeoverTile(Tile startTile, Tile pDestinationTile) 
-	 {
-		 //TODO: for the demo at least have the neutral tile takeover ready 
+	}
 
-	 }
+	/**
+	 * updates the action type of a unit on a given tile
+	 * @param pTile
+	 * @param pActionType
+	 */
+	public void setActionType(Tile pTile, ActionType pActionType)
+	{
 
-	 public void setActionType(Tile pTile)
-	 {
-		 //TODO 
-	 }
+		Unit pUnit = pTile.getUnit(); 
+		if (pUnit != null)
+		{
+			if (Logic.getPossibleActions(pUnit, pTile).contains(pActionType))
+			{
+				pUnit.setActionType(pActionType);
+			}
+		}
+	}
+	
+	/**
+	 * @deprecated
+	 * @param pTile
+	 */
+	public void buildRoad(Tile pTile) 
+	{
+		Unit u = pTile.getUnit();  
+		UnitType unitType;
+		unitType = u.getUnitType();
+		if (unitType == UnitType.PEASANT) 
+		{
+			u.setActionType(ActionType.BUILDINGROAD);
+		}
+	}
 
-	 public void buildRoad(Tile pTile) 
-	 {
-		 Unit u = pTile.getUnit();  
-		 UnitType unitType;
-		 unitType = u.getUnitType();
-		 if (unitType == UnitType.PEASANT) 
-		 {
-			 u.setActionType(ActionType.BUILDINGROAD);
-		 }
-	 }
+	/**
+	 * Upgrades the given village from its current type to the newType
+	 * @param pVillage
+	 * @param pNewType
+	 */
+	public void upgradeVillage(Village pVillage, VillageType pNewType) 
+	{
 
-	 public void upgradeVillage(Village v, VillageType newType) 
-	 {
-		 
-		 try {
-			 v.upgradeVillage(newType);
-		 } catch (NotEnoughIncomeException e) {
-			 // TODO Auto-generated catch block
-			 e.printStackTrace();
-		 }
-	 }
-	 public GameMap getGameMap()
-	 {
-		 return aMap; 
-	 }
-	 public Collection<Player> getPlayers() 
-	 {
-		 return aPlayers; 
-	 }
-	 
-	 public Village getVillage(Tile pTile)
-	 {
-		 return aMap.getVillage(pTile);
-	 }
+		try {
+			pVillage.upgradeVillage(pNewType);
+		} catch (NotEnoughIncomeException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	/**
+	 * Gets the game map for the current game
+	 * @return
+	 */
+	protected GameMap getGameMap()
+	{
+		return aMap; 
+	}
+	public Collection<Player> getPlayers() 
+	{
+		return aPlayers; 
+	}
+
+	public Village getVillage(Tile pTile)
+	{
+		return aMap.getVillage(pTile);
+	}
 }
 

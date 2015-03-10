@@ -13,6 +13,7 @@ public class Unit extends Observable {
     
 	private UnitType aUnitType;
     private ActionType aActionType;
+    
     public Unit(UnitType pUnitType)
     {
     	aUnitType = pUnitType; 
@@ -27,6 +28,11 @@ public class Unit extends Observable {
         return aUnitType;
     }
 
+    public void setUnitType(UnitType pUnitType)
+    {
+    	aUnitType = pUnitType;
+    	setChanged();
+    }
     public ActionType getActionType() 
     {
         return aActionType;
