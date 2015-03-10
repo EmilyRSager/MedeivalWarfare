@@ -19,7 +19,7 @@ public class ImageFileManager
 {
 	private static final int STRUCT_ICON_SIZE = ImageTile.DEFAULT_TILE_WIDTH - 10;
 	private static final int UNIT_ICON_SIZE = ImageTile.DEFAULT_TILE_WIDTH - 0;
-	private static final int TERRAIN_ICON_SIZE = ImageTile.DEFAULT_TILE_WIDTH - 10;
+	private static final int TERRAIN_ICON_SIZE = ImageTile.DEFAULT_TILE_WIDTH - 00;
 	private static final int ROAD_ICON_SIZE = ImageTile.DEFAULT_TILE_WIDTH;
 	
 	private static final String FOLDER = initializeFolder();
