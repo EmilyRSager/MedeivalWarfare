@@ -93,11 +93,11 @@ public class Logic {
  */
 	public static void updateGameState(Unit crtUnit, Tile startTile, Tile pDestinationTile, Game pGame, GameMap pGameMap)
 	{
-		PossibleGameActions myActions = pGame.tileIsClicked(startTile); 
-		Collection<Tile> movableTiles = myActions.getMovableTiles(); 
+		//PossibleGameActions myActions = pGame.tileIsClicked(startTile); 
+		//Collection<Tile> movableTiles = myActions.getMovableTiles(); 
 		StructureType destStructType = pDestinationTile.getStructureType();
 		UnitType crtUnitType = crtUnit.getUnitType(); 
-		if (!movableTiles.contains(pDestinationTile))
+		/*if (!movableTiles.contains(pDestinationTile))
 		{
 			return; 
 		}
@@ -107,7 +107,7 @@ public class Logic {
 			{
 				pGame.takeoverTile(startTile, pDestinationTile);
 			}
-		}
+		} */
 		if (tilesAreSameColor(startTile, pDestinationTile))
 		{	
 
@@ -123,6 +123,7 @@ public class Logic {
 					{
 						crt.addOrSubtractWood(1);
 					}
+					
 					pDestinationTile.setUnit(crtUnit);
 					startTile.setUnit(null);
 					crtUnit.setActionType(ActionType.MOVED);

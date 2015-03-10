@@ -24,8 +24,11 @@ public class PathFinder //has classic DFS
 				}
 				if (!TileGraphLogic.isPathOver(v, lGraphNode))
 				{
-					canMoveHere.add(lGraphNode);
-					S.push(lGraphNode); 
+					if(!lGraphNode.isVisited())
+					{
+						canMoveHere.add(lGraphNode);
+						S.push(lGraphNode); 
+					}
 				}
 			}	
 		}

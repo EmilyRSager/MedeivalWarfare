@@ -34,7 +34,8 @@ public class Tile  extends Observable
     	aVillageType = VillageType.NO_VILLAGE; 
     }
     
-    public boolean hasUnit(){
+    public boolean hasUnit()
+    {
     	return aUnit != null;
     }
     
@@ -64,11 +65,13 @@ public class Tile  extends Observable
     public StructureType getStructureType() {
        return aStructureType;
     }
-    public void setStructureType(StructureType pStructureType) {
-        pStructureType = aStructureType; 
-        setChanged();
-       
+ 
+    public void setStructureType(StructureType pStructureType) 
+    {
+         aStructureType = pStructureType; 
+        setChanged();  
     }
+    
     public boolean getMeadow() {
       
         return aHasMeadow; 
@@ -106,8 +109,7 @@ public class Tile  extends Observable
 	
 	public VillageType getVillageType()
 	{
-		return aVillageType; 
-		
+		return aVillageType; 	
 	}
 	
 	
