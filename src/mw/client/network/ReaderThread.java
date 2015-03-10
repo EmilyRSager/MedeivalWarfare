@@ -1,6 +1,7 @@
 package mw.client.network;
 
 import java.io.DataInputStream;
+import java.io.EOFException;
 import java.util.concurrent.BlockingQueue;
 
 import mw.serialization.ClientCommandSerializerAndDeserializer;
@@ -29,6 +30,7 @@ public class ReaderThread extends Thread {
 						ClientCommandSerializerAndDeserializer.getInstance().deserialize(lMessageFromServer));
 			}
 		}
+		
 		catch(Exception e){
 			System.out.println("[Client] Error receiving message.");
 			e.printStackTrace();

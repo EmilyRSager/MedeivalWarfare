@@ -5,6 +5,7 @@
 package mw.server.network.communication;
 
 import java.io.DataInputStream;
+import java.io.EOFException;
 import java.io.IOException;
 
 import mw.serialization.ServerCommandSerializerAndDeserializer;
@@ -17,7 +18,7 @@ public class ReaderThread extends Thread {
 	DataInputStream aDataInputStream;
 	int aClientID;
 	private volatile boolean aIsRunning;
-	
+
 	/**
 	 * Constructor
 	 * @param pDataInputStream
@@ -36,20 +37,22 @@ public class ReaderThread extends Thread {
 				//read message in from Client
 				String lMessageFromClient = aDataInputStream.readUTF(); //blocking call
 				System.out.println("[Server] Message from client \"" + lMessageFromClient + "\".");
-				
+
 				AbstractServerCommand lServerCommand = 
 						ServerCommandSerializerAndDeserializer.getInstance().deserialize(lMessageFromClient);		
 				ServerCommandHandler.getInstance().handle(lServerCommand, aClientID);
 			}
 		}
-		catch (Exception e) {
-			//If the thread was interrupted, initiate clean up.
-			System.out.println("[Server] Reader Thread was Interupted.");
-			e.printStackTrace();
+		catch(IOException e){
+			System.out.println("[Server] Client disconnected forcefully.");
+
+			//TODO deal with client disconnection by removing the client connection from all mappings
 		}
-		cleanUp();
+		finally {
+			cleanUp();
+		}
 	}
-	
+
 	/**
 	 * Informs this thread to begin shutting down.
 	 * @param none
@@ -58,7 +61,7 @@ public class ReaderThread extends Thread {
 	public void shutDown(){
 		aIsRunning = false;
 	}
-	
+
 	/**
 	 * Cleans up remaining class attributes that must be closed.
 	 * @param none
