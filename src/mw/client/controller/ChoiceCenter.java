@@ -115,7 +115,20 @@ public class ChoiceCenter {
 	
 	public static String getChoiceTitle(ChoiceType choice)
 	{
-		// TODO
+		switch (choice)
+		{
+		case UNIT_ACTION:
+			return uactChoiceName;
+			
+		case UNIT_HIRE:
+			return uhireupChoiceName;
+			
+		case VILLAGE_UPGRADE:
+			return vupChoiceName;
+			
+			default:
+				throw new IllegalArgumentException("The value "+choice+" does not have a choice name associated with it");
+		}
 	}
 
 }

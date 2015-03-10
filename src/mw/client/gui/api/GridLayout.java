@@ -1,5 +1,8 @@
 package mw.client.gui.api;
 
+import java.util.Observable;
+import java.util.Observer;
+
 import mw.util.MultiArrayIterable;
 
 import org.minueto.image.MinuetoDrawingSurface;
@@ -17,7 +20,7 @@ import org.minueto.image.MinuetoImage;
  * @author Hugo Kapp
  *
  */
-public class GridLayout extends AbstractWindowComponent {
+public class GridLayout extends AbstractWindowComponent implements Observer {
 
 
 	private final WindowComponent[][] components;
@@ -82,7 +85,9 @@ public class GridLayout extends AbstractWindowComponent {
 	{
 		try {
 			components[row][column] = comp;
-			pack();
+			((Observable)comp).addObserver(this);
+			packed = false;
+			//pack();
 		} catch (IndexOutOfBoundsException e) {
 			throw new IllegalArgumentException("("+row+","+column+") is not a valid location in a GridLayout with "+rowCount+" rows and "+columnCount+" columns");
 		}
@@ -117,7 +122,10 @@ public class GridLayout extends AbstractWindowComponent {
 			yPos+=rowHeight[i];
 		}
 		area.setHeight(yPos);
+		
 		packed=true;
+		setChanged();
+		notifyObservers();
 	}
 
 	/**
@@ -182,9 +190,18 @@ public class GridLayout extends AbstractWindowComponent {
 		packed = false;
 	}
 	
+	@Override
+	public void update(Observable o, Object arg)
+	{
+		packed = false;
+		setChanged();
+		notifyObservers();
+	}
+	
 	/* ========================
 	 * 		Static methods
 	 * ========================
 	 */
 
 }
+

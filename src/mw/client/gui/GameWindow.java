@@ -6,6 +6,8 @@ import java.util.Observer;
 
 import mw.client.app.MainApplication;
 import mw.client.controller.ActionInterpreter;
+import mw.client.controller.ChoiceCenter;
+import mw.client.controller.ChoiceCenter.ChoiceType;
 import mw.client.gui.api.AbstractButton;
 import mw.client.gui.api.ExtendedMinuetoColor;
 import mw.client.gui.api.GridLayout;
@@ -185,18 +187,18 @@ public class GameWindow implements Observer {
 	public void addChoiceLayout(ChoiceType choiceType, List<String> choices)
 	{
 		VerticalLayout choiceLayout = new VerticalLayout(choices.size() + 1);
-		TextDisplay choiceTitle = new TextDisplay(getChoiceTitle(choiceType));
+		TextDisplay choiceTitle = new TextDisplay(ChoiceCenter.getChoiceTitle(choiceType));
 		choiceLayout.addComponent(choiceTitle);
-		for(int i = 0; i < choices.size(); i++)
+		for(String str : choices)//int i = 0; i < choices.size(); i++)
 		{
-			AbstractButton choiceButton = new AbstractButton(choices.get(i))
-				{
+			AbstractButton choiceButton = new AbstractButton(str)
+				{				
 					public void buttonClick(int mouseButton)
 					{
 						if (mouseButton==1)
 						{
 							System.out.println("I am clicked !");
-							ActionInterpreter.singleton().notifyChoiceResult(getChoiceTitle(choiceType), choices.get(i));
+							ActionInterpreter.singleton().notifyChoiceResult(ChoiceCenter.getChoiceTitle(choiceType), str);
 						}
 					}
 				};
