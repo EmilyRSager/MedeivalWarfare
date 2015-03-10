@@ -30,14 +30,14 @@ public final class MapComponent extends AbstractWindowComponent implements
 	 */
 	
 	public MapComponent(int x, int y, int width, int height, MapDisplay mapDisp) {
-		super(x, y, width, height);
+		super(x, y, Math.min(width, mapDisp.getWidth()), Math.min(height, mapDisp.getHeight()));
 		this.mapDisp = mapDisp;
 		clickHandler = new MouseClickHandler(area, this);
 		
 		minXOffset=0;
 		minYOffset=0;
-		maxXOffset=mapDisp.getWidth()-width;
-		maxYOffset=mapDisp.getHeight()-height;
+		maxXOffset=Math.max(mapDisp.getWidth()-width, 0);
+		maxYOffset=Math.max(mapDisp.getHeight()-height, 0);
 		
 		xOffset = minXOffset;
 		yOffset = minYOffset;
