@@ -6,6 +6,8 @@ import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
 
+import mw.util.MultiArrayIterable;
+
 
 
 /**
@@ -29,9 +31,8 @@ public class GameMap  {
 
 	public  void printTiles()
 	{
-		for (Tile lTile: TileToNodeHashMap.keySet())
-		{
-			System.out.println(lTile.toString());
+		for (Tile t : MultiArrayIterable.toIterable(aTiles)){
+			System.out.println(t.toString());
 		}
 	}
 
@@ -120,17 +121,10 @@ public class GameMap  {
 
 			if (!villageAlreadyExists)
 			{
-				System.out.println("Village Created"); 
 				Village v = new Village (villageSet);
 				aVillages.add(v); 
 				villageAlreadyExists = false; 
 			}
-		}
-
-		//for testing 
-		for (Village v: aVillages)
-		{
-			System.out.println(v.toString()); 
 		}
 
 
@@ -145,7 +139,7 @@ public class GameMap  {
 				break; 
 
 			}
-		} 
+		}
 
 	}
 	/**

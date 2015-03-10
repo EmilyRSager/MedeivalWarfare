@@ -316,7 +316,11 @@ public class Game extends RandomColorGenerator {
 	 */
 	protected GameMap getGameMap()
 	{
-		return aMap; /''
+<<<<<<< HEAD
+		return aMap;
+=======
+		return aMap; 
+>>>>>>> 8365da3fb020317a3f40a41140cb583015f32a6d
 	}
 	public Collection<Player> getPlayers() 
 	{
