@@ -21,10 +21,10 @@ import org.minueto.window.MinuetoFrame;
 public class GameWindow implements Observer {
 	
 	public static final MinuetoColor BACKGROUND_COLOR = ExtendedMinuetoColor.mixColors(MinuetoColor.BLACK, MinuetoColor.WHITE, 0.10);
-	public static final int DEFAULT_FRAME_WIDTH = 500;
-	public static final int DEFAULT_FRAME_HEIGHT = 525;
-	public static final int DEFAULT_MAP_WIDTH = 600;
-	public static final int DEFAULT_MAP_HEIGHT = 600;
+	//public static final int DEFAULT_FRAME_WIDTH = 500;
+	//public static final int DEFAULT_FRAME_HEIGHT = 525;
+	public static final int DEFAULT_MAP_WIDTH = 800;
+	public static final int DEFAULT_MAP_HEIGHT = 800;
 	
 	private final MinuetoFrame window;
 	private final MinuetoEventQueue queue;

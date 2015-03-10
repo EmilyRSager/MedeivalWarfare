@@ -25,7 +25,9 @@ public final class ExtendedMinuetoImage /*extends MinuetoImage */{
 		final int xPos = bigImg.getWidth() - smallImg.getWidth();
 		final int yPos = bigImg.getHeight() - smallImg.getHeight();
 		if (xPos < 0 || yPos < 0)
-			throw new IllegalArgumentException("The small image is too big to be drawn on the big image");
+			throw new IllegalArgumentException("The small image is too big to be drawn on the big image : "
+															+smallImg.getWidth()+"x"+smallImg.getHeight()+" > "
+															+bigImg.getWidth()+"x"+bigImg.getHeight());
 		
 		MinuetoImage resImg = (MinuetoImage)bigImg.clone();
 		resImg.draw(smallImg, xPos, yPos);

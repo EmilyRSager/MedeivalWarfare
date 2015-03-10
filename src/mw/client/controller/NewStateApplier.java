@@ -36,8 +36,10 @@ public final class NewStateApplier {
 		
 		ModelTile.StructureType newST = NetworkModelTranslator.translateSharedVillageType(newTileState.getVillage());
 		modelTile.setStructureType(newST);
-		modelTile.setVillageGold(newTileState.getVillageGold());
-		modelTile.setVillageWood(newTileState.getVillageWood());
+		if (newST != ModelTile.StructureType.NONE) {
+			modelTile.setVillageGold(newTileState.getVillageGold());
+			modelTile.setVillageWood(newTileState.getVillageWood());
+		}
 		
 		// notify all the observers of the Tile
 		
