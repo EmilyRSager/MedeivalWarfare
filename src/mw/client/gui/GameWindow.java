@@ -34,6 +34,7 @@ public class GameWindow implements Observer {
 	private MapComponent mapComp;
 	private AbstractButton button;
 	private VerticalLayout windowLayout;
+	private HorizontalLayout controlBarLayout;
 	
 	//private boolean displaying = false;
 	//private AbstractWindowComponent mapComp;
@@ -65,7 +66,9 @@ public class GameWindow implements Observer {
 		botLayout.addComponent(new TextDisplay(0, 0, "Layouts are the best !"));
 		
 		windowLayout = new VerticalLayout(0, 0, 2);
-		windowLayout.addComponent(mapComp);
+		controlBarLayout = new HorizontalLayout(3);
+		windowLayout.addComponent(mapComp, 0);
+		windowLayout.addComponent(controlBarLayout, 1);
 		//windowLayout.addComponent(button);
 		windowLayout.addComponent(botLayout);
 		
@@ -167,10 +170,35 @@ public class GameWindow implements Observer {
 		window.registerKeyboardHandler(h, queue);
 	}
 	
-	public static VerticalLayout createChoiceLayout(String choiceName, List<String> choices)
+	public void addChoiceComponent(ChoiceType choiceType, VerticalLayout choiceLayout)
+	{
+		
+		switch (choiceType)
+		{
+		case VILLAGE_UPGRADE:
+			controlBarLayout.addComponent(choiceLayout, 1);
+			break;
+		case UNIT_HIRE:
+		case UNIT_ACTION:
+			controlBarLayout.addComponent(choiceLayout, 2);
+			break;
+		}
+	}
+	
+	public void displayVillageResources(int gold, int wood)
+	{
+		VerticalLayout resourceLayout = new VerticalLayout(2);
+		TextDisplay goldText = new TextDisplay("Gold: " + gold);
+		TextDisplay woodText = new TextDisplay("Wood: " + wood);
+		resourceLayout.addComponent(woodText);
+		resourceLayout.addComponent(goldText);
+		controlBarLayout.addComponent(resourceLayout, 0);
+	}
+	
+	public static VerticalLayout createChoiceLayout(ChoiceType choiceType, List<String> choices)
 	{
 		VerticalLayout choiceLayout = new VerticalLayout(choices.size() + 1);
-		TextDisplay choiceTitle = new TextDisplay(choiceName);
+		TextDisplay choiceTitle = new TextDisplay(getChoiceTitle(choiceType));
 		choiceLayout.addComponent(choiceTitle);
 		for(int i = 0; i < choices.size(); i++)
 		{
@@ -181,7 +209,7 @@ public class GameWindow implements Observer {
 						if (mouseButton==1)
 						{
 							System.out.println("I am clicked !");
-							ActionInterpreter.singleton().notifyChoiceResult(choiceName, choices.get(i));
+							ActionInterpreter.singleton().notifyChoiceResult(getChoiceTitle(choiceType), choices.get(i));
 						}
 					}
 				};

@@ -33,14 +33,17 @@ public final class DisplayUpdater {
 		}
 	}
 
-	public static void displayChoice(String choiceName, List<String> choices)
+	public static void displayChoice(ChoiceType choiceType, List<String> choices)
 	{
-		VerticalLayout choiceLayout = GameWindow.createChoiceLayout(choiceName, choices);
+		VerticalLayout choiceLayout = GameWindow.createChoiceLayout(choiceType, choices);
+		GameWindow window = CurrentClientState.getCurrentGameWindow();
+		window.addChoiceComponent(choiceType, choiceLayout);
 	}
 
 	public static void showVillageResources(int gold, int wood)
 	{
-		// TODO
+		GameWindow window = CurrentClientStat.getCurrentGameWindow();
+		window.displayVillageResources(gold, wood);
 	}
 	
 }
