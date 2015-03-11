@@ -21,8 +21,6 @@ public class Village extends Observable implements Serializable
 	private VillageType aVillageType; 
 	private Collection<GraphNode> aVillageNodes = new HashSet<GraphNode>();
 
-	
-
 	public Village(Set<GraphNode> villageSet) 
 	{
 		aVillageNodes = villageSet; 
