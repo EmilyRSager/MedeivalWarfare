@@ -4,6 +4,25 @@ import java.util.Collection;
 
 public class PriceCalculator 
 {
+	public static int getHireCost(UnitType pUnitType){
+		switch(pUnitType){
+			case PEASANT:
+				return 10;
+			case INFANTRY:
+				return 20;
+			case SOLDIER:
+				return 30;
+			default:
+				return 40;
+		}
+	}
+	
+	/**
+	 * @FIXME
+	 * @param pUnit
+	 * @return
+	 * @throws CantUpgradeException
+	 */
 	public static int getUpgradePrice(Unit pUnit) throws CantUpgradeException
 	{
 		UnitType pUnitType= pUnit.getUnitType();

@@ -6,6 +6,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 
 import mw.client.files.ProjectFolder;
+import mw.client.gui.api.ExtendedMinuetoColor;
 import mw.client.gui.api.ExtendedMinuetoImage;
 import mw.client.model.ModelTile;
 import mw.client.model.ModelTile.*;
@@ -37,24 +38,31 @@ public class ImageFileManager
 	
 	public static MinuetoImage getTileImage(MinuetoColor c, Terrain t, StructureType s, UnitType u, boolean road)
 	{
-		MinuetoImage newImage = ExtendedMinuetoImage.coloredHexagon(ImageTile.DEFAULT_TILE_WIDTH, ImageTile.DEFAULT_TILE_HEIGHT, c);
-		
-		if (road)
-			newImage = ExtendedMinuetoImage.drawInTheMiddleOf(newImage, getRoadImage());
-		
-		MinuetoImage terrainImg = ImageFileManager.getTerrainImage(t);
-		if (terrainImg != null)
-			newImage = ExtendedMinuetoImage.drawInTheMiddleOf(newImage, terrainImg);
-		
-		MinuetoImage unitImg = ImageFileManager.getUnitImage(u);
-		if (unitImg != null)
-			newImage = ExtendedMinuetoImage.drawInTheMiddleOf(newImage, unitImg);
-		
-		MinuetoImage structImg = ImageFileManager.getStructureImage(s);
-		if (structImg != null)
-			newImage = ExtendedMinuetoImage.drawInTheMiddleOf(newImage, structImg);
-		
-		return newImage;		
+		if (t == Terrain.SEA)
+		{
+			return getSeaTileImage();
+		}
+		else
+		{
+			MinuetoImage newImage = ExtendedMinuetoImage.coloredHexagon(ImageTile.DEFAULT_TILE_WIDTH, ImageTile.DEFAULT_TILE_HEIGHT, c);
+			
+			if (road)
+				newImage = ExtendedMinuetoImage.drawInTheMiddleOf(newImage, getRoadImage());
+			
+			MinuetoImage terrainImg = ImageFileManager.getTerrainImage(t);
+			if (terrainImg != null)
+				newImage = ExtendedMinuetoImage.drawInTheMiddleOf(newImage, terrainImg);
+			
+			MinuetoImage unitImg = ImageFileManager.getUnitImage(u);
+			if (unitImg != null)
+				newImage = ExtendedMinuetoImage.drawInTheMiddleOf(newImage, unitImg);
+			
+			MinuetoImage structImg = ImageFileManager.getStructureImage(s);
+			if (structImg != null)
+				newImage = ExtendedMinuetoImage.drawInTheMiddleOf(newImage, structImg);
+			
+			return newImage;
+		}
 	}
 	
 	public static MinuetoImage getTerrainImage(Terrain t)
@@ -76,24 +84,16 @@ public class ImageFileManager
 			fileName = TERRAIN_FOLDER + "tombstone.png";
 			break;
 		case SEA:
-			fileName = TERRAIN_FOLDER;
-			break;
+			throw new IllegalArgumentException("Sea terrain can not be used to get directly the sea image. Use builSeaTile() instead");
+			//fileName = TERRAIN_FOLDER;
+			//break;
 			
 			default:
 				throw new IllegalArgumentException("Terrain value "+t+" has no image associated with it");
 		}
-		try
-		{
-			MinuetoImage image = new MinuetoImageFile(fileName);
-			return image;
-		}
-		catch (MinuetoFileException e)
-		{
-			System.out.println("Could not load image!");
-			e.printStackTrace();
-			System.exit(1);
-		}
-		return null;
+
+		MinuetoImage image = loadImageFile(fileName);
+		return image;
 	}
 	
 	public static MinuetoImage getUnitImage(UnitType u)
@@ -122,19 +122,11 @@ public class ImageFileManager
 			default:
 				throw new IllegalArgumentException("UnitType value "+u+" has no image associated with it");
 		}
-		try
-		{
-			MinuetoImage image = new MinuetoImageFile(fileName);
-			return image;
-		}
-		catch (MinuetoFileException e)
-		{
-			System.out.println("Could not load image!");
-			e.printStackTrace();
-			System.exit(-1);
-		}
-		return null;
+		
+		MinuetoImage image = loadImageFile(fileName);
+		return image;
 	}
+	
 	public static MinuetoImage getStructureImage(StructureType s)
 	{
 		String fileName = null;
@@ -155,34 +147,51 @@ public class ImageFileManager
 			default:
 				throw new IllegalArgumentException("StructureType value "+s+" has no image associated with it");
 		}
-		try
-		{
-			MinuetoImage image = new MinuetoImageFile(fileName);
-			return image;
-		}
-		catch (MinuetoFileException e)
-		{
-			System.out.println("Could not load image!");
-			e.printStackTrace();
-			System.exit(1);
-		}
-		return null;
+		
+		MinuetoImage image = loadImageFile(fileName);
+		return image;
 	}
 	
 	public static MinuetoImage getRoadImage()
 	{
+		String fileName = ROAD_FOLDER + "road.png";
+		MinuetoImage image = loadImageFile(fileName);
+		return image;
+	}
+	
+	public static MinuetoImage getSeaTileImage()
+	{
+		MinuetoImage seaImage = loadImageFile(FOLDER + "original size/rectangles/sea.png");
+		
+		MinuetoColor backgroundBlue = seaImage.getPixel(seaImage.getWidth()/2, 0);//ExtendedMinuetoColor.mixColors(MinuetoColor.BLUE, MinuetoColor.WHITE, 0.45);
+		backgroundBlue = ExtendedMinuetoColor.mixColors(backgroundBlue, MinuetoColor.WHITE, 0.95);
+		MinuetoImage img = ExtendedMinuetoImage.coloredHexagon(ImageTile.DEFAULT_TILE_WIDTH, ImageTile.DEFAULT_TILE_HEIGHT, backgroundBlue);
+		img = ExtendedMinuetoImage.drawInTheMiddleOf(img, seaImage);
+		return img;
+	}
+	
+	
+	private static MinuetoImage loadImageFile(String fileName)
+	{
+		if (fileName == null)
+			throw new IllegalArgumentException("File name is null, impossible to load the image file");
+			
 		try
 		{
-			String fileName = ROAD_FOLDER + "road.png";
 			MinuetoImage image = new MinuetoImageFile(fileName);
 			return image;
 		}
 		catch (MinuetoFileException e)
 		{
-			System.out.println("Could not load image!");
+			System.out.println("Could not load the image "+fileName);
 			e.printStackTrace();
-			System.exit(1);
-			return null;
 		}
+		catch (IllegalArgumentException e)
+		{
+			System.out.println("Image file "+fileName+" doesn't exist");
+			e.printStackTrace();
+		}
+		System.exit(1);
+		return null;
 	}
 }

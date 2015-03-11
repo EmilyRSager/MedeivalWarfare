@@ -28,7 +28,6 @@ public class NetworkController {
 	}
 	
 	/**
-	 * 
 	 * @param pUsername
 	 * @param pPassword
 	 */
@@ -37,7 +36,8 @@ public class NetworkController {
 	}
 	
 	/**
-	 * 
+	 * Requests of the server to create a new game. If there are insufficient users connected
+	 * to the server, this client must wait until more clients connect.
 	 */
 	public static void requestNewGame(){
 		aServerChannel.sendCommand(new RequestNewGameCommand());
@@ -50,8 +50,8 @@ public class NetworkController {
 	public static void getPossibleGameActions(SharedCoordinates pSharedCoordinates){
 		aServerChannel.sendCommand(new GetPossibleGameActionsCommand(pSharedCoordinates));
 	}
+	
 	/**
-	 * 
 	 * @param pUnitCoordinates
 	 * @param pUnitType
 	 */
@@ -60,7 +60,6 @@ public class NetworkController {
 	}
 	
 	/**
-	 * 
 	 * @param pSourceCoordinates
 	 * @param pDestinationCoordinates
 	 */
@@ -70,7 +69,6 @@ public class NetworkController {
 	
 	
 	/**
-	 * 
 	 * @param pUnitCoordinates
 	 * @param pActionType
 	 */
@@ -79,7 +77,6 @@ public class NetworkController {
 	}
 	
 	/**
-	 * 
 	 * @param pUnitCoordinates
 	 * @param pUnitType
 	 */
@@ -88,7 +85,6 @@ public class NetworkController {
 	}
 	
 	/**
-	 * 
 	 * @param pVillageCoordinates
 	 * @param pVillageType
 	 */

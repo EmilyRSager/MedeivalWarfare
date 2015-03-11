@@ -121,6 +121,7 @@ public class UserActionSender {
 		
 		SharedCoordinates coordSrc = getCoordinates(src);
 		SharedCoordinates coordDest = getCoordinates(dest);
+		System.out.println("Trying to move from "+coordSrc+" to "+coordDest);
 
 		if (possibleActions.getMovableTiles().contains(coordDest))
 		{
@@ -147,6 +148,11 @@ public class UserActionSender {
 	{
 		SharedCoordinates coord = getCoordinates(unitTile);
 		NetworkController.setActionType(coord, at);
+	}
+	
+	public void sendEndTurn()
+	{
+		NetworkController.endTurn();
 	}
 	
 	/* ==========================

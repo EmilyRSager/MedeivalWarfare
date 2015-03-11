@@ -24,7 +24,7 @@ public class GameMap  implements Serializable{
 	private HashMap<Tile, GraphNode> TileToNodeHashMap = new HashMap<Tile, GraphNode>();
 	private HashMap<Coordinates, Tile> CoordinatesToTileMap = new HashMap<Coordinates, Tile>(); 
 	private Collection<Color> availableColors;
-	
+
 	/**
 	 * @param height
 	 * @param width
@@ -39,7 +39,7 @@ public class GameMap  implements Serializable{
 		setUpMap(height, width);
 		aVillages = new HashSet<Village>();
 	}
-	
+
 	public Tile getTile(Coordinates pCoord)
 	{
 		return CoordinatesToTileMap.get(pCoord);
@@ -56,7 +56,9 @@ public class GameMap  implements Serializable{
 	 * this method can be called at the beginning of a turn to create new trees as defined in the 
 	 * design spec
 	 */
-	public void treeGrowthGeneration(){
+	public void generateTrees(){
+		
+		System.out.println("[Server] Attempting to grow trees.");
 
 		//following just to make it easier to iterate over, can be removed 
 		ArrayList<GraphNode> lGraphNodes = new ArrayList<GraphNode>();
@@ -98,13 +100,11 @@ public class GameMap  implements Serializable{
 
 				if(randomNum2==1){
 					randomlyPickedTile.setStructureType(StructureType.TREE);
+					randomlyPickedTile.notifyObservers();
 				}
 			}
 		}
-
 	}
-
-
 
 	/**
 	 * Randomly Colors the Tiles 
@@ -129,17 +129,29 @@ public class GameMap  implements Serializable{
 			//makes sure a village doesn't already exist to avoid duplicate references 
 			for (Village lVillage: aVillages)
 			{
-				if (lVillage.getVillageNodes().equals(villageSet))
+				if (lVillage.getVillageNodes().equals(villageSet) )
 				{
-					villageAlreadyExists = true; 
+					villageAlreadyExists = true;  //needs a better name -- represents whether we should create a village or not
 				}
 			}
 
 			if (!villageAlreadyExists)
 			{
-				Village v = new Village (villageSet);
-				aVillages.add(v); 
-				villageAlreadyExists = false; 
+				//don't create a village if it's neutral land, or the village is too small to be supported
+				if (villageSet.size()>=3 && villageSet.iterator().next().getTile().getColor()!=Color.NEUTRAL)
+				{
+					Village v = new Village (villageSet);
+					aVillages.add(v); 
+					villageAlreadyExists = false; 
+				}
+				//Non-villages need to be returned to neutral color 
+				if (villageSet.size()<3 )
+				{
+					for (GraphNode vGraphNode: villageSet)
+					{
+						vGraphNode.getTile().setColor(Color.NEUTRAL);
+					}
+				}
 			}
 		}
 
@@ -149,17 +161,19 @@ public class GameMap  implements Serializable{
 			//only runs 1X per village
 			for (Tile lTile: lVillage.getTiles())
 			{
-
-				lTile.setVillageType(VillageType.HOVEL);
 				lVillage.setVillageType(VillageType.HOVEL);
 				lVillage.setCapital(lTile);
+
+				lVillage.addOrSubtractGold(100);
+				lVillage.addOrSubtractWood(100);
+
 				break; 
 
 			}
 		}
 
 	}
-	
+
 	/**
 	 * For adding observers to every tile in a game
 	 * @return
@@ -168,7 +182,7 @@ public class GameMap  implements Serializable{
 	{
 		return aTiles; 
 	}
-	
+
 	/**
 	 * Sets up a map with given height and width
 	 * @param height
@@ -205,9 +219,9 @@ public class GameMap  implements Serializable{
 	private void randomlyGenerateTreesAndMeadows(Tile lTile)  
 	{
 		//TODO: think of a fairer distribution of villages 
-		
-		
-		
+
+
+
 		if (lTile.getStructureType().equals(StructureType.NO_STRUCT) && lTile.getVillageType().equals(VillageType.NO_VILLAGE)) {
 			int k = rTreesAndMeadows.nextInt(9);
 			//line below may not be needed
@@ -302,20 +316,17 @@ public class GameMap  implements Serializable{
 
 		return rNeighbors;
 	}
+
 	/**
 	 * @param v1
 	 * @param v2
 	 * @return
 	 * Can Write after the demo
 	 */
-
-
 	public boolean canFuse(Village v1, Village v2)
 	{
 		return false; 
 	}
-
-
 
 	/**
 	 * 
@@ -332,21 +343,21 @@ public class GameMap  implements Serializable{
 	}
 
 	/**
-	 * 
+	 * For Testing 
 	 */
 	public GameMap()
 	{
-		 aTiles = new Tile [10][10];
-		 aNodes = new GraphNode[10][10];
+		aTiles = new Tile [10][10];
+		aNodes = new GraphNode[10][10];
 		for (int i = 0; i< 10; i++)
 		{
 			for (int j = 0; j<10; j++ )
 			{
 
+				Coordinates crtCoord = new Coordinates(i, j); 
 				aTiles[i][j] = new Tile(StructureType.NO_STRUCT, i, j); 
-				aNodes[i][j] = new GraphNode(aTiles[i][j]);
-				TileToNodeHashMap.put(aTiles[i][j], aNodes[i][j]);
-				Coordinates crtCoord = new Coordinates(i, j);
+				aNodes[i][j] = new GraphNode(aTiles[i][j]); 
+				TileToNodeHashMap.put(aNodes[i][j].getTile(), aNodes[i][j]); 
 				CoordinatesToTileMap.put(crtCoord, aTiles[i][j]); 
 
 
@@ -368,6 +379,9 @@ public class GameMap  implements Serializable{
 		aTiles[3][6].setColor(Color.GREEN);		
 		aTiles[3][7].setColor(Color.GREEN);
 		aTiles[3][8].setColor(Color.GREEN);
+
+		System.out.println( CoordinatesToTileMap.get(new Coordinates(3, 8)).toString());
+		System.out.println(aTiles[3][8].toString());
 		aTiles[4][6].setColor(Color.GREEN);
 
 		villageSet.add(aNodes[1][6]);
@@ -383,16 +397,21 @@ public class GameMap  implements Serializable{
 		villageSet.add(aNodes[3][8]);
 		villageSet.add(aNodes[4][6]);
 
-		
+
 		Village TestVillage = new Village(villageSet);
 		TestVillage.setCapital(aTiles[2][7]);
 		aVillages = new HashSet<Village>();
 		aVillages.add(TestVillage);
-		
-		
-		
+
+		System.out.println(aTiles[3][8].toString());
+
+
+
 	}
 
+	public Collection<Village> getVillages() {
+		return aVillages;
+	}
 }
 
 

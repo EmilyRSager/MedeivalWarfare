@@ -32,14 +32,20 @@ public abstract class SharedPossibleActionsTranslator {
 		
 		Collection<SharedTile.UnitType> sharedUT = new ArrayList<SharedTile.UnitType>();
 		Collection<UnitType> serverUT = serverPossibleActions.getUnitUpgrade();
-		for (UnitType ut : serverUT) {
-			sharedUT.add(SharedTileTranslator.translateUnitType(ut));
+		if (serverUT != null)
+		{
+			for (UnitType ut : serverUT) {
+				sharedUT.add(SharedTileTranslator.translateUnitType(ut));
+			}
 		}
 		
 		Collection<SharedActionType> sharedAT = new ArrayList<SharedActionType>();
 		Collection<ActionType> serverAT = serverPossibleActions.getActions();
-		for (ActionType at : serverAT) {
-			sharedAT.add(translateActionType(at));
+		if (serverAT != null)
+		{
+			for (ActionType at : serverAT) {
+				sharedAT.add(translateActionType(at));
+			}
 		}
 		
 		SharedTile.VillageType sharedVT = SharedTileTranslator.translateVillageType(serverPossibleActions.getVillageUpgrade());

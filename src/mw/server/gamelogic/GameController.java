@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 /**
- * Controls all game action requests.
+ * Provides access to the networking code that sends commands to the server.
  */
 public class GameController {
 
@@ -51,7 +51,6 @@ public class GameController {
 	 */
 	public static PossibleGameActions getPossibleGameActions(Game pGame, int pRow, int pColumn)
 	{
-
 		Coordinates mappingCoordinates = new Coordinates(pRow, pColumn);
 		Tile clicked = pGame.getTile(mappingCoordinates); 
 		return  pGame.tileIsClicked(clicked); 	
@@ -84,16 +83,31 @@ public class GameController {
 		pGame.hireVillager(toHireOn, upgradeType);
 	}
 
+	/**
+	 * 
+	 * @param pGame
+	 * @param pStartRow
+	 * @param pStartColumn
+	 * @param pDestRow
+	 * @param pDestColumn
+	 */
 	public static void moveUnit(Game pGame, int pStartRow, int pStartColumn, int pDestRow, int pDestColumn )
 	{
 		Coordinates startTileCoord = new Coordinates(pStartRow, pStartColumn);
 		Tile startTile = pGame.getTile(startTileCoord); 
-		Coordinates destTileCoord = new Coordinates(pDestColumn, pDestRow);
+		Coordinates destTileCoord = new Coordinates(pDestRow, pDestColumn);
+		
 		Tile destTile = pGame.getTile(destTileCoord); 
-
 		pGame.moveUnit(startTile, destTile);
 	}
 
+	/**
+	 * 
+	 * @param pGame
+	 * @param pRow
+	 * @param pColumn
+	 * @param pActionType
+	 */
 	public static void setActionType(Game pGame, int pRow, int pColumn, ActionType pActionType)
 	{
 		Coordinates pTileCoord = new Coordinates(pRow, pColumn);
@@ -101,6 +115,13 @@ public class GameController {
 		pGame.setActionType(pTile, pActionType);
 	}
 
+	/**
+	 * 
+	 * @param pGame
+	 * @param pRow
+	 * @param pColumn
+	 * @param upgradeType
+	 */
 	public static void upgradeUnit(Game pGame, int pRow, int pColumn, UnitType upgradeType)
 	{
 		Coordinates mappingCoordinates = new Coordinates(pRow, pColumn);
@@ -108,6 +129,13 @@ public class GameController {
 		pGame.upgradeUnit(toUpgradeOn, upgradeType);
 	}
 
+	/**
+	 * Upgrades the village on pRow and pColumn to type pVillageType in pGame
+	 * @param pGame
+	 * @param pRow
+	 * @param pColumn
+	 * @param pVillageType
+	 */
 	public static void upgradeVillage(Game pGame, int pRow, int pColumn, VillageType pVillageType)
 	{
 		Coordinates mappingCoordinates = new Coordinates(pRow, pColumn); 
@@ -116,6 +144,4 @@ public class GameController {
 		pGame.upgradeVillage(pVillage, pVillageType);
 
 	}
-
-
 }

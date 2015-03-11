@@ -1,20 +1,18 @@
 package mw.client.gui;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
-import mw.client.app.MainApplication;
 import mw.client.controller.ActionInterpreter;
 import mw.client.controller.ChoiceCenter;
 import mw.client.controller.ChoiceCenter.ChoiceType;
 import mw.client.gui.api.AbstractButton;
 import mw.client.gui.api.ExtendedMinuetoColor;
-import mw.client.gui.api.GridLayout;
 import mw.client.gui.api.HorizontalLayout;
 import mw.client.gui.api.TextDisplay;
 import mw.client.gui.api.VerticalLayout;
-import mw.shared.SharedColor;
 
 import org.minueto.MinuetoColor;
 import org.minueto.MinuetoEventQueue;
@@ -36,6 +34,7 @@ public class GameWindow implements Observer {
 	private VerticalLayout windowLayout;
 	private HorizontalLayout controlBarLayout;
 	private AbstractButton endTurn;
+	private List<AbstractButton> choiceButtonsList;
 	
 	/* ========================
 	 * 		Constructors
@@ -48,6 +47,7 @@ public class GameWindow implements Observer {
 		md = mapDisp;
 		queue = new MinuetoEventQueue();
 		mapComp = new MapComponent(0, 0, DEFAULT_MAP_WIDTH, DEFAULT_MAP_HEIGHT, md);
+		choiceButtonsList = new ArrayList<AbstractButton>();
 		
 		endTurn = new AbstractButton("End Turn")
 		{
@@ -117,6 +117,7 @@ public class GameWindow implements Observer {
 	
 	public void addChoiceLayout(ChoiceType choiceType, List<String> choices)
 	{
+		System.out.println("Creating a choice with type "+choiceType);
 		VerticalLayout choiceLayout = new VerticalLayout(choices.size() + 1);
 		TextDisplay choiceTitle = new TextDisplay(ChoiceCenter.getChoiceTitle(choiceType));
 		choiceLayout.addComponent(choiceTitle);
@@ -126,15 +127,16 @@ public class GameWindow implements Observer {
 				{				
 					public void buttonClick(int mouseButton)
 					{
-						if (mouseButton==1)
+						if (mouseButton == MinuetoMouse.MOUSE_BUTTON_LEFT)
 						{
-							System.out.println("I am clicked !");
+							System.out.println("Notifying for "+choiceType+" item "+str);
 							ActionInterpreter.singleton().notifyChoiceResult(choiceType, str);
 						}
 					}
 				};
 			this.registerMouseHandler(choiceButton);
 			choiceLayout.addComponent(choiceButton);
+			choiceButtonsList.add(choiceButton);
 		}
 		switch (choiceType)
 		{
@@ -163,6 +165,23 @@ public class GameWindow implements Observer {
 		windowLayout.addComponent(null, 1);
 		this.render();
 	}
+	
+	public void removeAllChoices()
+	{
+		controlBarLayout.removeComponent(1);
+		controlBarLayout.removeComponent(2);
+		for (AbstractButton b : choiceButtonsList)
+			window.unregisterMouseHandler(b, queue);
+		choiceButtonsList = new ArrayList<AbstractButton>();
+		render();
+	}
+
+	public void hideVillageResources()
+	{
+		controlBarLayout.removeComponent(0);
+		render();
+	}
+	
 	/* ==========================
 	 * 		Private methods
 	 * ==========================
@@ -178,6 +197,8 @@ public class GameWindow implements Observer {
 	public void update(Observable o, Object arg) {
 		render();
 	}
+
+	
 
 
 	/* ========================

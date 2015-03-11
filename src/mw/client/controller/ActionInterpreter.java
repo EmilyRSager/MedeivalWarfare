@@ -55,6 +55,8 @@ public final class ActionInterpreter {
 	
 	private final UserActionSender actionSender;
 	private final ChoiceCenter choiceCenter;
+	private boolean hiringUnit;
+	private UnitType hiredUnitType;
 	
 	
 	/* ========================
@@ -87,46 +89,78 @@ public final class ActionInterpreter {
 	public void primarySelect(ImageTile dispTarget)
 	{
 		System.out.println("Starting primary select");
-		unselect();
 		
-		ModelTile modelTarget = ModelViewMapping.singleton().getModelTile(dispTarget);
-		if (isSelectable(modelTarget))
+		if (dispTarget == null) {
+			unselect();
+			return;
+		}
+		
+		if (hiringUnit)
 		{
-			System.out.println("Selecting the tile");
-			selectedMTile = modelTarget;
-			selectedITile = dispTarget;
+			if (hiredUnitType == null)
+				throw new IllegalStateException("User is currently hiring a Unit, but no hired unit type has been selected");
+
+			ModelTile modelTarget = ModelViewMapping.singleton().getModelTile(dispTarget);
+			actionSender.sendUnitHire(modelTarget, hiredUnitType);
+			unselect();
+		}
+		else
+		{
+			unselect();
 			
-			DisplayUpdater.setSelected(dispTarget, true);
-			if (ModelQuerier.hasVillage(selectedMTile))
+			ModelTile modelTarget = ModelViewMapping.singleton().getModelTile(dispTarget);
+			if (isSelectable(modelTarget))
 			{
-				int gold = ModelQuerier.getVillageGold(selectedMTile);
-				int wood = ModelQuerier.getVillageWood(selectedMTile);
-				DisplayUpdater.showVillageResources(gold, wood);
+				System.out.println("Selecting the tile");
+				selectedMTile = modelTarget;
+				selectedITile = dispTarget;
+				
+				DisplayUpdater.setSelected(dispTarget, true);
+				if (ModelQuerier.hasVillage(selectedMTile))
+				{
+					int gold = ModelQuerier.getVillageGold(selectedMTile);
+					int wood = ModelQuerier.getVillageWood(selectedMTile);
+					DisplayUpdater.showVillageResources(gold, wood);
+				}
+				
+				System.out.println("Before asking for the moves");
+				actionSender.askForPossibleMoves(selectedMTile);
+				System.out.println("Successfuly asked for the moves");
 			}
-			
-			System.out.println("Before asking for the moves");
-			actionSender.askForPossibleMoves(selectedMTile);
-			System.out.println("Successfuly asked for the moves");
 		}
 	}
 	
 	
 	public void secondarySelect(ImageTile dispTarget)
 	{
+		System.out.println("Starting secondary select");
 		if (dispTarget==null)
 			unselect();
 		else 
 		{
+			System.out.println("dispTarget not null");
 			possibleActions = actionSender.getPossibleActions();
+			System.out.println("Got the possible actions");
 
 			if (possibleActions!=null)
 			{
+				System.out.println("Possible actions non-null");
 				ModelTile modelTarget = ModelViewMapping.singleton().getModelTile(dispTarget);
 
 				boolean res = actionSender.tryMoveUnit(selectedMTile, modelTarget);
+				System.out.println("Tried sending move unit, result = "+res);
 				if (res)
 					unselect();
 			}
+		}
+	}
+	
+	public void handleEndTurn()
+	{
+		if (ModelQuerier.isCurrentlyPlaying(game))
+		{
+			actionSender.sendEndTurn();
+			unselect();
 		}
 	}
 	
@@ -138,23 +172,27 @@ public final class ActionInterpreter {
 	
 	public void notifyChoiceResult(ChoiceType choiceType, String choseItem)
 	{
-		choiceCenter.handleChoiceResult(choiceType, choseItem, this);		
-		actionSender.askForPossibleMoves(selectedMTile);
+		choiceCenter.handleChoiceResult(choiceType, choseItem, this);
+		//choiceCenter.clear();
+		//actionSender.askForPossibleMoves(selectedMTile);
 	}
 	
 	public void notifyVillageUpgradeChoiceResult(VillageType vt)
 	{
 		actionSender.sendUpgradeVillage(selectedMTile, vt);
+		unselect();
 	}
 
 	public void notifyUnitHireChoiceResult(UnitType ut)
 	{
-		actionSender.sendUnitHire(selectedMTile, ut);
+		hiringUnit = true;
+		hiredUnitType = ut;
 	}
 	
 	public void notifyUnitActionChoiceResult(SharedActionType at)
 	{
 		actionSender.sendUnitAction(selectedMTile, at);
+		unselect();
 	}
 	
 	/* ============================
@@ -175,6 +213,9 @@ public final class ActionInterpreter {
 	
 	private void clearSelect() 
 	{
+		hiringUnit = false;
+		hiredUnitType = null;
+		
 		choiceCenter.clear();
 		
 		actionSender.clearPossibleActions();
@@ -199,12 +240,12 @@ public final class ActionInterpreter {
 		}
 		
 		Collection<UnitType> uts = possibleActions.getUnitUpgrade();
-		if (uts != null) {
+		if (uts != null && !uts.isEmpty()) {
 			choiceCenter.displayUnitTypeChoice(uts);
 		}
 		
 		Collection<SharedActionType> ats = possibleActions.getUnitActions();
-		if (ats != null) {
+		if (ats != null && !ats.isEmpty()) {
 			choiceCenter.displayUnitActionChoice(ats);
 		}
 	}

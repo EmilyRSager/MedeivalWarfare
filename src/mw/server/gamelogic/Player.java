@@ -3,6 +3,7 @@ package mw.server.gamelogic;
 
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.HashSet;
 
 
 
@@ -17,7 +18,7 @@ public class Player implements Serializable{
 	
 	public Player ()
 	{
-		
+		aVillages = new HashSet<Village>();
 	}
 	
     public void assignColor(Color pColor)
@@ -39,4 +40,9 @@ public class Player implements Serializable{
     {
     	return aVillages; 
     }
+
+	public void addVillage(Village lVillage) {
+		aVillages.add(lVillage);
+		
+	}
 }
