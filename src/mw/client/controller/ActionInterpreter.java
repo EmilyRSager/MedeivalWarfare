@@ -5,6 +5,7 @@ import java.util.Collection;
 import mw.client.controller.ChoiceCenter.ChoiceType;
 import mw.client.gui.ImageTile;
 import mw.client.model.*;
+import mw.client.network.NetworkController;
 import mw.shared.SharedPossibleGameActions;
 import mw.shared.SharedActionType;
 import mw.shared.SharedTile;
@@ -194,6 +195,12 @@ public final class ActionInterpreter {
 		actionSender.sendUnitAction(selectedMTile, at);
 		unselect();
 	}
+
+	public void notifyUnitUpgradeChoiceResult(UnitType ut)
+	{
+		actionSender.sendUnitUpgrade(selectedMTile, ut);
+		unselect();
+	}
 	
 	/* ============================
 	 * 		Private methods
@@ -236,12 +243,17 @@ public final class ActionInterpreter {
 	{
 		SharedTile.VillageType vt = possibleActions.getVillageUpgrade();
 		if (vt != null && vt != VillageType.NONE) {
-			choiceCenter.displayVillageChoice(vt);
+			choiceCenter.displayVillageUpgradeChoice(vt);
 		}
 		
 		Collection<UnitType> uts = possibleActions.getUnitUpgrade();
 		if (uts != null && !uts.isEmpty()) {
-			choiceCenter.displayUnitTypeChoice(uts);
+			if (ModelQuerier.hasVillage(selectedMTile))
+				choiceCenter.displayUnitHireChoice(uts);
+			else if (ModelQuerier.hasUnit(selectedMTile))
+				choiceCenter.displayUnitUpgradeChoice(uts);
+			else
+				throw new IllegalStateException("Trying to display choices, but no tile is selected");
 		}
 		
 		Collection<SharedActionType> ats = possibleActions.getUnitActions();

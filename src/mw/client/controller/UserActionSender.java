@@ -149,6 +149,12 @@ public class UserActionSender {
 		SharedCoordinates coord = getCoordinates(unitTile);
 		NetworkController.setActionType(coord, at);
 	}
+
+	public void sendUnitUpgrade(ModelTile unitTile, UnitType ut)
+	{
+		SharedCoordinates coord = getCoordinates(unitTile);
+		NetworkController.upgradeUnit(coord, ut);
+	}
 	
 	public void sendEndTurn()
 	{
