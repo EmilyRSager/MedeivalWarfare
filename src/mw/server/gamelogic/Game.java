@@ -226,6 +226,8 @@ public class Game extends RandomColorGenerator implements Serializable{
 	 */
 	public void beginTurn() 
 	{
+		//TODO villages are never passed to Players
+		
 		Collection<Village> aCrtVillages;
 		aCrtVillages = aCurrentPlayer.getVillages();
 		
@@ -234,6 +236,7 @@ public class Game extends RandomColorGenerator implements Serializable{
 			lVillage.updateTiles();
 		}
 	}
+	
 	/**
 	 * Generates trees on tiles 
 	 */
