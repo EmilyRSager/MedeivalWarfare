@@ -317,6 +317,10 @@ public class Game extends RandomColorGenerator implements Serializable{
 	public void moveUnit(Tile startTile, Tile pDestinationTile) 
 	{
 
+		if (startTile.equals(pDestinationTile))
+		{
+			return;
+		}
 		Unit crtUnit = startTile.getUnit(); 
 		if (crtUnit == null) 
 		{
@@ -343,17 +347,10 @@ public class Game extends RandomColorGenerator implements Serializable{
 	 */
 	public void takeoverTile(Tile startTile, Tile pDestinationTile) 
 	{
-		if (!(Logic.isProtected (startTile, pDestinationTile, aMap)) )
-		{
-			if (Logic.areMovementRulesRespected(startTile, pDestinationTile, aMap))
-			{
-				System.out.println("This bug makes no sense");
 				pDestinationTile.setColor(startTile.getColor()); 
 				//TODO -- recalculate village 
 				//aMap.recalculateVillages();
-				moveUnit(startTile, pDestinationTile);
-			}
-		}
+				moveUnit(startTile, pDestinationTile);		
 	}
 
 	/**

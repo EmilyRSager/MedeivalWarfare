@@ -336,68 +336,7 @@ public class Logic {
 		}
 	}
 
-	/**
-	 * 
-	 */
-	public static boolean  isProtected(Tile pStartTile, Tile pDestinationTile, GameMap pGameMap)
-	{
 	
-		Unit pStartUnit = pStartTile.getUnit();
-		Unit pDestinationUnit = pDestinationTile.getUnit(); 
-		UnitType pStartUnitType = pStartUnit.getUnitType();
-		
-		//case of unit on the destination tile
-		if (pDestinationUnit != null)
-		{
-			UnitType pDestinationUnitType = pDestinationUnit.getUnitType();
-			 if (pDestinationUnitType.ordinal() >= pStartUnitType.ordinal())
-			 {
-				 return true; 
-			 }
-		}
-			//Check if any of the neighbors protect the tile 
-			//TODO implement watchtower checks
-			for (Tile lTile: pGameMap.getNeighbors(pDestinationTile))
-			{
-				Unit lUnit = lTile.getUnit(); 
-				if (lUnit!=null)
-				{
-					UnitType lUnitType = lUnit.getUnitType();
-					if (lUnitType.ordinal() >= pStartUnitType.ordinal())
-					{
-						return true; 
-					}
-				}
-			}
-			return false; 
-	}
-	public static boolean areMovementRulesRespected(Tile pStartTile, Tile pDestinationTile, GameMap pGameMap)
-	{
-			StructureType pDestinationStructure = pDestinationTile.getStructureType(); 
-			UnitType pStartUnitType = pStartTile.getUnit().getUnitType();
-			switch (pDestinationStructure) {
-			case TREE:
-				if (pStartUnitType==UnitType.KNIGHT)
-				{
-					return false; 
-				}
-				break;
-			case TOMBSTONE: 
-				if (pStartUnitType==UnitType.KNIGHT)
-				{
-					return false; 
-				}
-				break;
-			case VILLAGE_CAPITAL: 
-				if (pStartUnitType !=UnitType.KNIGHT)
-				{
-					return false; 
-				}
-			default:
-				break;
-			}
-			return true; 
-	}
 	
 	/**
 	 * @param pTile
