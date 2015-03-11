@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.util.Collection;
 import java.util.HashSet;
 
+import mw.client.files.ProjectFolder;
 import mw.server.gamelogic.Game;
 import mw.server.gamelogic.Player;
 import mw.server.gamelogic.TooManyPlayersException;
@@ -28,24 +29,37 @@ public class TestMap {
 		
 		//check here if the game has already been created in which case, load it from there 
 		//else create it 
-		File file = new File("savegame.txt");
-		FileReader fileReader = new FileReader(file);
-		BufferedReader br = new BufferedReader(fileReader);
-		String inputString = br.readLine();
-		br.close();
-		if (inputString==null) {
-			System.out.println("Game being created now");
-			HashSet<Player> lPlayers = new HashSet<Player>();
-			lPlayers.add(new Player());
-			lPlayers.add(new Player());
-			aTestGame = new Game(lPlayers, 12, 12);
-			System.out.println("saving this game that got created");
-			SaveGame.SaveMyGame(aTestGame);
-		}
-		else {
-			System.out.println("saved game being loaded because one was already created");
-			aTestGame = SaveGame.returnSavedGame();
-		}
+		
+		//the file would be empty if the game has never been created, otherwise we load from the file
+		
+		
+		
+			try {
+				FileReader fileReader = new FileReader(ProjectFolder.getPath()+"savegame.txt");
+//				BufferedReader br = new BufferedReader(fileReader);
+//				String inputString = br.readLine();
+//				br.close();
+				System.out.println("saved game being loaded because one was already created");
+				aTestGame = SaveGame.returnSavedGame();
+			} catch (Exception e) {
+					
+						System.out.println("Game being created now");
+						HashSet<Player> lPlayers = new HashSet<Player>();
+						lPlayers.add(new Player());
+						lPlayers.add(new Player());
+						aTestGame = new Game(lPlayers, 12, 12);
+						System.out.println("saving this game that got created");
+						SaveGame.SaveMyGame(aTestGame);
+						System.out.println("after the savemygame");
+				
+				
+			}
+		
+				
+				
+			
+			
+			
 		return aTestGame;
 	}
 	
