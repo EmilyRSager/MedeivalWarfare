@@ -3,6 +3,7 @@ package mw.client.gui.api;
 import java.util.Observable;
 import java.util.Observer;
 
+import mw.client.gui.GameWindow;
 import mw.util.MultiArrayIterable;
 
 import org.minueto.image.MinuetoDrawingSurface;
@@ -20,7 +21,7 @@ import org.minueto.image.MinuetoImage;
  * @author Hugo Kapp
  *
  */
-public class GridLayout extends AbstractWindowComponent implements Observer {
+public class GridLayout extends AbstractWindowComponent/* implements Observer*/ {
 
 
 	private final WindowComponent[][] components;
@@ -29,7 +30,8 @@ public class GridLayout extends AbstractWindowComponent implements Observer {
 	private int[] columnWidth;
 	
 	private final int minWidth, minHeight;
-	private boolean packed;
+	//private boolean packed;
+	//private boolean packing;
 
 	/* ========================
 	 * 		Constructors
@@ -48,7 +50,8 @@ public class GridLayout extends AbstractWindowComponent implements Observer {
 			components = new WindowComponent[rowCount][columnCount];
 			rowHeight = new int[rowCount];
 			columnWidth = new int[columnCount];
-			packed = true;
+			//packed = true;
+			//packing = false;
 		}
 		else
 			throw new IllegalArgumentException("Impossible to create a GridLayout with "+rows+" rows and "+columns+" columns");
@@ -93,12 +96,19 @@ public class GridLayout extends AbstractWindowComponent implements Observer {
 	{
 		try {
 			components[row][column] = comp;
-			((Observable)comp).addObserver(this);
+			//((Observable)comp).addObserver(this);
 			//packed = false;
 			pack();
+			setChanged();
+			notifyObservers();
 		} catch (IndexOutOfBoundsException e) {
 			throw new IllegalArgumentException("("+row+","+column+") is not a valid location in a GridLayout with "+rowCount+" rows and "+columnCount+" columns");
 		}
+	}
+	
+	public void setWindow(GameWindow window)
+	{
+		addObserver(window);
 	}
 
 	/* ==========================
@@ -111,8 +121,25 @@ public class GridLayout extends AbstractWindowComponent implements Observer {
 	 */
 	private void pack()
 	{
+		System.out.println(this+" : Start packing with x="+area.getLeftBorder()+", y="+area.getTopBorder());
 		computeRowHeights();
 		computeColumnWidths();
+		//packing = true;
+		
+		/*for (WindowComponent comp : MultiArrayIterable.toIterable(components))
+		{
+			if (comp != null)
+			{
+				try {
+					GridLayout layout = (GridLayout)comp;
+					if (!layout.packed)
+						layout.pack();
+				}
+				catch(ClassCastException e) {
+					
+				}
+			}
+		}*/
 		
 		int xPos,yPos;
 		yPos=area.getTopBorder();
@@ -131,9 +158,18 @@ public class GridLayout extends AbstractWindowComponent implements Observer {
 		}
 		area.setHeight(yPos);
 		
-		packed=true;
-		setChanged();
-		notifyObservers();
+		/*if (!packed) {
+			System.out.println(this+" : repack");
+			pack();
+		}
+		else {
+			System.out.println(this+" : successfuly packed");
+			packing = false;
+			setChanged();
+			notifyObservers();
+		}*/
+		//packing = false;
+		//packed = true;
 	}
 
 	/**
@@ -181,35 +217,57 @@ public class GridLayout extends AbstractWindowComponent implements Observer {
 	@Override
 	public void drawOn(MinuetoDrawingSurface canvas)
 	{
-		if (!packed) {
+		//if (!packed) {
 			pack();
 			//setChanged();
 			//notifyObservers();
-		}
-		else
-		{
+		//}
+		//else
+		//{
 			for (WindowComponent comp : MultiArrayIterable.toIterable(components))
 			{
 				if (comp!=null) {
 					comp.drawOn(canvas);
 				}
 			}
-		}
+		//}
 	}
 
-	@Override
+	/*@Override
 	public void setPosition(int x, int y)
 	{
 		super.setPosition(x,y);
 		packed = hasChanged();
+	}*/
+	
+	@Override
+	public int getWidth()
+	{
+		return Math.max(super.getWidth(), minWidth);
 	}
 	
 	@Override
+	public int getHeight()
+	{
+		return Math.max(super.getHeight(), minHeight);
+	}
+	
+	/*@Override
 	public void update(Observable o, Object arg)
 	{
 		packed = false;
-		//setChanged();
-		//notifyObservers();
+		if (!packing) {
+			setChanged ();
+			notifyObservers();
+		}
+		else
+			System.out.println(this+" : Notified while packing");
+	}*/
+	
+	@Override
+	public String toString()
+	{
+		return components.toString();
 	}
 	
 	/* ========================
