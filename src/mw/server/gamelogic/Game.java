@@ -241,11 +241,6 @@ public class Game extends RandomColorGenerator implements Serializable{
 			if (pTile.getStructureType()!= StructureType.TREE && pTile.getStructureType()!=StructureType.VILLAGE_CAPITAL
 					&& pTile.getStructureType()!=StructureType.TOMBSTONE && pTile.getStructureType()!=StructureType.WATCHTOWER)
 			{
-
-
-
-
-
 				//Decrement the Gold held by the hiring village
 				int lHireCost;
 				lHireCost = PriceCalculator.getUnitHireCost(pUnitType);
@@ -352,6 +347,7 @@ public class Game extends RandomColorGenerator implements Serializable{
 		{
 			if (Logic.areMovementRulesRespected(startTile, pDestinationTile, aMap))
 			{
+				System.out.println("This bug makes no sense");
 				pDestinationTile.setColor(startTile.getColor()); 
 				//TODO -- recalculate village 
 				//aMap.recalculateVillages();
