@@ -129,17 +129,21 @@ public class GameMap  implements Serializable{
 			//makes sure a village doesn't already exist to avoid duplicate references 
 			for (Village lVillage: aVillages)
 			{
-				if (lVillage.getVillageNodes().equals(villageSet))
+				if (lVillage.getVillageNodes().equals(villageSet) )
 				{
-					villageAlreadyExists = true; 
+					villageAlreadyExists = true;  //needs a better name -- represents whether we should create a village or not
 				}
 			}
 
 			if (!villageAlreadyExists)
 			{
-				Village v = new Village (villageSet);
-				aVillages.add(v); 
-				villageAlreadyExists = false; 
+
+				if (villageSet.size()>=3 && villageSet.iterator().next().getTile().getColor()!=Color.NEUTRAL)
+				{
+					Village v = new Village (villageSet);
+					aVillages.add(v); 
+					villageAlreadyExists = false; 
+				}
 			}
 		}
 
