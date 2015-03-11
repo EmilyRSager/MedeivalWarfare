@@ -93,6 +93,12 @@ public class ImageFileManager
 			e.printStackTrace();
 			System.exit(1);
 		}
+		catch (IllegalArgumentException e)
+		{
+			System.out.println("File "+fileName+" doesn't exists");
+			e.printStackTrace();
+			System.exit(1);
+		}
 		return null;
 	}
 	
