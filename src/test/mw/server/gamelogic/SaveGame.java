@@ -15,7 +15,9 @@ public class SaveGame {
 	
 	
 	public static void SaveMyGame(Game pGame) throws FileNotFoundException{
+		System.out.println("game being serialized");
 		String theGame = new Gson().toJson(pGame);
+		System.out.println("writing to the savegame file");
 		PrintWriter out = new PrintWriter("savegame.txt");
 		out.println(theGame);
 		out.close();

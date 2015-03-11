@@ -1,6 +1,8 @@
 package mw.server.gamelogic;
 
-public class Coordinates
+import java.io.Serializable;
+
+public class Coordinates implements Serializable
 {
 	
 	private int aX; 
