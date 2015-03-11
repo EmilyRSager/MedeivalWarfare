@@ -307,6 +307,7 @@ public class Game extends RandomColorGenerator implements Serializable{
 	 */
 	public void moveUnit(Tile startTile, Tile pDestinationTile) 
 	{
+		
 		Unit crtUnit = startTile.getUnit(); 
 		if (crtUnit == null) 
 		{
@@ -314,7 +315,10 @@ public class Game extends RandomColorGenerator implements Serializable{
 		}
 		else    		
 		{
-			Logic.updateGameState(crtUnit, startTile, pDestinationTile, this, aMap);  
+			if (crtUnit.getActionType() == ActionType.READY)
+			{
+				Logic.updateGameState(crtUnit, startTile, pDestinationTile, this, aMap);  
+			}
 		}
 
 
