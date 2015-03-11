@@ -122,13 +122,13 @@ public class UserActionSender {
 		SharedCoordinates coordSrc = getCoordinates(src);
 		SharedCoordinates coordDest = getCoordinates(dest);
 
-		//if (possibleActions.getMovableTiles().contains(coordDest))
-		//{
+		if (possibleActions.getMovableTiles().contains(coordDest))
+		{
 			NetworkController.moveUnit(coordSrc, coordDest);
 			return true;
-		/*}
+		}
 		else
-			return false;*/
+			return false;
 	}
 
 	public void sendUpgradeVillage(ModelTile villageTile, VillageType vt)
