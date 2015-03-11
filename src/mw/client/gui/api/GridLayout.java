@@ -133,7 +133,7 @@ public class GridLayout extends AbstractWindowComponent implements Observer {
 		
 		packed=true;
 		setChanged();
-		//notifyObservers();
+		notifyObservers();
 	}
 
 	/**
@@ -183,8 +183,8 @@ public class GridLayout extends AbstractWindowComponent implements Observer {
 	{
 		if (!packed) {
 			pack();
-			setChanged();
-			notifyObservers();
+			//setChanged();
+			//notifyObservers();
 		}
 		else
 		{
@@ -208,8 +208,8 @@ public class GridLayout extends AbstractWindowComponent implements Observer {
 	public void update(Observable o, Object arg)
 	{
 		packed = false;
-		setChanged();
-		notifyObservers();
+		//setChanged();
+		//notifyObservers();
 	}
 	
 	/* ========================
