@@ -287,8 +287,6 @@ public class Logic {
 			//TODO 
 			break;
 		default:
-			
-			System.out.println("DefaultCase");
 			pDestinationTile.setUnit(crtUnit);
 			startTile.setUnit(null);
 			crtUnit.setActionType(ActionType.READY); //If units move to a road or empty tile they can still move
