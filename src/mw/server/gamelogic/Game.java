@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Stack;
-
 import mw.util.CircularIterator;
 
 /**
@@ -290,6 +289,8 @@ public class Game extends RandomColorGenerator implements Serializable{
 			Logic.updateGameState(crtUnit, startTile, pDestinationTile, this, aMap);  
 		}
 
+		startTile.notifyObservers();
+		pDestinationTile.notifyObservers();
 	} 
 
 	/**
