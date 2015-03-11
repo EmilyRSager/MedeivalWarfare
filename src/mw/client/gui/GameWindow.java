@@ -34,6 +34,7 @@ public class GameWindow implements Observer {
 	private MapComponent mapComp;
 	private VerticalLayout windowLayout;
 	private HorizontalLayout controlBarLayout;
+	private AbstractButton endTurn;
 	
 	/* ========================
 	 * 		Constructors
@@ -47,12 +48,23 @@ public class GameWindow implements Observer {
 		queue = new MinuetoEventQueue();
 		mapComp = new MapComponent(0, 0, DEFAULT_MAP_WIDTH, DEFAULT_MAP_HEIGHT, md);
 		
-		windowLayout = new VerticalLayout(0, 0, 2);
+		endTurn = new AbstractButton("End Turn")
+		{
+			public void buttonClick(int mouseButton)
+			{
+				if(mouseButton == 1)
+				{
+					ActionInterpreter.singleton().handleEndTurn();
+				}
+			}
+		};
+		
+		windowLayout = new VerticalLayout(0, 0, 3);
 		controlBarLayout = new HorizontalLayout(0, 0, 200, 3);
 		controlBarLayout.addComponent(new TextDisplay("Hallo"), 1);
 		
 		windowLayout.addComponent(mapComp, 0);
-		windowLayout.addComponent(controlBarLayout, 1);
+		windowLayout.addComponent(controlBarLayout, 2);
 		window = new MinuetoFrame(windowLayout.getWidth(), windowLayout.getHeight(), true);
 		
 		mapComp.setWindow(this);
@@ -135,6 +147,20 @@ public class GameWindow implements Observer {
 			break;
 		}
 		choiceLayout.setWindow(this);
+		this.render();
+	}
+	
+	public void addEndTurnButton()
+	{
+		this.registerMouseHandler(endTurn);
+		windowLayout.addComponent(endTurn, 1);
+		this.render();
+	}
+	
+	public void removeEndTurnButton()
+	{
+		window.unregisterMouseHandler(endTurn, queue);
+		windowLayout.addComponent(null, 1);
 		this.render();
 	}
 	/* ==========================

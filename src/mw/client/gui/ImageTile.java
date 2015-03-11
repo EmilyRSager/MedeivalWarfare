@@ -5,7 +5,6 @@ import java.util.Observable;
 import org.minueto.MinuetoColor;
 import org.minueto.image.MinuetoImage;
 
-import mw.client.gui.ImageFileManager.TileType;
 import mw.client.gui.api.Displayable;
 import mw.client.gui.api.ExtendedMinuetoColor;
 import mw.client.gui.api.ExtendedMinuetoImage;
