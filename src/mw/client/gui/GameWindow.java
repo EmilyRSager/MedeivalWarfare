@@ -17,6 +17,7 @@ import mw.client.gui.api.VerticalLayout;
 import org.minueto.MinuetoColor;
 import org.minueto.MinuetoEventQueue;
 import org.minueto.handlers.MinuetoKeyboardHandler;
+import org.minueto.handlers.MinuetoMouse;
 import org.minueto.handlers.MinuetoMouseHandler;
 import org.minueto.window.MinuetoFrame;
 
@@ -126,7 +127,7 @@ public class GameWindow implements Observer {
 				{				
 					public void buttonClick(int mouseButton)
 					{
-						if (mouseButton==1)
+						if (mouseButton == MinuetoMouse.MOUSE_BUTTON_LEFT)
 						{
 							System.out.println("Notifying for "+choiceType+" item "+str);
 							ActionInterpreter.singleton().notifyChoiceResult(choiceType, str);

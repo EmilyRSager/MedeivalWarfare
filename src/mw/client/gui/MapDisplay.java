@@ -4,6 +4,7 @@ import java.util.Observer;
 
 import org.minueto.MinuetoColor;
 import org.minueto.MinuetoEventQueue;
+import org.minueto.handlers.MinuetoMouse;
 import org.minueto.image.MinuetoImage;
 import org.minueto.window.MinuetoFrame;
 
@@ -187,9 +188,9 @@ public class MapDisplay implements Displayable, Clickeable {
 		ModelTile clickedModelTile = ModelViewMapping.singleton().getModelTile(clickedTile);
 		if(clickedModelTile != null)
 		{
-			if (button == 1)
+			if (button == MinuetoMouse.MOUSE_BUTTON_LEFT)
 				ActionInterpreter.singleton().primarySelect(clickedTile);
-			else if (button == 2)
+			else if (button == MinuetoMouse.MOUSE_BUTTON_RIGHT)
 				ActionInterpreter.singleton().secondarySelect(clickedTile);
 		}
 	}
