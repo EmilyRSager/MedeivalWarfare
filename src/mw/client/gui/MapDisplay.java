@@ -187,7 +187,10 @@ public class MapDisplay implements Displayable, Clickeable {
 		ModelTile clickedModelTile = ModelViewMapping.singleton().getModelTile(clickedTile);
 		if(clickedModelTile != null)
 		{
-			ActionInterpreter.singleton().primarySelect(clickedTile);
+			if (button == 1)
+				ActionInterpreter.singleton().primarySelect(clickedTile);
+			else if (button == 2)
+				ActionInterpreter.singleton().secondarySelect(clickedTile);
 		}
 	}
 

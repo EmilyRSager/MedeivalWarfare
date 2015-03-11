@@ -113,17 +113,22 @@ public final class ActionInterpreter {
 	
 	public void secondarySelect(ImageTile dispTarget)
 	{
+		System.out.println("Starting secondary select");
 		if (dispTarget==null)
 			unselect();
 		else 
 		{
+			System.out.println("dispTarget not null");
 			possibleActions = actionSender.getPossibleActions();
+			System.out.println("Got the possible actions");
 
 			if (possibleActions!=null)
 			{
+				System.out.println("Possible actions non-null");
 				ModelTile modelTarget = ModelViewMapping.singleton().getModelTile(dispTarget);
 
 				boolean res = actionSender.tryMoveUnit(selectedMTile, modelTarget);
+				System.out.println("Tried sending move unit, result = "+res);
 				if (res)
 					unselect();
 			}
@@ -178,8 +183,8 @@ public final class ActionInterpreter {
 		if (target==null)
 			return false;
 		boolean correctTileComponent = ModelQuerier.hasUnit(target) || ModelQuerier.hasVillage(target);
-		return correctTileComponent 
-				&& ModelQuerier.isCurrentlyPlaying(game)
+		return /*correctTileComponent 
+				&&*/ ModelQuerier.isCurrentlyPlaying(game)
 				&& ModelQuerier.ownedByCurrentPlayer(game, target);
 	}
 	
