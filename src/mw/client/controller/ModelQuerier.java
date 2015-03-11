@@ -35,6 +35,10 @@ public final class ModelQuerier {
 		game.setPlayer(new Player(color,""));
 	}
 	
+	public static boolean isCurrentlyPlaying(Game game) {
+		return game.isCurrentlyPlaying();
+	}
+	
 	// Tile queries
 	
 	/**
