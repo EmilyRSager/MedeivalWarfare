@@ -68,8 +68,8 @@ public class GameWindow implements Observer {
 		botLayout.addComponent(new TextDisplay(0, 0, "Layouts are the best !"));*/
 		
 		windowLayout = new VerticalLayout(0, 0, 2);
-		windowLayout.addObserver(this);
-		controlBarLayout = new HorizontalLayout(3);
+		controlBarLayout = new HorizontalLayout(0, 0, 200, 3);
+		
 		windowLayout.addComponent(mapComp, 0);
 		windowLayout.addComponent(controlBarLayout, 1);
 		//windowLayout.addComponent(button);
@@ -78,6 +78,7 @@ public class GameWindow implements Observer {
 		window = new MinuetoFrame(windowLayout.getWidth(), windowLayout.getHeight(), true);
 		
 		mapComp.setWindow(this);
+		windowLayout.addObserver(this);
 		//this.registerMouseHandler(button);
 		//button.addObserver(this);
 		
