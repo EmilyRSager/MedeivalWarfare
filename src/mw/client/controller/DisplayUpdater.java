@@ -46,4 +46,17 @@ public final class DisplayUpdater {
 		window.displayVillageResources(gold, wood);
 	}
 	
+	public static void showEndTurnButton(boolean show)
+	{
+		GameWindow window = CurrentClientState.getCurrentGameWindow();
+		if(show)
+		{
+			window.addEndTurnButton();
+		}
+		else
+		{
+			window.removeEndTurnButton();
+		}
+	}
+	
 }
