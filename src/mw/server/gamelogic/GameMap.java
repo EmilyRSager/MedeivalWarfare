@@ -161,8 +161,8 @@ public class GameMap  implements Serializable{
 			//only runs 1X per village
 			for (Tile lTile: lVillage.getTiles())
 			{
-				lVillage.setVillageType(VillageType.HOVEL);
 				lVillage.setCapital(lTile);
+				lVillage.setVillageType(VillageType.HOVEL);
 
 				lVillage.addOrSubtractGold(100);
 				lVillage.addOrSubtractWood(100);
