@@ -106,6 +106,22 @@ public class GridLayout extends AbstractWindowComponent/* implements Observer*/ 
 		}
 	}
 	
+	public void removeComponent(int row, int column)
+	{
+		addComponent(null, row, column);
+	}
+	
+	public void removeAll()
+	{
+		for (int i=0; i<rowCount; i++)
+		{
+			for (int j=0; j<columnCount; j++)
+			{
+				removeComponent(i, j);
+			}
+		}
+	}
+	
 	public void setWindow(GameWindow window)
 	{
 		addObserver(window);

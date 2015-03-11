@@ -59,6 +59,7 @@ public final class DisplayUpdater {
 		}
 	}
 
+	
 	public static void clearInfos()
 	{
 		GameWindow window = CurrentClientState.getCurrentGameWindow();

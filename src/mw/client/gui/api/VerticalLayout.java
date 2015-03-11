@@ -70,6 +70,11 @@ public class VerticalLayout extends GridLayout {
 		currentRow = -1;
 	}
 
+	public void removeComponent(int row)
+	{
+		super.removeComponent(row, 0);
+	}
+	
 	/* ==========================
 	 * 		Private methods
 	 * ==========================

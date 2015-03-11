@@ -168,8 +168,8 @@ public class GameWindow implements Observer {
 	
 	public void removeAllChoices()
 	{
-		controlBarLayout.addComponent(null, 1);
-		controlBarLayout.addComponent(null, 2);
+		controlBarLayout.removeComponent(1);
+		controlBarLayout.removeComponent(2);
 		for (AbstractButton b : choiceButtonsList)
 			window.unregisterMouseHandler(b, queue);
 		choiceButtonsList = new ArrayList<AbstractButton>();
@@ -178,7 +178,7 @@ public class GameWindow implements Observer {
 
 	public void hideVillageResources()
 	{
-		controlBarLayout.addComponent(null, 0);
+		controlBarLayout.removeComponent(0);
 		render();
 	}
 	

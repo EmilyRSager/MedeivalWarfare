@@ -55,6 +55,8 @@ public final class ActionInterpreter {
 	
 	private final UserActionSender actionSender;
 	private final ChoiceCenter choiceCenter;
+	private boolean hiringUnit;
+	private UnitType hiredUnitType;
 	
 	
 	/* ========================
@@ -87,26 +89,44 @@ public final class ActionInterpreter {
 	public void primarySelect(ImageTile dispTarget)
 	{
 		System.out.println("Starting primary select");
-		unselect();
 		
-		ModelTile modelTarget = ModelViewMapping.singleton().getModelTile(dispTarget);
-		if (isSelectable(modelTarget))
+		if (dispTarget == null) {
+			unselect();
+			return;
+		}
+		
+		if (hiringUnit)
 		{
-			System.out.println("Selecting the tile");
-			selectedMTile = modelTarget;
-			selectedITile = dispTarget;
+			if (hiredUnitType == null)
+				throw new IllegalStateException("User is currently hiring a Unit, but no hired unit type has been selected");
+
+			ModelTile modelTarget = ModelViewMapping.singleton().getModelTile(dispTarget);
+			actionSender.sendUnitHire(modelTarget, hiredUnitType);
+			unselect();
+		}
+		else
+		{
+			unselect();
 			
-			DisplayUpdater.setSelected(dispTarget, true);
-			if (ModelQuerier.hasVillage(selectedMTile))
+			ModelTile modelTarget = ModelViewMapping.singleton().getModelTile(dispTarget);
+			if (isSelectable(modelTarget))
 			{
-				int gold = ModelQuerier.getVillageGold(selectedMTile);
-				int wood = ModelQuerier.getVillageWood(selectedMTile);
-				DisplayUpdater.showVillageResources(gold, wood);
+				System.out.println("Selecting the tile");
+				selectedMTile = modelTarget;
+				selectedITile = dispTarget;
+				
+				DisplayUpdater.setSelected(dispTarget, true);
+				if (ModelQuerier.hasVillage(selectedMTile))
+				{
+					int gold = ModelQuerier.getVillageGold(selectedMTile);
+					int wood = ModelQuerier.getVillageWood(selectedMTile);
+					DisplayUpdater.showVillageResources(gold, wood);
+				}
+				
+				System.out.println("Before asking for the moves");
+				actionSender.askForPossibleMoves(selectedMTile);
+				System.out.println("Successfuly asked for the moves");
 			}
-			
-			System.out.println("Before asking for the moves");
-			actionSender.askForPossibleMoves(selectedMTile);
-			System.out.println("Successfuly asked for the moves");
 		}
 	}
 	
@@ -153,23 +173,26 @@ public final class ActionInterpreter {
 	public void notifyChoiceResult(ChoiceType choiceType, String choseItem)
 	{
 		choiceCenter.handleChoiceResult(choiceType, choseItem, this);
-		choiceCenter.clear();
-		actionSender.askForPossibleMoves(selectedMTile);
+		//choiceCenter.clear();
+		//actionSender.askForPossibleMoves(selectedMTile);
 	}
 	
 	public void notifyVillageUpgradeChoiceResult(VillageType vt)
 	{
 		actionSender.sendUpgradeVillage(selectedMTile, vt);
+		unselect();
 	}
 
 	public void notifyUnitHireChoiceResult(UnitType ut)
 	{
-		actionSender.sendUnitHire(selectedMTile, ut);
+		hiringUnit = true;
+		hiredUnitType = ut;
 	}
 	
 	public void notifyUnitActionChoiceResult(SharedActionType at)
 	{
 		actionSender.sendUnitAction(selectedMTile, at);
+		unselect();
 	}
 	
 	/* ============================
@@ -183,13 +206,16 @@ public final class ActionInterpreter {
 		if (target==null)
 			return false;
 		boolean correctTileComponent = ModelQuerier.hasUnit(target) || ModelQuerier.hasVillage(target);
-		return /*correctTileComponent 
-				&&*/ ModelQuerier.isCurrentlyPlaying(game)
+		return correctTileComponent 
+				&& ModelQuerier.isCurrentlyPlaying(game)
 				&& ModelQuerier.ownedByCurrentPlayer(game, target);
 	}
 	
 	private void clearSelect() 
 	{
+		hiringUnit = false;
+		hiredUnitType = null;
+		
 		choiceCenter.clear();
 		
 		actionSender.clearPossibleActions();

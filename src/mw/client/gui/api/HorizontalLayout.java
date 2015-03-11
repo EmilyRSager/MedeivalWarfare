@@ -70,6 +70,11 @@ public class HorizontalLayout extends GridLayout {
 		currentColumn=-1;
 	}
 
+	public void removeComponent(int column)
+	{
+		super.removeComponent(0, column);
+	}
+	
 	/* ==========================
 	 * 		Private methods
 	 * ==========================
