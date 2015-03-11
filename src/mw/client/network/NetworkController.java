@@ -4,6 +4,7 @@ import mw.shared.SharedActionType;
 import mw.shared.SharedCoordinates;
 import mw.shared.SharedTile;
 import mw.shared.servercommands.AuthenticateUserCommand;
+import mw.shared.servercommands.EndTurnCommand;
 import mw.shared.servercommands.GetPossibleGameActionsCommand;
 import mw.shared.servercommands.HireUnitCommand;
 import mw.shared.servercommands.MoveUnitCommand;
@@ -95,5 +96,11 @@ public class NetworkController {
 		aServerChannel.sendCommand(new UpgradeVillageCommand(pVillageCoordinates, pVillageType));
 	}
 	
+	/**
+	 * Inform the server that the client will end her turn.
+	 */
+	public static void endTurn(){
+		aServerChannel.sendCommand(new EndTurnCommand());
+	}
 	
 }

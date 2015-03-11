@@ -1,9 +1,10 @@
 package mw.util;
 
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.Iterator;
 
-public class CircularIterator<E> implements Iterator<E>{
+public class CircularIterator<E> implements Iterator<E>, Serializable{
 	
 	private final E[] aElements;
 	private int aIndex;

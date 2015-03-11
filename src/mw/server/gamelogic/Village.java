@@ -20,15 +20,16 @@ public class Village extends Observable
 	private Tile aCapital; 
 	private VillageType aVillageType; 
 	private Collection<GraphNode> aVillageNodes = new HashSet<GraphNode>();
-	private Collection<Observer> aObservers; 
+	//private Collection<Observer> aObservers; 
 
 
-	@Override 
-	public synchronized void addObserver(Observer o) 
-	{
-		aObservers.add(o);
-	}
+//	@Override
+//	public synchronized void addObserver(Observer o) 
+//	{
+//		aObservers.add(o);
+//	}
 
+	
 	public void setVillageType(VillageType pVillageType)
 	{
 		aVillageType = pVillageType;

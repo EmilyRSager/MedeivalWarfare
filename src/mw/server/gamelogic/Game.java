@@ -66,6 +66,11 @@ public class Game extends RandomColorGenerator implements Serializable{
 		
 	}
 	
+	public Game ()
+	{
+		aMap = new GameMap();
+	}
+	
 	/**
 	 * Calls the toString() method on all the tiles in a game
 	 */
