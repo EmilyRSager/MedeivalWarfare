@@ -53,12 +53,12 @@ public class ChoiceCenter {
 			handler.notifyVillageUpgradeChoiceResult(vt);
 			break;
 			
-		case UNIT_ACTION:
+		case UNIT_HIRE:
 			SharedTile.UnitType ut = getChoiceResult(unitUpgradeHireChoice, choseItem);
 			handler.notifyUnitHireChoiceResult(ut);
 			break;
 			
-		case UNIT_HIRE:
+		case UNIT_ACTION:
 			SharedActionType at = getChoiceResult(unitActionChoice, choseItem);
 			handler.notifyUnitActionChoiceResult(at);
 			break;

@@ -116,6 +116,7 @@ public class GameWindow implements Observer {
 	
 	public void addChoiceLayout(ChoiceType choiceType, List<String> choices)
 	{
+		System.out.println("Creating a choice with type "+choiceType);
 		VerticalLayout choiceLayout = new VerticalLayout(choices.size() + 1);
 		TextDisplay choiceTitle = new TextDisplay(ChoiceCenter.getChoiceTitle(choiceType));
 		choiceLayout.addComponent(choiceTitle);
@@ -127,7 +128,7 @@ public class GameWindow implements Observer {
 					{
 						if (mouseButton==1)
 						{
-							System.out.println("I am clicked !");
+							System.out.println("Notifying for "+choiceType+" item "+str);
 							ActionInterpreter.singleton().notifyChoiceResult(choiceType, str);
 						}
 					}
