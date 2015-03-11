@@ -53,7 +53,7 @@ public class GameWindow implements Observer {
 		{
 			public void buttonClick(int mouseButton)
 			{
-				if(mouseButton == 1)
+				if(mouseButton == MinuetoMouse.MOUSE_BUTTON_LEFT)
 				{
 					ActionInterpreter.singleton().handleEndTurn();
 				}
