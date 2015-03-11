@@ -236,12 +236,17 @@ public final class ActionInterpreter {
 	{
 		SharedTile.VillageType vt = possibleActions.getVillageUpgrade();
 		if (vt != null && vt != VillageType.NONE) {
-			choiceCenter.displayVillageChoice(vt);
+			choiceCenter.displayVillageUpgradeChoice(vt);
 		}
 		
 		Collection<UnitType> uts = possibleActions.getUnitUpgrade();
 		if (uts != null && !uts.isEmpty()) {
-			choiceCenter.displayUnitTypeChoice(uts);
+			if (ModelQuerier.hasVillage(selectedMTile))
+				choiceCenter.displayUnitHireChoice(uts);
+			else if (ModelQuerier.hasUnit(selectedMTile))
+				choiceCenter.displayUnitUpgradeChoice(uts);
+			else
+				throw new IllegalStateException("Trying to display choices, but no tile is selected");
 		}
 		
 		Collection<SharedActionType> ats = possibleActions.getUnitActions();
