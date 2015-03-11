@@ -85,7 +85,6 @@ public class Village extends Observable implements Serializable
 			try {
 				Logic.upgradeVillage(this, aVillageType);
 				addOrSubtractWood(-upgradeCost);
-
 			} catch (CantUpgradeException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
