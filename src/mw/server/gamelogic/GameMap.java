@@ -153,6 +153,10 @@ public class GameMap  implements Serializable{
 				lTile.setVillageType(VillageType.HOVEL);
 				lVillage.setVillageType(VillageType.HOVEL);
 				lVillage.setCapital(lTile);
+				
+				//TEST
+				lVillage.addOrSubtractWood(100);
+				lVillage.addOrSubtractGold(100);
 				break; 
 
 			}

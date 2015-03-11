@@ -131,6 +131,10 @@ public class SharedTileTranslator {
 			return Terrain.TOMBSTONE;
 		}
 		
+		else if(pStructureType == StructureType.VILLAGE_CAPITAL){
+			return SharedTile.Terrain.GRASS;
+		}
+		
 		else{
 			return Terrain.SEA;
 		}
