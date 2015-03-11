@@ -39,6 +39,7 @@ public class PriceCalculator
 			return 10;  
 		}
 	}
+	
 	public static int getUpgradePrice(VillageType aVillageType) throws CantUpgradeException
 	{
 		switch (aVillageType) {
