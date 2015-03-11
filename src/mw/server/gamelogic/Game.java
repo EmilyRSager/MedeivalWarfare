@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import mw.util.*;
 
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Stack;
 
 /**
@@ -171,11 +172,17 @@ public class Game extends RandomColorGenerator implements Serializable{
 	{
 		VillageType startVillageType = startTile.getVillageType(); 
 		VillageType possVillageUpgradeType = VillageType.NO_VILLAGE; 
-		Unit pUnit = startTile.getUnit(); 
-		Collection<Tile> possMoveTiles = aMap.getPossibleMoves(startTile);
+		Unit pUnit = startTile.getUnit();
+		
+		Collection<Tile> possMoveTiles = new HashSet<Tile>();
+		
+		//get possible reachable tiles if the tile has a unit
+		if(pUnit != null){
+			possMoveTiles = aMap.getPossibleMoves(startTile);
+		}
+		
 		Collection<UnitType> possUnitUpgrade = wantToHireVillager(startTile);
 		Collection<ActionType> possActions = new ArrayList<ActionType>();
-
 
 		switch (startVillageType)
 		{
@@ -192,8 +199,7 @@ public class Game extends RandomColorGenerator implements Serializable{
 			possVillageUpgradeType = VillageType.NO_VILLAGE; 
 			break;
 		}
-
-
+		
 		if (pUnit!=null)
 		{
 			possActions = Logic.getPossibleActions(pUnit, startTile);
@@ -201,10 +207,6 @@ public class Game extends RandomColorGenerator implements Serializable{
 
 		PossibleGameActions possible = new PossibleGameActions(possMoveTiles, possUnitUpgrade, possActions, possVillageUpgradeType);
 		return possible; 
-
-
-
-
 	}
 
 	/**

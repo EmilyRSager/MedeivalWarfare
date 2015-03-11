@@ -20,14 +20,6 @@ public class Village extends Observable
 	private Tile aCapital; 
 	private VillageType aVillageType; 
 	private Collection<GraphNode> aVillageNodes = new HashSet<GraphNode>();
-	//private Collection<Observer> aObservers; 
-
-
-//	@Override
-//	public synchronized void addObserver(Observer o) 
-//	{
-//		aObservers.add(o);
-//	}
 
 	
 	public void setVillageType(VillageType pVillageType)
@@ -87,9 +79,7 @@ public class Village extends Observable
 		addOrSubtractGold(addGold);
 
 	}
-
-
-
+	
 	public void upgradeVillage(VillageType pVillageType) throws NotEnoughIncomeException {
 		int upgradeCost = 0;
 		try {
@@ -147,7 +137,6 @@ public class Village extends Observable
 			Tile lTile = lNode.getTile();
 			Unit lUnit = lTile.getUnit();
 
-
 			if (lUnit!=null) {
 				ActionType lActionType = lUnit.getActionType();
 				if (lActionType.equals(ActionType.CULTIVATING_END)) {
@@ -162,9 +151,7 @@ public class Village extends Observable
 					addOrSubtractWood(1);
 				}
 			}
-
 		}
-
 	}
 
 
@@ -177,7 +164,6 @@ public class Village extends Observable
 	{
 		aGold = aGold + addGold; 
 		aCapital.setGold(aGold);
-
 	}
 
 	/**
@@ -189,7 +175,6 @@ public class Village extends Observable
 		aWood = aWood + addWood;
 		aCapital.setWood(aWood);
 	}
-
 
 	/**
 	 * add a specified Tile to a village, then check if adding that tile caused 
