@@ -328,10 +328,7 @@ public class Game extends RandomColorGenerator implements Serializable{
 		}
 		else    		
 		{
-			if (crtUnit.getActionType() == ActionType.READY)
-			{
-				Logic.updateGameState(crtUnit, startTile, pDestinationTile, this, aMap);  
-			}
+			Logic.updateGameState(crtUnit, startTile, pDestinationTile, this, aMap);  
 		}
 
 
@@ -347,10 +344,12 @@ public class Game extends RandomColorGenerator implements Serializable{
 	 */
 	public void takeoverTile(Tile startTile, Tile pDestinationTile) 
 	{
-				pDestinationTile.setColor(startTile.getColor()); 
-				//TODO -- recalculate village 
-				//aMap.recalculateVillages();
-				moveUnit(startTile, pDestinationTile);		
+		pDestinationTile.setColor(startTile.getColor());
+		Village lCapturingVillage = aMap.getVillage(startTile);
+		lCapturingVillage.addTile(aMap.getGraphNode(pDestinationTile));
+		//TODO -- recalculate village 
+		//aMap.recalculateVillages();
+		//moveUnit(startTile, pDestinationTile);		
 	}
 
 	/**

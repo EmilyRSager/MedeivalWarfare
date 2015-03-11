@@ -123,7 +123,6 @@ public class Logic {
 		} 
 		if (tilesAreSameColor(startTile, pDestinationTile))
 		{	
-			
 			switch (crtUnitType)
 			{
 			case PEASANT:
