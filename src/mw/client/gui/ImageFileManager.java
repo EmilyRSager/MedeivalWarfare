@@ -5,10 +5,10 @@ import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
+import mw.client.files.ProjectFolder;
 import mw.client.gui.api.ExtendedMinuetoImage;
 import mw.client.model.ModelTile;
 import mw.client.model.ModelTile.*;
-
 
 import org.minueto.MinuetoColor;
 import org.minueto.MinuetoFileException;
@@ -22,7 +22,7 @@ public class ImageFileManager
 	private static final int TERRAIN_ICON_SIZE = ImageTile.DEFAULT_TILE_WIDTH - 00;
 	private static final int ROAD_ICON_SIZE = ImageTile.DEFAULT_TILE_WIDTH;
 	
-	private static final String FOLDER = initializeFolder();
+	private static final String FOLDER = ProjectFolder.getPath() + "images/used/";//initializeFolder();
 	private static final String STRUCT_FOLDER = getImageSizeFolder(STRUCT_ICON_SIZE);
 	private static final String UNIT_FOLDER = getImageSizeFolder(UNIT_ICON_SIZE);
 	private static final String TERRAIN_FOLDER = getImageSizeFolder(TERRAIN_ICON_SIZE);
@@ -105,6 +105,9 @@ public class ImageFileManager
 		case SEA:
 			fileName = TERRAIN_FOLDER;
 			break;
+			
+			default:
+				throw new IllegalArgumentException("Terrain value "+t+" has no image associated with it");
 		}
 		try
 		{
@@ -142,6 +145,9 @@ public class ImageFileManager
 		case WATCHTOWER:
 			fileName = UNIT_FOLDER + "watchtower.png";
 			break;
+			
+			default:
+				throw new IllegalArgumentException("UnitType value "+u+" has no image associated with it");
 		}
 		try
 		{
@@ -172,6 +178,9 @@ public class ImageFileManager
 		case FORT:
 			fileName = STRUCT_FOLDER + "fort.png";
 			break;
+			
+			default:
+				throw new IllegalArgumentException("StructureType value "+s+" has no image associated with it");
 		}
 		try
 		{

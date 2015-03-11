@@ -10,6 +10,8 @@ import mw.shared.SharedTile.VillageType;
 
 public class ChoiceCenter {
 	
+	public enum ChoiceType { UNIT_HIRE, VILLAGE_UPGRADE, UNIT_ACTION } ;
+	
 	private static final String vupChoiceName = "Select the type of village to upgrade to:";
 	private UserChoice<SharedTile.VillageType> villageUpgradeChoice;
 
@@ -110,5 +112,23 @@ public class ChoiceCenter {
 	 * 		Static methods
 	 * ========================
 	 */
+	
+	public static String getChoiceTitle(ChoiceType choice)
+	{
+		switch (choice)
+		{
+		case UNIT_ACTION:
+			return uactChoiceName;
+			
+		case UNIT_HIRE:
+			return uhireupChoiceName;
+			
+		case VILLAGE_UPGRADE:
+			return vupChoiceName;
+			
+			default:
+				throw new IllegalArgumentException("The value "+choice+" does not have a choice name associated with it");
+		}
+	}
 
 }

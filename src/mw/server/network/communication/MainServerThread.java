@@ -12,6 +12,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Properties;
 
+import mw.client.files.ProjectFolder;
 import mw.server.network.mappers.ClientChannelMapper;
 
 /**
@@ -30,7 +31,7 @@ public class MainServerThread extends Thread{
 		
 		//parse port number from config file
 		try{
-			lInputStream = new FileInputStream("config.properties");
+			lInputStream = new FileInputStream(ProjectFolder.getPath() + "config.properties");
 			lProperties.load(lInputStream);
 			PORT_NUMBER = Integer.parseInt(lProperties.getProperty("serverport"));
 		} catch (IOException e) {

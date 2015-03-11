@@ -14,6 +14,11 @@ public class VerticalLayout extends GridLayout {
 	 * ========================
 	 */
 	
+	public VerticalLayout(int x, int y, int width, int rows)
+	{
+		super(x, y, width, 0, rows, 1);
+	}
+	
 	/** 
 	 * Creates a new VerticalLayout with a position and a number of rows.
 	 * @param x the x coordinate of the new VerticalLayout

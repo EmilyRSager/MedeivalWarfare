@@ -22,7 +22,7 @@ public abstract class AbstractWindowComponent extends Observable implements Wind
 	 */
 	
 	protected final WindowArea area;
-	
+	private int minWidth, minHeight;
 	
 	/* ========================
 	 * 		Constructors
@@ -39,6 +39,8 @@ public abstract class AbstractWindowComponent extends Observable implements Wind
 	public AbstractWindowComponent(int x, int y, int width, int height) {
 		super();
 		area = new WindowArea(x, y, width, height);
+		minWidth = width;
+		minHeight = height;
 	}
 	
 
@@ -71,6 +73,26 @@ public abstract class AbstractWindowComponent extends Observable implements Wind
 	@Override
 	public void setPosition(int x, int y)
 	{
-		area.setPosition(x, y);
+		if (x != area.getLeftBorder() || y != area.getRightBorder()) {
+			area.setPosition(x, y);
+			setChanged();
+		}
 	}
+	
+	/*@Override
+	public void setSize(int newWidth, int newHeight)
+	{
+		area.setWidth(newWidth);
+		area.setHeight(newHeight);
+	}
+	
+	@Override
+	public int getMinWidth() {
+		return minWidth;
+	}
+	
+	@Override
+	public int getMinHeight() {
+		return minHeight;
+	}*/
 }

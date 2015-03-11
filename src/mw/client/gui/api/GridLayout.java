@@ -1,5 +1,8 @@
 package mw.client.gui.api;
 
+import java.util.Observable;
+import java.util.Observer;
+
 import mw.util.MultiArrayIterable;
 
 import org.minueto.image.MinuetoDrawingSurface;
@@ -17,7 +20,7 @@ import org.minueto.image.MinuetoImage;
  * @author Hugo Kapp
  *
  */
-public class GridLayout extends AbstractWindowComponent {
+public class GridLayout extends AbstractWindowComponent implements Observer {
 
 
 	private final WindowComponent[][] components;
@@ -25,6 +28,7 @@ public class GridLayout extends AbstractWindowComponent {
 	private int[] rowHeight;
 	private int[] columnWidth;
 	
+	private final int minWidth, minHeight;
 	private boolean packed;
 
 	/* ========================
@@ -32,16 +36,11 @@ public class GridLayout extends AbstractWindowComponent {
 	 * ========================
 	 */
 	
-	/**
-	 * Creates a new GridLayout with a position, and a number of rows and columns.
-	 * @param x the x coordinate of the new GridLayout
-	 * @param y the y coordinate of the new GridLayout
-	 * @param rows the number of rows of the new GridLayout
-	 * @param columns the number of columns of the new GridLayout
-	 * @throws IllegalArgumentException if the number of rows or columns is invalid
-	 */
-	public GridLayout(int x, int y, int rows, int columns) {
-		super(x, y, 0, 0);
+	public GridLayout(int x, int y, int width, int height, int rows, int columns)
+	{
+		super(x, y, width, height);
+		minWidth = width;
+		minHeight = height;
 		if (columns>0 && rows>0)
 		{
 			rowCount = rows;
@@ -53,6 +52,18 @@ public class GridLayout extends AbstractWindowComponent {
 		}
 		else
 			throw new IllegalArgumentException("Impossible to create a GridLayout with "+rows+" rows and "+columns+" columns");
+	}
+	
+	/**
+	 * Creates a new GridLayout with a position, and a number of rows and columns.
+	 * @param x the x coordinate of the new GridLayout
+	 * @param y the y coordinate of the new GridLayout
+	 * @param rows the number of rows of the new GridLayout
+	 * @param columns the number of columns of the new GridLayout
+	 * @throws IllegalArgumentException if the number of rows or columns is invalid
+	 */
+	public GridLayout(int x, int y, int rows, int columns) {
+		this(x, y, 0, 0, rows, columns);
 	}
 
 	/**
@@ -82,6 +93,8 @@ public class GridLayout extends AbstractWindowComponent {
 	{
 		try {
 			components[row][column] = comp;
+			((Observable)comp).addObserver(this);
+			//packed = false;
 			pack();
 		} catch (IndexOutOfBoundsException e) {
 			throw new IllegalArgumentException("("+row+","+column+") is not a valid location in a GridLayout with "+rowCount+" rows and "+columnCount+" columns");
@@ -117,7 +130,10 @@ public class GridLayout extends AbstractWindowComponent {
 			yPos+=rowHeight[i];
 		}
 		area.setHeight(yPos);
+		
 		packed=true;
+		setChanged();
+		//notifyObservers();
 	}
 
 	/**
@@ -165,12 +181,18 @@ public class GridLayout extends AbstractWindowComponent {
 	@Override
 	public void drawOn(MinuetoDrawingSurface canvas)
 	{
-		if (!packed)
+		if (!packed) {
 			pack();
-		for (WindowComponent comp : MultiArrayIterable.toIterable(components))
+			setChanged();
+			notifyObservers();
+		}
+		else
 		{
-			if (comp!=null) {
-				comp.drawOn(canvas);
+			for (WindowComponent comp : MultiArrayIterable.toIterable(components))
+			{
+				if (comp!=null) {
+					comp.drawOn(canvas);
+				}
 			}
 		}
 	}
@@ -179,7 +201,15 @@ public class GridLayout extends AbstractWindowComponent {
 	public void setPosition(int x, int y)
 	{
 		super.setPosition(x,y);
+		packed = hasChanged();
+	}
+	
+	@Override
+	public void update(Observable o, Object arg)
+	{
 		packed = false;
+		setChanged();
+		notifyObservers();
 	}
 	
 	/* ========================
@@ -188,3 +218,4 @@ public class GridLayout extends AbstractWindowComponent {
 	 */
 
 }
+

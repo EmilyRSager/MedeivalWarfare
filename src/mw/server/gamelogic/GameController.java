@@ -14,15 +14,11 @@ import java.util.Collection;
 public class GameController {
 
 	/**
-	 * 
-	 * @param pGame
-	 * @param pRow
-	 * @param pColumn
+	 * @param the number of players to take part in the new game
+	 * @return a new Game 
 	 */
-
 	public static Game newGame(int numPlayers) throws TooManyPlayersException 
 	{
-
 		int i = 0; 
 		Collection<Player> gamePlayers = new ArrayList <Player> (); 
 		while ( i < numPlayers)
@@ -34,6 +30,17 @@ public class GameController {
 		Game crtGame = new Game(gamePlayers);
 		return crtGame;
 	}
+	
+	/**
+	 * @param pGame
+	 * @return the current player of pGame
+	 */
+	public static Player getCurrentPlayer(Game pGame)
+	{
+		Player lCurrentPlayer = pGame.getCurrentPlayer();
+		return lCurrentPlayer;
+	}
+	
 
 	/**
 	 * Returns all the possible moves or upgrades a player can make given a certain tile
@@ -48,6 +55,17 @@ public class GameController {
 		Coordinates mappingCoordinates = new Coordinates(pRow, pColumn);
 		Tile clicked = pGame.getTile(mappingCoordinates); 
 		return  pGame.tileIsClicked(clicked); 	
+	}
+	
+	/**
+	 * Ends the turn of the current Player in pGame. If this marks the end of a Round of play,
+	 * a new round is created (by spawning trees and other miscellaneous shit). 
+	 * @param pGame
+	 * @return
+	 */
+	public static void endTurn(Game pGame)
+	{
+		pGame.endTurn();
 	}
 
 	/**
