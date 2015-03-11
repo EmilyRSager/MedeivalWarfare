@@ -2,6 +2,7 @@ package mw.server.gamelogic;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.Stack;
 
 /**
@@ -14,6 +15,7 @@ public class Game extends RandomColorGenerator {
 	private Collection<Player> aPlayers;
 	private GameMap aMap;  
 	private Player aCurrentPlayer;
+	Iterator<Player> crtIterator;
 	
 	/**
 	 * Overloaded constructor passes default dimensions to main constructor
@@ -56,6 +58,8 @@ public class Game extends RandomColorGenerator {
 		
 		aMap = new GameMap(pWidth, pHeight, availableColors); 
 		aMap.partition(); 
+		//CircularIterable<Player> crtIterator = pPlayers.iterator();
+		//aCurrentPlayer = crtIterator.next();
 	}
 	
 	/**
@@ -251,6 +255,20 @@ public class Game extends RandomColorGenerator {
 		}
 
 	} 
+	
+	/**
+	 * 
+	 */
+	public void endTurn() 
+	{
+		//aCurrentPlayer = crtIterator.next();
+		if (crtIterator.hasCompletedCycle())
+		{
+			beginRound();
+		}
+		
+		beginTurn();
+	}
 
 	/**
 	 * A Unit moves to land not under its control 
@@ -329,6 +347,10 @@ public class Game extends RandomColorGenerator {
 	public Village getVillage(Tile pTile)
 	{
 		return aMap.getVillage(pTile);
+	}
+
+	public Player getCurrentPlayer() {
+		return aCurrentPlayer;
 	}
 }
 

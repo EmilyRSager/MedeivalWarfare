@@ -14,6 +14,11 @@ public class HorizontalLayout extends GridLayout {
 	 * ========================
 	 */
 
+	public HorizontalLayout(int x, int y, int height, int columns)
+	{
+		super(x,y,0,height,1,columns);
+	}
+	
 	/** 
 	 * Creates a new HorizontalLayout with a position and a number of columns.
 	 * @param x the x coordinate of the new HorizontalLayout
