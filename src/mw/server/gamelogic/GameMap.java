@@ -134,12 +134,20 @@ public class GameMap  implements Serializable{
 
 			if (!villageAlreadyExists)
 			{
-
+				//don't create a village if it's neutral land, or the village is too small to be supported
 				if (villageSet.size()>=3 && villageSet.iterator().next().getTile().getColor()!=Color.NEUTRAL)
 				{
 					Village v = new Village (villageSet);
 					aVillages.add(v); 
 					villageAlreadyExists = false; 
+				}
+				//Non-villages need to be returned to neutral color 
+				if (villageSet.size()<3 )
+				{
+					for (GraphNode vGraphNode: villageSet)
+					{
+						vGraphNode.getTile().setColor(Color.NEUTRAL);
+					}
 				}
 			}
 		}
