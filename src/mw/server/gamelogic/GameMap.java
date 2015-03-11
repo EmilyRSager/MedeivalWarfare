@@ -343,10 +343,10 @@ public class GameMap  implements Serializable{
 			for (int j = 0; j<10; j++ )
 			{
 
+				Coordinates crtCoord = new Coordinates(i, j); 
 				aTiles[i][j] = new Tile(StructureType.NO_STRUCT, i, j); 
-				aNodes[i][j] = new GraphNode(aTiles[i][j]);
-				TileToNodeHashMap.put(aTiles[i][j], aNodes[i][j]);
-				Coordinates crtCoord = new Coordinates(i, j);
+				aNodes[i][j] = new GraphNode(aTiles[i][j]); 
+				TileToNodeHashMap.put(aNodes[i][j].getTile(), aNodes[i][j]); 
 				CoordinatesToTileMap.put(crtCoord, aTiles[i][j]); 
 
 
@@ -368,6 +368,9 @@ public class GameMap  implements Serializable{
 		aTiles[3][6].setColor(Color.GREEN);		
 		aTiles[3][7].setColor(Color.GREEN);
 		aTiles[3][8].setColor(Color.GREEN);
+		
+		System.out.println( CoordinatesToTileMap.get(new Coordinates(3, 8)).toString());
+		System.out.println(aTiles[3][8].toString());
 		aTiles[4][6].setColor(Color.GREEN);
 
 		villageSet.add(aNodes[1][6]);
@@ -388,6 +391,8 @@ public class GameMap  implements Serializable{
 		TestVillage.setCapital(aTiles[2][7]);
 		aVillages = new HashSet<Village>();
 		aVillages.add(TestVillage);
+		
+		System.out.println(aTiles[3][8].toString());
 		
 		
 		

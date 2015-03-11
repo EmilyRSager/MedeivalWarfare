@@ -88,9 +88,9 @@ public class GameController {
 	{
 		Coordinates startTileCoord = new Coordinates(pStartRow, pStartColumn);
 		Tile startTile = pGame.getTile(startTileCoord); 
-		Coordinates destTileCoord = new Coordinates(pDestColumn, pDestRow);
+		Coordinates destTileCoord = new Coordinates(pDestRow, pDestColumn);
+		
 		Tile destTile = pGame.getTile(destTileCoord); 
-
 		pGame.moveUnit(startTile, destTile);
 	}
 
