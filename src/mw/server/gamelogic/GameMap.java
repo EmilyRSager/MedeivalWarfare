@@ -24,7 +24,7 @@ public class GameMap  implements Serializable{
 	private HashMap<Tile, GraphNode> TileToNodeHashMap = new HashMap<Tile, GraphNode>();
 	private HashMap<Coordinates, Tile> CoordinatesToTileMap = new HashMap<Coordinates, Tile>(); 
 	private Collection<Color> availableColors;
-	
+
 	/**
 	 * @param height
 	 * @param width
@@ -39,7 +39,7 @@ public class GameMap  implements Serializable{
 		setUpMap(height, width);
 		aVillages = new HashSet<Village>();
 	}
-	
+
 	public Tile getTile(Coordinates pCoord)
 	{
 		return CoordinatesToTileMap.get(pCoord);
@@ -163,17 +163,17 @@ public class GameMap  implements Serializable{
 			{
 				lVillage.setVillageType(VillageType.HOVEL);
 				lVillage.setCapital(lTile);
-				
+
 				lVillage.addOrSubtractGold(100);
 				lVillage.addOrSubtractWood(100);
-				
+
 				break; 
 
 			}
 		}
 
 	}
-	
+
 	/**
 	 * For adding observers to every tile in a game
 	 * @return
@@ -182,7 +182,7 @@ public class GameMap  implements Serializable{
 	{
 		return aTiles; 
 	}
-	
+
 	/**
 	 * Sets up a map with given height and width
 	 * @param height
@@ -219,9 +219,9 @@ public class GameMap  implements Serializable{
 	private void randomlyGenerateTreesAndMeadows(Tile lTile)  
 	{
 		//TODO: think of a fairer distribution of villages 
-		
-		
-		
+
+
+
 		if (lTile.getStructureType().equals(StructureType.NO_STRUCT) && lTile.getVillageType().equals(VillageType.NO_VILLAGE)) {
 			int k = rTreesAndMeadows.nextInt(9);
 			//line below may not be needed
@@ -316,7 +316,7 @@ public class GameMap  implements Serializable{
 
 		return rNeighbors;
 	}
-	
+
 	/**
 	 * @param v1
 	 * @param v2
@@ -327,8 +327,6 @@ public class GameMap  implements Serializable{
 	{
 		return false; 
 	}
-
-
 
 	/**
 	 * 
@@ -345,12 +343,12 @@ public class GameMap  implements Serializable{
 	}
 
 	/**
-	 * 
+	 * For Testing 
 	 */
 	public GameMap()
 	{
-		 aTiles = new Tile [10][10];
-		 aNodes = new GraphNode[10][10];
+		aTiles = new Tile [10][10];
+		aNodes = new GraphNode[10][10];
 		for (int i = 0; i< 10; i++)
 		{
 			for (int j = 0; j<10; j++ )
@@ -381,7 +379,7 @@ public class GameMap  implements Serializable{
 		aTiles[3][6].setColor(Color.GREEN);		
 		aTiles[3][7].setColor(Color.GREEN);
 		aTiles[3][8].setColor(Color.GREEN);
-		
+
 		System.out.println( CoordinatesToTileMap.get(new Coordinates(3, 8)).toString());
 		System.out.println(aTiles[3][8].toString());
 		aTiles[4][6].setColor(Color.GREEN);
@@ -399,16 +397,16 @@ public class GameMap  implements Serializable{
 		villageSet.add(aNodes[3][8]);
 		villageSet.add(aNodes[4][6]);
 
-		
+
 		Village TestVillage = new Village(villageSet);
 		TestVillage.setCapital(aTiles[2][7]);
 		aVillages = new HashSet<Village>();
 		aVillages.add(TestVillage);
-		
+
 		System.out.println(aTiles[3][8].toString());
-		
-		
-		
+
+
+
 	}
 
 	public Collection<Village> getVillages() {

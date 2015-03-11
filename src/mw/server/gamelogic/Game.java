@@ -236,9 +236,13 @@ public class Game extends RandomColorGenerator implements Serializable{
 	 */
 	public void hireVillager(Tile pTile, UnitType pUnitType)
 	{
+		if (pTile.getStructureType()!= StructureType.TREE && pTile.getStructureType()!=StructureType.VILLAGE_CAPITAL
+				&& pTile.getStructureType()!=StructureType.TOMBSTONE && pTile.getStructureType()!=StructureType.WATCHTOWER)
+		{
 		Unit pUnit = new Unit(pUnitType); 
 		pTile.setUnit(pUnit);
 		pTile.notifyObservers(); 
+		}
 		//TODO add gold deduction from village
 	}
 	
@@ -333,7 +337,8 @@ public class Game extends RandomColorGenerator implements Serializable{
 		else 
 		{
 			pDestinationTile.setColor(startTile.getColor()); 
-			//Todo -- recalculate village 
+			//TODO -- recalculate village 
+			//aMap.recalculateVillages();
 			moveUnit(startTile, pDestinationTile);
 		}
 	}
