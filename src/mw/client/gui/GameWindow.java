@@ -16,6 +16,7 @@ import mw.client.gui.api.VerticalLayout;
 
 import org.minueto.MinuetoColor;
 import org.minueto.MinuetoEventQueue;
+import org.minueto.handlers.MinuetoFocusHandler;
 import org.minueto.handlers.MinuetoKeyboardHandler;
 import org.minueto.handlers.MinuetoMouse;
 import org.minueto.handlers.MinuetoMouseHandler;
@@ -71,7 +72,22 @@ public class GameWindow implements Observer {
 		windowLayout.setWindow(this);
 		controlBarLayout.setWindow(this);
 		window.setVisible(true);
-		window.setTitle("Medieval Warfare");	
+		window.setTitle("Medieval Warfare");
+		GameWindow dumbRef = this;
+		window.registerFocusHandler(new MinuetoFocusHandler() {
+			
+			@Override
+			public void handleLostFocus()
+			{
+				
+			}
+			
+			@Override
+			public void handleGetFocus()
+			{
+				dumbRef.render();
+			}
+		}, queue);
 	}
 	
 	/* ==========================

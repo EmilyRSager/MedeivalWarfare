@@ -84,8 +84,11 @@ public class GameMap  implements Serializable{
 				ArrayList<Tile> lNeighboringEmptyOrMeadowTiles = new ArrayList<Tile>();
 				for(Tile lTile: lTiles ){
 					StructureType lStructureType = lTile.getStructureType();
-					if (lStructureType.equals(StructureType.NO_STRUCT) || lStructureType.equals(StructureType.TREE) || lTile.getVillageType().equals(VillageType.NO_VILLAGE) ) {
-						lNeighboringEmptyOrMeadowTiles.add(lTile);
+					if ((lStructureType.equals(StructureType.NO_STRUCT) || lStructureType.equals(StructureType.TREE) || lTile.getVillageType().equals(VillageType.NO_VILLAGE) ) ) {
+						
+						if (!lTile.hasUnit() ) {
+							lNeighboringEmptyOrMeadowTiles.add(lTile);
+						}
 					}
 				}
 				//above gives us all the neigboring tiles which are empty or have a tree on them 
