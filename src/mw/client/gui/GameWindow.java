@@ -25,8 +25,6 @@ import org.minueto.window.MinuetoFrame;
 public class GameWindow implements Observer {
 	
 	public static final MinuetoColor BACKGROUND_COLOR = ExtendedMinuetoColor.mixColors(MinuetoColor.BLACK, MinuetoColor.WHITE, 0.10);
-	//public static final int DEFAULT_FRAME_WIDTH = 500;
-	//public static final int DEFAULT_FRAME_HEIGHT = 525;
 	public static final int DEFAULT_MAP_WIDTH = 1000;
 	public static final int DEFAULT_MAP_HEIGHT = 600;
 	
@@ -34,13 +32,8 @@ public class GameWindow implements Observer {
 	private final MinuetoEventQueue queue;
 	private MapDisplay md;
 	private MapComponent mapComp;
-	//private AbstractButton button;
 	private VerticalLayout windowLayout;
 	private HorizontalLayout controlBarLayout;
-	
-	//private boolean displaying = false;
-	//private AbstractWindowComponent mapComp;
-	//private AbstractWindowComponent textComp;.
 	
 	/* ========================
 	 * 		Constructors
@@ -53,19 +46,6 @@ public class GameWindow implements Observer {
 		md = mapDisp;
 		queue = new MinuetoEventQueue();
 		mapComp = new MapComponent(0, 0, DEFAULT_MAP_WIDTH, DEFAULT_MAP_HEIGHT, md);
-		/*button = new AbstractButton("Click me !") {
-			public void buttonClick(int mouseButton)
-			{
-				if (mouseButton==1) {
-					System.out.println("I am clicked !");
-					MainApplication.testUpdate(SharedColor.BLUE);
-				}
-			}
-		};
-		
-		HorizontalLayout botLayout = new HorizontalLayout(0, 0, 2);
-		botLayout.addComponent(button);
-		botLayout.addComponent(new TextDisplay(0, 0, "Layouts are the best !"));*/
 		
 		windowLayout = new VerticalLayout(0, 0, 2);
 		controlBarLayout = new HorizontalLayout(0, 0, 200, 3);
@@ -73,78 +53,19 @@ public class GameWindow implements Observer {
 		
 		windowLayout.addComponent(mapComp, 0);
 		windowLayout.addComponent(controlBarLayout, 1);
-		//windowLayout.addComponent(button);
-		//windowLayout.addComponent(botLayout);
-		
 		window = new MinuetoFrame(windowLayout.getWidth(), windowLayout.getHeight(), true);
 		
 		mapComp.setWindow(this);
 		windowLayout.setWindow(this);
 		controlBarLayout.setWindow(this);
-		
-		//windowLayout.addObserver(this);
-		//this.registerMouseHandler(button);
-		//button.addObserver(this);
-		
 		window.setVisible(true);
-		window.setTitle("Medieval Warfare");
-		
-		
-		//window = new MinuetoFrame();
-		//window.setVisible(true);
-		//mapComp = new ContainerComponent(0, 0, md.getWidth(), md.getHeight(), md);
-		
-		
-		//mapDisp.setObserver(this);
-		/*MinuetoMouseHandler mouseHand = new MinuetoMouseHandler()
-			{
-				public void handleMouseMove(int x, int y)
-				{
-					//Not being used	
-				}
-				public void handleMousePress(int x, int y, int button)
-				{
-					//Not being used
-				}
-				public void handleMouseRelease(int x, int y, int button)
-				{
-					mapComp.handleMouseClick(x, y, button);
-					textComp.handleMouseClick(x, y, button);
-					/*ImageTile clickedTile = mapDisp.getClickedTile(x, y);
-					ModelTile clickedModelTile = ModelViewMapping.singleton().getModelTile(clickedTile);
-					if(clickedModelTile != null)
-					{
-						clickedModelTile.setColor(SharedColor.RED);
-						clickedModelTile.notifyObservers();
-					}
-				}
-			};*/
-		//this.registerMouseHandler(mouseHand, queue);
+		window.setTitle("Medieval Warfare");	
 	}
-	
-	public GameWindow()	// only there for old testing purpose
-	{
-		this(new MapDisplay(MainApplication.DEFAULT_MAP_WIDTH, MainApplication.DEFAULT_MAP_HEIGHT));
-	}
-	
 	
 	/* ==========================
 	 * 		Public methods
 	 * ==========================
 	 */
-
-	
-	/*public void startDisplay() {
-		setVisible(true);
-		displaying=true;
-		Thread displayThread = new Thread() {
-			public void run() {
-				
-			}
-		};
-		displayThread.start();
-	}*/
-	
 	
 	public MinuetoEventQueue getEventQueue()
 	{
@@ -154,18 +75,9 @@ public class GameWindow implements Observer {
 	public void render()
 	{
 		window.clear(BACKGROUND_COLOR);
-		/*mapComp.drawOn(this);
-		button.drawOn(this);*/
 		windowLayout.drawOn(window);
-		//super.render();
 		window.render();
 	}
-	
-	/*public void update()	// old testing purpose method
-	{
-		md.update();
-		render();
-	}*/
 
 	public void registerMouseHandler(MinuetoMouseHandler h)
 	{
@@ -246,40 +158,5 @@ public class GameWindow implements Observer {
 	 * 		Static methods
 	 * ========================
 	 */
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-
-	
-	/*public static void main(String[] args)
-	{
-		GameWindow gw = new GameWindow();
-		gw.render();
-		try 
-		{
-			Thread.sleep(500);
-		} 
-		catch (InterruptedException e) 
-		{
-			e.printStackTrace();
-		}
 		
-		//gw.update();
-	}*/
-	
-	
-	
-	
-	
-	
-	
-	
 }

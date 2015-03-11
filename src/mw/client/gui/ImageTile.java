@@ -56,7 +56,6 @@ public class ImageTile extends Observable implements Displayable {
 	public void updateImage(MinuetoImage newImage)
 	{
 		setImage(newImage);
-		//drawBorder(ExtendedMinuetoColor.GREY);
 		setChanged();
 		notifyObservers();
 	}
