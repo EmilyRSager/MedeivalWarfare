@@ -1,9 +1,9 @@
 package mw.server.gamelogic;
 
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Observable;
-import java.util.Observer;
 import java.util.Set;
 
 
@@ -12,7 +12,7 @@ import java.util.Set;
  * Village class definition.
  * @author emilysager, Abhishek Gupta
  */
-public class Village extends Observable
+public class Village extends Observable implements Serializable
 {
 
 	private int aGold; 
@@ -20,12 +20,6 @@ public class Village extends Observable
 	private Tile aCapital; 
 	private VillageType aVillageType; 
 	private Collection<GraphNode> aVillageNodes = new HashSet<GraphNode>();
-
-	
-	public void setVillageType(VillageType pVillageType)
-	{
-		aVillageType = pVillageType;
-	}
 
 	public Village(Set<GraphNode> villageSet) 
 	{
@@ -40,6 +34,10 @@ public class Village extends Observable
 		aWood = pWood;
 	}
 	
+	public void setVillageType(VillageType pVillageType)
+	{
+		aVillageType = pVillageType;
+	}
 
 	/**
 	 * Sets the Village Capital to be a hovel 

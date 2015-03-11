@@ -17,6 +17,7 @@ public class Unit extends Observable {
     public Unit(UnitType pUnitType)
     {
     	aUnitType = pUnitType; 
+    	aActionType = ActionType.READY;
     }
 
     /**

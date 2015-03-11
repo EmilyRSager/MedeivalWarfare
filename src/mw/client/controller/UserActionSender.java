@@ -123,13 +123,13 @@ public class UserActionSender {
 		SharedCoordinates coordDest = getCoordinates(dest);
 		System.out.println("Trying to move from "+coordSrc+" to "+coordDest);
 
-		if (possibleActions.getMovableTiles().contains(coordDest))
-		{
+		//if (possibleActions.getMovableTiles().contains(coordDest))
+		//{
 			NetworkController.moveUnit(coordSrc, coordDest);
 			return true;
-		}
+		/*}
 		else
-			return false;
+			return false;*/
 	}
 
 	public void sendUpgradeVillage(ModelTile villageTile, VillageType vt)

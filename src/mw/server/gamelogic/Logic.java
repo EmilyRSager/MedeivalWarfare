@@ -43,8 +43,10 @@ public class Logic {
 		switch (aVillageType) {
 		case HOVEL:
 			myVillageType =  VillageType.TOWN;
+			break;
 		case TOWN: 
-			myVillageType =  VillageType.FORT; 
+			myVillageType =  VillageType.FORT;
+			break;
 		case FORT: 
 			throw new CantUpgradeException("Village Can't upgrade"); 
 		case NO_VILLAGE: 
