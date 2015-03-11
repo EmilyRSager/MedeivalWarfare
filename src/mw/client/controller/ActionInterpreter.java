@@ -5,6 +5,7 @@ import java.util.Collection;
 import mw.client.controller.ChoiceCenter.ChoiceType;
 import mw.client.gui.ImageTile;
 import mw.client.model.*;
+import mw.client.network.NetworkController;
 import mw.shared.SharedPossibleGameActions;
 import mw.shared.SharedActionType;
 import mw.shared.SharedTile;
@@ -192,6 +193,12 @@ public final class ActionInterpreter {
 	public void notifyUnitActionChoiceResult(SharedActionType at)
 	{
 		actionSender.sendUnitAction(selectedMTile, at);
+		unselect();
+	}
+
+	public void notifyUnitUpgradeChoiceResult(UnitType ut)
+	{
+		actionSender.sendUnitUpgrade(selectedMTile, ut);
 		unselect();
 	}
 	
