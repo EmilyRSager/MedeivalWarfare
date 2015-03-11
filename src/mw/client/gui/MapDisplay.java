@@ -190,7 +190,7 @@ public class MapDisplay implements Displayable, Clickeable {
 		{
 			if (button == MinuetoMouse.MOUSE_BUTTON_LEFT)
 				ActionInterpreter.singleton().primarySelect(clickedTile);
-			else if (button == MinuetoMouse.MOUSE_BUTTON_RIGHT)
+			else //if (button == MinuetoMouse.MOUSE_BUTTON_RIGHT)
 				ActionInterpreter.singleton().secondarySelect(clickedTile);
 		}
 	}

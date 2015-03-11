@@ -1,6 +1,7 @@
 package mw.client.gui;
 
 import java.io.IOException;
+import java.io.ObjectInputStream.GetField;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -135,7 +136,7 @@ public class ImageFileManager
 		case NONE:
 			return null;
 		case HOVEL:
-			fileName = STRUCT_FOLDER + "hovel.png";
+			fileName = getImageSizeFolder(55) + "hovel.png";
 			break;
 		case TOWN:
 			fileName = STRUCT_FOLDER + "town.png";
