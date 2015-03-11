@@ -91,6 +91,7 @@ public class Village extends Observable
 
 		if (aWood >= upgradeCost) {
 			try {
+				
 				Logic.upgrade(aVillageType, this);
 				addOrSubtractWood(-upgradeCost);
 

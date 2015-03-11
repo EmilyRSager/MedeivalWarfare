@@ -65,7 +65,7 @@ public class Game extends RandomColorGenerator implements Serializable{
 		crtIterator = new CircularIterator<Player>(pPlayers);
 		aCurrentPlayer = crtIterator.next(); 
 	}
-	
+
 	/**
 	 * 
 	 */
@@ -238,13 +238,13 @@ public class Game extends RandomColorGenerator implements Serializable{
 		if (pTile.getStructureType()!= StructureType.TREE && pTile.getStructureType()!=StructureType.VILLAGE_CAPITAL
 				&& pTile.getStructureType()!=StructureType.TOMBSTONE && pTile.getStructureType()!=StructureType.WATCHTOWER)
 		{
-		Unit pUnit = new Unit(pUnitType); 
-		pTile.setUnit(pUnit);
-		pTile.notifyObservers(); 
+			Unit pUnit = new Unit(pUnitType); 
+			pTile.setUnit(pUnit);
+			pTile.notifyObservers(); 
 		}
 		//TODO add gold deduction from village
 	}
-	
+
 	/**
 	 * Informs the Game that the current Player is ending its turn. 
 	 */
@@ -258,14 +258,14 @@ public class Game extends RandomColorGenerator implements Serializable{
 		aCurrentPlayer = getCurrentPlayer();
 		beginTurn();
 	}
-	
+
 	/**
 	 * @return true if the current round of Game play is over, false otherwise
 	 */
 	private boolean currentRoundIsOver(){
 		return crtIterator.isAtBeginning();
 	}
-	
+
 	/**
 	 * @return Player whose turn it now is
 	 */
@@ -307,7 +307,7 @@ public class Game extends RandomColorGenerator implements Serializable{
 	 */
 	public void moveUnit(Tile startTile, Tile pDestinationTile) 
 	{
-		
+
 		Unit crtUnit = startTile.getUnit(); 
 		if (crtUnit == null) 
 		{
@@ -334,19 +334,15 @@ public class Game extends RandomColorGenerator implements Serializable{
 	 */
 	public void takeoverTile(Tile startTile, Tile pDestinationTile) 
 	{
-		Village startVillage = aMap.getVillage(startTile); 
-		Village destVillage = aMap.getVillage(pDestinationTile); 
-		
-		if (destVillage!=null)
+		if (!(Logic.isProtected (startTile, pDestinationTile, aMap)) )
 		{
-			//TODO after the demo
-		}
-		else 
-		{
-			pDestinationTile.setColor(startTile.getColor()); 
-			//TODO -- recalculate village 
-			//aMap.recalculateVillages();
-			moveUnit(startTile, pDestinationTile);
+			if (Logic.areMovementRulesRespected(startTile, pDestinationTile, aMap))
+			{
+				pDestinationTile.setColor(startTile.getColor()); 
+				//TODO -- recalculate village 
+				//aMap.recalculateVillages();
+				moveUnit(startTile, pDestinationTile);
+			}
 		}
 	}
 
