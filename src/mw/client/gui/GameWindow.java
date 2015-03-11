@@ -69,7 +69,7 @@ public class GameWindow implements Observer {
 		
 		windowLayout = new VerticalLayout(0, 0, 2);
 		windowLayout.addObserver(this);
-		controlBarLayout = new HorizontalLayout(3);
+		controlBarLayout = new HorizontalLayout(0, 0, 200, 3);
 		windowLayout.addComponent(mapComp, 0);
 		windowLayout.addComponent(controlBarLayout, 1);
 		//windowLayout.addComponent(button);
