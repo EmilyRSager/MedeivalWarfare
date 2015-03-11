@@ -21,13 +21,13 @@ public class Logic {
 	{
 		return (pTile.getMeadow()); 
 	}
-	
-	
+
+
 	public static void  upgrade(VillageType aVillageType, Village v) throws CantUpgradeException
 	{
-		
+
 		VillageType myVillageType = VillageType.NO_VILLAGE; 
-		
+
 		switch (aVillageType) {
 		case HOVEL:
 			myVillageType =  VillageType.TOWN;
@@ -38,7 +38,7 @@ public class Logic {
 		case NO_VILLAGE: 
 			throw new CantUpgradeException("Village does not exist"); 
 		}
-		
+
 		Set<Tile> myTiles = v.getTiles(); 
 		for (Tile t: myTiles)
 		{
@@ -47,8 +47,8 @@ public class Logic {
 				t.setVillageType(myVillageType);
 			}
 		}
-		
-		
+
+
 	}
 	public static void clearTombstone(GraphNode pGraphNode)
 	{
@@ -77,20 +77,20 @@ public class Logic {
 						possActions.add(ActionType.CULTIVATING_BEGIN);
 					}
 				}
-				
+
 			}
-			
+
 		}
 		return possActions; 
 
 	}
-/**
- * Does all the logic calculations resulting from moving a unit
- * @param startTile
- * @param pDestinationTile
- * @param pGame
- * @param pGameMap
- */
+	/**
+	 * Does all the logic calculations resulting from moving a unit
+	 * @param startTile
+	 * @param pDestinationTile
+	 * @param pGame
+	 * @param pGameMap
+	 */
 	public static void updateGameState(Unit crtUnit, Tile startTile, Tile pDestinationTile, Game pGame, GameMap pGameMap)
 	{
 		/*
@@ -105,7 +105,7 @@ public class Logic {
 		UnitType crtUnitType = crtUnit.getUnitType(); 
 		if (isNeutral(pDestinationTile))
 		{
-				pGame.takeoverTile(startTile, pDestinationTile);
+			pGame.takeoverTile(startTile, pDestinationTile);
 		} 
 		if (tilesAreSameColor(startTile, pDestinationTile))
 		{	
@@ -113,169 +113,121 @@ public class Logic {
 			switch (crtUnitType)
 			{
 			case PEASANT:
-				System.out.println("Peasant: ");
-				switch (destStructType)
-				{
-
-				case TREE:
-					Village crt = pGameMap.getVillage(startTile);
-					if (crt !=null)
-					{
-						System.out.println("Crt!=Null");
-						crt.addOrSubtractWood(1);
-					}
-					pDestinationTile.setUnit(crtUnit);
-					pDestinationTile.setStructureType(StructureType.NO_STRUCT);
-					startTile.setUnit(null);
-					crtUnit.setActionType(ActionType.MOVED);
-					
-					break;
-
-				case TOMBSTONE: 
-					pDestinationTile.setStructureType(StructureType.NO_STRUCT);
-					pDestinationTile.setUnit(crtUnit);
-					startTile.setUnit(null);
-					crtUnit.setActionType(ActionType.MOVED);
-					break; 
-
-				case WATCHTOWER: 
-					//TODO
-					break;
-				case VILLAGE_CAPITAL:
-					//TODO 
-					break;
-				default:
-					pDestinationTile.setUnit(crtUnit);
-					startTile.setUnit(null);
-					crtUnit.setActionType(ActionType.READY); //If units move to a road or empty tile they can still move
-					break;
-				}
-
+				movePeasant(); 
 				break;
 			case INFANTRY: 
-				switch (destStructType)
-				{
-				case TREE: 
-					Village crt = pGameMap.getVillage(startTile);
-					if (crt !=null)
-					{
-						crt.addOrSubtractWood(1);
-					}
-					pDestinationTile.setUnit(crtUnit);
-					startTile.setUnit(null);
-					crtUnit.setActionType(ActionType.MOVED);
-					break;
-				case TOMBSTONE: 
-					pDestinationTile.setUnit(crtUnit);
-					pDestinationTile.setStructureType(StructureType.NO_STRUCT);
-					startTile.setUnit(null);
-					crtUnit.setActionType(ActionType.MOVED);
-				case ROAD: 
-					pDestinationTile.setUnit(crtUnit);
-					startTile.setUnit(null);
-					crtUnit.setActionType(ActionType.READY);
-					break; 
-				case WATCHTOWER: 
-					//TODO
-					break;
-				case VILLAGE_CAPITAL:
-					//TODO 
-					break;
-				default:
-					pDestinationTile.setUnit(crtUnit);
-					startTile.setUnit(null);
-					crtUnit.setActionType(ActionType.READY);
-					if (pDestinationTile.getMeadow())
-					{
-						pDestinationTile.setHasMeadow(false);
-					}
-					break;
-				}
+				moveInfantry(); 
+				
 				break;
 			case SOLDIER: 
-				switch (destStructType)
-				{
-
-				case TREE:
-					Village crt = pGameMap.getVillage(startTile);
-					if (crt !=null)
-					{
-						crt.addOrSubtractWood(1);
-					}
-					pDestinationTile.setUnit(crtUnit);
-					startTile.setUnit(null);
-					crtUnit.setActionType(ActionType.MOVED);
-					break;
-
-				case TOMBSTONE: 
-					pDestinationTile.setStructureType(StructureType.NO_STRUCT);
-					pDestinationTile.setUnit(crtUnit);
-					startTile.setUnit(null);
-					crtUnit.setActionType(ActionType.MOVED);
-					break; 
-
-				case ROAD: 
-					pDestinationTile.setUnit(crtUnit);
-					startTile.setUnit(null);
-					crtUnit.setActionType(ActionType.READY);
-					break; 
-
-				case WATCHTOWER: 
-					//TODO
-					break;
-				case VILLAGE_CAPITAL:
-					//TODO 
-					break;
-
-				default:
-					pDestinationTile.setUnit(crtUnit);
-					startTile.setUnit(null);
-					crtUnit.setActionType(ActionType.READY);
-					if (pDestinationTile.getMeadow())
-					{
-						pDestinationTile.setHasMeadow(false);
-					}
-					break;
-				}
+				moveSoldier(crtUnit, startTile, pDestinationTile, pGameMap);
 				break; 
 			case KNIGHT:
-				switch (destStructType)
-				{
-				case TREE:
-					//do nothing-- this case shouldn't happen
-					break; 
-				case TOMBSTONE: 
-					//do nothing-- this case shouldn't happen
-					break; 
-				case ROAD: 
-					pDestinationTile.setUnit(crtUnit);
-					startTile.setUnit(null);
-					crtUnit.setActionType(ActionType.READY);
-					break;
-				case VILLAGE_CAPITAL: 
-					//TODO 
-					break; 
-				case WATCHTOWER: 
-					//TODO 
-					break;
-				default:
-					pDestinationTile.setUnit(crtUnit);
-					startTile.setUnit(null);
-					crtUnit.setActionType(ActionType.READY);
-					if (pDestinationTile.getMeadow())
-					{
-						pDestinationTile.setHasMeadow(false);
-					}
-					break;
-				}
-				break;
+				moveKnight(crtUnit, startTile, pDestinationTile, pGameMap);
 
 			default:
 				break;
 			}
 		}
 	}
-	
+
+	/**
+	 * Moves a soldier to a destination tile 
+	 * @param crtUnit
+	 * @param startTile
+	 * @param pDestinationTile
+	 * @param pGameMap
+	 */
+	private static void moveSoldier(Unit crtUnit, Tile startTile, Tile pDestinationTile, GameMap pGameMap)
+	{
+
+		switch (pDestinationTile.getStructureType())
+		{
+		case TREE:
+			Village crt = pGameMap.getVillage(startTile);
+			if (crt !=null)
+			{
+				crt.addOrSubtractWood(1);
+			}
+			pDestinationTile.setUnit(crtUnit);
+			pDestinationTile.setStructureType(StructureType.NO_STRUCT);
+			startTile.setUnit(null);
+			crtUnit.setActionType(ActionType.MOVED);
+			break;
+
+		case TOMBSTONE: 
+			pDestinationTile.setStructureType(StructureType.NO_STRUCT);
+			pDestinationTile.setUnit(crtUnit);
+			startTile.setUnit(null);
+			crtUnit.setActionType(ActionType.MOVED);
+			break; 
+
+		case ROAD: 
+			pDestinationTile.setUnit(crtUnit);
+			startTile.setUnit(null);
+			crtUnit.setActionType(ActionType.READY);
+			break; 
+
+		case WATCHTOWER: 
+			//TODO
+			break;
+		case VILLAGE_CAPITAL:
+			//TODO 
+			break;
+
+		default:
+			pDestinationTile.setUnit(crtUnit);
+			startTile.setUnit(null);
+			crtUnit.setActionType(ActionType.READY);
+			if (pDestinationTile.getMeadow())
+			{
+				pDestinationTile.setHasMeadow(false);
+			}
+			break;
+		}
+
+	}
+
+	/**
+	 * Moves a knight to a given tile
+	 * @param crtUnit
+	 * @param startTile
+	 * @param pDestinationTile
+	 * @param pGameMap
+	 */
+	private static void moveKnight(Unit crtUnit, Tile startTile, Tile pDestinationTile, GameMap pGameMap)
+	{
+		switch (pDestinationTile.getStructureType())
+		{
+		case TREE:
+			//do nothing-- this case shouldn't happen
+			break; 
+		case TOMBSTONE: 
+			//do nothing-- this case shouldn't happen
+			break; 
+		case ROAD: 
+			pDestinationTile.setUnit(crtUnit);
+			startTile.setUnit(null);
+			crtUnit.setActionType(ActionType.READY);
+			break;
+		case VILLAGE_CAPITAL: 
+			//TODO 
+			break; 
+		case WATCHTOWER: 
+			//TODO 
+			break;
+		default:
+			pDestinationTile.setUnit(crtUnit);
+			startTile.setUnit(null);
+			crtUnit.setActionType(ActionType.READY);
+			if (pDestinationTile.getMeadow())
+			{
+				pDestinationTile.setHasMeadow(false);
+			}
+			break;
+		}
+	}
+
 	private static boolean isNeutral (Tile pTile)
 	{
 		if (pTile.getColor() == Color.NEUTRAL)
@@ -298,5 +250,5 @@ public class Logic {
 			return false; 
 		}
 	}
-	
+
 }
