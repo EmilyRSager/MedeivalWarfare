@@ -42,8 +42,6 @@ public class TestPathFinder {
 		Village lVillage = lGame.getVillage(lTile);
 		Set<Tile> lVillageTiles = lVillage.getTiles();
 		
-		System.out.println(gson.toJson(lVillageTiles));
-		
-		
+		System.out.println(gson.toJson(lVillageTiles));	
 	}
 }
