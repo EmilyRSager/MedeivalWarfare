@@ -1,12 +1,16 @@
 package mw.client.app;
 
+
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 import org.minueto.MinuetoEventQueue;
 
 import mw.client.controller.ActionInterpreter;
+import mw.client.controller.ChoiceCenter.ChoiceType;
 import mw.client.controller.CurrentClientState;
+import mw.client.controller.DisplayUpdater;
 import mw.client.controller.ModelViewMapping;
 import mw.client.controller.NewStateApplier;
 import mw.client.controller.TileModificationHandler;
@@ -43,6 +47,13 @@ public final class MainApplication {
 		testUpdate(SharedColor.BLUE);
 		waitABit();
 		testUpdate(SharedColor.YELLOW);
+		waitABit();
+		DisplayUpdater.showVillageResources(200, 200);
+		List<String> crap = new ArrayList<String>();
+		crap.add("crap1");
+		crap.add("crap2");
+		crap.add("crap3");
+		DisplayUpdater.displayChoice(ChoiceType.UNIT_ACTION, crap);
 		waitABit();
 		
 		while(true)
@@ -129,6 +140,7 @@ public final class MainApplication {
 		
 		CurrentClientState.setCurrentGame(game);
 		ActionInterpreter.initialize(game);
+		CurrentClientState.setCurrentGameWindow(window);
 	}
 	
 	public static void startDisplay()
