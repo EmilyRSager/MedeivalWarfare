@@ -1,7 +1,10 @@
 package mw.server.gamelogic;
 
+import java.io.Serializable;
 import java.util.ArrayList;
+
 import mw.util.*;
+
 import java.util.Collection;
 import java.util.Stack;
 
@@ -9,7 +12,7 @@ import java.util.Stack;
  * Game class definition.
  * @author emilysager
  */
-public class Game extends RandomColorGenerator {
+public class Game extends RandomColorGenerator implements Serializable{
 	private static final int DEFAULT_WIDTH = 12;
 	private static final int DEFAULT_HEIGHT = 12;
 	private Collection<Player> aPlayers;

@@ -1,10 +1,11 @@
 package mw.server.gamelogic;
 
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.HashMap;
 
 
-public class Graph {
+public class Graph implements Serializable {
 
 	
 	private HashMap< GraphNode, Collection<GraphNode>> aGraph; //adjacency list for neighbours

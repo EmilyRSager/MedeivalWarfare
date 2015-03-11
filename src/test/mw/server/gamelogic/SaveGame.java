@@ -1,20 +1,36 @@
 package test.mw.server.gamelogic;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.PrintWriter;
+
 import com.google.gson.Gson;
 
 import mw.server.gamelogic.Game;
 
 public class SaveGame {
 	
-	private static String aTheSavedGame;
 	
-	public static void SaveMyGame(Game pGame){
-		aTheSavedGame = new Gson().toJson(pGame);
+	public static void SaveMyGame(Game pGame) throws FileNotFoundException{
+		System.out.println("game being serialized");
+		String theGame = new Gson().toJson(pGame);
+		System.out.println("writing to the savegame file");
+		PrintWriter out = new PrintWriter("savegame.txt");
+		out.println(theGame);
+		out.close();
 	}
 	
-	public static String returnSavedGame(){
+	public static Game returnSavedGame() throws IOException{
 		//later can be expanded to take in a player ID or something to return the game that is associated with them
-		return aTheSavedGame;
+		File file = new File("savegame.txt");
+		FileReader fReader = new FileReader(file);
+		BufferedReader br = new BufferedReader(fReader);
+		String input = br.readLine();
+		fReader.close();
+		return new Gson().fromJson(input, Game.class);
 	}
 	
 	

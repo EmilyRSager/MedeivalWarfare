@@ -1,5 +1,7 @@
 package mw.server.gamelogic;
 
+import java.io.Serializable;
+
 /**
  * 
  * @author emilysager
@@ -8,7 +10,7 @@ package mw.server.gamelogic;
  *Color NEUTRAL is the neutral color
  */
 
-public enum Color 
+public enum Color implements Serializable
 {
 	GREEN, RED, BLUE, YELLOW, NEUTRAL, SEATILE;
 }
