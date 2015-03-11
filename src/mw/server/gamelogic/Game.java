@@ -236,22 +236,25 @@ public class Game extends RandomColorGenerator implements Serializable{
 	 */
 	public void hireVillager(Tile pTile, UnitType pUnitType)
 	{
-		if (pTile.getStructureType()!= StructureType.TREE && pTile.getStructureType()!=StructureType.VILLAGE_CAPITAL
-				&& pTile.getStructureType()!=StructureType.TOMBSTONE && pTile.getStructureType()!=StructureType.WATCHTOWER)
+		if (pTile.getUnit()==null)
 		{
+			if (pTile.getStructureType()!= StructureType.TREE && pTile.getStructureType()!=StructureType.VILLAGE_CAPITAL
+					&& pTile.getStructureType()!=StructureType.TOMBSTONE && pTile.getStructureType()!=StructureType.WATCHTOWER)
+			{
 
-			//Decrement the Gold held by the hiring village
-			int lHireCost;
-			lHireCost = PriceCalculator.getHireCost(pUnitType);
-			aMap.getVillage(pTile).addOrSubtractGold(-lHireCost);
-			
-			//place a new unit on pTile
-			Unit pUnit = new Unit(pUnitType); 
-			pTile.setUnit(pUnit);
-			pTile.notifyObservers();
-			
+				//Decrement the Gold held by the hiring village
+				int lHireCost;
+				lHireCost = PriceCalculator.getHireCost(pUnitType);
+				aMap.getVillage(pTile).addOrSubtractGold(-lHireCost);
+
+				//place a new unit on pTile
+				Unit pUnit = new Unit(pUnitType); 
+				pTile.setUnit(pUnit);
+				pTile.notifyObservers();
+
+			}
 		}
-		
+
 	}
 
 	/**
@@ -282,16 +285,16 @@ public class Game extends RandomColorGenerator implements Serializable{
 	{
 		aCurrentPlayer = getNextPlayer();
 		//TODO villages are never passed to Players
-		
+
 		Collection<Village> aCrtVillages;
 		aCrtVillages = aCurrentPlayer.getVillages();
-		
+
 		for (Village lVillage : aCrtVillages) {
 			lVillage.updateUnits();
 			lVillage.updateTiles();
 		}
 	}
-	
+
 	/**
 	 * @return Player whose turn it now is
 	 */
