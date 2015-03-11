@@ -76,8 +76,9 @@ public class ImageFileManager
 			fileName = TERRAIN_FOLDER + "tombstone.png";
 			break;
 		case SEA:
-			fileName = TERRAIN_FOLDER;
-			break;
+			throw new IllegalArgumentException("We don't support sea tiles yet !");
+			//fileName = TERRAIN_FOLDER;
+			//break;
 			
 			default:
 				throw new IllegalArgumentException("Terrain value "+t+" has no image associated with it");

@@ -12,13 +12,13 @@ public class ChoiceCenter {
 	
 	public enum ChoiceType { UNIT_HIRE, VILLAGE_UPGRADE, UNIT_ACTION } ;
 	
-	private static final String vupChoiceName = "Select the type of village to upgrade to:";
+	private static final String vupChoiceName = "Type of village to upgrade to:";
 	private UserChoice<SharedTile.VillageType> villageUpgradeChoice;
 
 	private static final String uactChoiceName = "Select an action:";
 	private UserChoice<SharedActionType> unitActionChoice;
 
-	private static final String uhireupChoiceName = "Select a type of unit to hire:";
+	private static final String uhireupChoiceName = "Type of unit to hire:";
 	private UserChoice<SharedTile.UnitType> unitUpgradeHireChoice;
 	
 	/* ========================
@@ -41,6 +41,7 @@ public class ChoiceCenter {
 		villageUpgradeChoice = null;
 		unitActionChoice = null;
 		unitUpgradeHireChoice = null;
+		DisplayUpdater.clearInfos();
 	}
 	
 	public void handleChoiceResult(ChoiceType chType, String choseItem, ActionInterpreter handler)
