@@ -67,6 +67,12 @@ public class ChoiceCenter {
 			handler.notifyUnitActionChoiceResult(at);
 			break;
 			
+
+		case UNIT_UPGRADE:
+			SharedTile.UnitType upunit= getChoiceResult(unitUpgradeChoice, choseItem);
+			handler.notifyUnitUpgradeChoiceResult(upunit);
+			break;
+			
 			default:
 				throw new IllegalArgumentException("The pair (choiceType="+chType+", choseItem=\""+choseItem+") is invalid");
 		}
