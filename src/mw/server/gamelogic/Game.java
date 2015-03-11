@@ -81,6 +81,7 @@ public class Game extends RandomColorGenerator {
 	{
 		return aMap.getTile(pCoord);
 	}
+	
 	/**
 	 * Returns all the tiles in the game in a 2D array 
 	 * [i][j] indices correspond with x y coordinates
@@ -200,14 +201,11 @@ public class Game extends RandomColorGenerator {
 	}
 
 	/**
-	 * 
 	 * @param pTile
 	 * @param pUnitType
 	 * places the newly hired unit on the Tile
 	 * includes upgradeVillager 
-	 * 
 	 */
-
 	public void hireVillager(Tile pTile, UnitType pUnitType)
 	{
 		Unit pUnit = new Unit(pUnitType); 
@@ -331,6 +329,7 @@ public class Game extends RandomColorGenerator {
 			e.printStackTrace();
 		}
 	}
+	
 	/**
 	 * Gets the game map for the current game
 	 * @return
@@ -341,11 +340,20 @@ public class Game extends RandomColorGenerator {
 		return aMap;
 
 	}
+	
+	/**
+	 * @return
+	 */
 	public Collection<Player> getPlayers() 
 	{
 		return aPlayers; 
 	}
 
+	/**
+	 * 
+	 * @param pTile
+	 * @return
+	 */
 	public Village getVillage(Tile pTile)
 	{
 		return aMap.getVillage(pTile);

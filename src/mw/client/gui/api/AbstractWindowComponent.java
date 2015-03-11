@@ -21,6 +21,8 @@ public abstract class AbstractWindowComponent extends Observable implements Wind
 	 * 
 	 */
 	
+	public enum ChangedState { IMAGE, POSITION , SIZE};
+	
 	protected final WindowArea area;
 	private int minWidth, minHeight;
 	
