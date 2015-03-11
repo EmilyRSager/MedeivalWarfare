@@ -61,7 +61,6 @@ public class GameWindow implements Observer {
 		
 		windowLayout = new VerticalLayout(0, 0, 3);
 		controlBarLayout = new HorizontalLayout(0, 0, 200, 3);
-		controlBarLayout.addComponent(new TextDisplay("Hallo"), 1);
 		
 		windowLayout.addComponent(mapComp, 0);
 		windowLayout.addComponent(controlBarLayout, 2);
@@ -129,7 +128,7 @@ public class GameWindow implements Observer {
 						if (mouseButton==1)
 						{
 							System.out.println("I am clicked !");
-							ActionInterpreter.singleton().notifyChoiceResult(ChoiceCenter.getChoiceTitle(choiceType), str);
+							ActionInterpreter.singleton().notifyChoiceResult(choiceType, str);
 						}
 					}
 				};

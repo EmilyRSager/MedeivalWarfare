@@ -121,7 +121,6 @@ public class GridLayout extends AbstractWindowComponent/* implements Observer*/ 
 	 */
 	private void pack()
 	{
-		System.out.println(this+" : Start packing with x="+area.getLeftBorder()+", y="+area.getTopBorder());
 		computeRowHeights();
 		computeColumnWidths();
 		//packing = true;

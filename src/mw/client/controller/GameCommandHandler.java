@@ -42,4 +42,9 @@ public final class GameCommandHandler {
 		NewStateApplier.applyChanges(CurrentClientState.getCurrentGame(), newState);
 	}
 	
+	public static void setNowPlaying(boolean nowPlaying)
+	{
+		CurrentClientState.getCurrentGame().setPlaying(nowPlaying);
+	}
+	
 }

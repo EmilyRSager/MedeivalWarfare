@@ -1,6 +1,8 @@
 package mw.client.controller;
 
 import java.util.Collection;
+
+import mw.client.controller.ChoiceCenter.ChoiceType;
 import mw.client.gui.ImageTile;
 import mw.client.model.*;
 import mw.shared.SharedPossibleGameActions;
@@ -134,9 +136,9 @@ public final class ActionInterpreter {
 		displayPossibleActions();
 	}
 	
-	public void notifyChoiceResult(String choiceTitle, String choseItem)
+	public void notifyChoiceResult(ChoiceType choiceType, String choseItem)
 	{
-		choiceCenter.handleChoiceResult(choiceTitle, choseItem, this);		
+		choiceCenter.handleChoiceResult(choiceType, choseItem, this);		
 		actionSender.askForPossibleMoves(selectedMTile);
 	}
 	
@@ -166,7 +168,9 @@ public final class ActionInterpreter {
 		if (target==null)
 			return false;
 		boolean correctTileComponent = ModelQuerier.hasUnit(target) || ModelQuerier.hasVillage(target);
-		return correctTileComponent && ModelQuerier.ownedByCurrentPlayer(game, target);
+		return correctTileComponent 
+				&& ModelQuerier.isCurrentlyPlaying(game)
+				&& ModelQuerier.ownedByCurrentPlayer(game, target);
 	}
 	
 	private void clearSelect() 
