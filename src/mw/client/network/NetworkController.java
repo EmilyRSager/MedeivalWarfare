@@ -28,7 +28,6 @@ public class NetworkController {
 	}
 	
 	/**
-	 * 
 	 * @param pUsername
 	 * @param pPassword
 	 */
@@ -50,8 +49,8 @@ public class NetworkController {
 	public static void getPossibleGameActions(SharedCoordinates pSharedCoordinates){
 		aServerChannel.sendCommand(new GetPossibleGameActionsCommand(pSharedCoordinates));
 	}
+	
 	/**
-	 * 
 	 * @param pUnitCoordinates
 	 * @param pUnitType
 	 */
@@ -60,7 +59,6 @@ public class NetworkController {
 	}
 	
 	/**
-	 * 
 	 * @param pSourceCoordinates
 	 * @param pDestinationCoordinates
 	 */
@@ -70,7 +68,6 @@ public class NetworkController {
 	
 	
 	/**
-	 * 
 	 * @param pUnitCoordinates
 	 * @param pActionType
 	 */
@@ -88,7 +85,6 @@ public class NetworkController {
 	}
 	
 	/**
-	 * 
 	 * @param pVillageCoordinates
 	 * @param pVillageType
 	 */

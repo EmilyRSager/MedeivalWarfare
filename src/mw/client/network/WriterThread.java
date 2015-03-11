@@ -21,10 +21,8 @@ public class WriterThread extends Thread {
 	 * @param pDataOutputStream
 	 */
 	public WriterThread(DataOutputStream pDataOutputStream) {
-		
 		aDataOutputStream = pDataOutputStream;
 		aServerCommandQueue = new LinkedBlockingQueue<AbstractServerCommand>();
-		
 	}
 	
 	/**
@@ -32,21 +30,18 @@ public class WriterThread extends Thread {
 	 * @param pServerCommand
 	 */
 	public void sendCommand(AbstractServerCommand pServerCommand){
-		
 		try {
 			aServerCommandQueue.put(pServerCommand);
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
 	}
 	
 	@Override
 	public void run(){
 		try{
 			while(true){
-				
 				AbstractServerCommand lServerCommand = aServerCommandQueue.take();
 				
 				//System.out.println("[Client] Enter message to send.");

@@ -77,7 +77,6 @@ public class Village extends Observable
 			addGold +=Logic.getGoldGenerated(lGraphNode);  
 		}
 		addOrSubtractGold(addGold);
-
 	}
 	
 	public void upgradeVillage(VillageType pVillageType) throws NotEnoughIncomeException {
@@ -119,7 +118,7 @@ public class Village extends Observable
 			Logic.clearTombstone(lGraphNode);
 		}
 		generateGold();
-		notifyObservers(); 
+		aCapital.notifyObservers(); 
 	}
 
 
@@ -164,6 +163,7 @@ public class Village extends Observable
 	{
 		aGold = aGold + addGold; 
 		aCapital.setGold(aGold);
+		aCapital.notifyObservers();
 	}
 
 	/**
@@ -174,6 +174,7 @@ public class Village extends Observable
 	{
 		aWood = aWood + addWood;
 		aCapital.setWood(aWood);
+		aCapital.notifyObservers();
 	}
 
 	/**
@@ -182,8 +183,9 @@ public class Village extends Observable
 	 * @precondition ONLY called either after removeTile from an enemy village, or on neutral land 
 	 * @param pTile
 	 */
-	public void addTile(Tile pTile) 
+	public void addTile(GraphNode pGraphNode) 
 	{
+		aVillageNodes.add(pGraphNode); 
 		//TODO: needs to be implemented
 		//some type of search here to see if the village has fused
 	}
@@ -215,7 +217,6 @@ public class Village extends Observable
 	 */
 	public void tryPayingGold(int goldCost) throws NotEnoughIncomeException
 	{
-
 		if (aGold >= goldCost)
 		{
 			addOrSubtractGold(-goldCost);
@@ -256,5 +257,9 @@ public class Village extends Observable
 		myString += "/n";
 		return myString; 
 		
+	}
+
+	public Color getColor() {
+		return aCapital.getColor();
 	}
 }

@@ -51,7 +51,6 @@ public class GameController {
 	 */
 	public static PossibleGameActions getPossibleGameActions(Game pGame, int pRow, int pColumn)
 	{
-
 		Coordinates mappingCoordinates = new Coordinates(pRow, pColumn);
 		Tile clicked = pGame.getTile(mappingCoordinates); 
 		return  pGame.tileIsClicked(clicked); 	

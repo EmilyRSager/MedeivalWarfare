@@ -101,10 +101,7 @@ public class GameMap  implements Serializable{
 				}
 			}
 		}
-
 	}
-
-
 
 	/**
 	 * Randomly Colors the Tiles 
@@ -153,14 +150,12 @@ public class GameMap  implements Serializable{
 			//only runs 1X per village
 			for (Tile lTile: lVillage.getTiles())
 			{
-
-				lTile.setVillageType(VillageType.HOVEL);
 				lVillage.setVillageType(VillageType.HOVEL);
 				lVillage.setCapital(lTile);
 				
-				//TEST
-				lVillage.addOrSubtractWood(100);
 				lVillage.addOrSubtractGold(100);
+				lVillage.addOrSubtractWood(100);
+				
 				break; 
 
 			}
@@ -310,14 +305,13 @@ public class GameMap  implements Serializable{
 
 		return rNeighbors;
 	}
+	
 	/**
 	 * @param v1
 	 * @param v2
 	 * @return
 	 * Can Write after the demo
 	 */
-
-
 	public boolean canFuse(Village v1, Village v2)
 	{
 		return false; 
@@ -406,6 +400,9 @@ public class GameMap  implements Serializable{
 		
 	}
 
+	public Collection<Village> getVillages() {
+		return aVillages;
+	}
 }
 
 

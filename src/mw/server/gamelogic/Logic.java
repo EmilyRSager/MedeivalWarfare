@@ -70,6 +70,7 @@ public class Logic {
 		if(pStructureType == StructureType.TOMBSTONE)
 		{
 			pTile.setStructureType(StructureType.TREE);
+			pTile.notifyObservers();
 		}	
 	}
 

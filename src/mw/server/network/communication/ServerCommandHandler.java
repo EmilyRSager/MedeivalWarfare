@@ -55,10 +55,8 @@ public class ServerCommandHandler {
 	 */
 	public synchronized void handle(AbstractServerCommand pServerCommand, int pClientID){
 		try {
-			
 			aServerCommandQueue.put(
 					new ServerCommandWrapper(pServerCommand, pClientID));
-			
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
