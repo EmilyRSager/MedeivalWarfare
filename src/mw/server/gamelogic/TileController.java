@@ -10,7 +10,6 @@ package mw.server.gamelogic;
 public class TileController {
 
 	/**
-	 * 
 	 * @param pTile
 	 * @return
 	 */
@@ -29,7 +28,6 @@ public class TileController {
 	}
 
 	/**
-	 * 
 	 * @param pTile
 	 * @return
 	 */

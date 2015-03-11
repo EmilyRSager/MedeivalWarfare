@@ -2,12 +2,11 @@ package mw.server.gamelogic;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-
-import mw.util.*;
-
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Stack;
+
+import mw.util.CircularIterator;
 
 /**
  * Game class definition.
@@ -85,7 +84,7 @@ public class Game extends RandomColorGenerator implements Serializable{
 	}
 
 	/**
-	 * For testing
+	 * @FOR_TESTING
 	 */
 	public Game()
 	{
@@ -268,7 +267,7 @@ public class Game extends RandomColorGenerator implements Serializable{
 	 */
 	public void beginRound()
 	{
-		//TODO ABISHEK PLEASE DO THIS
+		aMap.generateTrees();
 	}
 
 

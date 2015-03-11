@@ -36,7 +36,8 @@ public class NetworkController {
 	}
 	
 	/**
-	 * 
+	 * Requests of the server to create a new game. If there are insufficient users connected
+	 * to the server, this client must wait until more clients connect.
 	 */
 	public static void requestNewGame(){
 		aServerChannel.sendCommand(new RequestNewGameCommand());
@@ -76,7 +77,6 @@ public class NetworkController {
 	}
 	
 	/**
-	 * 
 	 * @param pUnitCoordinates
 	 * @param pUnitType
 	 */

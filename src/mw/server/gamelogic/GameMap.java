@@ -56,7 +56,7 @@ public class GameMap  implements Serializable{
 	 * this method can be called at the beginning of a turn to create new trees as defined in the 
 	 * design spec
 	 */
-	public void treeGrowthGeneration(){
+	public void generateTrees(){
 
 		//following just to make it easier to iterate over, can be removed 
 		ArrayList<GraphNode> lGraphNodes = new ArrayList<GraphNode>();

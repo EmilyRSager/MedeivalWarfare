@@ -47,6 +47,11 @@ public class PlayerMapper {
 	 */
 	public void putPlayer(Integer pClientID, Player pPlayer){
 		aPlayerMap.put(pClientID, pPlayer);
+		
+		/**
+		 * @fixme 
+		 * Override the equals/hashcode method in the Player class.
+		 */
 		aClientMap.put(pPlayer, pClientID);
 	}
 	
