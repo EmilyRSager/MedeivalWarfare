@@ -268,7 +268,7 @@ public final class TileGraphLogic {
 	private static boolean unitCanChopTree(Unit pUnit)
 	{
 		UnitType pUnitType = pUnit.getUnitType(); 
-		if (pUnitType != UnitType.KNIGHT) 
+		if (pUnitType == UnitType.KNIGHT) 
 		{
 			return false; 
 		}
