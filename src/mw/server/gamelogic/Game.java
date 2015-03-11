@@ -228,6 +228,7 @@ public class Game extends RandomColorGenerator implements Serializable{
 	{
 		Collection<Village> aCrtVillages;
 		aCrtVillages = aCurrentPlayer.getVillages();
+		
 		for (Village lVillage : aCrtVillages) {
 			lVillage.updateUnits();
 			lVillage.updateTiles();
