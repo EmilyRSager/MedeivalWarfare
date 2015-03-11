@@ -29,33 +29,6 @@ public class ImageFileManager
 	private static final String ROAD_FOLDER = getImageSizeFolder(ROAD_ICON_SIZE);
 	
 	
-	public enum TileType { DEFAULT, GRASS };
-	
-	private static String initializeFolder()
-	{
-		try
-		{
-			String s = Files.readAllLines(Paths.get("srcpath.txt"), Charset.defaultCharset()).get(0);
-			s = s.replace('\\', '/');
-			
-			if (s.charAt(s.length()-1)!='/')
-				s = s+'/';
-			
-			s = s.concat("images/");
-
-			s += "used/";
-			
-			System.out.println("Image folder is "+s);
-			return s;
-		}
-		catch (IOException e)
-		{
-			System.out.println("Error while loading the file 'srcpath.txt'");
-			System.exit(1);
-			return null;
-		}
-	}
-	
 	private static String getImageSizeFolder(int size)
 	{
 		return FOLDER + size + "x" + size + "/";
