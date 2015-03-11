@@ -351,6 +351,8 @@ public class Game extends RandomColorGenerator implements Serializable{
 				//TODO -- recalculate village 
 				//aMap.recalculateVillages();
 				moveUnit(startTile, pDestinationTile);		
+				pDestinationTile.getUnit().setActionType(ActionType.MOVED);
+				System.out.println("ACTION TYPE SET TO MOVED");
 	}
 
 	/**
