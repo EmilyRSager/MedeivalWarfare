@@ -69,6 +69,7 @@ public class GameWindow implements Observer {
 		
 		windowLayout = new VerticalLayout(0, 0, 2);
 		controlBarLayout = new HorizontalLayout(0, 0, 200, 3);
+		controlBarLayout.addComponent(new TextDisplay("Hallo"), 1);
 		
 		windowLayout.addComponent(mapComp, 0);
 		windowLayout.addComponent(controlBarLayout, 1);
@@ -78,7 +79,10 @@ public class GameWindow implements Observer {
 		window = new MinuetoFrame(windowLayout.getWidth(), windowLayout.getHeight(), true);
 		
 		mapComp.setWindow(this);
-		windowLayout.addObserver(this);
+		windowLayout.setWindow(this);
+		controlBarLayout.setWindow(this);
+		
+		//windowLayout.addObserver(this);
 		//this.registerMouseHandler(button);
 		//button.addObserver(this);
 		
@@ -183,6 +187,7 @@ public class GameWindow implements Observer {
 		resourceLayout.addComponent(woodText);
 		resourceLayout.addComponent(goldText);
 		controlBarLayout.addComponent(resourceLayout, 0);
+		resourceLayout.setWindow(this);
 		this.render();
 	}
 	
@@ -217,6 +222,7 @@ public class GameWindow implements Observer {
 			controlBarLayout.addComponent(choiceLayout, 2);
 			break;
 		}
+		choiceLayout.setWindow(this);
 		this.render();
 	}
 	/* ==========================
@@ -253,7 +259,7 @@ public class GameWindow implements Observer {
 	
 
 	
-	public static void main(String[] args)
+	/*public static void main(String[] args)
 	{
 		GameWindow gw = new GameWindow();
 		gw.render();
@@ -267,7 +273,7 @@ public class GameWindow implements Observer {
 		}
 		
 		//gw.update();
-	}
+	}*/
 	
 	
 	

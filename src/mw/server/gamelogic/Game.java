@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import mw.util.*;
 
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.Stack;
 
 /**
@@ -65,6 +64,11 @@ public class Game extends RandomColorGenerator implements Serializable{
 		crtIterator = new CircularIterator(pPlayers);
 		aCurrentPlayer = crtIterator.next(); 
 		
+	}
+	
+	public Game ()
+	{
+		aMap = new GameMap();
 	}
 	
 	/**

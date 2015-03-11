@@ -331,6 +331,67 @@ public class GameMap  implements Serializable{
 
 	}
 
+	/**
+	 * 
+	 */
+	public GameMap()
+	{
+		 aTiles = new Tile [10][10];
+		 aNodes = new GraphNode[10][10];
+		for (int i = 0; i< 10; i++)
+		{
+			for (int j = 0; j<10; j++ )
+			{
+
+				aTiles[i][j] = new Tile(StructureType.NO_STRUCT, i, j); 
+				aNodes[i][j] = new GraphNode(aTiles[i][j]);
+				TileToNodeHashMap.put(aTiles[i][j], aNodes[i][j]);
+				Coordinates crtCoord = new Coordinates(i, j);
+				CoordinatesToTileMap.put(crtCoord, aTiles[i][j]); 
+
+
+			}
+		}
+
+		graph = new Graph(HexToGraph.ConvertFlatToppedHexes(aNodes));
+
+		Set<GraphNode> villageSet = new HashSet<GraphNode>();
+
+		aTiles[1][6].setColor(Color.GREEN);
+		aTiles[1][7].setColor(Color.GREEN);
+		aTiles[1][8].setColor(Color.GREEN);
+		aTiles[1][9].setColor(Color.GREEN);
+		aTiles[2][6].setColor(Color.GREEN);
+		aTiles[2][7].setColor(Color.GREEN);
+		aTiles[2][8].setColor(Color.GREEN);
+		aTiles[2][9].setColor(Color.GREEN);
+		aTiles[3][6].setColor(Color.GREEN);		
+		aTiles[3][7].setColor(Color.GREEN);
+		aTiles[3][8].setColor(Color.GREEN);
+		aTiles[4][6].setColor(Color.GREEN);
+
+		villageSet.add(aNodes[1][6]);
+		villageSet.add(aNodes[1][7]);
+		villageSet.add(aNodes[1][8]);
+		villageSet.add(aNodes[1][9]);
+		villageSet.add(aNodes[2][6]);
+		villageSet.add(aNodes[2][7]);
+		villageSet.add(aNodes[2][8]);
+		villageSet.add(aNodes[2][9]);
+		villageSet.add(aNodes[3][6]);
+		villageSet.add(aNodes[3][7]);
+		villageSet.add(aNodes[3][8]);
+		villageSet.add(aNodes[4][6]);
+
+		
+		Village TestVillage = new Village(villageSet);
+		TestVillage.setCapital(aTiles[2][7]);
+		aVillages = new HashSet<Village>();
+		aVillages.add(TestVillage);
+		
+		
+		
+	}
 
 }
 
