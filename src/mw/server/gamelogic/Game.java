@@ -3,7 +3,6 @@ package mw.server.gamelogic;
 import java.util.ArrayList;
 import mw.util.*;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.Stack;
 
 /**
