@@ -23,6 +23,9 @@ public class CircularIterator<E> implements Iterator<E>, Serializable{
 		return true;
 	}
 
+	/**
+	 * @see java.util.Iterator#next()
+	 */
 	@Override
 	public E next() {
 		E lNextValue = aElements[aIndex];
