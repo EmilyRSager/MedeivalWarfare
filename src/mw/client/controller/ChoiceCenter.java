@@ -10,7 +10,7 @@ import mw.shared.SharedTile.VillageType;
 
 public class ChoiceCenter {
 	
-	public enum ChoiceType { UNIT_HIRE, VILLAGE_UPGRADE, UNIT_ACTION } ;
+	public enum ChoiceType { UNIT_HIRE, VILLAGE_UPGRADE, UNIT_ACTION, UNIT_UPGRADE } ;
 	
 	private static final String vupChoiceName = "Type of village to upgrade to:";
 	private UserChoice<SharedTile.VillageType> villageUpgradeChoice;
@@ -18,8 +18,12 @@ public class ChoiceCenter {
 	private static final String uactChoiceName = "Select an action:";
 	private UserChoice<SharedActionType> unitActionChoice;
 
-	private static final String uhireupChoiceName = "Type of unit to hire:";
-	private UserChoice<SharedTile.UnitType> unitUpgradeHireChoice;
+	private static final String hireChoiceName = "Type of unit to hire:";
+	private UserChoice<SharedTile.UnitType> unitHireChoice;
+	
+	private static final String uupChoiceName = "Type of unit to upgrade to:";
+	private UserChoice<SharedTile.UnitType> unitUpgradeChoice;
+	
 	
 	/* ========================
 	 * 		Constructors
@@ -40,7 +44,7 @@ public class ChoiceCenter {
 	{
 		villageUpgradeChoice = null;
 		unitActionChoice = null;
-		unitUpgradeHireChoice = null;
+		unitHireChoice = null;
 		DisplayUpdater.clearInfos();
 	}
 	
@@ -54,7 +58,7 @@ public class ChoiceCenter {
 			break;
 			
 		case UNIT_HIRE:
-			SharedTile.UnitType ut = getChoiceResult(unitUpgradeHireChoice, choseItem);
+			SharedTile.UnitType ut = getChoiceResult(unitHireChoice, choseItem);
 			handler.notifyUnitHireChoiceResult(ut);
 			break;
 			
@@ -72,7 +76,7 @@ public class ChoiceCenter {
 	//		Display
 
 
-	public void displayVillageChoice(VillageType vt)
+	public void displayVillageUpgradeChoice(VillageType vt)
 	{
 		List<VillageType> vtList = new ArrayList<VillageType>();
 		vtList.add(vt);
@@ -80,16 +84,22 @@ public class ChoiceCenter {
 		DisplayUpdater.displayChoice(ChoiceType.VILLAGE_UPGRADE, villageUpgradeChoice.itemsToString());
 	}
 
-	public void displayUnitTypeChoice(Collection<SharedTile.UnitType> ut)
+	public void displayUnitHireChoice(Collection<SharedTile.UnitType> ut)
 	{
-		unitUpgradeHireChoice = new UserChoice<SharedTile.UnitType>(ut);
-		DisplayUpdater.displayChoice(ChoiceType.UNIT_HIRE, unitUpgradeHireChoice.itemsToString());
+		unitHireChoice = new UserChoice<SharedTile.UnitType>(ut);
+		DisplayUpdater.displayChoice(ChoiceType.UNIT_HIRE, unitHireChoice.itemsToString());
 	}
 
 	public void displayUnitActionChoice(Collection<SharedActionType> unitActions)
 	{
 		unitActionChoice = new UserChoice<SharedActionType>(unitActions);
 		DisplayUpdater.displayChoice(ChoiceType.UNIT_ACTION, unitActionChoice.itemsToString());
+	}
+
+	public void displayUnitUpgradeChoice(Collection<SharedTile.UnitType> ut)
+	{
+		unitUpgradeChoice = new UserChoice<SharedTile.UnitType>(ut);
+		DisplayUpdater.displayChoice(ChoiceType.UNIT_UPGRADE, unitUpgradeChoice.itemsToString());
 	}
 	
 	/* ==========================
@@ -124,10 +134,13 @@ public class ChoiceCenter {
 			return uactChoiceName;
 			
 		case UNIT_HIRE:
-			return uhireupChoiceName;
+			return hireChoiceName;
 			
 		case VILLAGE_UPGRADE:
 			return vupChoiceName;
+
+		case UNIT_UPGRADE:
+			return uupChoiceName;
 			
 			default:
 				throw new IllegalArgumentException("The value "+choice+" does not have a choice name associated with it");

@@ -242,16 +242,19 @@ public class Game extends RandomColorGenerator implements Serializable{
 					&& pTile.getStructureType()!=StructureType.TOMBSTONE && pTile.getStructureType()!=StructureType.WATCHTOWER)
 			{
 
+
+
+
+
 				//Decrement the Gold held by the hiring village
 				int lHireCost;
-				lHireCost = PriceCalculator.getHireCost(pUnitType);
+				lHireCost = PriceCalculator.getUnitHireCost(pUnitType);
 				aMap.getVillage(pTile).addOrSubtractGold(-lHireCost);
 
 				//place a new unit on pTile
 				Unit pUnit = new Unit(pUnitType); 
 				pTile.setUnit(pUnit);
 				pTile.notifyObservers();
-
 			}
 		}
 
@@ -329,9 +332,6 @@ public class Game extends RandomColorGenerator implements Serializable{
 			if (crtUnit.getActionType() == ActionType.READY)
 			{
 				Logic.updateGameState(crtUnit, startTile, pDestinationTile, this, aMap);  
-				/**
-				 * @Hupala
-				 */
 			}
 		}
 
@@ -367,7 +367,6 @@ public class Game extends RandomColorGenerator implements Serializable{
 	 */
 	public void setActionType(Tile pTile, ActionType pActionType)
 	{
-
 		Unit pUnit = pTile.getUnit(); 
 		if (pUnit != null)
 		{
@@ -398,11 +397,10 @@ public class Game extends RandomColorGenerator implements Serializable{
 	 * @param pVillage
 	 * @param pNewType
 	 */
-	public void upgradeVillage(Village pVillage, VillageType pNewType) 
+	public void upgradeVillage(Village pVillage, VillageType pNewVillageType) 
 	{
-
 		try {
-			pVillage.upgradeVillage(pNewType);
+			pVillage.upgrade(pNewVillageType);
 		} catch (NotEnoughIncomeException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

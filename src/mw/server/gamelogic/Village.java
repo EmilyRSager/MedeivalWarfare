@@ -37,6 +37,7 @@ public class Village extends Observable implements Serializable
 	public void setVillageType(VillageType pVillageType)
 	{
 		aVillageType = pVillageType;
+		aCapital.setVillageType(pVillageType);
 	}
 
 	/**
@@ -77,27 +78,17 @@ public class Village extends Observable implements Serializable
 		addOrSubtractGold(addGold);
 	}
 	
-	public void upgradeVillage(VillageType pVillageType) throws NotEnoughIncomeException {
-		int upgradeCost = 0;
-		try {
-			upgradeCost = PriceCalculator.getUpgradePrice(pVillageType);
-
-		} catch (CantUpgradeException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
+	public void upgrade(VillageType pVillageType) throws NotEnoughIncomeException {
+		int upgradeCost = PriceCalculator.getVillageUpgradeCost(pVillageType);
 
 		if (aWood >= upgradeCost) {
 			try {
-				
-				Logic.upgrade(aVillageType, this);
+				Logic.upgradeVillage(this, aVillageType);
 				addOrSubtractWood(-upgradeCost);
-
 			} catch (CantUpgradeException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-
 		}
 		else 
 		{

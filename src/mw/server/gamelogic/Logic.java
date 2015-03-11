@@ -1,7 +1,6 @@
 package mw.server.gamelogic;
 
 import java.util.ArrayList;
-import java.util.Set;
 
 import junit.framework.Protectable;
 
@@ -36,30 +35,19 @@ public class Logic {
 	 * @param v
 	 * @throws CantUpgradeException
 	 */
-	public static void upgrade(VillageType aVillageType, Village v) throws CantUpgradeException
+	public static void upgradeVillage(Village v, VillageType aCrtVillageType) throws CantUpgradeException
 	{
-		VillageType myVillageType = VillageType.NO_VILLAGE; 
-
-		switch (aVillageType) {
+		switch (aCrtVillageType) {
 		case HOVEL:
-			myVillageType =  VillageType.TOWN;
+			v.setVillageType(VillageType.TOWN);;
 			break;
 		case TOWN: 
-			myVillageType =  VillageType.FORT;
+			v.setVillageType(VillageType.FORT);
 			break;
 		case FORT: 
-			throw new CantUpgradeException("Village Can't upgrade"); 
-		case NO_VILLAGE: 
-			throw new CantUpgradeException("Village does not exist"); 
-		}
-
-		Set<Tile> myTiles = v.getTiles(); 
-		for (Tile t: myTiles)
-		{
-			if (t.getVillageType() != VillageType.NO_VILLAGE) 
-			{
-				t.setVillageType(myVillageType);
-			}
+		case NO_VILLAGE:
+		default:
+			throw new CantUpgradeException("[Village] Can not upgrade Village due to requested VillageType nig slice.");
 		}
 	}
 
