@@ -28,13 +28,13 @@ public class TestMap {
 		
 		if (aTestGame==null) {
 			HashSet<Player> lPlayers = new HashSet<Player>();
-			HashSet<Village> lVillages1 = new HashSet<Village>();
 			lPlayers.add(new Player());
 			lPlayers.add(new Player());
 			aTestGame = new Game(lPlayers, 12, 12);
+			SaveGame.SaveMyGame(aTestGame);
 		}
 		else {
-			
+			aTestGame = SaveGame.returnSavedGame();
 		}
 		return aTestGame;
 	}
