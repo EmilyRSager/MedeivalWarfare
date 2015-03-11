@@ -2,7 +2,6 @@ package mw.server.gamelogic;
 
 import java.util.ArrayList;
 
-import junit.framework.Protectable;
 
 /**
  * @author Charlie BLoomfield, Abhishek Gupta, Arthur Denefle, Hugo Kapp, Frank Underwood, Definitely not Emily Sager
