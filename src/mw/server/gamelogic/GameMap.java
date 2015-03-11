@@ -57,6 +57,8 @@ public class GameMap  implements Serializable{
 	 * design spec
 	 */
 	public void generateTrees(){
+		
+		System.out.println("[Server] Attempting to grow trees.");
 
 		//following just to make it easier to iterate over, can be removed 
 		ArrayList<GraphNode> lGraphNodes = new ArrayList<GraphNode>();
@@ -98,6 +100,7 @@ public class GameMap  implements Serializable{
 
 				if(randomNum2==1){
 					randomlyPickedTile.setStructureType(StructureType.TREE);
+					randomlyPickedTile.notifyObservers();
 				}
 			}
 		}

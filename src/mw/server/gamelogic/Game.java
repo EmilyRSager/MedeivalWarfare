@@ -241,6 +241,34 @@ public class Game extends RandomColorGenerator implements Serializable{
 		pTile.notifyObservers(); 
 		//TODO add gold deduction from village
 	}
+	
+	/**
+	 * Informs the Game that the current Player is ending its turn. 
+	 */
+	public void endTurn() 
+	{
+		if (currentRoundIsOver())
+		{
+			beginRound();
+		}
+
+		aCurrentPlayer = getCurrentPlayer();
+		beginTurn();
+	}
+	
+	/**
+	 * @return true if the current round of Game play is over, false otherwise
+	 */
+	private boolean currentRoundIsOver(){
+		return crtIterator.isAtBeginning();
+	}
+	
+	/**
+	 * @return Player whose turn it now is
+	 */
+	private Player getNextPlayer(){
+		return crtIterator.next();
+	}
 
 	/**
 	 * Updates the state of the game at the beginning of a Unit's turn
@@ -286,20 +314,6 @@ public class Game extends RandomColorGenerator implements Serializable{
 			Logic.updateGameState(crtUnit, startTile, pDestinationTile, this, aMap);  
 		}
 
-	} 
-
-	/**
-	 * 
-	 */
-	public void endTurn() 
-	{
-		aCurrentPlayer = crtIterator.next();
-		if (crtIterator.isAtBeginning())
-		{
-			beginRound();
-		}
-
-		beginTurn();
 	}
 
 	/**
