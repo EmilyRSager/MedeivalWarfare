@@ -4,3 +4,4 @@
 srcpath.txt
 *.db
 *~
+config.properties
