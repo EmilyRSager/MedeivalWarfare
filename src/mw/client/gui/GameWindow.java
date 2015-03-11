@@ -206,7 +206,6 @@ public class GameWindow implements Observer {
 				};
 			this.registerMouseHandler(choiceButton);
 			choiceLayout.addComponent(choiceButton);
-			this.render();
 		}
 		switch (choiceType)
 		{
@@ -218,6 +217,7 @@ public class GameWindow implements Observer {
 			controlBarLayout.addComponent(choiceLayout, 2);
 			break;
 		}
+		this.render();
 	}
 	/* ==========================
 	 * 		Private methods
