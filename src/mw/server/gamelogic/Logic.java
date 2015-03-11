@@ -113,6 +113,7 @@ public class Logic {
 	 */
 	public static void updateGameState(Unit crtUnit, Tile startTile, Tile pDestinationTile, Game pGame, GameMap pGameMap)
 	{
+		
 		/*
 		  	PossibleGameActions myActions = pGame.tileIsClicked(startTile); 
 			Collection<Tile> movableTiles = myActions.getMovableTiles(); 
@@ -121,7 +122,8 @@ public class Logic {
 				return; 
 			}
 		 */
-		StructureType destStructType = pDestinationTile.getStructureType();
+		
+		//StructureType destStructType = pDestinationTile.getStructureType();
 		UnitType crtUnitType = crtUnit.getUnitType(); 
 		if (isNeutral(pDestinationTile))
 		{
@@ -129,14 +131,14 @@ public class Logic {
 		} 
 		if (tilesAreSameColor(startTile, pDestinationTile))
 		{	
-
+			
 			switch (crtUnitType)
 			{
 			case PEASANT:
-				movePeasant(crtUnit, pDestinationTile, pDestinationTile, pGame, pGameMap);
+				movePeasant(crtUnit, startTile, pDestinationTile, pGame, pGameMap);
 				break;
 			case INFANTRY: 
-				moveInfantry(crtUnit, pDestinationTile, pDestinationTile, pGame, pGameMap); 
+				moveInfantry(crtUnit, startTile, pDestinationTile, pGame, pGameMap); 
 				break;
 			case SOLDIER: 
 				moveSoldier(crtUnit, startTile, pDestinationTile, pGameMap);
@@ -255,7 +257,6 @@ public class Logic {
 	 */
 	private static void movePeasant(Unit crtUnit, Tile startTile, Tile pDestinationTile, Game pGame, GameMap pGameMap){
 		StructureType destStructureType = pDestinationTile.getStructureType();
-
 		switch (destStructureType)
 		{
 
@@ -263,7 +264,6 @@ public class Logic {
 			Village crt = pGameMap.getVillage(startTile);
 			if (crt !=null)
 			{
-				System.out.println("Crt!=Null");
 				crt.addOrSubtractWood(1);
 			}
 			pDestinationTile.setUnit(crtUnit);
