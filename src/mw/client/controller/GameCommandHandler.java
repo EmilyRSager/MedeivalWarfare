@@ -45,6 +45,7 @@ public final class GameCommandHandler {
 	public static void setNowPlaying(boolean nowPlaying)
 	{
 		CurrentClientState.getCurrentGame().setPlaying(nowPlaying);
+		DisplayUpdater.showEndTurnButton(nowPlaying);
 	}
 	
 }

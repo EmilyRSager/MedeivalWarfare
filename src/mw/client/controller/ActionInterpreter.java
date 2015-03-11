@@ -130,6 +130,14 @@ public final class ActionInterpreter {
 		}
 	}
 	
+	public void handleEndTurn()
+	{
+		if (ModelQuerier.isCurrentlyPlaying(game))
+		{
+			actionSender.sendEndTurn();
+		}
+	}
+	
 	public void handleNewPossibleActions(SharedPossibleGameActions newActions)
 	{
 		possibleActions = newActions;
@@ -138,7 +146,7 @@ public final class ActionInterpreter {
 	
 	public void notifyChoiceResult(ChoiceType choiceType, String choseItem)
 	{
-		choiceCenter.handleChoiceResult(choiceType, choseItem, this);		
+		choiceCenter.handleChoiceResult(choiceType, choseItem, this);
 		actionSender.askForPossibleMoves(selectedMTile);
 	}
 	
