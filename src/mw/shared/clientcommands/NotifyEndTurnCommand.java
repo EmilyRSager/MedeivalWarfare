@@ -1,5 +1,7 @@
 package mw.shared.clientcommands;
 
+import mw.client.controller.GameCommandHandler;
+
 public class NotifyEndTurnCommand extends AbstractClientCommand {
 	private final String aType = "NotifyEndTurnCommand";
 	
@@ -10,8 +12,6 @@ public class NotifyEndTurnCommand extends AbstractClientCommand {
 
 	@Override
 	public void execute() {
-		// TODO Call client controller method to notify that it's no longer this client's turn
-		
+		GameCommandHandler.setNowPlaying(false);
 	}
-
 }

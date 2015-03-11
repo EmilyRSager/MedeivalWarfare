@@ -19,7 +19,7 @@ public class ImageFileManager
 {
 	private static final int STRUCT_ICON_SIZE = ImageTile.DEFAULT_TILE_WIDTH - 10;
 	private static final int UNIT_ICON_SIZE = ImageTile.DEFAULT_TILE_WIDTH - 0;
-	private static final int TERRAIN_ICON_SIZE = ImageTile.DEFAULT_TILE_WIDTH - 00;
+	private static final int TERRAIN_ICON_SIZE = ImageTile.DEFAULT_TILE_WIDTH - 10;
 	private static final int ROAD_ICON_SIZE = ImageTile.DEFAULT_TILE_WIDTH;
 	
 	private static final String FOLDER = ProjectFolder.getPath() + "images/used/";//initializeFolder();
@@ -28,33 +28,6 @@ public class ImageFileManager
 	private static final String TERRAIN_FOLDER = getImageSizeFolder(TERRAIN_ICON_SIZE);
 	private static final String ROAD_FOLDER = getImageSizeFolder(ROAD_ICON_SIZE);
 	
-	
-	public enum TileType { DEFAULT, GRASS };
-	
-	private static String initializeFolder()
-	{
-		try
-		{
-			String s = Files.readAllLines(Paths.get("srcpath.txt"), Charset.defaultCharset()).get(0);
-			s = s.replace('\\', '/');
-			
-			if (s.charAt(s.length()-1)!='/')
-				s = s+'/';
-			
-			s = s.concat("images/");
-
-			s += "used/";
-			
-			System.out.println("Image folder is "+s);
-			return s;
-		}
-		catch (IOException e)
-		{
-			System.out.println("Error while loading the file 'srcpath.txt'");
-			System.exit(1);
-			return null;
-		}
-	}
 	
 	private static String getImageSizeFolder(int size)
 	{

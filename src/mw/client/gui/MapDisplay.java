@@ -69,26 +69,6 @@ public class MapDisplay implements Displayable, Clickeable {
 	 * ==========================
 	 */
 
-	
-	/*public void renderMap(MinuetoWindow window)
-	{
-			for(int i = 0; i < tiles.length; i++)
-			{
-				for(int j = 0; j < tiles[i].length; j++)
-				{
-					if(i % 2 == 0)
-					{
-						window.draw(tiles[i][j].getImage(), i * ImageTile.DEFAULT_TILE_WIDTH, j * ImageTile.DEFAULT_TILE_HEIGHT);
-					}
-					else
-					{
-						window.draw(tiles[i][j].getImage(), i * ImageTile.DEFAULT_TILE_WIDTH, (j * ImageTile.DEFAULT_TILE_HEIGHT) + (int)(.5 * ImageTile.DEFAULT_TILE_HEIGHT));
-					}
-				}
-			}
-			window.render();
-	}*/
-	
 	public void setObserver(Observer o)
 	{
 		for (ImageTile t : MultiArrayIterable.toIterable(tiles))
@@ -113,17 +93,14 @@ public class MapDisplay implements Displayable, Clickeable {
 		boolean oddRow = (xIndex % 2 == 1);
 		int yTopMove = 1;
 		int yBotMove = 0;
-		/*if () {
-			//yIndex = (int) y / tileHeight;
-			oddRow=false;
-		}*/
-		if (oddRow) {
+		
+		if (oddRow) 
+		{
 			y = y-(tileHeight/2);
 			if (y<0)
 				return null;
 			yTopMove=1-yTopMove;
 			yBotMove = 1-yBotMove;
-			//yIndex = (int) Math.floor(((y - (tileHeight / 2)) / (double) tileHeight)); 
 		}
 		
 		yIndex = y/tileHeight;
@@ -211,8 +188,6 @@ public class MapDisplay implements Displayable, Clickeable {
 		if(clickedModelTile != null)
 		{
 			ActionInterpreter.singleton().primarySelect(clickedTile);
-			/*clickedModelTile.setColor(SharedColor.BLUE);
-			clickedModelTile.notifyObservers();*/
 		}
 	}
 

@@ -4,6 +4,7 @@ public final class Game {
 
 	private final GameMap map;
 	private Player currentPlayer;
+	private boolean currentlyPlaying;
 	
 	
 	// Constructors
@@ -13,6 +14,7 @@ public final class Game {
 	{
 		map = gameMap;
 		this.currentPlayer = currentPlayer;
+		currentlyPlaying = false;
 	}
 	
 	
@@ -27,7 +29,16 @@ public final class Game {
 		return currentPlayer;
 	}
 	
+	public boolean isCurrentlyPlaying() {
+		return currentlyPlaying;
+	}
+	
+	
 	public void setPlayer(Player p) {
 		currentPlayer = p;
+	}
+	
+	public void setPlaying(boolean nowPlaying) {
+		currentlyPlaying  = nowPlaying;
 	}
 }

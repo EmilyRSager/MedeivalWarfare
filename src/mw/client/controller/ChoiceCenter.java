@@ -43,25 +43,27 @@ public class ChoiceCenter {
 		unitUpgradeHireChoice = null;
 	}
 	
-	public void handleChoiceResult(String choiceTitle, String choseItem, ActionInterpreter handler)
+	public void handleChoiceResult(ChoiceType chType, String choseItem, ActionInterpreter handler)
 	{
-		if (choiceTitle.equals(vupChoiceName))
+		switch(chType)
 		{
+		case VILLAGE_UPGRADE:
 			VillageType vt = getChoiceResult(villageUpgradeChoice, choseItem);
 			handler.notifyVillageUpgradeChoiceResult(vt);
-		}
-		else if (choiceTitle.equals(uhireupChoiceName))
-		{
+			break;
+			
+		case UNIT_ACTION:
 			SharedTile.UnitType ut = getChoiceResult(unitUpgradeHireChoice, choseItem);
 			handler.notifyUnitHireChoiceResult(ut);
-		}
-		else if (choiceTitle.equals(uactChoiceName))
-		{
+			break;
+			
+		case UNIT_HIRE:
 			SharedActionType at = getChoiceResult(unitActionChoice, choseItem);
 			handler.notifyUnitActionChoiceResult(at);
-		}
-		else {
-			throw new IllegalArgumentException("The pair (choiceTitle=\""+choiceTitle+"\", choseItem=\""+choseItem+") is invalid");
+			break;
+			
+			default:
+				throw new IllegalArgumentException("The pair (choiceType="+chType+", choseItem=\""+choseItem+") is invalid");
 		}
 	}
 	
@@ -74,19 +76,19 @@ public class ChoiceCenter {
 		List<VillageType> vtList = new ArrayList<VillageType>();
 		vtList.add(vt);
 		villageUpgradeChoice = new UserChoice<SharedTile.VillageType>(vtList);
-		DisplayUpdater.displayChoice(vupChoiceName, villageUpgradeChoice.itemsToString());
+		DisplayUpdater.displayChoice(ChoiceType.VILLAGE_UPGRADE, villageUpgradeChoice.itemsToString());
 	}
 
 	public void displayUnitTypeChoice(Collection<SharedTile.UnitType> ut)
 	{
 		unitUpgradeHireChoice = new UserChoice<SharedTile.UnitType>(ut);
-		DisplayUpdater.displayChoice(uhireupChoiceName, unitUpgradeHireChoice.itemsToString());
+		DisplayUpdater.displayChoice(ChoiceType.UNIT_HIRE, unitUpgradeHireChoice.itemsToString());
 	}
 
 	public void displayUnitActionChoice(Collection<SharedActionType> unitActions)
 	{
 		unitActionChoice = new UserChoice<SharedActionType>(unitActions);
-		DisplayUpdater.displayChoice(uactChoiceName, unitActionChoice.itemsToString());
+		DisplayUpdater.displayChoice(ChoiceType.UNIT_ACTION, unitActionChoice.itemsToString());
 	}
 	
 	/* ==========================

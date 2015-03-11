@@ -1,7 +1,9 @@
 package mw.shared.clientcommands;
 
+import mw.client.controller.GameCommandHandler;
+
 public class NotifyBeginTurnCommand extends AbstractClientCommand{
-	private final String aType = "BeginTurnCommand";
+	private final String aType = "NotifyBeginTurnCommand";
 	
 	@Override
 	public boolean isValid() {
@@ -10,8 +12,6 @@ public class NotifyBeginTurnCommand extends AbstractClientCommand{
 
 	@Override
 	public void execute() {
-		// TODO Call client controller method to notify that it's this client's turn
-		
+		GameCommandHandler.setNowPlaying(true);
 	}
-
 }
