@@ -4,7 +4,7 @@ import java.util.Collection;
 
 public class PriceCalculator 
 {
-	public static int getHireCost(UnitType pUnitType){
+	public static int getUnitHireCost(UnitType pUnitType){
 		switch(pUnitType){
 			case PEASANT:
 				return 10;
@@ -23,7 +23,7 @@ public class PriceCalculator
 	 * @return
 	 * @throws CantUpgradeException
 	 */
-	public static int getUpgradePrice(Unit pUnit) throws CantUpgradeException
+	public static int getUnitUpgradeCost(Unit pUnit) throws CantUpgradeException
 	{
 		UnitType pUnitType= pUnit.getUnitType();
 		switch (pUnitType) {
@@ -39,15 +39,20 @@ public class PriceCalculator
 			return 10;  
 		}
 	}
-	public static int getUpgradePrice(VillageType aVillageType) throws CantUpgradeException
+	
+	/**
+	 * 
+	 * @param aVillageType new VillageType
+	 * @return the cost
+	 * @throws CantUpgradeException
+	 */
+	public static int getVillageUpgradeCost(VillageType aVillageType)
 	{
 		switch (aVillageType) {
 		case HOVEL:
-			return 8; 
+			return 0;
 		case TOWN:
-			return 8; 
 		case FORT:
-			throw new CantUpgradeException("Village Can't be Upgraded"); 
 		default:
 			return 8; 
 		}
