@@ -261,7 +261,7 @@ public class Logic {
 			pDestinationTile.setStructureType(StructureType.NO_STRUCT);
 			startTile.setUnit(null);
 			crtUnit.setActionType(ActionType.MOVED);
-			System.out.println("Not Emily's Problem");
+			System.out.println("[Gamelogic] Action Type of Peasant set to moved");
 			break;
 
 		case TOMBSTONE: 
