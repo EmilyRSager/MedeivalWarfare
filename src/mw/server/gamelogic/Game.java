@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Stack;
+
 import mw.util.CircularIterator;
 
 /**
@@ -238,11 +239,18 @@ public class Game extends RandomColorGenerator implements Serializable{
 		if (pTile.getStructureType()!= StructureType.TREE && pTile.getStructureType()!=StructureType.VILLAGE_CAPITAL
 				&& pTile.getStructureType()!=StructureType.TOMBSTONE && pTile.getStructureType()!=StructureType.WATCHTOWER)
 		{
-		Unit pUnit = new Unit(pUnitType); 
-		pTile.setUnit(pUnit);
-		pTile.notifyObservers(); 
+			//Decrement the Gold held by the hiring village
+			int lHireCost;
+			lHireCost = PriceCalculator.getHireCost(pUnitType);
+			aMap.getVillage(pTile).addOrSubtractGold(-lHireCost);
+			
+			//place a new unit on pTile
+			Unit pUnit = new Unit(pUnitType); 
+			pTile.setUnit(pUnit);
+			pTile.notifyObservers();
+			
 		}
-		//TODO add gold deduction from village
+		
 	}
 	
 	/**
@@ -252,10 +260,10 @@ public class Game extends RandomColorGenerator implements Serializable{
 	{
 		if (currentRoundIsOver())
 		{
+			System.out.println("[Server] Round is over.");
 			beginRound();
 		}
 
-		aCurrentPlayer = getCurrentPlayer();
 		beginTurn();
 	}
 	
@@ -267,26 +275,27 @@ public class Game extends RandomColorGenerator implements Serializable{
 	}
 	
 	/**
-	 * @return Player whose turn it now is
-	 */
-	private Player getNextPlayer(){
-		return crtIterator.next();
-	}
-
-	/**
 	 * Updates the state of the game at the beginning of a Unit's turn
 	 */
 	public void beginTurn() 
 	{
+		aCurrentPlayer = getNextPlayer();
 		//TODO villages are never passed to Players
-
+		
 		Collection<Village> aCrtVillages;
 		aCrtVillages = aCurrentPlayer.getVillages();
-
+		
 		for (Village lVillage : aCrtVillages) {
 			lVillage.updateUnits();
 			lVillage.updateTiles();
 		}
+	}
+	
+	/**
+	 * @return Player whose turn it now is
+	 */
+	private Player getNextPlayer(){
+		return crtIterator.next();
 	}
 
 	/**
@@ -296,8 +305,6 @@ public class Game extends RandomColorGenerator implements Serializable{
 	{
 		aMap.generateTrees();
 	}
-
-
 
 	/**
 	 * Moves a unit from a start to destination tile

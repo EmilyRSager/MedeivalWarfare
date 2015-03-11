@@ -16,7 +16,7 @@ public class MoveUnitCommand extends AbstractServerCommand {
 	private final String aType = "MoveUnitCommand";
 	private SharedCoordinates aSourceCoordinates;
 	private SharedCoordinates aDestinationCoordinates;
-	
+
 	/**
 	 * Constructor
 	 * @param pSourceCoordinates
@@ -26,7 +26,7 @@ public class MoveUnitCommand extends AbstractServerCommand {
 		aSourceCoordinates = pSourceCoordinates;
 		aDestinationCoordinates = pDestinationCoordinates;
 	}
-	
+
 	/**
 	 * @see mw.shared.servercommands.AbstractServerCommand#isValid(java.lang.Integer)
 	 */
@@ -49,5 +49,4 @@ public class MoveUnitCommand extends AbstractServerCommand {
 				);
 
 	}
-
 }

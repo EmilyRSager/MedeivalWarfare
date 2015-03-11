@@ -3,7 +3,6 @@ package mw.server.gamelogic;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Observable;
-import java.util.Observer;
 import java.util.Set;
 
 
@@ -22,10 +21,6 @@ public class Village extends Observable
 	private Collection<GraphNode> aVillageNodes = new HashSet<GraphNode>();
 
 	
-	public void setVillageType(VillageType pVillageType)
-	{
-		aVillageType = pVillageType;
-	}
 
 	public Village(Set<GraphNode> villageSet) 
 	{
@@ -40,6 +35,10 @@ public class Village extends Observable
 		aWood = pWood;
 	}
 	
+	public void setVillageType(VillageType pVillageType)
+	{
+		aVillageType = pVillageType;
+	}
 
 	/**
 	 * Sets the Village Capital to be a hovel 
