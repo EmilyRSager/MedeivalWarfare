@@ -54,6 +54,7 @@ public final class MainApplication {
 		crap.add("crap2");
 		crap.add("crap3");
 		DisplayUpdater.displayChoice(ChoiceType.UNIT_ACTION, crap);
+		DisplayUpdater.showEndTurnButton(true);
 		waitABit();
 		
 		while(true)
