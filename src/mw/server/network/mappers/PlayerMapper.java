@@ -24,6 +24,7 @@ public class PlayerMapper {
 	
 	private PlayerMapper(){
 		aPlayerMap = new HashMap<Integer, Player>();
+		aClientMap = new HashMap<Player, Integer>();
 	}
 	
 	/**

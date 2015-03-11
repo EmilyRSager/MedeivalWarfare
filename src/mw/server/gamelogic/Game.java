@@ -66,7 +66,7 @@ public class Game extends RandomColorGenerator implements Serializable{
 		
 	}
 	
-	public Game ()
+	public Game()
 	{
 		aMap = new GameMap();
 	}

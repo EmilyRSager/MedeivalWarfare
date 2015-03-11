@@ -3,7 +3,7 @@ package mw.shared.clientcommands;
 import mw.client.controller.GameCommandHandler;
 
 public class NotifyBeginTurnCommand extends AbstractClientCommand{
-	private final String aType = "BeginTurnCommand";
+	private final String aType = "NotifyBeginTurnCommand";
 	
 	@Override
 	public boolean isValid() {
