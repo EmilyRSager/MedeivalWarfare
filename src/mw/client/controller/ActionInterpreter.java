@@ -130,6 +130,15 @@ public final class ActionInterpreter {
 		}
 	}
 	
+	public void handleEndTurn()
+	{
+		if (ModelQuerier.isCurrentlyPlaying(game))
+		{
+			actionSender.sendEndTurn();
+			unselect();
+		}
+	}
+	
 	public void handleNewPossibleActions(SharedPossibleGameActions newActions)
 	{
 		possibleActions = newActions;
@@ -138,7 +147,8 @@ public final class ActionInterpreter {
 	
 	public void notifyChoiceResult(ChoiceType choiceType, String choseItem)
 	{
-		choiceCenter.handleChoiceResult(choiceType, choseItem, this);		
+		choiceCenter.handleChoiceResult(choiceType, choseItem, this);
+		choiceCenter.clear();
 		actionSender.askForPossibleMoves(selectedMTile);
 	}
 	
@@ -199,12 +209,12 @@ public final class ActionInterpreter {
 		}
 		
 		Collection<UnitType> uts = possibleActions.getUnitUpgrade();
-		if (uts != null) {
+		if (uts != null && !uts.isEmpty()) {
 			choiceCenter.displayUnitTypeChoice(uts);
 		}
 		
 		Collection<SharedActionType> ats = possibleActions.getUnitActions();
-		if (ats != null) {
+		if (ats != null && !ats.isEmpty()) {
 			choiceCenter.displayUnitActionChoice(ats);
 		}
 	}

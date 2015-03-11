@@ -149,6 +149,11 @@ public class UserActionSender {
 		NetworkController.setActionType(coord, at);
 	}
 	
+	public void sendEndTurn()
+	{
+		NetworkController.endTurn();
+	}
+	
 	/* ==========================
 	 * 		Private methods
 	 * ==========================

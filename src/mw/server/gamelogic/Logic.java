@@ -351,7 +351,7 @@ public class Logic {
 	private static boolean isNeutral (Tile pTile)
 	{
 		return pTile.getColor() == Color.NEUTRAL;
-	}
+	}o
 
 	/**
 	 * 

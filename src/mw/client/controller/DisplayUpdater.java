@@ -58,5 +58,15 @@ public final class DisplayUpdater {
 			window.removeEndTurnButton();
 		}
 	}
+
+	public static void clearInfos()
+	{
+		GameWindow window = CurrentClientState.getCurrentGameWindow();
+		System.out.println("Trying to clear, the window is "+window);
+		if (window != null) {
+			window.removeAllChoices();
+			window.hideVillageResources();
+		}
+	}
 	
 }
