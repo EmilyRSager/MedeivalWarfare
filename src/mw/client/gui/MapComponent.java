@@ -59,7 +59,7 @@ public final class MapComponent extends AbstractWindowComponent implements
 		mapDisp.setWindow(window);
 		window.registerMouseHandler(clickHandler);
 		window.registerKeyboardHandler(this);
-		this.addObserver(window);
+		//this.addObserver(window);
 	}
 	
 	/* ==========================
@@ -129,7 +129,7 @@ public final class MapComponent extends AbstractWindowComponent implements
 	 * ========================
 	 */
 
-	public static void main(String[] args)
+	/*public static void main(String[] args)
 	{
 		final int width = 12;
 		final int height = 12;
@@ -162,6 +162,6 @@ public final class MapComponent extends AbstractWindowComponent implements
 				window.render();
 			}
 		}
-	}
+	}*/
 	
 }

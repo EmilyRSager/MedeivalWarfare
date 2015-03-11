@@ -183,6 +183,7 @@ public class GameWindow implements Observer {
 		resourceLayout.addComponent(woodText);
 		resourceLayout.addComponent(goldText);
 		controlBarLayout.addComponent(resourceLayout, 0);
+		this.render();
 	}
 	
 	public void addChoiceLayout(ChoiceType choiceType, List<String> choices)
@@ -216,6 +217,7 @@ public class GameWindow implements Observer {
 			controlBarLayout.addComponent(choiceLayout, 2);
 			break;
 		}
+		this.render();
 	}
 	/* ==========================
 	 * 		Private methods
