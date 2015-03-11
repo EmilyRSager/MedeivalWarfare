@@ -88,12 +88,14 @@ public class UserActionSender {
 	{
 		possibleActionsLock.lock();
 		
-		possibleActions = actions;
-		ActionInterpreter.singleton().handleNewPossibleActions(actions);
-		
-		waitingForActions = false;
-		actionsReady = true;
-		
+		if (waitingForActions)
+		{
+			possibleActions = actions;
+			ActionInterpreter.singleton().handleNewPossibleActions(actions);
+			
+			waitingForActions = false;
+			actionsReady = true;
+		}
 		possibleActionsReady.signalAll();
 		
 		possibleActionsLock.unlock();
@@ -169,7 +171,7 @@ public class UserActionSender {
 	private void waitForActions() {
 		possibleActionsLock.lock();
 
-		if (waitingForActions && !actionsReady)
+		while (waitingForActions && !actionsReady)
 		{
 			try	{
 				possibleActionsReady.await();
@@ -178,8 +180,8 @@ public class UserActionSender {
 				e.printStackTrace();
 			}
 		}
-		waitingForActions = false;
-		actionsReady = true;
+		//waitingForActions = false;
+		//actionsReady = true;
 
 		possibleActionsLock.unlock();
 	}
