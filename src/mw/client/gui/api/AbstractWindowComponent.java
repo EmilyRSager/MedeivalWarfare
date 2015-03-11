@@ -73,7 +73,10 @@ public abstract class AbstractWindowComponent extends Observable implements Wind
 	@Override
 	public void setPosition(int x, int y)
 	{
-		area.setPosition(x, y);
+		if (x != area.getLeftBorder() || y != area.getRightBorder()) {
+			area.setPosition(x, y);
+			setChanged();
+		}
 	}
 	
 	/*@Override
