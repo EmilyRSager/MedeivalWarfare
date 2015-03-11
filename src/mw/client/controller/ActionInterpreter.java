@@ -124,7 +124,6 @@ public final class ActionInterpreter {
 					DisplayUpdater.showVillageResources(gold, wood);
 				}
 				
-				System.out.println("Before asking for the moves");
 				actionSender.askForPossibleMoves(selectedMTile);
 				System.out.println("Successfuly asked for the moves");
 			}
@@ -139,17 +138,15 @@ public final class ActionInterpreter {
 			unselect();
 		else 
 		{
-			System.out.println("dispTarget not null");
 			possibleActions = actionSender.getPossibleActions();
 			System.out.println("Got the possible actions");
 
 			if (possibleActions!=null)
 			{
-				System.out.println("Possible actions non-null");
 				ModelTile modelTarget = ModelViewMapping.singleton().getModelTile(dispTarget);
 
 				boolean res = actionSender.tryMoveUnit(selectedMTile, modelTarget);
-				System.out.println("Tried sending move unit, result = "+res);
+				//System.out.println("Tried sending move unit, result = "+res);
 				if (res)
 					unselect();
 			}

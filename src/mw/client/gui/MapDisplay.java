@@ -109,9 +109,7 @@ public class MapDisplay implements Displayable, Clickeable {
 		int relX = x % (tileWidth-hex.getHexOffset());
 		int relY = y % tileHeight;
 		
-		System.out.println("Relative = ("+relX+","+relY+")");
 		Hexagon.RelativePosition relPos = hex.locatePoint(relX, relY);
-		System.out.println(relPos + " of "+xIndex+","+yIndex);
 		switch(relPos)
 		{
 		case TOP_LEFT:
@@ -137,6 +135,7 @@ public class MapDisplay implements Displayable, Clickeable {
 		
 		try
 		{
+			System.out.println("Clicked on "+xIndex+","+yIndex);
 			return tiles[xIndex][yIndex];
 		}
 		catch (ArrayIndexOutOfBoundsException e)
