@@ -25,11 +25,11 @@ public class SaveGame {
 		//System.out.println("writing to the savegame file");
 		//PrintWriter out = new PrintWriter(ProjectFolder.getPath()+"savegame.txt");
 		FileOutputStream out = new FileOutputStream(ProjectFolder.getPath()+"savegame.txt");
-		System.out.println("got here 1");
+		//System.out.println("got here 1");
 		ObjectOutputStream oos = new ObjectOutputStream(out);
-		System.out.println("got here 2");
+		//System.out.println("got here 2");
 		oos.writeObject(pGame);
-		System.out.println("got here 3");
+		//System.out.println("got here 3");
 		out.close();
 	}
 	

@@ -13,7 +13,7 @@ public class TestForTestMapCreation {
 		
 		//System.out.println("Now testing whether test map can be successfully created");
 		
-		Gson gson = new Gson();
+		//Gson gson = new Gson();
 		
 		Game testGame = TestMap.testMapCreate();
 		

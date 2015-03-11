@@ -39,18 +39,18 @@ public class TestMap {
 //				BufferedReader br = new BufferedReader(fileReader);
 //				String inputString = br.readLine();
 //				br.close();
-				System.out.println("saved game being loaded because one was already created");
+				//System.out.println("saved game being loaded because one was already created");
 				aTestGame = SaveGame.returnSavedGame();
 			} catch (Exception e) {
 					
-						System.out.println("Game being created now");
+						//System.out.println("Game being created now");
 						HashSet<Player> lPlayers = new HashSet<Player>();
 						lPlayers.add(new Player());
 						lPlayers.add(new Player());
 						aTestGame = new Game(lPlayers, 12, 12);
-						System.out.println("saving this game that got created");
+						//System.out.println("saving this game that got created");
 						SaveGame.SaveMyGame(aTestGame);
-						System.out.println("after the savemygame");
+						//System.out.println("after the savemygame");
 				
 				
 			}
