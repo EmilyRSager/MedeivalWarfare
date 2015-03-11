@@ -111,8 +111,7 @@ public class GameInizializationController {
 			//Inform client that it is his turn
 			Integer lCurrentClientID = PlayerMapper.getInstance().getClient(GameController.getCurrentPlayer(lGame));
 			ClientChannelMapper.getInstance().getChannel(lCurrentClientID).sendCommand(new NotifyBeginTurnCommand());
-
-
+			
 		} catch (TooManyPlayersException e) {
 			System.out.println("[Server] Tried to create a Game with too many players.");
 			e.printStackTrace();

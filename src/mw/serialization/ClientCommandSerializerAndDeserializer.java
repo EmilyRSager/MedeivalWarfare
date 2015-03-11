@@ -29,6 +29,7 @@ public class ClientCommandSerializerAndDeserializer {
 	
 	private ClientCommandSerializerAndDeserializer() {
 		aTypeMap.put("AcknowledgementCommand", new TypeToken<AcknowledgementCommand>(){}.getType());
+		aTypeMap.put("BeginTurnCommand", new TypeToken<BeginTurnCommand>(){}.getType());
 		aTypeMap.put("DisplayPossibleGameActionsCommand", new TypeToken<DisplayPossibleGameActionsCommand>(){}.getType());
 		aTypeMap.put("MessageReceivedCommand", new TypeToken<MessageReceivedCommand>(){}.getType());
 		aTypeMap.put("NewGameCommand", new TypeToken<NewGameCommand>(){}.getType());
