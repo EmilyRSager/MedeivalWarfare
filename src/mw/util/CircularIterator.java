@@ -40,4 +40,10 @@ public class CircularIterator<E> implements Iterator<E>{
 	public boolean isAtBeginning(){
 		return aIndex == 0;
 	}
+
+	@Override
+	public void remove() {
+		// TODO Auto-generated method stub
+		
+	}
 }

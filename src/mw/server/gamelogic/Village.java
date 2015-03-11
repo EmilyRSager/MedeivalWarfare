@@ -48,10 +48,15 @@ public class Village extends Observable
 	}
 	
 
-
+	/**
+	 * Sets the Village Capital to be a hovel 
+	 * @param pCapital
+	 */
 	public void setCapital(Tile pCapital)
 	{
 		aCapital = pCapital;
+		aCapital.setStructureType(StructureType.VILLAGE_CAPITAL);
+		aCapital.setVillageType(VillageType.HOVEL); 
 		aCapital.setWood(aWood);
 		aCapital.setGold(aGold);
 	}

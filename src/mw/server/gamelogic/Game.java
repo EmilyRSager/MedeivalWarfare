@@ -1,21 +1,24 @@
 package mw.server.gamelogic;
 
+import java.io.Serializable;
 import java.util.ArrayList;
+
+import mw.util.*;
+
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.Stack;
 
 /**
  * Game class definition.
  * @author emilysager
  */
-public class Game extends RandomColorGenerator {
+public class Game extends RandomColorGenerator implements Serializable{
 	private static final int DEFAULT_WIDTH = 12;
 	private static final int DEFAULT_HEIGHT = 12;
 	private Collection<Player> aPlayers;
 	private GameMap aMap;  
 	private Player aCurrentPlayer;
-	Iterator<Player> crtIterator;
+	CircularIterator<Player> crtIterator;
 	
 	/**
 	 * Overloaded constructor passes default dimensions to main constructor
@@ -58,8 +61,9 @@ public class Game extends RandomColorGenerator {
 		
 		aMap = new GameMap(pWidth, pHeight, availableColors); 
 		aMap.partition(); 
-		//CircularIterable<Player> crtIterator = pPlayers.iterator();
-		//aCurrentPlayer = crtIterator.next();
+		crtIterator = new CircularIterator(pPlayers);
+		aCurrentPlayer = crtIterator.next(); 
+		
 	}
 	
 	/**
@@ -259,8 +263,8 @@ public class Game extends RandomColorGenerator {
 	 */
 	public void endTurn() 
 	{
-		//aCurrentPlayer = crtIterator.next();
-		if (crtIterator.hasCompletedCycle())
+		aCurrentPlayer = crtIterator.next();
+		if (crtIterator.isAtBeginning())
 		{
 			beginRound();
 		}
@@ -357,7 +361,8 @@ public class Game extends RandomColorGenerator {
 		return aMap.getVillage(pTile);
 	}
 
-	public Player getCurrentPlayer() {
+	public Player getCurrentPlayer() 
+	{
 		return aCurrentPlayer;
 	}
 }

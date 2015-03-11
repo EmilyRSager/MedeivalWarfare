@@ -1,8 +1,9 @@
 package mw.server.gamelogic;
 
+import java.io.Serializable;
 import java.util.Collection;
 
-public class GraphNode extends AbstractGraphNode {
+public class GraphNode extends AbstractGraphNode implements Serializable {
 
 	private final Tile aTile; 
 	private Collection<GraphNode> aNeighbors; 

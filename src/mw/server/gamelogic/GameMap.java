@@ -1,4 +1,5 @@
 package mw.server.gamelogic;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -14,7 +15,7 @@ import mw.util.MultiArrayIterable;
  * GameMap class definition.
  * @author emilysager, Abhishek Gupta
  */
-public class GameMap  { 
+public class GameMap  implements Serializable{ 
 	private static Graph graph; 
 	private GraphNode[][] aNodes; 
 	private Tile [][] aTiles; 

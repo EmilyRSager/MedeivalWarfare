@@ -1,9 +1,10 @@
 package mw.server.gamelogic;
 
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.Random;
 
-public class RandomColorGenerator {
+public class RandomColorGenerator implements Serializable{
 	static Random R = new Random (); 
 
 	

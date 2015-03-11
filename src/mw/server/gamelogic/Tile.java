@@ -1,6 +1,7 @@
 package mw.server.gamelogic;
 
 
+import java.io.Serializable;
 import java.util.Observable;
 
 import com.google.gson.Gson;
@@ -10,7 +11,7 @@ import com.google.gson.Gson;
  * @author emilysager
  */
 
-public class Tile  extends Observable
+public class Tile  extends Observable implements Serializable
 {
 	
 	private StructureType aStructureType; 
