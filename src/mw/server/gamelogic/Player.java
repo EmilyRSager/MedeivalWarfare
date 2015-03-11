@@ -30,10 +30,6 @@ public class Player implements Serializable{
     {
     	return aColor; 
     }
-    
-    public void addVillage(Village pVillage){
-    	aVillages.add(pVillage);
-    }
 
     public void removeVillage(Village pVillage) 
     {
@@ -44,4 +40,9 @@ public class Player implements Serializable{
     {
     	return aVillages; 
     }
+
+	public void addVillage(Village lVillage) {
+		aVillages.add(lVillage);
+		
+	}
 }
