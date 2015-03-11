@@ -325,6 +325,9 @@ public class Game extends RandomColorGenerator implements Serializable{
 			if (crtUnit.getActionType() == ActionType.READY)
 			{
 				Logic.updateGameState(crtUnit, startTile, pDestinationTile, this, aMap);  
+				/**
+				 * @Hupala
+				 */
 			}
 		}
 

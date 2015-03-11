@@ -1,5 +1,6 @@
 package mw.server.gamelogic;
 
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Observable;
@@ -11,7 +12,7 @@ import java.util.Set;
  * Village class definition.
  * @author emilysager, Abhishek Gupta
  */
-public class Village extends Observable
+public class Village extends Observable implements Serializable
 {
 
 	private int aGold; 
