@@ -4,6 +4,8 @@ package test.mw.server.gamelogic;
  * @author Abhishek Gupta
  */
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.Collection;
 import java.util.HashSet;
 
@@ -19,12 +21,10 @@ public class TestMap {
 	//create a save game class and serialize and assign the game to it and then have something to load the game and 
 	// bring it back into 
 	
-	public static Game testMapCreate() throws TooManyPlayersException{
+	public static Game testMapCreate() throws TooManyPlayersException, IOException{
 		
 		//check here if the game has already been created in which case, load it from there 
 		//else create it 
-		
-		
 		
 		if (aTestGame==null) {
 			HashSet<Player> lPlayers = new HashSet<Player>();
