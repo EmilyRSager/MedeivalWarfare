@@ -14,7 +14,7 @@ import mw.server.gamelogic.state.Game;
 import mw.server.gamelogic.state.Tile;
 
 import mw.shared.SharedColor;
-import mw.shared.SharedCoordinates;
+import mw.shared.Coordinates;
 import mw.shared.SharedTile;
 import mw.shared.SharedTile.Terrain;
 import mw.shared.SharedTile.VillageType;
@@ -150,8 +150,8 @@ public class SharedTileTranslator {
 	 * @param pCoordinates
 	 * @return
 	 */
-	public static SharedCoordinates translateCoordinates(int[] pCoordinates){
-		return new SharedCoordinates(pCoordinates[0], pCoordinates[1]);
+	public static Coordinates translateCoordinates(int[] pCoordinates){
+		return new Coordinates(pCoordinates[0], pCoordinates[1]);
 	}
 
 	/**

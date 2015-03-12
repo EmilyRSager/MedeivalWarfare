@@ -1,7 +1,7 @@
 package mw.client.network;
 
 import mw.shared.SharedActionType;
-import mw.shared.SharedCoordinates;
+import mw.shared.Coordinates;
 import mw.shared.SharedTile;
 import mw.shared.servercommands.AuthenticateUserCommand;
 import mw.shared.servercommands.EndTurnCommand;
@@ -47,7 +47,7 @@ public class NetworkController {
 	 * Does something
 	 * @param pAbstractServerCommand
 	 */
-	public static void getPossibleGameActions(SharedCoordinates pSharedCoordinates){
+	public static void getPossibleGameActions(Coordinates pSharedCoordinates){
 		aServerChannel.sendCommand(new GetPossibleGameActionsCommand(pSharedCoordinates));
 	}
 	
@@ -55,7 +55,7 @@ public class NetworkController {
 	 * @param pUnitCoordinates
 	 * @param pUnitType
 	 */
-	public static void hireUnit(SharedCoordinates pUnitCoordinates, SharedTile.UnitType pUnitType){
+	public static void hireUnit(Coordinates pUnitCoordinates, SharedTile.UnitType pUnitType){
 		aServerChannel.sendCommand(new HireUnitCommand(pUnitCoordinates, pUnitType));
 	}
 	
@@ -63,7 +63,7 @@ public class NetworkController {
 	 * @param pSourceCoordinates
 	 * @param pDestinationCoordinates
 	 */
-	public static void moveUnit(SharedCoordinates pSourceCoordinates, SharedCoordinates pDestinationCoordinates){
+	public static void moveUnit(Coordinates pSourceCoordinates, Coordinates pDestinationCoordinates){
 		aServerChannel.sendCommand(new MoveUnitCommand(pSourceCoordinates, pDestinationCoordinates));
 	}
 	
@@ -72,7 +72,7 @@ public class NetworkController {
 	 * @param pUnitCoordinates
 	 * @param pActionType
 	 */
-	public static void setActionType(SharedCoordinates pUnitCoordinates, SharedActionType pActionType){
+	public static void setActionType(Coordinates pUnitCoordinates, SharedActionType pActionType){
 		aServerChannel.sendCommand(new SetActionTypeCommand(pUnitCoordinates, pActionType));
 	}
 	
@@ -80,7 +80,7 @@ public class NetworkController {
 	 * @param pUnitCoordinates
 	 * @param pUnitType
 	 */
-	public static void upgradeUnit(SharedCoordinates pUnitCoordinates, SharedTile.UnitType pUnitType){
+	public static void upgradeUnit(Coordinates pUnitCoordinates, SharedTile.UnitType pUnitType){
 		aServerChannel.sendCommand(new UpgradeUnitCommand(pUnitCoordinates, pUnitType));
 	}
 	
@@ -88,7 +88,7 @@ public class NetworkController {
 	 * @param pVillageCoordinates
 	 * @param pVillageType
 	 */
-	public static void upgradeVillage(SharedCoordinates pVillageCoordinates, SharedTile.VillageType pVillageType){
+	public static void upgradeVillage(Coordinates pVillageCoordinates, SharedTile.VillageType pVillageType){
 		aServerChannel.sendCommand(new UpgradeVillageCommand(pVillageCoordinates, pVillageType));
 	}
 	

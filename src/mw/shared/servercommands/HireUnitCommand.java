@@ -8,7 +8,7 @@ package mw.shared.servercommands;
 import mw.server.gamelogic.controllers.GameController;
 import mw.server.network.mappers.GameMapper;
 import mw.server.network.translators.NetworkToModelTranslator;
-import mw.shared.SharedCoordinates;
+import mw.shared.Coordinates;
 import mw.shared.SharedTile;
 
 /**
@@ -17,13 +17,13 @@ import mw.shared.SharedTile;
 public class HireUnitCommand extends AbstractServerCommand {
 	private final String aType = "HireUnitCommand";
 	
-	SharedCoordinates aUnitCoordinates;
+	Coordinates aUnitCoordinates;
 	SharedTile.UnitType aUnitType;
 	
 	/**
 	 * 
 	 */
-	public HireUnitCommand(SharedCoordinates pUnitCoordinates, SharedTile.UnitType pUnitType) {
+	public HireUnitCommand(Coordinates pUnitCoordinates, SharedTile.UnitType pUnitType) {
 		aUnitCoordinates = pUnitCoordinates;
 		aUnitType = pUnitType;
 	}
@@ -43,8 +43,7 @@ public class HireUnitCommand extends AbstractServerCommand {
 	public void execute(Integer pClientID) {
 		GameController.hireUnit(
 				GameMapper.getInstance().getGame(pClientID),
-				aUnitCoordinates.getX(),
-				aUnitCoordinates.getY(),
+				aUnitCoordinates,
 				NetworkToModelTranslator.translateUnitType(aUnitType)
 				);
 

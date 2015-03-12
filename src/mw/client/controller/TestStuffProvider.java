@@ -2,7 +2,7 @@ package mw.client.controller;
 
 import mw.client.app.MainApplication;
 import mw.shared.SharedColor;
-import mw.shared.SharedCoordinates;
+import mw.shared.Coordinates;
 import mw.shared.SharedTile;
 
 public final class TestStuffProvider {
@@ -27,7 +27,7 @@ public final class TestStuffProvider {
 	
 	public static SharedTile getNewTile(int x, int y)
 	{
-		return new SharedTile(SharedColor.GREY, new SharedCoordinates(x, y), SharedTile.Terrain.GRASS, false);
+		return new SharedTile(SharedColor.GREY, new Coordinates(x, y), SharedTile.Terrain.GRASS, false);
 	}
 	
 }

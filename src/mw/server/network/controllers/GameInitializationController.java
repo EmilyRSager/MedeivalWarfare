@@ -32,14 +32,14 @@ import mw.util.MultiArrayIterable;
  * are sufficient clients available to create a Game. Handles assigning clients to GamePlayers
  * and informing the clients of their Colors.
  */
-public class GameInizializationController {
+public class GameInitializationController {
 	private GameLobby aGameLobby; //later on there will be a set of available of
-	private static GameInizializationController aGameRequestController;
+	private static GameInitializationController aGameRequestController;
 
 	/**
 	 * Constructor
 	 */
-	private GameInizializationController(){
+	private GameInitializationController(){
 		aGameLobby = new GameLobby();
 	}
 
@@ -47,9 +47,9 @@ public class GameInizializationController {
 	 * Singleton implementation
 	 * @return static GameRequestController instance
 	 */
-	public static GameInizializationController getInstance(){
+	public static GameInitializationController getInstance(){
 		if(aGameRequestController == null){
-			aGameRequestController = new GameInizializationController();
+			aGameRequestController = new GameInitializationController();
 		}
 
 		return aGameRequestController;

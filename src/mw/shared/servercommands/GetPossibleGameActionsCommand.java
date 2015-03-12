@@ -2,17 +2,17 @@ package mw.shared.servercommands;
 
 import mw.server.network.controllers.GetPossibleActionsController;
 import mw.server.network.mappers.GameMapper;
-import mw.shared.SharedCoordinates;
+import mw.shared.Coordinates;
 
 public class GetPossibleGameActionsCommand extends AbstractServerCommand {
 	private final String aType = "GetPossibleGameActionsCommand";
-	private SharedCoordinates aSharedCoordinates;
+	private Coordinates aSharedCoordinates;
 	
 	/**
 	 * Constructor
 	 * @param pSharedCoordinates
 	 */
-	public GetPossibleGameActionsCommand(SharedCoordinates pSharedCoordinates) {
+	public GetPossibleGameActionsCommand(Coordinates pSharedCoordinates) {
 		aSharedCoordinates = pSharedCoordinates;
 	}
 	

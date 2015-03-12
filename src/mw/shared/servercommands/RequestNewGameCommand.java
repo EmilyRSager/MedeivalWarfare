@@ -5,7 +5,7 @@
 
 package mw.shared.servercommands;
 
-import mw.server.network.controllers.GameInizializationController;
+import mw.server.network.controllers.GameInitializationController;
 
 /**
  * 
@@ -31,7 +31,7 @@ public class RequestNewGameCommand extends AbstractServerCommand {
 	 */
 	@Override
 	public void execute(Integer pClientID) {
-		GameInizializationController.getInstance().requestNewGame(pClientID);
+		GameInitializationController.getInstance().requestNewGame(pClientID);
 	}
 
 }

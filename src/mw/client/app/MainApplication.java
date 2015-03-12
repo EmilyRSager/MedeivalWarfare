@@ -22,7 +22,7 @@ import mw.client.model.GameMap;
 import mw.client.model.Player;
 import mw.client.model.ModelTile;
 import mw.shared.SharedColor;
-import mw.shared.SharedCoordinates;
+import mw.shared.Coordinates;
 import mw.shared.SharedTile;
 
 public final class MainApplication {
@@ -81,7 +81,7 @@ public final class MainApplication {
 	{
 		Random r = new Random();
 		SharedTile newST = new SharedTile(c,
-					new SharedCoordinates(r.nextInt(DEFAULT_MAP_HEIGHT), r.nextInt(DEFAULT_MAP_WIDTH)),
+					new Coordinates(r.nextInt(DEFAULT_MAP_HEIGHT), r.nextInt(DEFAULT_MAP_WIDTH)),
 					SharedTile.Terrain.SEA, false,
 					SharedTile.UnitType.NONE,
 					SharedTile.VillageType.NONE, 0, 0);

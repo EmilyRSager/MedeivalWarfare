@@ -5,8 +5,8 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.Stack;
 
-import mw.server.gamelogic.TileGraphLogic;
-import mw.server.gamelogic.model.Tile;
+import mw.server.gamelogic.logic.TileGraphLogic;
+import mw.server.gamelogic.state.Tile;
 
 public class PathFinder //has classic DFS
 {

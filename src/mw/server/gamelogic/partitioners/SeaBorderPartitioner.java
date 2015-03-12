@@ -5,38 +5,30 @@
 
 package mw.server.gamelogic.partitioners;
 
-import java.util.Iterator;
+import java.util.Collection;
 
-import mw.server.gamelogic.model.GameMap;
-import mw.server.gamelogic.model.Tile;
+import mw.server.gamelogic.enums.Color;
+import mw.server.gamelogic.state.GameMap;
 
 /**
  * 
  */
-public class SeaBorderPartitioner implements IMapPartitioner {
-	GameMap aGameMap;
-	
+public class SeaBorderPartitioner extends AbstractMapPartitioner {
+
 	/**
-	 * 
+	 * @param pGameMap
 	 */
 	public SeaBorderPartitioner(GameMap pGameMap) {
-		//TODO
+		super(pGameMap);
 	}
 
 	/**
-	 * @see mw.server.gamelogic.partitioners.IMapPartitioner#partition(mw.server.gamelogic.model.GameMap)
+	 * @see mw.server.gamelogic.partitioners.AbstractMapPartitioner#partition(java.util.Collection)
 	 */
 	@Override
-	public void partition() {
-		
+	void partition(Collection<Color> pColors) {
+		// TODO Auto-generated method stub
+
 	}
 
-	/**
-	 * 
-	 * @param pLayer
-	 * @return
-	 */
-	private Iterator<Tile> layerIterator(int pLayer){
-		
-	}
 }

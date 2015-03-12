@@ -5,31 +5,38 @@
 
 package mw.server.gamelogic.partitioners;
 
+import java.util.Collection;
 import java.util.Set;
-
 
 import mw.server.gamelogic.enums.Color;
 import mw.server.gamelogic.enums.VillageType;
-
+import mw.server.gamelogic.graph.PathFinder;
+import mw.server.gamelogic.state.GameMap;
 import mw.server.gamelogic.state.Tile;
 import mw.server.gamelogic.state.Village;
 import mw.server.gamelogic.util.RandomColorGenerator;
-import mw.server.gamelogic.graph.PathFinder;
+import mw.util.MultiArrayIterable;
 
 /**
  * 
  */
-public final class RandomMapPartitioner implements IMapPartitioner {
+public class RandomMapPartitioner extends AbstractMapPartitioner {
 	
+	/**
+	 * @param pGameMap
+	 */
+	public RandomMapPartitioner(GameMap pGameMap) {
+		super(pGameMap);
+	}
+
 	/**
 	 * @see mw.server.gamelogic.partitioners.AbstractMapPartitioner#partition()
 	 */
 	@Override
-	public void partition(GameMap pGameMap) {
+	public void partition(Collection<Color> pColors) {
 
 		//assign colors to the tiles
-		for (GraphNode lGraphNode : graph.allNodes()) {
-			Tile lTile = lGraphNode.getTile(); 
+		for (Tile lTile : MultiArrayIterable.toIterable(aGameMap.getTiles())) {
 			lTile.setColor(RandomColorGenerator.generateRandomColor(availableColors));
 		}
 
@@ -74,10 +81,6 @@ public final class RandomMapPartitioner implements IMapPartitioner {
 			for (Tile lTile: lVillage.getTiles()) {
 				lVillage.setCapital(lTile);
 				lVillage.setVillageType(VillageType.HOVEL);
-
-				lVillage.addOrSubtractGold(100);
-				lVillage.addOrSubtractWood(100);
-
 				break; 
 
 			}

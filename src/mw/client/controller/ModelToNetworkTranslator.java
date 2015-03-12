@@ -1,7 +1,7 @@
 package mw.client.controller;
 
 import mw.client.model.Coordinates;
-import mw.shared.SharedCoordinates;
+import mw.shared.Coordinates;
 
 public abstract class ModelToNetworkTranslator {
 
@@ -11,9 +11,9 @@ public abstract class ModelToNetworkTranslator {
 	 * ========================
 	 */
 
-	public static SharedCoordinates translateModelCoordinates(Coordinates coord)
+	public static Coordinates translateModelCoordinates(Coordinates coord)
 	{
-		return new SharedCoordinates(coord.getX(), coord.getY());
+		return new Coordinates(coord.getX(), coord.getY());
 	}
 	
 }
