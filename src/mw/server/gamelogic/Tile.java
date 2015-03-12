@@ -22,11 +22,14 @@ public class Tile  extends Observable implements Serializable
     private int aY; 
     private Color myColor;
     private int aWood; 
-    private int aGold; 
-
-   
+    private int aGold;
     
-    
+    /**
+     * Constructor
+     * @param pStructureType
+     * @param pX
+     * @param pY
+     */
     public Tile(StructureType pStructureType, int pX, int pY) 
     { 
     	aX = pX; 

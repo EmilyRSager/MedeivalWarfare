@@ -19,7 +19,7 @@ public class Game extends RandomColorGenerator implements Serializable{
 	private GameMap aMap;  
 	private Player aCurrentPlayer;
 	CircularIterator<Player> crtIterator;
-
+	
 	/**
 	 * Overloaded constructor passes default dimensions to main constructor
 	 * @param pPlayers

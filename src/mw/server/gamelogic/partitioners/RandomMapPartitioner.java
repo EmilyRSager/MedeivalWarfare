@@ -5,6 +5,7 @@
 
 package mw.server.gamelogic.partitioners;
 
+import java.util.Collection;
 import java.util.Set;
 
 import mw.client.model.GameMap;
@@ -33,7 +34,7 @@ public final class RandomMapPartitioner extends AbstractMapPartitioner {
 	 * @see mw.server.gamelogic.partitioners.AbstractMapPartitioner#partition()
 	 */
 	@Override
-	public void partition() {
+	public void partition(Collection<Color> pColors) {
 		aGameMap.availableColors.add(Color.NEUTRAL);
 
 		//assign colors to the tiles

@@ -45,7 +45,8 @@ public class SharedTileTranslator {
 				translateCoordinates(TileController.getCoordinates(pTile)),
 				translateTerrain(
 						TileController.getStructureType(pTile),
-						TileController.hasRoad(pTile)
+						TileController.hasRoad(pTile),
+						TileController.getColor(pTile)
 						),
 						
 				TileController.hasRoad(pTile),
@@ -114,8 +115,12 @@ public class SharedTileTranslator {
 	 * @param pStructureType, pHasMeadow
 	 * @return 
 	 */
-	public static SharedTile.Terrain translateTerrain(StructureType pStructureType, boolean pHasMeadow){
-		if(pStructureType == StructureType.NO_STRUCT){
+	public static SharedTile.Terrain translateTerrain(StructureType pStructureType, boolean pHasMeadow, Color pColor){
+		if(pColor == Color.SEATILE){
+			return Terrain.SEA;
+		}
+		
+		else if(pStructureType == StructureType.NO_STRUCT){
 			return Terrain.GRASS;
 		}
 		
