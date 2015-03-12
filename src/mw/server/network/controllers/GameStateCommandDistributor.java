@@ -59,7 +59,6 @@ public class GameStateCommandDistributor implements Observer {
 	 * @param pGameMap
 	 */
 	public void newGame(Tile[][] pGameMap) {
-
 		AbstractClientCommand lClientCommand = 
 				new NewGameCommand(SharedTileTranslator.translateMap(pGameMap, aGame));
 

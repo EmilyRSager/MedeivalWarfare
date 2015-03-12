@@ -41,7 +41,6 @@ public class GameController {
 		return lCurrentPlayer;
 	}
 	
-
 	/**
 	 * Returns all the possible moves or upgrades a player can make given a certain tile
 	 * @param pGame

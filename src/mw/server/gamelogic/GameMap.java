@@ -24,7 +24,7 @@ public class GameMap  implements Serializable{
 	private HashMap<Tile, GraphNode> TileToNodeHashMap = new HashMap<Tile, GraphNode>();
 	private HashMap<Coordinates, Tile> CoordinatesToTileMap = new HashMap<Coordinates, Tile>(); 
 	private Collection<Color> availableColors;
-
+	
 	/**
 	 * @param height
 	 * @param width
@@ -103,7 +103,6 @@ public class GameMap  implements Serializable{
 			}
 		}
 
-
 		for (Village lVillage: aVillages)
 		{
 			//only runs 1X per village
@@ -115,12 +114,9 @@ public class GameMap  implements Serializable{
 				lVillage.addOrSubtractGold(100);
 				lVillage.addOrSubtractWood(100);
 
-				break; 
-
+				break;
 			}
 		}
-		
-		aTiles[0][0].setColor(Color.SEATILE);
 	}
 	
 	/**
