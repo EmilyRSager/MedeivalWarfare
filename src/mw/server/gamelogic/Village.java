@@ -139,6 +139,10 @@ public class Village extends Observable implements Serializable
 					lUnit.setActionType(ActionType.READY);
 					addOrSubtractWood(1);
 				}
+				else if (lActionType.equals(ActionType.MOVED))
+				{
+					lUnit.setActionType(ActionType.READY);
+				}
 			}
 		}
 	}
