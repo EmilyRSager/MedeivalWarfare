@@ -1,9 +1,12 @@
-package mw.server.gamelogic;
+package mw.server.gamelogic.logic;
 
 
 import java.util.HashSet;
 import java.util.Set;
 import java.util.Stack;
+
+import mw.server.gamelogic.graph.Graph;
+import mw.server.gamelogic.graph.GraphNode;
 
 public class PathFinder //has classic DFS
 {

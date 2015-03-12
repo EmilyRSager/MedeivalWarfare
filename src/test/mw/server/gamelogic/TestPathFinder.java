@@ -6,13 +6,13 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Set;
 
-import mw.server.gamelogic.Coordinates;
-import mw.server.gamelogic.Game;
-import mw.server.gamelogic.Player;
-import mw.server.gamelogic.Tile;
-import mw.server.gamelogic.TooManyPlayersException;
-import mw.server.gamelogic.Unit;
-import mw.server.gamelogic.Village;
+import mw.server.gamelogic.exceptions.TooManyPlayersException;
+import mw.server.gamelogic.state.Coordinates;
+import mw.server.gamelogic.state.Game;
+import mw.server.gamelogic.state.Player;
+import mw.server.gamelogic.state.Tile;
+import mw.server.gamelogic.state.Unit;
+import mw.server.gamelogic.state.Village;
 
 import org.junit.Test;
 

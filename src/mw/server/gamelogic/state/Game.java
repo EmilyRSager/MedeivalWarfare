@@ -1,4 +1,4 @@
-package mw.server.gamelogic;
+package mw.server.gamelogic.state;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -6,6 +6,18 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Stack;
 
+import mw.server.gamelogic.PossibleGameActions;
+import mw.server.gamelogic.enums.ActionType;
+import mw.server.gamelogic.enums.Color;
+import mw.server.gamelogic.enums.StructureType;
+import mw.server.gamelogic.enums.UnitType;
+import mw.server.gamelogic.enums.VillageType;
+import mw.server.gamelogic.exceptions.CantUpgradeException;
+import mw.server.gamelogic.exceptions.NotEnoughIncomeException;
+import mw.server.gamelogic.exceptions.TooManyPlayersException;
+import mw.server.gamelogic.logic.Logic;
+import mw.server.gamelogic.logic.PriceCalculator;
+import mw.server.gamelogic.util.RandomColorGenerator;
 import mw.util.CircularIterator;
 
 /**
@@ -409,7 +421,7 @@ public class Game extends RandomColorGenerator implements Serializable{
 	 * Gets the game map for the current game
 	 * @return
 	 */
-	protected GameMap getGameMap()
+	public GameMap getGameMap()
 	{
 
 		return aMap;

@@ -4,11 +4,11 @@ import static org.junit.Assert.*;
 
 import java.util.Iterator;
 
-import mw.server.gamelogic.Game;
-import mw.server.gamelogic.GameController;
 import mw.server.gamelogic.PossibleGameActions;
-import mw.server.gamelogic.Tile;
-import mw.server.gamelogic.TooManyPlayersException;
+import mw.server.gamelogic.controllers.GameController;
+import mw.server.gamelogic.exceptions.TooManyPlayersException;
+import mw.server.gamelogic.state.Game;
+import mw.server.gamelogic.state.Tile;
 import mw.util.MultiArrayIterable;
 
 import org.junit.Test;

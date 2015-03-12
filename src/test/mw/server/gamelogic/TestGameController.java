@@ -2,6 +2,14 @@ package test.mw.server.gamelogic;
 
 import static org.junit.Assert.*;
 import mw.server.gamelogic.*;
+import mw.server.gamelogic.controllers.GameController;
+import mw.server.gamelogic.enums.Color;
+import mw.server.gamelogic.enums.StructureType;
+import mw.server.gamelogic.enums.UnitType;
+import mw.server.gamelogic.enums.VillageType;
+import mw.server.gamelogic.exceptions.TooManyPlayersException;
+import mw.server.gamelogic.state.Game;
+import mw.server.gamelogic.state.Tile;
 
 import org.junit.Test;
 

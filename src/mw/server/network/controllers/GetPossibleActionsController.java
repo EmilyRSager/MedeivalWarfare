@@ -4,9 +4,9 @@
  */
 
 package mw.server.network.controllers;
-import mw.server.gamelogic.Game;
-import mw.server.gamelogic.GameController;
 import mw.server.gamelogic.PossibleGameActions;
+import mw.server.gamelogic.controllers.GameController;
+import mw.server.gamelogic.state.Game;
 import mw.server.network.mappers.ClientChannelMapper;
 import mw.server.network.translators.SharedPossibleActionsTranslator;
 import mw.shared.SharedPossibleGameActions;

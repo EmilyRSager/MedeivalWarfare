@@ -1,10 +1,20 @@
-package mw.server.gamelogic;
+package mw.server.gamelogic.state;
 
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Observable;
 import java.util.Set;
+
+import mw.server.gamelogic.enums.ActionType;
+import mw.server.gamelogic.enums.Color;
+import mw.server.gamelogic.enums.StructureType;
+import mw.server.gamelogic.enums.VillageType;
+import mw.server.gamelogic.exceptions.CantUpgradeException;
+import mw.server.gamelogic.exceptions.NotEnoughIncomeException;
+import mw.server.gamelogic.graph.GraphNode;
+import mw.server.gamelogic.logic.Logic;
+import mw.server.gamelogic.logic.PriceCalculator;
 
 
 
@@ -19,20 +29,15 @@ public class Village extends Observable implements Serializable
 	private int aWood; 
 	private Tile aCapital; 
 	private VillageType aVillageType; 
-	private Collection<GraphNode> aVillageNodes = new HashSet<GraphNode>();
+	private Collection<Tile> aTiles;
 
-	public Village(Set<GraphNode> villageSet) 
+	public Village(Collection<Tile> lVillageTiles) 
 	{
-		aVillageNodes = villageSet; 
+		aTiles= lVillageTiles; 
 		aGold = 0; 
 		aWood = 0; 
 	}
-	public Village(Set <GraphNode> villageSet, int pGold, int pWood)
-	{
-		aVillageNodes = villageSet; 
-		aGold = pGold;
-		aWood = pWood;
-	}
+
 	
 	public void setVillageType(VillageType pVillageType)
 	{
@@ -52,28 +57,23 @@ public class Village extends Observable implements Serializable
 		aCapital.setWood(aWood);
 		aCapital.setGold(aGold);
 	}
-	public Collection<GraphNode> getVillageNodes()
-	{
-		return aVillageNodes;
-	}
 
 
-	public Set<Tile> getTiles ()
+/**
+ * 
+ * @return
+ */
+	public Collection<Tile> getTiles ()
 	{
-		Set<Tile> myTiles = new HashSet<Tile>(); 
-		for (GraphNode lGraphNode : aVillageNodes)
-		{
-			myTiles.add(lGraphNode.getTile()); 
-		}
-		return myTiles; 
+		return aTiles; 
 	}
 
 	private void generateGold()
 	{
 		int addGold = 0;  
-		for (GraphNode lGraphNode: aVillageNodes)
+		for (Tile lTile: aTiles)
 		{ 
-			addGold +=Logic.getGoldGenerated(lGraphNode);  
+			addGold +=Logic.getGoldGenerated(lTile);  
 		}
 		addOrSubtractGold(addGold);
 	}
@@ -103,9 +103,9 @@ public class Village extends Observable implements Serializable
 	 */
 	public void updateTiles() 
 	{
-		for (GraphNode lGraphNode : aVillageNodes) 
+		for (Tile pTile : aTiles) 
 		{
-			Logic.clearTombstone(lGraphNode);
+			Logic.clearTombstone(pTile);
 		}
 		generateGold();
 		aCapital.notifyObservers(); 

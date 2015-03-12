@@ -1,8 +1,13 @@
-package mw.server.gamelogic;
+package mw.server.gamelogic.state;
 
 
 import java.io.Serializable;
 import java.util.Observable;
+
+import mw.server.gamelogic.enums.Color;
+import mw.server.gamelogic.enums.StructureType;
+import mw.server.gamelogic.enums.UnitType;
+import mw.server.gamelogic.enums.VillageType;
 
 import com.google.gson.Gson;
 

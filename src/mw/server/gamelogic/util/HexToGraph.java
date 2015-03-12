@@ -1,8 +1,10 @@
-package mw.server.gamelogic;
+package mw.server.gamelogic.util;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+
+import mw.server.gamelogic.graph.GraphNode;
 
 public class HexToGraph {
 

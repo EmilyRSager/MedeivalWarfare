@@ -3,7 +3,17 @@
  * March 4, 2015
  */
 
-package mw.server.gamelogic;
+package mw.server.gamelogic.controllers;
+
+import mw.server.gamelogic.enums.Color;
+import mw.server.gamelogic.enums.StructureType;
+import mw.server.gamelogic.enums.UnitType;
+import mw.server.gamelogic.enums.VillageType;
+import mw.server.gamelogic.state.Game;
+import mw.server.gamelogic.state.GameMap;
+import mw.server.gamelogic.state.Tile;
+import mw.server.gamelogic.state.Unit;
+import mw.server.gamelogic.state.Village;
 
 
 

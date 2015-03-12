@@ -5,7 +5,7 @@
 
 package mw.shared.servercommands;
 
-import mw.server.gamelogic.GameController;
+import mw.server.gamelogic.controllers.GameController;
 import mw.server.network.mappers.GameMapper;
 import mw.shared.SharedCoordinates;
 

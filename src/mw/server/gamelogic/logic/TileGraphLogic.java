@@ -2,10 +2,18 @@
  * Logic for moving units 
  * @author emilysager
  */
-package mw.server.gamelogic;
+package mw.server.gamelogic.logic;
 
 import java.util.Collection;
 import java.util.HashSet;
+
+import mw.server.gamelogic.enums.Color;
+import mw.server.gamelogic.enums.StructureType;
+import mw.server.gamelogic.enums.UnitType;
+import mw.server.gamelogic.enums.VillageType;
+import mw.server.gamelogic.graph.GraphNode;
+import mw.server.gamelogic.state.Tile;
+import mw.server.gamelogic.state.Unit;
 
 
 public final class TileGraphLogic {

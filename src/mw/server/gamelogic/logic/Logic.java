@@ -1,6 +1,19 @@
-package mw.server.gamelogic;
+package mw.server.gamelogic.logic;
 
 import java.util.ArrayList;
+
+import mw.server.gamelogic.enums.ActionType;
+import mw.server.gamelogic.enums.Color;
+import mw.server.gamelogic.enums.StructureType;
+import mw.server.gamelogic.enums.UnitType;
+import mw.server.gamelogic.enums.VillageType;
+import mw.server.gamelogic.exceptions.CantUpgradeException;
+import mw.server.gamelogic.graph.GraphNode;
+import mw.server.gamelogic.state.Game;
+import mw.server.gamelogic.state.GameMap;
+import mw.server.gamelogic.state.Tile;
+import mw.server.gamelogic.state.Unit;
+import mw.server.gamelogic.state.Village;
 
 
 /**
@@ -14,9 +27,9 @@ public class Logic {
 	 * @param pGraphNode
 	 * @return 2 if the GraphNode has a meadow, 1 otherwise
 	 */
-	public static int getGoldGenerated(GraphNode pGraphNode)
+	public static int getGoldGenerated(Tile pTile)
 	{
-		return isMeadowOnTile(pGraphNode.getTile()) ? 2 : 1;
+		return isMeadowOnTile(pTile) ? 2 : 1;
 	}
 
 	/**
@@ -54,9 +67,8 @@ public class Logic {
 	 * 
 	 * @param pGraphNode
 	 */
-	public static void clearTombstone(GraphNode pGraphNode)
+	public static void clearTombstone(Tile pTile)
 	{
-		Tile pTile = pGraphNode.getTile(); 
 		StructureType pStructureType = pTile.getStructureType(); 
 		if(pStructureType == StructureType.TOMBSTONE)
 		{

@@ -13,10 +13,10 @@ import java.util.Collection;
 import java.util.HashSet;
 
 import mw.client.files.ProjectFolder;
-import mw.server.gamelogic.Game;
-import mw.server.gamelogic.Player;
-import mw.server.gamelogic.TooManyPlayersException;
-import mw.server.gamelogic.Village;
+import mw.server.gamelogic.exceptions.TooManyPlayersException;
+import mw.server.gamelogic.state.Game;
+import mw.server.gamelogic.state.Player;
+import mw.server.gamelogic.state.Village;
 
 public class TestMap {
 	private static Game aTestGame; 

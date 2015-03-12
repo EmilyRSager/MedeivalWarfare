@@ -9,8 +9,8 @@ import java.io.IOException;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import mw.server.gamelogic.Game;
-import mw.server.gamelogic.TooManyPlayersException;
+import mw.server.gamelogic.exceptions.TooManyPlayersException;
+import mw.server.gamelogic.state.Game;
 
 public class TestForTestMapCreation {
 	public static void main(String[] args) throws TooManyPlayersException, IOException{

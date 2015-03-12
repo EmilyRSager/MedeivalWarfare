@@ -8,7 +8,7 @@ package mw.server.network.mappers;
 import java.util.HashMap;
 import java.util.Set;
 
-import mw.server.gamelogic.Game;
+import mw.server.gamelogic.state.Game;
 
 /**
  * @singleton

@@ -8,13 +8,13 @@ package mw.server.gamelogic.partitioners;
 import java.util.Set;
 
 import mw.client.model.GameMap;
-import mw.server.gamelogic.Color;
-import mw.server.gamelogic.GraphNode;
-import mw.server.gamelogic.PathFinder;
-import mw.server.gamelogic.RandomColorGenerator;
-import mw.server.gamelogic.Tile;
-import mw.server.gamelogic.Village;
-import mw.server.gamelogic.VillageType;
+import mw.server.gamelogic.enums.Color;
+import mw.server.gamelogic.enums.VillageType;
+import mw.server.gamelogic.graph.GraphNode;
+import mw.server.gamelogic.logic.PathFinder;
+import mw.server.gamelogic.state.Tile;
+import mw.server.gamelogic.state.Village;
+import mw.server.gamelogic.util.RandomColorGenerator;
 
 /**
  * 

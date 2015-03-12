@@ -2,6 +2,11 @@ package mw.server.gamelogic;
 
 import java.util.Collection;
 
+import mw.server.gamelogic.enums.ActionType;
+import mw.server.gamelogic.enums.UnitType;
+import mw.server.gamelogic.enums.VillageType;
+import mw.server.gamelogic.state.Tile;
+
 public class PossibleGameActions
 {
 	private Collection<Tile> aMovable; 

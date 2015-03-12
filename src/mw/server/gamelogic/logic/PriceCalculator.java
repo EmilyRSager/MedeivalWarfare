@@ -1,6 +1,14 @@
-package mw.server.gamelogic;
+package mw.server.gamelogic.logic;
 
 import java.util.Collection;
+
+import mw.server.gamelogic.enums.UnitType;
+import mw.server.gamelogic.enums.VillageType;
+import mw.server.gamelogic.exceptions.CantUpgradeException;
+import mw.server.gamelogic.graph.GraphNode;
+import mw.server.gamelogic.state.Tile;
+import mw.server.gamelogic.state.Unit;
+import mw.server.gamelogic.state.Village;
 
 public class PriceCalculator 
 {

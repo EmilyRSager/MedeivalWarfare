@@ -3,10 +3,21 @@
  * March 4, 2015
  */
 
-package mw.server.gamelogic;
+package mw.server.gamelogic.controllers;
 
 import java.util.ArrayList;
 import java.util.Collection;
+
+import mw.server.gamelogic.PossibleGameActions;
+import mw.server.gamelogic.enums.ActionType;
+import mw.server.gamelogic.enums.UnitType;
+import mw.server.gamelogic.enums.VillageType;
+import mw.server.gamelogic.exceptions.TooManyPlayersException;
+import mw.server.gamelogic.state.Coordinates;
+import mw.server.gamelogic.state.Game;
+import mw.server.gamelogic.state.Player;
+import mw.server.gamelogic.state.Tile;
+import mw.server.gamelogic.state.Village;
 
 /**
  * Provides access to the networking code that sends commands to the server.

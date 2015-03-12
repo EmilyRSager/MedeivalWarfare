@@ -1,4 +1,4 @@
-package mw.server.gamelogic;
+package mw.server.gamelogic.state;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -6,6 +6,16 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
+
+import mw.server.gamelogic.enums.ActionType;
+import mw.server.gamelogic.enums.Color;
+import mw.server.gamelogic.enums.StructureType;
+import mw.server.gamelogic.enums.VillageType;
+import mw.server.gamelogic.graph.Graph;
+import mw.server.gamelogic.graph.GraphNode;
+import mw.server.gamelogic.logic.PathFinder;
+import mw.server.gamelogic.util.HexToGraph;
+import mw.server.gamelogic.util.RandomColorGenerator;
 
 import com.google.gson.GsonBuilder;
 
@@ -53,7 +63,7 @@ public class GameMap  implements Serializable{
 	{
 		return new GsonBuilder().setPrettyPrinting().create().toJson(aTiles);
 	}
-	
+
 	/**
 	 * Randomly Colors the Tiles 
 	 */
@@ -88,7 +98,12 @@ public class GameMap  implements Serializable{
 				//don't create a village if it's neutral land, or the village is too small to be supported
 				if (villageSet.size()>=3 && villageSet.iterator().next().getTile().getColor()!=Color.NEUTRAL)
 				{
-					Village v = new Village (villageSet);
+					Collection<Tile> lVillageTiles = new HashSet<Tile>(); 
+					for (GraphNode  lVillageGraphNode : villageSet)
+					{
+						lVillageTiles.add(lVillageGraphNode.getTile()); 
+					}
+					Village v = new Village (lVillageTiles);
 					aVillages.add(v); 
 					villageAlreadyExists = false; 
 				}
@@ -119,16 +134,24 @@ public class GameMap  implements Serializable{
 
 			}
 		}
-		
+
 		aTiles[0][0].setColor(Color.SEATILE);
 	}
-	
+
+	/**
+	 * Figures out the villages in a game 
+	 */
+	public void calculateVillages() 
+	{
+
+	}
+
 	/**
 	 * this method can be called at the beginning of a turn to create new trees as defined in the 
 	 * design spec
 	 */
 	public void generateTrees(){
-		
+
 		System.out.println("[Server] Attempting to grow trees.");
 
 		//following just to make it easier to iterate over, can be removed 
@@ -156,7 +179,7 @@ public class GameMap  implements Serializable{
 				for(Tile lTile: lTiles ){
 					StructureType lStructureType = lTile.getStructureType();
 					if ((lStructureType.equals(StructureType.NO_STRUCT) || lStructureType.equals(StructureType.TREE) || lTile.getVillageType().equals(VillageType.NO_VILLAGE) ) ) {
-						
+
 						if (!lTile.hasUnit() ) {
 							lNeighboringEmptyOrMeadowTiles.add(lTile);
 						}
@@ -241,12 +264,12 @@ public class GameMap  implements Serializable{
 			}
 		}
 	}
-	
+
 	public GraphNode getGraphNode(Tile lTile)
 	{
 		return TileToNodeHashMap.get(lTile);
 	}
-	
+
 	/**
 	 * Returns the set of tiles a unit can move to
 	 * May return an empty set 
@@ -256,10 +279,10 @@ public class GameMap  implements Serializable{
 	public Set<Tile> getPossibleMoves(Tile startTile)
 	{
 		Set<Tile> toReturn = new HashSet<Tile>();
-		
+
 		if (startTile.hasUnit()) {
 			Unit lUnit = startTile.getUnit();
-			
+
 			if (lUnit.getActionType().equals(ActionType.READY)) {
 				GraphNode temp = TileToNodeHashMap.get(startTile);
 				Set<GraphNode> possNodes = getPossibleMoves(temp);
@@ -267,7 +290,7 @@ public class GameMap  implements Serializable{
 					toReturn.add(lGraphNode.getTile());
 				}
 			}
-			
+
 		}
 		return toReturn; 
 	}
