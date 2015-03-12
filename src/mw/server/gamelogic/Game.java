@@ -13,8 +13,8 @@ import mw.util.CircularIterator;
  * @author emilysager
  */
 public class Game extends RandomColorGenerator implements Serializable{
-	private static final int DEFAULT_WIDTH = 12;
-	private static final int DEFAULT_HEIGHT = 12;
+	private static final int DEFAULT_WIDTH = 18;
+	private static final int DEFAULT_HEIGHT = 18;
 	private Collection<Player> aPlayers;
 	private GameMap aMap;  
 	private Player aCurrentPlayer;
@@ -328,7 +328,10 @@ public class Game extends RandomColorGenerator implements Serializable{
 		}
 		else    		
 		{
-			Logic.updateGameState(crtUnit, startTile, pDestinationTile, this, aMap);  
+			if (Logic.updateGameState(crtUnit, startTile, pDestinationTile, this, aMap)) 
+			{
+				crtUnit.setActionType(ActionType.MOVED);
+			}
 		}
 
 
@@ -351,7 +354,7 @@ public class Game extends RandomColorGenerator implements Serializable{
 		//TODO -- recalculate village 
 		//aMap.recalculateVillages();
 		//moveUnit(startTile, pDestinationTile);		
-
+		
 			
 	}
 
