@@ -11,7 +11,7 @@ import com.google.gson.Gson;
  * @author emilysager
  */
 
-public class Tile  extends Observable implements Serializable
+public class Tile extends Observable implements Serializable
 {
 	
 	private StructureType aStructureType; 
@@ -107,33 +107,6 @@ public class Tile  extends Observable implements Serializable
 		return false; 
 	}
 	
-	public void setWood(int pWood)
-	{
-		if (aVillageType != VillageType.NO_VILLAGE)
-		{
-			aWood = pWood;
-		}
-		setChanged();
-	}
-	public void setGold(int pGold)
-	{
-		if (aVillageType != VillageType.NO_VILLAGE)
-		{
-			aGold = pGold;
-		}
-		setChanged();
-	}
-
-	public int getGold()
-	{
-		return aGold; 
-	}
-	
-	public int getWood() 
-	{
-		return aWood;
-	}
-	
 	public void setVillageType(VillageType pVillageType)
 	{
 		 aVillageType = pVillageType; 
@@ -153,10 +126,5 @@ public class Tile  extends Observable implements Serializable
 	public VillageType getVillageType()
 	{
 		return aVillageType; 	
-	}
-	
-	
-	
-
-	
+	}	
 }

@@ -1,17 +1,16 @@
 package mw.server.gamelogic.graph;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
 
+/**
+ * Builds a Hex Graph based on a 2 dimensional of Graph Nodes
+ */
 public class HexGraphBuilder {
 
-	public static HashMap<GraphNode, Collection<GraphNode>> ConvertFlatToppedHexes(GraphNode [][] pCoordinates)
+	public static <T> void buildGraph(Graph<T> pGraph, T[][] pTiles)
 	{
-		HashMap<GraphNode, Collection<GraphNode>> graph;
-		graph = new HashMap<GraphNode, Collection<GraphNode>>();
-		int  height = pCoordinates.length;
-		int width = pCoordinates[0].length; 
+		int  height = pTiles.length;
+		int width = pTiles[0].length; 
 
 		for (int i= 0; i<height; i++)
 		{
@@ -19,184 +18,175 @@ public class HexGraphBuilder {
 			{
 				if (i == 0 && j ==0) 
 				{
-					upperLeftCorner(pCoordinates, i, j, height, width, graph); 
+					upperLeftCorner(pGraph, pTiles, i, j); 
 				}
 				if (i==0 && j == width -1)
 				{
-					upperRightCorner(pCoordinates, i, j, height, width, graph);
+					upperRightCorner(pGraph, pTiles, i, j);
 				}
 				if (i!=0 && i!=height-1 && j==0)
 				{
-					leftColumn(pCoordinates, i, j, height, width, graph); 
+					leftColumn(pGraph, pTiles, i, j); 
 				}
 				if (i !=0 && i!=height-1 && j == width-1)
 				{
-					rightColumn(pCoordinates, i, j, height, width, graph);
-				}
-				if (i == height - 1 && j == width - 1)
-				{
-					lowerRightCorner(pCoordinates, i, j, height, width, graph); 
+					rightColumn(pGraph, pTiles, i, j);
 				}
 				if (i == height-1 && j == 0)
 				{
-					lowerLeftCorner(pCoordinates, i, j, height, width, graph); 
+					lowerLeftCorner(pGraph, pTiles, i, j); 
+				}
+				if (i == height - 1 && j == width - 1)
+				{
+					lowerRightCorner(pGraph, pTiles, i, j); 
 				}
 				else 
 				{
-					generalCase(pCoordinates, i, j, height, width, graph);
+					generalCase(pGraph, pTiles, i, j, height, width);
 				}
 			}
 		}
-		return graph; 
 	}
 
-	private static void lowerLeftCorner(GraphNode[][] pCoordinates, int i, int j, int height, int width, HashMap<GraphNode, Collection<GraphNode>> graph) {
-		ArrayList<GraphNode> tmp = new ArrayList<GraphNode>(); 
-		tmp.add(pCoordinates[i-1][j]); 
-		tmp.add(pCoordinates[i-1][j+1]); 
-		tmp.add(pCoordinates[i][j+1]);
-		graph.put(pCoordinates[i][j], tmp); 
-		pCoordinates[i][j].initializeNeighbors(tmp);
-
-	}
-
-	private static void lowerRightCorner(GraphNode[][] pCoordinates, int i, int j, int height, int width, HashMap<GraphNode, Collection<GraphNode>> graph)
+	private static <T> void upperLeftCorner(Graph<T> pGraph, T[][] pTiles, int i, int j) 
 	{
-
-		ArrayList<GraphNode> tmp = new ArrayList<GraphNode>();
-		if (j % 2 == 0)
-		{
-
-			tmp.add(pCoordinates[i-1][j]); //directly above
-			tmp.add(pCoordinates[i-1][j-1]); //upper left 
-			tmp.add(pCoordinates[i][j-1]); 
-			graph.put(pCoordinates[i][j], tmp); 
-			pCoordinates[i][j].initializeNeighbors(tmp);
-		}
-		else 
-		{
-
-			tmp.add(pCoordinates[i-1][j]);
-			tmp.add(pCoordinates[i][j-1]); 
-			graph.put(pCoordinates[i][j], tmp); 
-			pCoordinates[i][j].initializeNeighbors(tmp);
-		}
-
-
-	}
-	private static void leftColumn(GraphNode[][] pCoordinates, int i, int j, int height, int width, HashMap<GraphNode, Collection<GraphNode>> graph) {
-		ArrayList<GraphNode> tmp = new ArrayList<GraphNode>(); 
-		tmp.add(pCoordinates[i-1][j]); // directly above
-		tmp.add(pCoordinates[i+1][j]);// directly below
-		tmp.add(pCoordinates[i-1][j+1]); //upper right
-		tmp.add(pCoordinates[i][j+1]); //lower right
-		graph.put(pCoordinates[i][j], tmp);
-		pCoordinates[i][j].initializeNeighbors(tmp);
-
+		ArrayList<T> tmp = new ArrayList<T>(); 
+		tmp.add(pTiles[i][j+1]); //lower left 
+		tmp.add(pTiles[i+1][j]); //directly below
+		
+		pGraph.setNeighbors(pTiles[i][j], tmp);//you can safely remove the cloning                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              
 	}
 
-	private static void upperLeftCorner(GraphNode[][] pCoordinates, int i, int j, int height, int width, HashMap<GraphNode, Collection<GraphNode>> graph) 
-	{
-
-		ArrayList<GraphNode> tmp = new ArrayList<GraphNode>(); 
-		tmp.add(pCoordinates[i][j+1]); //lower left 
-		tmp.add(pCoordinates[i+1][j]); //directly below
-		graph.put(pCoordinates[i][j], tmp);
-		pCoordinates[i][j].initializeNeighbors(tmp);//you can safely remove the cloning                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              
-	}
-
-	private static void upperRightCorner (GraphNode[][] pCoordinates, int i, int j, int height, int width, HashMap<GraphNode, Collection<GraphNode>> graph)
+	private static <T> void upperRightCorner (Graph<T> pGraph, T[][] pTiles, int i, int j)
 	{
 		/*for the upper right corner
 		 * Need even and odd cases 
 		 */
-
 		if (j%2 == 0) //even case
 		{
-			ArrayList<GraphNode> tmp = new ArrayList<GraphNode>(); 
-			tmp.add(pCoordinates[i][j-1]); //lower left
-			tmp.add(pCoordinates[i+1][j]); //directly below 
-			graph.put(pCoordinates[i][j], tmp);
-			pCoordinates[i][j].initializeNeighbors(tmp);
+			ArrayList<T> tmp = new ArrayList<T>(); 
+			tmp.add(pTiles[i][j-1]); //lower left
+			tmp.add(pTiles[i+1][j]); //directly below 
+			
+			pGraph.setNeighbors(pTiles[i][j], tmp);
 		}
 		else //odd case
 		{
-			ArrayList<GraphNode> tmp = new ArrayList<GraphNode>(); 
-			tmp.add(pCoordinates[i][j-1]); //upper left
-			tmp.add(pCoordinates[i+1][j-1]); //lower left
-			tmp.add(pCoordinates[i+1][j]); // directly below
-			graph.put(pCoordinates[i][j],tmp);
-			pCoordinates[i][j].initializeNeighbors(tmp);
+			ArrayList<T> tmp = new ArrayList<T>(); 
+			tmp.add(pTiles[i][j-1]); //upper left
+			tmp.add(pTiles[i+1][j-1]); //lower left
+			tmp.add(pTiles[i+1][j]); // directly below
+			
+			pGraph.setNeighbors(pTiles[i][j], tmp);
 		}
-
+	}
+	
+	private static <T> void leftColumn(Graph<T> pGraph, T[][] pTiles, int i, int j)
+	{
+		ArrayList<T> tmp = new ArrayList<T>(); 
+		tmp.add(pTiles[i-1][j]); // directly above
+		tmp.add(pTiles[i+1][j]);// directly below
+		tmp.add(pTiles[i-1][j+1]); //upper right
+		tmp.add(pTiles[i][j+1]); //lower right
+		
+		pGraph.setNeighbors(pTiles[i][j], tmp);
 	}
 
-	private static void rightColumn(GraphNode[][] pCoordinates, int i, int j, int height, int width, HashMap<GraphNode, Collection<GraphNode>> graph) {
+	private static <T> void rightColumn(Graph<T> pGraph, T[][] pTiles, int i, int j) {
 
 		/*for the right column
 		 * Need even and odd cases
 		 */
-
 		if (j%2 == 0) //even case
 		{
-			ArrayList<GraphNode> tmp = new ArrayList<GraphNode>(); 
-			tmp.add(pCoordinates[i][j-1]); //lower left
-			tmp.add(pCoordinates[i-1][j-1]); //upper left
-			tmp.add(pCoordinates[i-1][j]); //directly above
-			tmp.add(pCoordinates[i+1][j]); //directly below 
-			graph.put(pCoordinates[i][j], tmp);
-			pCoordinates[i][j].initializeNeighbors(tmp);
+			ArrayList<T> tmp = new ArrayList<T>(); 
+			tmp.add(pTiles[i][j-1]); //lower left
+			tmp.add(pTiles[i-1][j-1]); //upper left
+			tmp.add(pTiles[i-1][j]); //directly above
+			tmp.add(pTiles[i+1][j]); //directly below 
+			
+			pGraph.setNeighbors(pTiles[i][j], tmp);
 		}
 		else //odd case
 		{
-			ArrayList<GraphNode> tmp = new ArrayList<GraphNode>(); 
-			tmp.add(pCoordinates[i][j-1]); //upper left
-			tmp.add(pCoordinates[i+1][j-1]); //lower left
-			tmp.add(pCoordinates[i+1][j]); // directly below
-			tmp.add(pCoordinates[i-1][j]); //directly above
-			graph.put(pCoordinates[i][j], tmp);
-			pCoordinates[i][j].initializeNeighbors(tmp);
+			ArrayList<T> tmp = new ArrayList<T>(); 
+			tmp.add(pTiles[i][j-1]); //upper left
+			tmp.add(pTiles[i+1][j-1]); //lower left
+			tmp.add(pTiles[i+1][j]); // directly below
+			tmp.add(pTiles[i-1][j]); //directly above
+			
+			pGraph.setNeighbors(pTiles[i][j], tmp);
+		}
+	}
+	
+	private static <T> void lowerLeftCorner(Graph<T> pGraph, T[][] pTiles, int i, int j)
+	{
+		ArrayList<T> tmp = new ArrayList<T>(); 
+		tmp.add(pTiles[i-1][j]); 
+		tmp.add(pTiles[i-1][j+1]); 
+		tmp.add(pTiles[i][j+1]);
+		
+		pGraph.setNeighbors(pTiles[i][j], tmp);
+	}
+
+	private static <T> void lowerRightCorner(Graph<T> pGraph, T[][] pTiles, int i, int j)
+	{
+		ArrayList<T> tmp = new ArrayList<T>();
+		if (j % 2 == 0)
+		{
+			tmp.add(pTiles[i-1][j]); //directly above
+			tmp.add(pTiles[i-1][j-1]); //upper left 
+			tmp.add(pTiles[i][j-1]); 
+			
+			pGraph.setNeighbors(pTiles[i][j], tmp);
+		}
+		else 
+		{
+			tmp.add(pTiles[i-1][j]);
+			tmp.add(pTiles[i][j-1]);
+			
+			pGraph.setNeighbors(pTiles[i][j], tmp);
 		}
 	}
 
-	private static void generalCase(GraphNode [] [] pCoordinates, int i, int j, int height, int width, HashMap<GraphNode, Collection<GraphNode>> graph) {
+	private static <T> void generalCase(Graph<T> pGraph, T[][] pTiles, int i, int j, int height, int width) {
 
-		/*non-edge hex
+		/* non-edge hex
 		 * conditions:
 		 *		j is odd 
 		 */
 		if (j!=0 && j!=width-1 && j%2==1) {
 			if (i!=0 && i !=height-1)  //if its not a top or bottom row
 			{ 
-				ArrayList<GraphNode> tmp = new ArrayList<GraphNode>(); 
-				tmp.add(pCoordinates[i-1][j]); //directly above 
-				tmp.add(pCoordinates[i][j-1]); //upper left
-				tmp.add(pCoordinates[i][j+1]); //upper right
-				tmp.add(pCoordinates[i+1][j]); //directly below
-				tmp.add(pCoordinates[i+1][j-1]); //lower left
-				tmp.add(pCoordinates[i+1][j+1]); //lower right
-				graph.put(pCoordinates[i][j], tmp);
-				pCoordinates[i][j].initializeNeighbors(tmp);
+				ArrayList<T> tmp = new ArrayList<T>(); 
+				tmp.add(pTiles[i-1][j]); //directly above 
+				tmp.add(pTiles[i][j-1]); //upper left
+				tmp.add(pTiles[i][j+1]); //upper right
+				tmp.add(pTiles[i+1][j]); //directly below
+				tmp.add(pTiles[i+1][j-1]); //lower left
+				tmp.add(pTiles[i+1][j+1]); //lower right
+				
+				pGraph.setNeighbors(pTiles[i][j], tmp);
 			}
 			if (i==0) // if its a top row
 			{
-				ArrayList<GraphNode> tmp = new ArrayList<GraphNode>(); 
-				tmp.add(pCoordinates[i+1][j]); //directly below
-				tmp.add(pCoordinates[i+1][j-1]); //lower left
-				tmp.add(pCoordinates[i+1][j+1]); //lower right
-				tmp.add(pCoordinates[i] [j-1]); //upper left
-				tmp.add(pCoordinates[i][j+1]); // upper right
-				graph.put(pCoordinates[i][j], tmp);
-				pCoordinates[i][j].initializeNeighbors(tmp);
+				ArrayList<T> tmp = new ArrayList<T>(); 
+				tmp.add(pTiles[i+1][j]); //directly below
+				tmp.add(pTiles[i+1][j-1]); //lower left
+				tmp.add(pTiles[i+1][j+1]); //lower right
+				tmp.add(pTiles[i] [j-1]); //upper left
+				tmp.add(pTiles[i][j+1]); // upper right
+				
+				pGraph.setNeighbors(pTiles[i][j], tmp);
 			}
 			if (i==height-1) //if its a bottom row
 			{
-				ArrayList<GraphNode> tmp = new ArrayList<GraphNode>(); 
-				tmp.add(pCoordinates[i-1][j]); //directly above 
-				tmp.add(pCoordinates[i][j-1]); //upper left
-				tmp.add(pCoordinates[i][j+1]); //upper right
-				graph.put(pCoordinates[i][j], tmp);
-				pCoordinates[i][j].initializeNeighbors(tmp);
+				ArrayList<T> tmp = new ArrayList<T>(); 
+				tmp.add(pTiles[i-1][j]); //directly above 
+				tmp.add(pTiles[i][j-1]); //upper left
+				tmp.add(pTiles[i][j+1]); //upper right
+				
+				pGraph.setNeighbors(pTiles[i][j], tmp);
 			}
 		}
 
@@ -210,42 +200,37 @@ public class HexGraphBuilder {
 		{
 			if (i!=0 && i!=height-1) //if its not a top or bottom row
 			{
-				ArrayList<GraphNode> tmp = new ArrayList<GraphNode>(); 
-				tmp.add(pCoordinates[i-1][j]); //directly above
-				tmp.add(pCoordinates[i+1][j]); //directly below
-				tmp.add(pCoordinates[i-1][j-1]); //upper left
-				tmp.add(pCoordinates[i-1][j+1]); //upper right
-				tmp.add(pCoordinates[i][j-1]); //lower left
-				tmp.add(pCoordinates[i][j+1]); //lower right
-				graph.put(pCoordinates[i][j], tmp);
-				pCoordinates[i][j].initializeNeighbors(tmp);
-
+				ArrayList<T> tmp = new ArrayList<T>(); 
+				tmp.add(pTiles[i-1][j]); //directly above
+				tmp.add(pTiles[i+1][j]); //directly below
+				tmp.add(pTiles[i-1][j-1]); //upper left
+				tmp.add(pTiles[i-1][j+1]); //upper right
+				tmp.add(pTiles[i][j-1]); //lower left
+				tmp.add(pTiles[i][j+1]); //lower right
+				
+				pGraph.setNeighbors(pTiles[i][j], tmp);
 			}
 
 			if (i==0) //if its a top row
 			{
-				ArrayList<GraphNode> tmp = new ArrayList<GraphNode>(); 
-				tmp.add(pCoordinates[i+1][j]); //directly below
-				tmp.add(pCoordinates[i][j-1]); //lower left
-				tmp.add(pCoordinates[i][j+1]); //lower right
-				graph.put(pCoordinates[i][j], tmp);
-				pCoordinates[i][j].initializeNeighbors(tmp);
+				ArrayList<T> tmp = new ArrayList<T>(); 
+				tmp.add(pTiles[i+1][j]); //directly below
+				tmp.add(pTiles[i][j-1]); //lower left
+				tmp.add(pTiles[i][j+1]); //lower right
+				
+				pGraph.setNeighbors(pTiles[i][j], tmp);
 			}
 			if (i== height -1) // if its a bottom row
 			{
-				ArrayList<GraphNode> tmp = new ArrayList<GraphNode>(); 
-				tmp.add(pCoordinates[i-1][j]); //directly above
-				tmp.add(pCoordinates[i-1][j-1]); //upper left
-				tmp.add(pCoordinates[i-1][j+1]); //upper right
-				tmp.add(pCoordinates[i][j-1]); 
-				tmp.add(pCoordinates[i][j+1]);
-				graph.put(pCoordinates[i][j], tmp);
-				pCoordinates[i][j].initializeNeighbors(tmp);
+				ArrayList<T> tmp = new ArrayList<T>(); 
+				tmp.add(pTiles[i-1][j]); //directly above
+				tmp.add(pTiles[i-1][j-1]); //upper left
+				tmp.add(pTiles[i-1][j+1]); //upper right
+				tmp.add(pTiles[i][j-1]); 
+				tmp.add(pTiles[i][j+1]);
+				
+				pGraph.setNeighbors(pTiles[i][j], tmp);
 			}
-
 		}
-
 	}
 }
-
-

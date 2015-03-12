@@ -9,8 +9,8 @@ import mw.server.gamelogic.model.Game;
 import mw.server.gamelogic.model.PossibleGameActions;
 import mw.server.network.mappers.ClientChannelMapper;
 import mw.server.network.translators.SharedPossibleActionsTranslator;
-import mw.shared.SharedPossibleGameActions;
 import mw.shared.SharedCoordinates;
+import mw.shared.SharedPossibleGameActions;
 import mw.shared.clientcommands.DisplayPossibleGameActionsCommand;
 
 public class GetPossibleActionsController {
@@ -20,15 +20,15 @@ public class GetPossibleActionsController {
 						pGame, 
 						pSharedCoordinates.getX(), 
 						pSharedCoordinates.getY()
-					);
-		
+						);
+
 		//translate to shared action representation
 		SharedPossibleGameActions lSharedPossibleGameActions = 
 				SharedPossibleActionsTranslator.translatePossibleGameActions(lPossibleGameActions);
-		
+
 		ClientChannelMapper
-			.getInstance()
-			.getChannel(pClientID)
-			.sendCommand(new DisplayPossibleGameActionsCommand(lSharedPossibleGameActions));
+				.getInstance()
+				.getChannel(pClientID)
+				.sendCommand(new DisplayPossibleGameActionsCommand(lSharedPossibleGameActions));
 	}
 }

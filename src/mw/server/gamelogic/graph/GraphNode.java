@@ -3,30 +3,46 @@ package mw.server.gamelogic.graph;
 import java.io.Serializable;
 import java.util.Collection;
 
-import mw.server.gamelogic.model.Tile;
-
-public class GraphNode extends AbstractGraphNode implements Serializable {
-
-	private final Tile aTile; 
-	private Collection<GraphNode> aNeighbors; 
+public class GraphNode implements Serializable {
+	private boolean aVisited;
+	private Collection<GraphNode> aNeighbors;
 	
-	public GraphNode (Tile pTile)
-	{
-		aTile = pTile; 
+	/**
+	 * @param pGraphNode
+	 */
+	public void setNeighbor(GraphNode pGraphNode){
+		aNeighbors.add(pGraphNode);
 	}
-	public Tile getTile()
-	{
-		return aTile; 
-	}
-	public void initializeNeighbors(Collection<GraphNode> pNeighbors)
+	
+	/**
+	 * @param pNeighbors
+	 */
+	public void setNeighbors(Collection<GraphNode> pNeighbors)
 	{
 		aNeighbors = pNeighbors; 
 	}
 
-	
-	public Collection<GraphNode> getAdjacentNodes() 
+	/**
+	 * 
+	 * @return
+	 */
+	public Collection<GraphNode> getNeighbors() 
 	{
 		return aNeighbors; 
 	}
-
+	
+	/**
+	 * 
+	 */
+	public void setVisited()
+	{
+		aVisited = true;
+	}
+	
+	/**
+	 * 
+	 */
+	public void reset(){
+		aVisited = false;
+	}
 }

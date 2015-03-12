@@ -18,7 +18,7 @@ import mw.server.gamelogic.model.VillageType;
 
 public final class TileGraphLogic {
 
-	public static boolean isReachableNode(GraphNode pStart, GraphNode pCrt)
+	public static boolean isReachableNode(Tile t1, Tile t2)
 	{
 		Tile crtTile = pCrt.getTile(); 
 		Tile startTile = pStart.getTile();
@@ -49,7 +49,7 @@ public final class TileGraphLogic {
 
 
 	}
-	public static boolean isPathOver(GraphNode pStart, GraphNode pCrt)
+	public static boolean isPathOver(Tile t1, Tile t2)
 	{
 		Tile destinationTile = pCrt.getTile(); 
 		Tile startTile = pStart.getTile();
@@ -343,7 +343,7 @@ public final class TileGraphLogic {
 		}
 		return false; 
 	}
-	public static boolean isVillageBoundary(GraphNode startNode, GraphNode pNode )
+	public static boolean isVillageBoundary(Tile t1, Tile t2)
 	{
 		Collection<GraphNode> pAdjNodes = pNode.getAdjacentNodes(); 
 		boolean areAllNeighborsSameColor = true; 
@@ -357,7 +357,7 @@ public final class TileGraphLogic {
 		return areAllNeighborsSameColor; 
 	
 	}
-	public static boolean tilesAreSameColor(GraphNode startNode, GraphNode pNode)
+	public static boolean tilesAreSameColor(Tile startNode, Tile pNode)
 	{
 		if (startNode.getTile().getColor() == pNode.getTile().getColor())
 		{

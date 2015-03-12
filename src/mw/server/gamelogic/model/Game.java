@@ -10,6 +10,7 @@ import mw.server.gamelogic.Logic;
 import mw.server.gamelogic.exceptions.CantUpgradeException;
 import mw.server.gamelogic.exceptions.NotEnoughIncomeException;
 import mw.server.gamelogic.exceptions.TooManyPlayersException;
+import mw.server.gamelogic.partitioners.RandomMapPartitioner;
 import mw.util.CircularIterator;
 
 /**
@@ -20,7 +21,7 @@ public class Game extends RandomColorGenerator implements Serializable{
 	private static final int DEFAULT_WIDTH = 18;
 	private static final int DEFAULT_HEIGHT = 18;
 	private Collection<Player> aPlayers;
-	private GameMap aMap;  
+	private GameMap aGameMap;  
 	private Player aCurrentPlayer;
 	CircularIterator<Player> crtIterator;
 
@@ -40,7 +41,6 @@ public class Game extends RandomColorGenerator implements Serializable{
 	 * @throws TooManyPlayersException 
 	 */
 	public Game (Collection<Player> pPlayers, int pWidth, int pHeight) throws TooManyPlayersException {
-
 		aPlayers  = pPlayers;
 		Stack <Color> myColors = new Stack <Color>(); 
 		myColors.push(Color.BLUE); 
@@ -63,9 +63,9 @@ public class Game extends RandomColorGenerator implements Serializable{
 			}
 		}
 
-		aMap = new GameMap(pWidth, pHeight, availableColors); 
-		aMap.partition();
-		assignVillageColors();
+		aGameMap = new GameMap(pWidth, pHeight, availableColors); 
+		new RandomMapPartitioner().partition(aGameMap);
+		assignVillagesToPlayers();
 
 		crtIterator = new CircularIterator<Player>(pPlayers);
 		aCurrentPlayer = crtIterator.next(); 
@@ -74,9 +74,9 @@ public class Game extends RandomColorGenerator implements Serializable{
 	/**
 	 * 
 	 */
-	private void assignVillageColors(){
+	private void assignVillagesToPlayers(){
 		//assign color to each village that was created
-		Collection<Village> lVillages = aMap.getVillages();
+		Collection<Village> lVillages = aGameMap.getVillages();
 		for(Player lPlayer : aPlayers){
 			Color lColor = lPlayer.getPlayerColor();
 			for(Village lVillage : lVillages){
@@ -88,29 +88,13 @@ public class Game extends RandomColorGenerator implements Serializable{
 	}
 
 	/**
-	 * @FOR_TESTING
-	 */
-	public Game()
-	{
-		aMap = new GameMap();
-	}
-
-	/**
-	 * Calls the toString() method on all the tiles in a game
-	 */
-	public void printTiles()
-	{
-		System.out.println(aMap.toString()); 
-	}
-
-	/**
-	 *  returns the tile in a game with specified coordinates
+	 * returns the tile in a game with specified coordinates
 	 * @param pCoord
 	 * @return
 	 */
 	public Tile getTile(Coordinates pCoord)
 	{
-		return aMap.getTile(pCoord);
+		return aGameMap.getTile(pCoord);
 	}
 
 	/**
@@ -120,11 +104,10 @@ public class Game extends RandomColorGenerator implements Serializable{
 	 */
 	public Tile [][] getGameTiles()
 	{
-		return aMap.getTiles(); 
+		return aGameMap.getTiles(); 
 	}
 
 	/**
-	 * 
 	 * @param pTile
 	 * @param pUnitType
 	 */
@@ -201,7 +184,7 @@ public class Game extends RandomColorGenerator implements Serializable{
 
 		//get possible reachable tiles if the tile has a unit
 		if(pUnit != null){
-			possMoveTiles = aMap.getPossibleMoves(startTile);
+			possMoveTiles = aGameMap.getPossibleMoves(startTile);
 		}
 
 		Collection<UnitType> possUnitUpgrade = wantToHireVillager(startTile);
@@ -248,7 +231,7 @@ public class Game extends RandomColorGenerator implements Serializable{
 				//Decrement the Gold held by the hiring village
 				int lHireCost;
 				lHireCost = PriceCalculator.getUnitHireCost(pUnitType);
-				aMap.getVillage(pTile).addOrSubtractGold(-lHireCost);
+				aGameMap.getVillage(pTile).addOrSubtractGold(-lHireCost);
 
 				//place a new unit on pTile
 				Unit pUnit = new Unit(pUnitType); 
@@ -309,7 +292,7 @@ public class Game extends RandomColorGenerator implements Serializable{
 	 */
 	public void beginRound()
 	{
-		aMap.generateTrees();
+		aGameMap.generateTrees();
 	}
 
 	/**
@@ -320,7 +303,6 @@ public class Game extends RandomColorGenerator implements Serializable{
 	 */
 	public void moveUnit(Tile startTile, Tile pDestinationTile) 
 	{
-
 		if (startTile.equals(pDestinationTile))
 		{
 			return;
@@ -332,12 +314,11 @@ public class Game extends RandomColorGenerator implements Serializable{
 		}
 		else    		
 		{
-			if (Logic.updateGameState(crtUnit, startTile, pDestinationTile, this, aMap)) 
+			if (Logic.updateGameState(crtUnit, startTile, pDestinationTile, this, aGameMap)) 
 			{
 				crtUnit.setActionType(ActionType.MOVED);
 			}
 		}
-
 
 		startTile.notifyObservers();
 		pDestinationTile.notifyObservers();
@@ -351,15 +332,9 @@ public class Game extends RandomColorGenerator implements Serializable{
 	 */
 	public void takeoverTile(Tile startTile, Tile pDestinationTile) 
 	{
-
 		pDestinationTile.setColor(startTile.getColor());
-		Village lCapturingVillage = aMap.getVillage(startTile);
-		lCapturingVillage.addTile(aMap.getGraphNode(pDestinationTile));
-		//TODO -- recalculate village 
-		//aMap.recalculateVillages();
-		//moveUnit(startTile, pDestinationTile);		
-		
-			
+		Village lCapturingVillage = aGameMap.getVillage(startTile);
+		lCapturingVillage.addTile(pDestinationTile);
 	}
 
 	/**
@@ -395,30 +370,20 @@ public class Game extends RandomColorGenerator implements Serializable{
 	}
 
 	/**
-	 * Gets the game map for the current game
 	 * @return
 	 */
-	public GameMap getGameMap()
-	{
-		return aMap;
-	}
-
-	/**
-	 * @return
-	 */
-	public Collection<Player> getPlayers() 
+	public Collection<Player> getPlayers()
 	{
 		return aPlayers; 
 	}
 
 	/**
-	 * 
 	 * @param pTile
 	 * @return
 	 */
 	public Village getVillage(Tile pTile)
 	{
-		return aMap.getVillage(pTile);
+		return aGameMap.getVillage(pTile);
 	}
 
 	public Player getCurrentPlayer() 
