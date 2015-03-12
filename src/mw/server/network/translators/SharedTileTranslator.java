@@ -6,11 +6,13 @@
 package mw.server.network.translators;
 
 import mw.server.gamelogic.controllers.TileController;
+
 import mw.server.gamelogic.enums.Color;
 import mw.server.gamelogic.enums.StructureType;
 import mw.server.gamelogic.enums.UnitType;
 import mw.server.gamelogic.state.Game;
 import mw.server.gamelogic.state.Tile;
+
 import mw.shared.SharedColor;
 import mw.shared.SharedCoordinates;
 import mw.shared.SharedTile;
@@ -61,6 +63,7 @@ public class SharedTileTranslator {
 	 * @param pVillageType
 	 * @return
 	 */
+
 	public static VillageType translateVillageType(mw.server.gamelogic.enums.VillageType pVillageType){
 		if(pVillageType == mw.server.gamelogic.enums.VillageType.HOVEL){
 			return VillageType.HOVEL;
@@ -71,6 +74,7 @@ public class SharedTileTranslator {
 		}
 		
 		else if(pVillageType == mw.server.gamelogic.enums.VillageType.FORT){
+
 			return VillageType.FORT;
 		}
 		
@@ -102,6 +106,7 @@ public class SharedTileTranslator {
 		}
 		
 		else if(pUnitType == mw.server.gamelogic.enums.UnitType.KNIGHT){
+			
 			return SharedTile.UnitType.KNIGHT;
 		}
 		

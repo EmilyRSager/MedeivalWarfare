@@ -16,7 +16,6 @@ import mw.server.gamelogic.state.Unit;
 import mw.server.gamelogic.state.Village;
 
 
-
 public class TileController {
 
 	/**

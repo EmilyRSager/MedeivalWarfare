@@ -10,6 +10,7 @@ import java.util.Set;
 
 import mw.server.gamelogic.state.Game;
 
+
 /**
  * @singleton
  * Maps ClientIDs to the games they're currently playing in. This may not be a good solution.

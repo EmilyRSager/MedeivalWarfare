@@ -1,24 +1,15 @@
 package mw.shared;
 
-import javax.swing.text.html.HTMLDocument.HTMLReader.IsindexAction;
 
 public final class SharedCoordinates {
 
-	private final int x;
-	private final int y;
+	public final int X;
+	public final int Y;
 	
-	public SharedCoordinates(int x, int y)
+	public SharedCoordinates(int X, int Y)
 	{
-		this.x = x;
-		this.y = y;
-	}
-	
-	public int getX() {
-		return x;
-	}
-	
-	public int getY() {
-		return y;
+		this.X = X;
+		this.Y = Y;
 	}
 	
 	@Override
@@ -27,8 +18,8 @@ public final class SharedCoordinates {
 		if (!(o instanceof SharedCoordinates))
 			return false;
 		
-		SharedCoordinates other = (SharedCoordinates)o;
-		return x == other.x && y == other.y;
+		SharedCoordinates other = (SharedCoordinates) o;
+		return X == other.X && Y == other.Y;
 	}
 	
 }
