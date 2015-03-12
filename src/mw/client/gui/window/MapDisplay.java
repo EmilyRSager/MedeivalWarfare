@@ -1,24 +1,19 @@
 package mw.client.gui.window;
 
+import java.util.Observable;
 import java.util.Observer;
 
-import org.minueto.MinuetoColor;
-import org.minueto.MinuetoEventQueue;
 import org.minueto.handlers.MinuetoMouse;
 import org.minueto.image.MinuetoImage;
-import org.minueto.window.MinuetoFrame;
-
 import mw.client.controller.ActionInterpreter;
 import mw.client.controller.ModelViewMapping;
 import mw.client.gui.api.basics.Displayable;
-import mw.client.gui.api.basics.WindowArea;
 import mw.client.gui.api.interaction.Clickeable;
-import mw.client.gui.api.interaction.MouseClickHandler;
 import mw.client.model.ModelTile;
-import mw.shared.SharedColor;
 import mw.util.MultiArrayIterable;
 
-public class MapDisplay implements Displayable, Clickeable {
+public class MapDisplay extends Observable
+							implements Displayable, Clickeable, Observer {
 
 
 	/*
@@ -29,6 +24,8 @@ public class MapDisplay implements Displayable, Clickeable {
 	 */
 	
 	private ImageTile[][] tiles;
+	private MinuetoImage mapImage;
+	
 	private final int tileWidth;
 	private final int tileHeight;
 	private final Hexagon hex;
@@ -42,18 +39,7 @@ public class MapDisplay implements Displayable, Clickeable {
 
 	public MapDisplay(int width, int height)
 	{
-		ImageTile[][] nTiles = new ImageTile[width][height];
-		for(int i = 0; i < nTiles.length; i++)
-		{
-			for(int j = 0; j < nTiles[i].length; j++)
-			{
-				nTiles[i][j] = new ImageTile();
-			}
-		}
-		tiles = nTiles;
-		tileWidth = tiles[0][0].getImage().getWidth();
-		tileHeight = tiles[0][0].getImage().getHeight();
-		hex = Hexagon.getHexagon(tileWidth, tileHeight);
+		this(newTileArray(width, height));
 	}
 	
 	public MapDisplay(ImageTile[][] givenTiles)
@@ -62,6 +48,9 @@ public class MapDisplay implements Displayable, Clickeable {
 		tileWidth = tiles[0][0].getImage().getWidth();
 		tileHeight = tiles[0][0].getImage().getHeight();
 		hex = Hexagon.getHexagon(tileWidth, tileHeight);
+		
+		buildImage();
+		setObserver();
 	}
 
 	
@@ -70,10 +59,10 @@ public class MapDisplay implements Displayable, Clickeable {
 	 * ==========================
 	 */
 
-	public void setObserver(Observer o)
+	public void setObserver()
 	{
 		for (ImageTile t : MultiArrayIterable.toIterable(tiles))
-			t.addObserver(o);
+			t.addObserver(this);
 	}
 	
 	public int getWidth()
@@ -144,10 +133,10 @@ public class MapDisplay implements Displayable, Clickeable {
 		}
 	}
 	
-	public void setWindow(GameWindow window)
+	/*public void setWindow(GameWindow window)
 	{
 		setObserver(window);
-	}
+	}*/
 	
 
 	public int getTileHeight() {
@@ -155,13 +144,12 @@ public class MapDisplay implements Displayable, Clickeable {
 	}
 	
 	/* ==========================
-	 * 		Inherited methods
+	 * 		Private methods
 	 * ==========================
 	 */
-
 	
-	@Override
-	public MinuetoImage getImage()
+	
+	private void buildImage()
 	{
 		MinuetoImage newImage = new MinuetoImage(this.getWidth(), this.getHeight());
 		int xPos, yPos;
@@ -177,7 +165,20 @@ public class MapDisplay implements Displayable, Clickeable {
 				newImage.draw(tiles[i][j].getImage(), xPos, yPos);
 			}
 		}
-		return newImage;
+		mapImage = newImage;
+	}
+	
+	
+	/* ==========================
+	 * 		Inherited methods
+	 * ==========================
+	 */
+
+	
+	@Override
+	public MinuetoImage getImage()
+	{
+		return mapImage;
 	}
 	
 	@Override
@@ -194,11 +195,30 @@ public class MapDisplay implements Displayable, Clickeable {
 		}
 	}
 
+	@Override
+	public void update(Observable o, Object arg)
+	{
+		buildImage();
+		setChanged();
+		notifyObservers();
+	}
+
 
 	/* ========================
 	 * 		Static methods
 	 * ========================
 	 */
 	
-	
+	private static ImageTile[][] newTileArray(int width, int height)
+	{
+		ImageTile[][] nTiles = new ImageTile[width][height];
+		for(int i = 0; i < nTiles.length; i++)
+		{
+			for(int j = 0; j < nTiles[i].length; j++)
+			{
+				nTiles[i][j] = new ImageTile();
+			}
+		}
+		return nTiles;
+	}
 }

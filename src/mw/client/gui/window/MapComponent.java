@@ -1,19 +1,18 @@
 package mw.client.gui.window;
 
+import java.util.Observable;
+import java.util.Observer;
+
 import mw.client.gui.api.basics.AbstractWindowComponent;
-import mw.client.gui.api.basics.WindowArea;
 import mw.client.gui.api.interaction.Clickeable;
 import mw.client.gui.api.interaction.MouseClickHandler;
 
-import org.minueto.MinuetoColor;
-import org.minueto.MinuetoEventQueue;
 import org.minueto.handlers.MinuetoKeyboard;
 import org.minueto.handlers.MinuetoKeyboardHandler;
 import org.minueto.image.MinuetoImage;
-import org.minueto.window.MinuetoFrame;
 
-public final class MapComponent extends AbstractWindowComponent implements
-		Clickeable, MinuetoKeyboardHandler {
+public final class MapComponent extends AbstractWindowComponent 
+									implements Clickeable, MinuetoKeyboardHandler, Observer {
 	
 	private static final int X_OFFSET_STEP = 10;
 	private static final int Y_OFFSET_STEP = 10;
@@ -32,6 +31,7 @@ public final class MapComponent extends AbstractWindowComponent implements
 	public MapComponent(int x, int y, int width, int height, MapDisplay mapDisp) {
 		super(x, y, Math.min(width, mapDisp.getWidth()), Math.min(height, mapDisp.getHeight()));
 		this.mapDisp = mapDisp;
+		mapDisp.addObserver(this);
 		clickHandler = new MouseClickHandler(area, this);
 		
 		minXOffset=0;
@@ -56,7 +56,7 @@ public final class MapComponent extends AbstractWindowComponent implements
 	
 	public void setWindow(GameWindow window)
 	{
-		mapDisp.setWindow(window);
+		//mapDisp.setWindow(window);
 		window.registerMouseHandler(clickHandler);
 		window.registerKeyboardHandler(this);
 		//this.addObserver(window);
@@ -124,44 +124,16 @@ public final class MapComponent extends AbstractWindowComponent implements
 		mapDisp.handleMouseClick(x+xOffset, y+yOffset, button);
 	}
 
+	@Override
+	public void update(Observable o, Object arg)
+	{
+		setChanged();
+		notifyObservers();
+	}
+
 	/* ========================
 	 * 		Static methods
 	 * ========================
 	 */
-
-	/*public static void main(String[] args)
-	{
-		final int width = 12;
-		final int height = 12;
-		ImageTile[][] tiles = new ImageTile[width][height];
-		for (int i=0; i<width; i++)
-		{
-			for (int j=0; j<height; j++)
-			{
-				tiles[i][j] = new ImageTile();
-				tiles[i][j].updateColor(MinuetoColor.RED);
-			}
-		}
-		MapDisplay mapDisp = new MapDisplay(tiles);
-		MapComponent comp = new MapComponent(0, 0, 400, 400, mapDisp);
-		
-		MinuetoFrame window = new MinuetoFrame(400, 400, true);
-		window.setVisible(true);
-		window.draw(comp.getImage(), 0, 0);
-		window.render();
-		MinuetoEventQueue queue = new MinuetoEventQueue();
-		window.registerMouseHandler(new MouseClickHandler(new WindowArea(0, 0, 400, 400), comp), queue);
-		window.registerKeyboardHandler(comp, queue);
-		
-		while(true)
-		{
-			while(queue.hasNext()) {
-				queue.handle();
-				window.clear();
-				window.draw(comp.getImage(), 0, 0);
-				window.render();
-			}
-		}
-	}*/
 	
 }
