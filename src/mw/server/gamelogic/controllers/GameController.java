@@ -12,11 +12,9 @@ import mw.server.gamelogic.enums.ActionType;
 import mw.server.gamelogic.enums.UnitType;
 import mw.server.gamelogic.enums.VillageType;
 import mw.server.gamelogic.exceptions.TooManyPlayersException;
-import mw.server.gamelogic.state.Coordinates;
 import mw.server.gamelogic.state.Game;
 import mw.server.gamelogic.state.Player;
-import mw.server.gamelogic.state.Tile;
-import mw.server.gamelogic.state.Village;
+import mw.shared.Coordinates;
 
 
 /**
@@ -48,23 +46,18 @@ public class GameController {
 	 */
 	public static Player getCurrentPlayer(Game pGame)
 	{
-		Player lCurrentPlayer = pGame.getCurrentPlayer();
-		return lCurrentPlayer;
+		return pGame.getCurrentPlayer();
 	}
 	
-
 	/**
-	 * Returns all the possible moves or upgrades a player can make given a certain tile
+	 * 
 	 * @param pGame
-	 * @param pRow
-	 * @param pColumn
+	 * @param pCoordinates
 	 * @return
 	 */
-	public static PossibleGameActions getPossibleGameActions(Game pGame, int pRow, int pColumn)
+	public static PossibleGameActions getPossibleGameActions(Game pGame, Coordinates pCoordinates)
 	{
-		Coordinates mappingCoordinates = new Coordinates(pRow, pColumn);
-		Tile clicked = pGame.getTile(mappingCoordinates); 
-		return  pGame.tileIsClicked(clicked); 	
+		return  pGame.tileIsClicked(pCoordinates); 	
 	}
 	
 	/**
@@ -81,78 +74,55 @@ public class GameController {
 	/**
 	 * 
 	 * @param pGame
-	 * The Row and Column coordinates of the tile to hire a villager on
-	 * @param pRow 
-	 * @param pColumn 
+	 * @param pCoordinates
 	 * @param upgradeType
-	 * 
 	 */
-	public static void hireUnit(Game pGame, int pRow, int pColumn, UnitType upgradeType)
+	public static void hireUnit(Game pGame, Coordinates pUnitCoordinates, UnitType upgradeType)
 	{
-		Coordinates mappingCoordinates = new Coordinates(pRow, pColumn);
-		Tile toHireOn = pGame.getTile(mappingCoordinates); 
-		pGame.hireVillager(toHireOn, upgradeType);
+		pGame.hireVillager(pUnitCoordinates, upgradeType);
 	}
 
 	/**
 	 * 
 	 * @param pGame
-	 * @param pStartRow
-	 * @param pStartColumn
-	 * @param pDestRow
-	 * @param pDestColumn
+	 * @param pSourceCoordinates
+	 * @param pDestination
 	 */
-	public static void moveUnit(Game pGame, int pStartRow, int pStartColumn, int pDestRow, int pDestColumn )
+	public static void moveUnit(Game pGame, Coordinates pSourceCoordinates, Coordinates pDestinationCoordinates)
 	{
-		Coordinates startTileCoord = new Coordinates(pStartRow, pStartColumn);
-		Tile startTile = pGame.getTile(startTileCoord); 
-		Coordinates destTileCoord = new Coordinates(pDestRow, pDestColumn);
-		
-		Tile destTile = pGame.getTile(destTileCoord); 
-		pGame.moveUnit(startTile, destTile);
+		pGame.moveUnit(pSourceCoordinates, pDestinationCoordinates);
 	}
 
 	/**
 	 * 
 	 * @param pGame
-	 * @param pRow
-	 * @param pColumn
+	 * @param pUnitCoordinates
 	 * @param pActionType
 	 */
-	public static void setActionType(Game pGame, int pRow, int pColumn, ActionType pActionType)
+	public static void setActionType(Game pGame, Coordinates pUnitCoordinates, ActionType pActionType)
 	{
-		Coordinates pTileCoord = new Coordinates(pRow, pColumn);
-		Tile pTile = pGame.getTile(pTileCoord); 
-		pGame.setActionType(pTile, pActionType);
+		pGame.setActionType(pUnitCoordinates, pActionType);
 	}
 
 	/**
 	 * 
 	 * @param pGame
-	 * @param pRow
-	 * @param pColumn
+	 * @param pUnitCoordinatess
 	 * @param upgradeType
 	 */
-	public static void upgradeUnit(Game pGame, int pRow, int pColumn, UnitType upgradeType)
+	public static void upgradeUnit(Game pGame, Coordinates pUnitCoordinatess, UnitType upgradeType)
 	{
-		Coordinates mappingCoordinates = new Coordinates(pRow, pColumn);
-		Tile toUpgradeOn = pGame.getTile(mappingCoordinates); 
-		pGame.upgradeUnit(toUpgradeOn, upgradeType);
+		pGame.upgradeUnit(pUnitCoordinates, upgradeType);
 	}
 
 	/**
-	 * Upgrades the village on pRow and pColumn to type pVillageType in pGame
+	 * 
 	 * @param pGame
-	 * @param pRow
-	 * @param pColumn
+	 * @param pVillageCoordinates
 	 * @param pVillageType
 	 */
-	public static void upgradeVillage(Game pGame, int pRow, int pColumn, VillageType pVillageType)
+	public static void upgradeVillage(Game pGame, Coordinates pVillageCoordinates, VillageType pVillageType)
 	{
-		Coordinates mappingCoordinates = new Coordinates(pRow, pColumn); 
-		Tile villageTile = pGame.getTile(mappingCoordinates); 
-		Village pVillage = pGame.getVillage(villageTile);
-		pGame.upgradeVillage(pVillage, pVillageType);
-
+		pGame.upgradeVillage(pVillageCoordinates, pVillageType);
 	}
 }

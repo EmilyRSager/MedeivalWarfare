@@ -8,15 +8,15 @@ package mw.shared.servercommands;
 import mw.server.gamelogic.controllers.GameController;
 import mw.server.network.mappers.GameMapper;
 import mw.server.network.translators.NetworkToModelTranslator;
+import mw.shared.Coordinates;
 import mw.shared.SharedActionType;
-import mw.shared.SharedCoordinates;
 
 /**
  * 
  */
 public class SetActionTypeCommand extends AbstractServerCommand {
 	private final String aType = "SetActionTypeCommand";
-	private SharedCoordinates aUnitCoordinates;
+	private Coordinates aUnitCoordinates;
 	private SharedActionType aActionType;
 	
 	/**
@@ -24,7 +24,7 @@ public class SetActionTypeCommand extends AbstractServerCommand {
 	 * @param pUnitCoordinates
 	 * @param pActionType
 	 */
-	public SetActionTypeCommand(SharedCoordinates pUnitCoordinates, SharedActionType pActionType) {
+	public SetActionTypeCommand(Coordinates pUnitCoordinates, SharedActionType pActionType) {
 		aUnitCoordinates = pUnitCoordinates;
 		aActionType = pActionType;
 	}
@@ -44,8 +44,7 @@ public class SetActionTypeCommand extends AbstractServerCommand {
 	public void execute(Integer pClientID) {
 		GameController.setActionType(
 				GameMapper.getInstance().getGame(pClientID),
-				aUnitCoordinates.getX(),
-				aUnitCoordinates.getY(),
+				aUnitCoordinates,
 				NetworkToModelTranslator.translateActionType(aActionType)
 				);
 

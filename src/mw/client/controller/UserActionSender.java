@@ -6,7 +6,7 @@ import java.util.concurrent.locks.ReentrantLock;
 import mw.client.model.ModelTile;
 import mw.client.network.NetworkController;
 import mw.shared.SharedActionType;
-import mw.shared.SharedCoordinates;
+import mw.shared.Coordinates;
 import mw.shared.SharedPossibleGameActions;
 import mw.shared.SharedTile.UnitType;
 import mw.shared.SharedTile.VillageType;
@@ -72,7 +72,7 @@ public class UserActionSender {
 		
 		actionsReady = false;
 		waitingForActions = true;
-		SharedCoordinates targetCoord = getCoordinates(clickedTile);
+		Coordinates targetCoord = getCoordinates(clickedTile);
 		NetworkController.getPossibleGameActions(targetCoord);
 	}
 	
@@ -121,8 +121,8 @@ public class UserActionSender {
 	{
 		waitForActions();
 		
-		SharedCoordinates coordSrc = getCoordinates(src);
-		SharedCoordinates coordDest = getCoordinates(dest);
+		Coordinates coordSrc = getCoordinates(src);
+		Coordinates coordDest = getCoordinates(dest);
 
 		if (possibleActions.getMovableTiles().contains(coordDest))
 		{
@@ -135,25 +135,25 @@ public class UserActionSender {
 
 	public void sendUpgradeVillage(ModelTile villageTile, VillageType vt)
 	{
-		SharedCoordinates coord = getCoordinates(villageTile);
+		Coordinates coord = getCoordinates(villageTile);
 		NetworkController.upgradeVillage(coord, vt);
 	}
 
 	public void sendUnitHire(ModelTile unitTile, UnitType ut)
 	{
-		SharedCoordinates coord = getCoordinates(unitTile);
+		Coordinates coord = getCoordinates(unitTile);
 		NetworkController.hireUnit(coord, ut);
 	}
 
 	public void sendUnitAction(ModelTile unitTile, SharedActionType at)
 	{
-		SharedCoordinates coord = getCoordinates(unitTile);
+		Coordinates coord = getCoordinates(unitTile);
 		NetworkController.setActionType(coord, at);
 	}
 
 	public void sendUnitUpgrade(ModelTile unitTile, UnitType ut)
 	{
-		SharedCoordinates coord = getCoordinates(unitTile);
+		Coordinates coord = getCoordinates(unitTile);
 		NetworkController.upgradeUnit(coord, ut);
 	}
 	
@@ -199,7 +199,7 @@ public class UserActionSender {
 	 * ========================
 	 */
 	
-	private static SharedCoordinates getCoordinates(ModelTile mtile)
+	private static Coordinates getCoordinates(ModelTile mtile)
 	{
 		return ModelToNetworkTranslator.translateModelCoordinates(ModelQuerier.getCoordinates(mtile));
 	}
