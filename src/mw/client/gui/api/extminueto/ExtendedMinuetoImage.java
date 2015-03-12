@@ -1,7 +1,9 @@
-package mw.client.gui.api;
+package mw.client.gui.api.extminueto;
 
 import java.util.List;
 
+import mw.client.gui.api.basics.Point;
+import mw.client.gui.api.basics.WindowArea;
 import mw.client.gui.window.Hexagon;
 import mw.client.gui.window.Hexagon.RelativePosition;
 
@@ -94,18 +96,18 @@ public final class ExtendedMinuetoImage /*extends MinuetoImage */{
 	{
 		// TODO
 		MinuetoImage newImg = (MinuetoImage)img.clone();
-		final List<Hexagon.Point> vertices = hex.getVertices();
+		final List<Point> vertices = hex.getVertices();
 		
 		newImg = drawHexPoints(newImg, color, vertices);
 		
 		for (int i=1; i<thickness; i++)
 		{
-			vertices.add(0, new Hexagon.Point(vertices.get(0).x, vertices.get(0).y+1));
-			vertices.add(1, new Hexagon.Point(vertices.get(1).x, vertices.get(1).y+1));
-			vertices.add(2, new Hexagon.Point(vertices.get(2).x-1, vertices.get(2).y));
-			vertices.add(3, new Hexagon.Point(vertices.get(3).x, vertices.get(3).y-1));
-			vertices.add(4, new Hexagon.Point(vertices.get(4).x, vertices.get(4).y-1));
-			vertices.add(5, new Hexagon.Point(vertices.get(5).x+1, vertices.get(5).y));
+			vertices.add(0, new Point(vertices.get(0).x, vertices.get(0).y+1));
+			vertices.add(1, new Point(vertices.get(1).x, vertices.get(1).y+1));
+			vertices.add(2, new Point(vertices.get(2).x-1, vertices.get(2).y));
+			vertices.add(3, new Point(vertices.get(3).x, vertices.get(3).y-1));
+			vertices.add(4, new Point(vertices.get(4).x, vertices.get(4).y-1));
+			vertices.add(5, new Point(vertices.get(5).x+1, vertices.get(5).y));
 			
 			newImg = drawHexPoints(newImg, color, vertices);
 		}
@@ -113,7 +115,7 @@ public final class ExtendedMinuetoImage /*extends MinuetoImage */{
 		return newImg;
 	}
 	
-	private static MinuetoImage drawHexPoints(MinuetoImage img, MinuetoColor color, List<Hexagon.Point> vertices)
+	private static MinuetoImage drawHexPoints(MinuetoImage img, MinuetoColor color, List<Point> vertices)
 	{
 		MinuetoImage newImg = (MinuetoImage) img.clone();
 

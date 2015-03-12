@@ -1,6 +1,6 @@
 package mw.client.controller;
 
-import mw.client.gui.api.ExtendedMinuetoColor;
+import mw.client.gui.api.extminueto.ExtendedMinuetoColor;
 import mw.shared.SharedColor;
 
 import org.minueto.MinuetoColor;

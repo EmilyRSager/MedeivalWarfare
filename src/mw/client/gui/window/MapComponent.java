@@ -1,9 +1,9 @@
 package mw.client.gui.window;
 
-import mw.client.gui.api.AbstractWindowComponent;
-import mw.client.gui.api.Clickeable;
-import mw.client.gui.api.MouseClickHandler;
-import mw.client.gui.api.WindowArea;
+import mw.client.gui.api.basics.AbstractWindowComponent;
+import mw.client.gui.api.basics.WindowArea;
+import mw.client.gui.api.interaction.Clickeable;
+import mw.client.gui.api.interaction.MouseClickHandler;
 
 import org.minueto.MinuetoColor;
 import org.minueto.MinuetoEventQueue;

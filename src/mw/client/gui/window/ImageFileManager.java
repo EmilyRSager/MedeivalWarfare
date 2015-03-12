@@ -6,8 +6,8 @@ import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
-import mw.client.gui.api.ExtendedMinuetoColor;
-import mw.client.gui.api.ExtendedMinuetoImage;
+import mw.client.gui.api.extminueto.ExtendedMinuetoColor;
+import mw.client.gui.api.extminueto.ExtendedMinuetoImage;
 import mw.client.model.ModelTile;
 import mw.client.model.ModelTile.*;
 import mw.filesystem.ProjectFolder;

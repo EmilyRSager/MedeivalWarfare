@@ -1,4 +1,6 @@
-package mw.client.gui.api;
+package mw.client.gui.api.interaction;
+
+import mw.client.gui.api.basics.WindowArea;
 
 import org.minueto.handlers.MinuetoMouseHandler;
 

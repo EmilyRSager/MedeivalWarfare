@@ -10,10 +10,10 @@ import org.minueto.window.MinuetoFrame;
 
 import mw.client.controller.ActionInterpreter;
 import mw.client.controller.ModelViewMapping;
-import mw.client.gui.api.Clickeable;
-import mw.client.gui.api.Displayable;
-import mw.client.gui.api.MouseClickHandler;
-import mw.client.gui.api.WindowArea;
+import mw.client.gui.api.basics.Displayable;
+import mw.client.gui.api.basics.WindowArea;
+import mw.client.gui.api.interaction.Clickeable;
+import mw.client.gui.api.interaction.MouseClickHandler;
 import mw.client.model.ModelTile;
 import mw.shared.SharedColor;
 import mw.util.MultiArrayIterable;

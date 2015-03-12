@@ -1,4 +1,4 @@
-package mw.client.gui.api;
+package mw.client.gui.api.basics;
 
 /**
  * The WindowComponent interface describes a Drawable that knows about its coordinates,
@@ -27,6 +27,8 @@ public interface WindowComponent extends Drawable {
 	 * @param y the new y coordinate of this WindowComponent
 	 */
 	public void setPosition(int x, int y);
+	
+	public Point getPosition();
 	
 	/*public void setSize(int newWidth, int newHeight);
 	

@@ -1,4 +1,8 @@
-package mw.client.gui.api;
+package mw.client.gui.api.components;
+
+import mw.client.gui.api.basics.AbstractWindowComponent;
+import mw.client.gui.api.extminueto.ExtendedMinuetoColor;
+import mw.client.gui.api.extminueto.ExtendedMinuetoImage;
 
 import org.minueto.MinuetoColor;
 import org.minueto.image.MinuetoFont;

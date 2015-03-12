@@ -1,4 +1,4 @@
-package mw.client.gui.api;
+package mw.client.gui.api.interaction;
 
 /**
  * The Clickeable interface defines something that can be clicked, without taking care of the logic of the clicks.

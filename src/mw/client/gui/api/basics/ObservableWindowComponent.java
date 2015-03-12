@@ -1,10 +1,8 @@
-package mw.client.gui.api;
+package mw.client.gui.api.basics;
 
 import mw.util.StateObservable;
 
-import org.minueto.image.MinuetoDrawingSurface;
-
-import mw.client.gui.api.ObservableWindowComponent.ChangedState;
+import mw.client.gui.api.basics.ObservableWindowComponent.ChangedState;
 
 
 public abstract class ObservableWindowComponent extends StateObservable<ChangedState> 

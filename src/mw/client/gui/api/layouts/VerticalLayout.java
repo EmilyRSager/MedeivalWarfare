@@ -1,4 +1,6 @@
-package mw.client.gui.api;
+package mw.client.gui.api.layouts;
+
+import mw.client.gui.api.basics.ObservableWindowComponent;
 
 /**
  * The VerticalLayout class provides an easier way to deal with GridLayouts that have only 1 column.

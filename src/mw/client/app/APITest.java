@@ -1,6 +1,6 @@
 package mw.client.app;
 
-import mw.client.gui.api.TextDisplay;
+import mw.client.gui.api.components.TextDisplay;
 
 import org.minueto.MinuetoColor;
 import org.minueto.image.MinuetoText;

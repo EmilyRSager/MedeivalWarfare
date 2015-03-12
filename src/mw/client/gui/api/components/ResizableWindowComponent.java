@@ -1,20 +1,23 @@
-package mw.client.gui.api;
+package mw.client.gui.api.components;
+
+import mw.client.gui.api.basics.AbstractWindowComponent;
 
 import org.minueto.image.MinuetoImage;
 
-public abstract class FixedSizeWindowComponent extends AbstractWindowComponent {
+public abstract class ResizableWindowComponent extends AbstractWindowComponent {
 
-	private final int 
-
+	private int minWidth, minHeight;
+	
 	/* ========================
 	 * 		Constructors
 	 * ========================
 	 */
 
-	public FixedSizeWindowComponent(int x, int y, int width, int height)
+	public ResizableWindowComponent(int x, int y, int width, int height)
 	{
-		super(x, y, width, height);
-		// TODO Auto-generated constructor stub
+		super(x,y,width,height);
+		minWidth = width;
+		minHeight = height;
 	}
 
 	/* ==========================

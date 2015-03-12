@@ -1,4 +1,4 @@
-package mw.client.gui.api;
+package mw.client.gui.api.extminueto;
 
 import org.minueto.MinuetoColor;
 

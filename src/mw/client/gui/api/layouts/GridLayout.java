@@ -1,8 +1,11 @@
-package mw.client.gui.api;
+package mw.client.gui.api.layouts;
 
 import java.util.Observable;
 import java.util.Observer;
 
+import mw.client.gui.api.basics.AbstractWindowComponent;
+import mw.client.gui.api.basics.ObservableWindowComponent;
+import mw.client.gui.api.basics.Point;
 import mw.client.gui.window.GameWindow;
 import mw.util.MultiArrayIterable;
 
@@ -247,8 +250,10 @@ public class GridLayout extends AbstractWindowComponent implements Observer {
 			for (ObservableWindowComponent comp : MultiArrayIterable.toIterable(components))
 			{
 				AbstractWindowComponent acomp = (AbstractWindowComponent)comp;
-				if (comp != null)
-					comp.setPosition(acomp.area.getLeftBorder() + xAdd, acomp.area.getTopBorder() + yAdd);
+				if (comp != null) {
+					Point compPos = comp.getPosition();
+					comp.setPosition(compPos.x + xAdd, compPos.y + yAdd);
+				}
 			}
 			setChanged(ChangedState.POSITION);
 		}

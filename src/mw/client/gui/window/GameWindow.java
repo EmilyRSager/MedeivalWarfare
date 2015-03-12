@@ -8,11 +8,11 @@ import java.util.Observer;
 import mw.client.controller.ActionInterpreter;
 import mw.client.controller.ChoiceCenter;
 import mw.client.controller.ChoiceCenter.ChoiceType;
-import mw.client.gui.api.AbstractButton;
-import mw.client.gui.api.ExtendedMinuetoColor;
-import mw.client.gui.api.HorizontalLayout;
-import mw.client.gui.api.TextDisplay;
-import mw.client.gui.api.VerticalLayout;
+import mw.client.gui.api.components.AbstractButton;
+import mw.client.gui.api.components.TextDisplay;
+import mw.client.gui.api.extminueto.ExtendedMinuetoColor;
+import mw.client.gui.api.layouts.HorizontalLayout;
+import mw.client.gui.api.layouts.VerticalLayout;
 
 import org.minueto.MinuetoColor;
 import org.minueto.MinuetoEventQueue;

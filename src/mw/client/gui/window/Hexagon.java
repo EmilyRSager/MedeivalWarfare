@@ -8,7 +8,8 @@ import org.minueto.MinuetoColor;
 import org.minueto.image.MinuetoImage;
 import org.minueto.window.MinuetoFrame;
 
-import mw.client.gui.api.WindowArea;
+import mw.client.gui.api.basics.Point;
+import mw.client.gui.api.basics.WindowArea;
 
 public class Hexagon {
 
@@ -21,14 +22,6 @@ public class Hexagon {
 	 */
 	
 	public static final MinuetoColor POINTS_COLOR = MinuetoColor.RED;
-	
-	public static class Point {
-		public final int x,y;
-		public Point(int x, int y) {
-			this.x = x;
-			this.y = y;
-		}
-	}
 	
 	// just a little bit of caching
 	private static int lastAskedWidth = -1;
@@ -94,7 +87,7 @@ public class Hexagon {
 	}
 	
 	public List<Point> getVertices() {
-		ArrayList<Point> points = new ArrayList<Hexagon.Point>();
+		ArrayList<Point> points = new ArrayList<Point>();
 		points.add(a);
 		points.add(b);
 		points.add(c);

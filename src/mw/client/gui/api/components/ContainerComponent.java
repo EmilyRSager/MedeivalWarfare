@@ -1,4 +1,7 @@
-package mw.client.gui.api;
+package mw.client.gui.api.components;
+
+import mw.client.gui.api.basics.AbstractWindowComponent;
+import mw.client.gui.api.basics.Displayable;
 
 import org.minueto.image.MinuetoImage;
 

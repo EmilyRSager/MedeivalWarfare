@@ -1,4 +1,6 @@
-package mw.client.gui.api;
+package mw.client.gui.api.basics;
+
+import mw.client.gui.api.extminueto.ExtendedMinuetoImage;
 
 import org.minueto.image.MinuetoDrawingSurface;
 import org.minueto.image.MinuetoImage;
@@ -73,6 +75,11 @@ public abstract class AbstractWindowComponent extends ObservableWindowComponent 
 			area.setPosition(x, y);
 			setChanged(ChangedState.POSITION);
 		}
+	}
+	
+	@Override
+	public Point getPosition() {
+		return new Point(area.getLeftBorder(), area.getTopBorder());
 	}
 	
 	/*@Override

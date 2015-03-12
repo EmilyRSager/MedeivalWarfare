@@ -1,4 +1,4 @@
-package mw.client.gui.api;
+package mw.client.gui.api.basics;
 
 /**
  * The WindowArea class defines a basic squared area, that is supposed to represent an area on the screen.

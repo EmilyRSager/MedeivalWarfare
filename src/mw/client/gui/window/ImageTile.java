@@ -5,9 +5,9 @@ import java.util.Observable;
 import org.minueto.MinuetoColor;
 import org.minueto.image.MinuetoImage;
 
-import mw.client.gui.api.Displayable;
-import mw.client.gui.api.ExtendedMinuetoColor;
-import mw.client.gui.api.ExtendedMinuetoImage;
+import mw.client.gui.api.basics.Displayable;
+import mw.client.gui.api.extminueto.ExtendedMinuetoColor;
+import mw.client.gui.api.extminueto.ExtendedMinuetoImage;
 import mw.client.model.ModelTile.*;
 
 public class ImageTile extends Observable implements Displayable {
