@@ -7,7 +7,7 @@ import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
 
-import mw.util.MultiArrayIterable;
+import com.google.gson.GsonBuilder;
 
 
 
@@ -45,70 +45,15 @@ public class GameMap  implements Serializable{
 		return CoordinatesToTileMap.get(pCoord);
 	}
 
-	public void printTiles()
-	{
-		for (Tile t : MultiArrayIterable.toIterable(aTiles)){
-			System.out.println(t.toString());
-		}
-	}
-
 	/**
-	 * this method can be called at the beginning of a turn to create new trees as defined in the 
-	 * design spec
+	 * @return String representation of the tiles in this map
 	 */
-	public void generateTrees(){
-		
-		System.out.println("[Server] Attempting to grow trees.");
-
-		//following just to make it easier to iterate over, can be removed 
-		ArrayList<GraphNode> lGraphNodes = new ArrayList<GraphNode>();
-		for(int i=0; i<aNodes.length; i++){
-			for(int j=0; j<(aNodes[i].length); j++){
-				lGraphNodes.add(aNodes[i][j]);
-			}
-		}
-		Random rand1 = new Random();
-		Random rand2 = new Random();
-
-		for(GraphNode lNode: lGraphNodes){
-			if (lNode.getTile().getStructureType().equals(StructureType.TREE)) {
-				//we are only picking those tiles from the map that have a tree on them 
-
-				ArrayList<GraphNode> lNeighbors = (ArrayList<GraphNode>) lNode.getAdjacentNodes();
-				//TODO: why doesn't it work without the casting ?? 
-				ArrayList<Tile> lTiles = new ArrayList<Tile>();
-				for(GraphNode lNode2: lNeighbors){
-					lTiles.add(lNode2.getTile());
-
-				}
-				ArrayList<Tile> lNeighboringEmptyOrMeadowTiles = new ArrayList<Tile>();
-				for(Tile lTile: lTiles ){
-					StructureType lStructureType = lTile.getStructureType();
-					if ((lStructureType.equals(StructureType.NO_STRUCT) || lStructureType.equals(StructureType.TREE) || lTile.getVillageType().equals(VillageType.NO_VILLAGE) ) ) {
-						
-						if (!lTile.hasUnit() ) {
-							lNeighboringEmptyOrMeadowTiles.add(lTile);
-						}
-					}
-				}
-				//above gives us all the neigboring tiles which are empty or have a tree on them 
-				int max=lNeighboringEmptyOrMeadowTiles.size();
-
-				int randomNum1 = rand1.nextInt(max) ; //a random number from here will give
-				//an equal likelihood of picking a required tile
-
-				int randomNum2 = rand2.nextInt(2); //gives 50 % chance of actually putting a tree on that tile
-
-				Tile randomlyPickedTile = lNeighboringEmptyOrMeadowTiles.get(randomNum1);
-
-				if(randomNum2==1){
-					randomlyPickedTile.setStructureType(StructureType.TREE);
-					randomlyPickedTile.notifyObservers();
-				}
-			}
-		}
+	@Override
+	public String toString()
+	{
+		return new GsonBuilder().setPrettyPrinting().create().toJson(aTiles);
 	}
-
+	
 	/**
 	 * Randomly Colors the Tiles 
 	 */
@@ -174,14 +119,72 @@ public class GameMap  implements Serializable{
 
 			}
 		}
+		
+		aTiles[0][0].setColor(Color.SEATILE);
+	}
+	
+	/**
+	 * this method can be called at the beginning of a turn to create new trees as defined in the 
+	 * design spec
+	 */
+	public void generateTrees(){
+		
+		System.out.println("[Server] Attempting to grow trees.");
 
+		//following just to make it easier to iterate over, can be removed 
+		ArrayList<GraphNode> lGraphNodes = new ArrayList<GraphNode>();
+		for(int i=0; i<aNodes.length; i++){
+			for(int j=0; j<(aNodes[i].length); j++){
+				lGraphNodes.add(aNodes[i][j]);
+			}
+		}
+		Random rand1 = new Random();
+		Random rand2 = new Random();
+
+		for(GraphNode lNode: lGraphNodes){
+			if (lNode.getTile().getStructureType().equals(StructureType.TREE)) {
+				//we are only picking those tiles from the map that have a tree on them 
+
+				ArrayList<GraphNode> lNeighbors = (ArrayList<GraphNode>) lNode.getAdjacentNodes();
+				//TODO: why doesn't it work without the casting ?? 
+				ArrayList<Tile> lTiles = new ArrayList<Tile>();
+				for(GraphNode lNode2: lNeighbors){
+					lTiles.add(lNode2.getTile());
+
+				}
+				ArrayList<Tile> lNeighboringEmptyOrMeadowTiles = new ArrayList<Tile>();
+				for(Tile lTile: lTiles ){
+					StructureType lStructureType = lTile.getStructureType();
+					if ((lStructureType.equals(StructureType.NO_STRUCT) || lStructureType.equals(StructureType.TREE) || lTile.getVillageType().equals(VillageType.NO_VILLAGE) ) ) {
+						
+						if (!lTile.hasUnit() ) {
+							lNeighboringEmptyOrMeadowTiles.add(lTile);
+						}
+					}
+				}
+				//above gives us all the neigboring tiles which are empty or have a tree on them 
+				int max=lNeighboringEmptyOrMeadowTiles.size();
+
+				int randomNum1 = rand1.nextInt(max) ; //a random number from here will give
+				//an equal likelihood of picking a required tile
+
+				int randomNum2 = rand2.nextInt(2); //gives 50 % chance of actually putting a tree on that tile
+
+				Tile randomlyPickedTile = lNeighboringEmptyOrMeadowTiles.get(randomNum1);
+
+				if(randomNum2==1){
+					randomlyPickedTile.setStructureType(StructureType.TREE);
+					randomlyPickedTile.notifyObservers();
+				}
+			}
+		}
 	}
 
 	/**
 	 * For adding observers to every tile in a game
 	 * @return
 	 */
-	public Tile [][] getObservables ()
+	public Tile [][] getTiles()
 	{
 		return aTiles; 
 	}
@@ -243,6 +246,7 @@ public class GameMap  implements Serializable{
 	{
 		return TileToNodeHashMap.get(lTile);
 	}
+	
 	/**
 	 * Returns the set of tiles a unit can move to
 	 * May return an empty set 

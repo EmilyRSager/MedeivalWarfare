@@ -96,7 +96,7 @@ public class Game extends RandomColorGenerator implements Serializable{
 	 */
 	public void printTiles()
 	{
-		aMap.printTiles(); 
+		System.out.println(aMap.toString()); 
 	}
 
 	/**
@@ -116,7 +116,7 @@ public class Game extends RandomColorGenerator implements Serializable{
 	 */
 	public Tile [][] getGameTiles()
 	{
-		return aMap.getObservables(); 
+		return aMap.getTiles(); 
 	}
 
 	/**
