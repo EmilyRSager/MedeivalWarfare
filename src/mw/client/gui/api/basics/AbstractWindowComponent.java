@@ -78,24 +78,9 @@ public abstract class AbstractWindowComponent extends ObservableWindowComponent 
 	}
 	
 	@Override
-	public Point getPosition() {
-		return new Point(area.getLeftBorder(), area.getTopBorder());
-	}
-	
-	/*@Override
-	public void setSize(int newWidth, int newHeight)
+	public void updatePosition(int xAdd, int yAdd)
 	{
-		area.setWidth(newWidth);
-		area.setHeight(newHeight);
+		setPosition(area.getLeftBorder() + xAdd, area.getTopBorder() + yAdd);
 	}
 	
-	@Override
-	public int getMinWidth() {
-		return minWidth;
-	}
-	
-	@Override
-	public int getMinHeight() {
-		return minHeight;
-	}*/
 }

@@ -5,7 +5,6 @@ import java.util.Observer;
 
 import mw.client.gui.api.basics.AbstractWindowComponent;
 import mw.client.gui.api.basics.ObservableWindowComponent;
-import mw.client.gui.api.basics.Point;
 import mw.client.gui.window.GameWindow;
 import mw.util.MultiArrayIterable;
 
@@ -242,24 +241,6 @@ public class GridLayout extends AbstractWindowComponent implements Observer {
 			throw new IllegalArgumentException("("+row+","+column+") is not a valid location in a GridLayout with "+rowCount+" rows and "+columnCount+" columns");
 	}
 	
-	private void updatePosition(int xAdd, int yAdd)
-	{
-		packing = true;
-		if (xAdd != 0 || yAdd != 0)
-		{
-			for (ObservableWindowComponent comp : MultiArrayIterable.toIterable(components))
-			{
-				AbstractWindowComponent acomp = (AbstractWindowComponent)comp;
-				if (comp != null) {
-					Point compPos = comp.getPosition();
-					comp.setPosition(compPos.x + xAdd, compPos.y + yAdd);
-				}
-			}
-			setChanged(ChangedState.POSITION);
-		}
-		packing = false;
-	}
-	
 	/* ==========================
 	 * 		Inherited methods
 	 * ==========================
@@ -297,6 +278,25 @@ public class GridLayout extends AbstractWindowComponent implements Observer {
 		updatePosition(xAdd, yAdd);
 		super.setPosition(x,y);
 		notifyObservers();
+	}
+		
+	@Override
+	public void updatePosition(int xAdd, int yAdd)
+	{
+		packing = true;
+		if (xAdd != 0 || yAdd != 0)
+		{
+			for (ObservableWindowComponent comp : MultiArrayIterable.toIterable(components))
+			{
+				if (comp != null) {
+					//Point compPos = comp.getPosition();
+					//comp.setPosition(compPos.x + xAdd, compPos.y + yAdd);
+					comp.updatePosition(xAdd, yAdd);
+				}
+			}
+			setChanged(ChangedState.POSITION);
+		}
+		packing = false;
 	}
 	
 	@Override

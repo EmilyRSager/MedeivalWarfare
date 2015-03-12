@@ -28,7 +28,8 @@ public interface WindowComponent extends Drawable {
 	 */
 	public void setPosition(int x, int y);
 	
-	public Point getPosition();
+	public void updatePosition(int xAdd, int yAdd);
+	
 	
 	/*public void setSize(int newWidth, int newHeight);
 	

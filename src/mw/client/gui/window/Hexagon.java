@@ -8,11 +8,21 @@ import org.minueto.MinuetoColor;
 import org.minueto.image.MinuetoImage;
 import org.minueto.window.MinuetoFrame;
 
-import mw.client.gui.api.basics.Point;
 import mw.client.gui.api.basics.WindowArea;
 
 public class Hexagon {
 
+	public static class Point {
+		
+		public final int x,y;
+		
+		public Point(int x, int y) {
+			this.x = x;
+			this.y = y;
+		}
+
+	}
+	
 	public enum RelativePosition { TOP_LEFT, TOP_RIGHT, CENTER, BOT_RIGHT, BOT_LEFT } ;
 	
 	/*

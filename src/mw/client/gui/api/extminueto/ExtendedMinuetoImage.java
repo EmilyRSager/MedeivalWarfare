@@ -2,9 +2,9 @@ package mw.client.gui.api.extminueto;
 
 import java.util.List;
 
-import mw.client.gui.api.basics.Point;
 import mw.client.gui.api.basics.WindowArea;
 import mw.client.gui.window.Hexagon;
+import mw.client.gui.window.Hexagon.Point;
 import mw.client.gui.window.Hexagon.RelativePosition;
 
 import org.minueto.MinuetoColor;
