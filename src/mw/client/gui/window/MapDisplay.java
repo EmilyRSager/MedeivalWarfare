@@ -5,12 +5,14 @@ import java.util.Observer;
 
 import org.minueto.handlers.MinuetoMouse;
 import org.minueto.image.MinuetoImage;
+
 import mw.client.controller.ActionInterpreter;
 import mw.client.controller.ModelViewMapping;
 import mw.client.gui.api.basics.Displayable;
 import mw.client.gui.api.interaction.Clickeable;
 import mw.client.model.ModelTile;
 import mw.util.MultiArrayIterable;
+import mw.util.Pair;
 
 public class MapDisplay extends Observable
 							implements Displayable, Clickeable, Observer {
@@ -168,6 +170,23 @@ public class MapDisplay extends Observable
 		mapImage = newImage;
 	}
 	
+	private void updateImage(int xIdx, int yIdx)
+	{
+		Pair<Integer> pos = computeCoordinates(xIdx, yIdx);
+		mapImage.draw(tiles[xIdx][yIdx].getImage(), pos.getVal1(), pos.getVal2());
+	}
+	
+	private Pair<Integer> computeCoordinates(int xIdx, int yIdx)
+	{
+		int xPos = xIdx*(tileWidth-hex.getHexOffset());
+		int yPos;
+		if (xIdx%2 == 0)
+			yPos = yIdx * tileHeight;
+		else
+			yPos = (yIdx * tileHeight) + (int)(.5 * tileHeight);
+		
+		return new Pair<Integer>(xPos, yPos);
+	}
 	
 	/* ==========================
 	 * 		Inherited methods
@@ -198,7 +217,16 @@ public class MapDisplay extends Observable
 	@Override
 	public void update(Observable o, Object arg)
 	{
-		buildImage();
+		//buildImage();
+		for (int i=0; i<tiles.length; i++)
+		{
+			for (int j=0; j<tiles[0].length; j++)
+			{
+				if (tiles[i][j] == o)
+					updateImage(i, j);
+			}
+		}
+		
 		setChanged();
 		notifyObservers();
 	}

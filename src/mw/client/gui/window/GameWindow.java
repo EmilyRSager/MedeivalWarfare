@@ -158,6 +158,7 @@ public class GameWindow implements Observer {
 		switch (choiceType)
 		{
 		case VILLAGE_UPGRADE:
+		case UNIT_UPGRADE:
 			controlBarLayout.addComponent(choiceLayout, 1);
 			break;
 		case UNIT_HIRE:

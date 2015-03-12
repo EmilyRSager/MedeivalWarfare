@@ -1,53 +1,41 @@
 package mw.util;
 
-public class Pair<E,F> {
+public class Pair<E> extends Tuple2<E, E> {
 
-	
-	private final E valE;
-	private final F valF;
-	
+
 	/* ========================
 	 * 		Constructors
 	 * ========================
 	 */
 
-	public Pair(E e, F f) {
-		valE = e;
-		valF = f;
+	public Pair(E val1, E val2)
+	{
+		super(val1, val2);
 	}
+
 
 	/* ==========================
 	 * 		Public methods
 	 * ==========================
 	 */
 
-	public E getVal1() {
-		return valE;
-	}
-	
-	public F getVal2() {
-		return valF;
-	}
-	
-	/* ===========================
-	 * 		Inherited methods
-	 * ===========================
+
+	/* ==========================
+	 * 		Private methods
+	 * ==========================
 	 */
 
-	@Override
-	public boolean equals(Object o) {
-		try {
-			Pair<E,F> otherPair = (Pair<E,F>) o;
-			return valE.equals(otherPair.valE) && valF.equals(otherPair.valF);
-		}
-		catch (ClassCastException e) {
-			return false;
-		}
-	}
-	
-	@Override
-	public String toString() {
-		return "Pair("+valE.toString()+", "+")";
-	}
-	
+
+	/* ==========================
+	 * 		Inherited methods
+	 * ==========================
+	 */
+
+
+
+	/* ========================
+	 * 		Static methods
+	 * ========================
+	 */
+
 }
