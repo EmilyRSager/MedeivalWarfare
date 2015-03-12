@@ -162,13 +162,17 @@ public class ImageFileManager
 	
 	public static MinuetoImage getSeaTileImage()
 	{
-		MinuetoImage seaImage = loadImageFile(FOLDER + "original size/rectangles/sea.png");
+		/*MinuetoImage seaImage = loadImageFile(getImageSizeFolder(60) + "sea.png");
 		
 		MinuetoColor backgroundBlue = seaImage.getPixel(seaImage.getWidth()/2, 0);//ExtendedMinuetoColor.mixColors(MinuetoColor.BLUE, MinuetoColor.WHITE, 0.45);
-		backgroundBlue = ExtendedMinuetoColor.mixColors(backgroundBlue, MinuetoColor.WHITE, 0.95);
+		backgroundBlue = ExtendedMinuetoColor.mixColors(backgroundBlue, MinuetoColor.WHITE, 0.90);
 		MinuetoImage img = ExtendedMinuetoImage.coloredHexagon(ImageTile.DEFAULT_TILE_WIDTH, ImageTile.DEFAULT_TILE_HEIGHT, backgroundBlue);
 		img = ExtendedMinuetoImage.drawInTheMiddleOf(img, seaImage);
-		return img;
+		return img;*/
+		MinuetoImage image = new MinuetoImage(ImageTile.DEFAULT_TILE_WIDTH, ImageTile.DEFAULT_TILE_HEIGHT);
+		MinuetoImage seaImage = loadImageFile(getImageSizeFolder(70) + "catansea.png");
+		image = ExtendedMinuetoImage.drawInTheMiddleOf(image, seaImage);
+		return image;
 	}
 	
 	

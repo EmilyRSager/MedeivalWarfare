@@ -82,9 +82,9 @@ public final class MainApplication {
 		Random r = new Random();
 		SharedTile newST = new SharedTile(c,
 					new SharedCoordinates(r.nextInt(DEFAULT_MAP_HEIGHT), r.nextInt(DEFAULT_MAP_WIDTH)),
-					SharedTile.Terrain.GRASS, false,
+					SharedTile.Terrain.SEA, false,
 					SharedTile.UnitType.NONE,
-					SharedTile.VillageType.HOVEL, 0, 0);
+					SharedTile.VillageType.NONE, 0, 0);
 		NewStateApplier.applyChanges(game, newST);
 	}
 	
