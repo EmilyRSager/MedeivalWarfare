@@ -238,6 +238,11 @@ public class GameMap  implements Serializable{
 			}
 		}
 	}
+	
+	public GraphNode getGraphNode(Tile lTile)
+	{
+		return TileToNodeHashMap.get(lTile);
+	}
 	/**
 	 * Returns the set of tiles a unit can move to
 	 * May return an empty set 
@@ -246,12 +251,19 @@ public class GameMap  implements Serializable{
 	 */
 	public Set<Tile> getPossibleMoves(Tile startTile)
 	{
-		GraphNode temp = TileToNodeHashMap.get(startTile); 
-		Set<GraphNode> possNodes = getPossibleMoves(temp);
 		Set<Tile> toReturn = new HashSet<Tile>();
-		for (GraphNode lGraphNode : possNodes)
-		{
-			toReturn.add(lGraphNode.getTile());
+		
+		if (startTile.hasUnit()) {
+			Unit lUnit = startTile.getUnit();
+			
+			if (lUnit.getActionType().equals(ActionType.READY)) {
+				GraphNode temp = TileToNodeHashMap.get(startTile);
+				Set<GraphNode> possNodes = getPossibleMoves(temp);
+				for (GraphNode lGraphNode : possNodes) {
+					toReturn.add(lGraphNode.getTile());
+				}
+			}
+			
 		}
 		return toReturn; 
 	}

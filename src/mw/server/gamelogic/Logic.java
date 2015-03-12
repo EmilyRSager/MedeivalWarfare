@@ -4,8 +4,8 @@ import java.util.ArrayList;
 
 
 /**
- * @author Charlie BLoomfield, Abhishek Gupta, Arthur Denefle, Hugo Kapp, Frank Underwood, Definitely not Emily Sager
- * Also Paul Rudd
+ * @author Emily Sager, Charlie BLoomfield, Abhishek Gupta, Arthur Denefle, Hugo Kapp
+ 
  */
 public class Logic {
 
@@ -103,9 +103,10 @@ public class Logic {
 	 * @param pGame
 	 * @param pGameMap
 	 */
-	public static void updateGameState(Unit crtUnit, Tile startTile, Tile pDestinationTile, Game pGame, GameMap pGameMap)
+	public static boolean updateGameState(Unit crtUnit, Tile startTile, Tile pDestinationTile, Game pGame, GameMap pGameMap)
 	{
 		
+		boolean tookOverTile = false; 
 		/*
 		  	PossibleGameActions myActions = pGame.tileIsClicked(startTile); 
 			Collection<Tile> movableTiles = myActions.getMovableTiles(); 
@@ -120,10 +121,10 @@ public class Logic {
 		if (isNeutral(pDestinationTile))
 		{
 			pGame.takeoverTile(startTile, pDestinationTile);
+			tookOverTile = true;
 		} 
 		if (tilesAreSameColor(startTile, pDestinationTile))
 		{	
-			
 			switch (crtUnitType)
 			{
 			case PEASANT:
@@ -141,6 +142,7 @@ public class Logic {
 				break;
 			}
 		}
+		return tookOverTile;
 	}
 
 	/**
@@ -305,6 +307,7 @@ public class Logic {
 				crt.addOrSubtractWood(1);
 			}
 			pDestinationTile.setUnit(crtUnit);
+			pDestinationTile.setStructureType(StructureType.NO_STRUCT);
 			startTile.setUnit(null);
 			crtUnit.setActionType(ActionType.MOVED);
 			break;

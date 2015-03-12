@@ -13,8 +13,8 @@ import mw.util.CircularIterator;
  * @author emilysager
  */
 public class Game extends RandomColorGenerator implements Serializable{
-	private static final int DEFAULT_WIDTH = 12;
-	private static final int DEFAULT_HEIGHT = 12;
+	private static final int DEFAULT_WIDTH = 18;
+	private static final int DEFAULT_HEIGHT = 18;
 	private Collection<Player> aPlayers;
 	private GameMap aMap;  
 	private Player aCurrentPlayer;
@@ -328,9 +328,9 @@ public class Game extends RandomColorGenerator implements Serializable{
 		}
 		else    		
 		{
-			if (crtUnit.getActionType() == ActionType.READY)
+			if (Logic.updateGameState(crtUnit, startTile, pDestinationTile, this, aMap)) 
 			{
-				Logic.updateGameState(crtUnit, startTile, pDestinationTile, this, aMap);  
+				crtUnit.setActionType(ActionType.MOVED);
 			}
 		}
 
@@ -347,12 +347,15 @@ public class Game extends RandomColorGenerator implements Serializable{
 	 */
 	public void takeoverTile(Tile startTile, Tile pDestinationTile) 
 	{
-				pDestinationTile.setColor(startTile.getColor()); 
-				//TODO -- recalculate village 
-				//aMap.recalculateVillages();
-				moveUnit(startTile, pDestinationTile);		
-				pDestinationTile.getUnit().setActionType(ActionType.MOVED);
-				System.out.println("ACTION TYPE SET TO MOVED");
+
+		pDestinationTile.setColor(startTile.getColor());
+		Village lCapturingVillage = aMap.getVillage(startTile);
+		lCapturingVillage.addTile(aMap.getGraphNode(pDestinationTile));
+		//TODO -- recalculate village 
+		//aMap.recalculateVillages();
+		//moveUnit(startTile, pDestinationTile);		
+		
+			
 	}
 
 	/**
