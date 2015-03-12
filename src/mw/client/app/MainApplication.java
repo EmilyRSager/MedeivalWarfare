@@ -52,7 +52,7 @@ public final class MainApplication {
 		List<String> crap = new ArrayList<String>();
 		crap.add("crap1");
 		crap.add("crap2");
-		crap.add("crap3");
+		crap.add("crap3 is actually long");
 		DisplayUpdater.displayChoice(ChoiceType.UNIT_ACTION, crap);
 		DisplayUpdater.showEndTurnButton(true);
 		waitABit();

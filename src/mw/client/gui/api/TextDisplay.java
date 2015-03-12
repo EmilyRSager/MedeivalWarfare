@@ -12,8 +12,8 @@ import org.minueto.image.MinuetoText;
  */
 public final class TextDisplay extends AbstractWindowComponent {
 
-	public static final String DEFAULT_FONT_NAME = MinuetoFont.Monospaced;
-	public static final int DEFAULT_FONT_SIZE = 15;
+	public static final String DEFAULT_FONT_NAME = MinuetoFont.Dialog;
+	public static final int DEFAULT_FONT_SIZE = 16;
 	public static final MinuetoFont DEFAULT_FONT = new MinuetoFont(DEFAULT_FONT_NAME, DEFAULT_FONT_SIZE, false,false);
 	public static final MinuetoColor DEFAULT_TEXT_COLOR = MinuetoColor.BLACK;
 	public static final MinuetoColor BORDER_COLOR = MinuetoColor.BLACK;

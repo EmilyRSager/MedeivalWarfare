@@ -86,9 +86,37 @@ public final class ExtendedMinuetoImage /*extends MinuetoImage */{
 	
 	public static MinuetoImage drawHexBorder(MinuetoImage img, MinuetoColor color, Hexagon hex)
 	{
-		MinuetoImage newImg = (MinuetoImage) img.clone();
-		
+		return drawHexPoints(img, color, hex.getVertices());
+	}
+
+	
+	public static MinuetoImage drawHexBorder(MinuetoImage img, MinuetoColor color, Hexagon hex, int thickness)
+	{
+		// TODO
+		MinuetoImage newImg = (MinuetoImage)img.clone();
 		final List<Hexagon.Point> vertices = hex.getVertices();
+		
+		newImg = drawHexPoints(newImg, color, vertices);
+		
+		for (int i=1; i<thickness; i++)
+		{
+			vertices.add(0, new Hexagon.Point(vertices.get(0).x, vertices.get(0).y+1));
+			vertices.add(1, new Hexagon.Point(vertices.get(1).x, vertices.get(1).y+1));
+			vertices.add(2, new Hexagon.Point(vertices.get(2).x-1, vertices.get(2).y));
+			vertices.add(3, new Hexagon.Point(vertices.get(3).x, vertices.get(3).y-1));
+			vertices.add(4, new Hexagon.Point(vertices.get(4).x, vertices.get(4).y-1));
+			vertices.add(5, new Hexagon.Point(vertices.get(5).x+1, vertices.get(5).y));
+			
+			newImg = drawHexPoints(newImg, color, vertices);
+		}
+		
+		return newImg;
+	}
+	
+	private static MinuetoImage drawHexPoints(MinuetoImage img, MinuetoColor color, List<Hexagon.Point> vertices)
+	{
+		MinuetoImage newImg = (MinuetoImage) img.clone();
+
 		newImg.drawLine(color, vertices.get(0).x, vertices.get(0).y, vertices.get(1).x, vertices.get(1).y);
 		newImg.drawLine(color, vertices.get(1).x, vertices.get(1).y, vertices.get(2).x, vertices.get(2).y);
 		newImg.drawLine(color, vertices.get(2).x, vertices.get(2).y, vertices.get(3).x, vertices.get(3).y);
@@ -98,7 +126,6 @@ public final class ExtendedMinuetoImage /*extends MinuetoImage */{
 		
 		return newImg;
 	}
-	
 	
 	/* ========================
 	 * 		Colored images
