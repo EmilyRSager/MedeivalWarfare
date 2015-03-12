@@ -17,7 +17,7 @@ import java.io.PrintWriter;
 
 import com.google.gson.Gson;
 
-import mw.client.files.ProjectFolder;
+import mw.filesystem.ProjectFolder;
 import mw.server.gamelogic.Game;
 
 public class SaveGame {

@@ -1,4 +1,4 @@
-package mw.client.gui;
+package mw.client.gui.window;
 
 
 import java.util.ArrayList;

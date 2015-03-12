@@ -1,10 +1,10 @@
-package mw.client.gui;
+package mw.client.gui.window;
 
 import java.util.Observable;
 
-import mw.client.gui.ImageFileManager.TileType;
 import mw.client.gui.api.ExtendedMinuetoColor;
 import mw.client.gui.api.ExtendedMinuetoImage;
+import mw.client.gui.window.ImageFileManager.TileType;
 import mw.shared.SharedTile.*;
 
 import org.minueto.MinuetoColor;

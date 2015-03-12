@@ -5,7 +5,7 @@ import java.util.Observer;
 
 import org.minueto.MinuetoColor;
 
-import mw.client.gui.ImageTile;
+import mw.client.gui.window.ImageTile;
 import mw.client.model.ModelTile;
 import mw.shared.SharedColor;
 

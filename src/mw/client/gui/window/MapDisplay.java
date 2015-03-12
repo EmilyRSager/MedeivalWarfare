@@ -1,4 +1,4 @@
-package mw.client.gui;
+package mw.client.gui.window;
 
 import java.util.Observer;
 
@@ -200,36 +200,5 @@ public class MapDisplay implements Displayable, Clickeable {
 	 * ========================
 	 */
 	
-	public static void main(String[] args)
-	{
-		final int width = 10;
-		final int height = 10;
-		ImageTile[][] tiles = new ImageTile[width][height];
-		for (int i=0; i<width; i++)
-		{
-			for (int j=0; j<height; j++)
-			{
-				tiles[i][j] = new ImageTile();
-				tiles[i][j].updateColor(MinuetoColor.RED);
-			}
-		}
-		MapDisplay mapDisp = new MapDisplay(tiles);
-		
-		MinuetoFrame window = new MinuetoFrame(mapDisp.getWidth(), mapDisp.getHeight(), true);
-		window.setVisible(true);
-		window.draw(mapDisp.getImage(), 0, 0);
-		window.render();
-		MinuetoEventQueue queue = new MinuetoEventQueue();
-		window.registerMouseHandler(new MouseClickHandler(new WindowArea(0, 0, mapDisp.getWidth(), mapDisp.getHeight()), mapDisp), queue);
-		
-		while(true)
-		{
-			while(queue.hasNext()) {
-				queue.handle();
-				window.draw(mapDisp.getImage(), 0, 0);
-				window.render();
-			}
-		}
-	}
 	
 }

@@ -1,4 +1,4 @@
-package mw.client.gui;
+package mw.client.gui.window;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,7 +26,7 @@ public class GameWindow implements Observer {
 	
 	public static final MinuetoColor BACKGROUND_COLOR = ExtendedMinuetoColor.mixColors(MinuetoColor.BLACK, MinuetoColor.WHITE, 0.10);
 	public static final int DEFAULT_MAP_WIDTH = 1000;
-	public static final int DEFAULT_MAP_HEIGHT = 800;
+	public static final int DEFAULT_MAP_HEIGHT = 600;
 	public static final int CONTROL_LAYOUT_HEIGHT = 150;
 	
 	private final MinuetoFrame window;
@@ -71,7 +71,7 @@ public class GameWindow implements Observer {
 		
 		mapComp.setWindow(this);
 		windowLayout.setWindow(this);
-		controlBarLayout.setWindow(this);
+		//controlBarLayout.setWindow(this);
 		window.setVisible(true);
 		window.setTitle("Medieval Warfare");
 		GameWindow dumbRef = this;
@@ -128,7 +128,7 @@ public class GameWindow implements Observer {
 		resourceLayout.addComponent(woodText);
 		resourceLayout.addComponent(goldText);
 		controlBarLayout.addComponent(resourceLayout, 0);
-		resourceLayout.setWindow(this);
+		//resourceLayout.setWindow(this);
 		this.render();
 	}
 	
@@ -165,21 +165,24 @@ public class GameWindow implements Observer {
 			controlBarLayout.addComponent(choiceLayout, 2);
 			break;
 		}
-		choiceLayout.setWindow(this);
+		//choiceLayout.setWindow(this);
 		this.render();
 	}
 	
 	public void addEndTurnButton()
 	{
 		this.registerMouseHandler(endTurn);
-		windowLayout.addComponent(endTurn, 1);
-		this.render();
+		HorizontalLayout hlayout = new HorizontalLayout(1);
+		hlayout.addComponent(endTurn);
+		windowLayout.addComponent(hlayout, 1);
+		//windowLayout.addComponent(endTurn, 1);
+		//this.render();
 	}
 	
 	public void removeEndTurnButton()
 	{
 		window.unregisterMouseHandler(endTurn, queue);
-		windowLayout.addComponent(null, 1);
+		windowLayout.removeComponent(1);
 		this.render();
 	}
 	

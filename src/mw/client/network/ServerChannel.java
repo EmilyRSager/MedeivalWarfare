@@ -13,7 +13,7 @@ import java.io.InputStream;
 import java.net.Socket;
 import java.util.Properties;
 
-import mw.client.files.ProjectFolder;
+import mw.filesystem.ProjectFolder;
 import mw.shared.servercommands.AbstractServerCommand;
 
 public class ServerChannel extends Thread{

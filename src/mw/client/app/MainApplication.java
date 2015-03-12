@@ -14,9 +14,9 @@ import mw.client.controller.DisplayUpdater;
 import mw.client.controller.ModelViewMapping;
 import mw.client.controller.NewStateApplier;
 import mw.client.controller.TileModificationHandler;
-import mw.client.gui.GameWindow;
-import mw.client.gui.ImageTile;
-import mw.client.gui.MapDisplay;
+import mw.client.gui.window.GameWindow;
+import mw.client.gui.window.ImageTile;
+import mw.client.gui.window.MapDisplay;
 import mw.client.model.Game;
 import mw.client.model.GameMap;
 import mw.client.model.Player;
@@ -45,15 +45,19 @@ public final class MainApplication {
 		
 		waitABit();
 		testUpdate(SharedColor.BLUE);
+		System.out.println("Updated blue");
 		waitABit();
 		testUpdate(SharedColor.YELLOW);
+		System.out.println("Updated yellow");
 		waitABit();
 		DisplayUpdater.showVillageResources(200, 200);
+		System.out.println("Showed vilalge resources");
 		List<String> crap = new ArrayList<String>();
 		crap.add("crap1");
 		crap.add("crap2");
 		crap.add("crap3 is actually long");
 		DisplayUpdater.displayChoice(ChoiceType.UNIT_ACTION, crap);
+		System.out.println("Showed choice");
 		DisplayUpdater.showEndTurnButton(true);
 		waitABit();
 		

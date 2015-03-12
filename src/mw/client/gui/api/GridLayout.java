@@ -3,7 +3,7 @@ package mw.client.gui.api;
 import java.util.Observable;
 import java.util.Observer;
 
-import mw.client.gui.GameWindow;
+import mw.client.gui.window.GameWindow;
 import mw.util.MultiArrayIterable;
 
 import org.minueto.image.MinuetoDrawingSurface;
@@ -21,7 +21,7 @@ import org.minueto.image.MinuetoImage;
  * @author Hugo Kapp
  *
  */
-public class GridLayout extends AbstractWindowComponent/* implements Observer*/ {
+public class GridLayout extends AbstractWindowComponent implements Observer {
 
 
 	private final WindowComponent[][] components;
@@ -31,7 +31,7 @@ public class GridLayout extends AbstractWindowComponent/* implements Observer*/ 
 	
 	private final int minWidth, minHeight;
 	//private boolean packed;
-	//private boolean packing;
+	private boolean packing;
 
 	/* ========================
 	 * 		Constructors
@@ -51,7 +51,7 @@ public class GridLayout extends AbstractWindowComponent/* implements Observer*/ 
 			rowHeight = new int[rowCount];
 			columnWidth = new int[columnCount];
 			//packed = true;
-			//packing = false;
+			packing = false;
 		}
 		else
 			throw new IllegalArgumentException("Impossible to create a GridLayout with "+rows+" rows and "+columns+" columns");
@@ -94,21 +94,17 @@ public class GridLayout extends AbstractWindowComponent/* implements Observer*/ 
 	 */
 	public void addComponent(WindowComponent comp, int row, int column)
 	{
-		try {
-			components[row][column] = comp;
-			//((Observable)comp).addObserver(this);
-			//packed = false;
-			pack();
-			setChanged();
-			notifyObservers();
-		} catch (IndexOutOfBoundsException e) {
-			throw new IllegalArgumentException("("+row+","+column+") is not a valid location in a GridLayout with "+rowCount+" rows and "+columnCount+" columns");
-		}
+		((Observable)comp).addObserver(this);
+		setComponent(comp, row, column);
 	}
 	
 	public void removeComponent(int row, int column)
 	{
-		addComponent(null, row, column);
+		WindowComponent comp = getComponent(row, column);
+		if (comp != null) {
+			((Observable)comp).deleteObserver(this);
+			setComponent(null, row, column);
+		}
 	}
 	
 	public void removeAll()
@@ -124,7 +120,7 @@ public class GridLayout extends AbstractWindowComponent/* implements Observer*/ 
 	
 	public void setWindow(GameWindow window)
 	{
-		addObserver(window);
+		this.addObserver(window);
 	}
 
 	/* ==========================
@@ -137,25 +133,14 @@ public class GridLayout extends AbstractWindowComponent/* implements Observer*/ 
 	 */
 	private void pack()
 	{
+		System.out.println("Start packing "+this);
+		packing = true;
+		
 		computeRowHeights();
 		computeColumnWidths();
-		//packing = true;
 		
-		/*for (WindowComponent comp : MultiArrayIterable.toIterable(components))
-		{
-			if (comp != null)
-			{
-				try {
-					GridLayout layout = (GridLayout)comp;
-					if (!layout.packed)
-						layout.pack();
-				}
-				catch(ClassCastException e) {
-					
-				}
-			}
-		}*/
 		
+		int newWidth = 0, newHeight = 0;
 		int xPos,yPos;
 		yPos=area.getTopBorder();
 		for (int i=0;i<rowCount;i++)
@@ -168,10 +153,26 @@ public class GridLayout extends AbstractWindowComponent/* implements Observer*/ 
 					comp.setPosition(xPos, yPos);
 				xPos+=columnWidth[j];
 			}
-			area.setWidth(Math.max(getWidth(), xPos));
+			newWidth = Math.max(newWidth, xPos);
 			yPos+=rowHeight[i];
 		}
-		area.setHeight(yPos);
+		newHeight = yPos;
+		
+		ChangedState toNotify = null;
+		if (newWidth != area.getWidth() || newHeight != area.getHeight()) {
+			System.out.println("Size changed for "+this);
+			area.setWidth(newWidth);
+			area.setHeight(newHeight);
+			toNotify = ChangedState.SIZE;
+		}
+		else {
+			toNotify = ChangedState.IMAGE;
+		}
+		setChanged();
+		notifyObservers(toNotify);
+		
+		packing = false;
+		System.out.println("Finished packing "+this);
 		
 		/*if (!packed) {
 			System.out.println(this+" : repack");
@@ -192,7 +193,7 @@ public class GridLayout extends AbstractWindowComponent/* implements Observer*/ 
 	 */
 	private void computeRowHeights()
 	{
-		for (int i=0;i<rowCount;i++)
+		for (int i=0; i<rowCount; i++)
 		{
 			rowHeight[i] = 0;
 			for (int j=0;j<columnCount;j++)
@@ -219,6 +220,44 @@ public class GridLayout extends AbstractWindowComponent/* implements Observer*/ 
 		}
 	}
 	
+	private void setComponent(WindowComponent comp, int row, int column)
+	{
+		checkValidCoordinates(row, column);
+		components[row][column] = comp;
+		pack();
+	}
+	
+	private WindowComponent getComponent(int row, int column)
+	{
+		checkValidCoordinates(row, column);
+		return components[row][column];
+	}
+	
+	private void checkValidCoordinates(int row, int column)
+	{
+		boolean valid = row >= 0 && column >= 0
+							&& row < rowCount && column < columnCount;
+		if (!valid)
+			throw new IllegalArgumentException("("+row+","+column+") is not a valid location in a GridLayout with "+rowCount+" rows and "+columnCount+" columns");
+	}
+	
+	private void updatePosition(int xAdd, int yAdd)
+	{
+		packing = true;
+		if (xAdd != 0 || yAdd != 0)
+		{
+			for (WindowComponent comp : MultiArrayIterable.toIterable(components))
+			{
+				AbstractWindowComponent acomp = (AbstractWindowComponent)comp;
+				if (comp != null)
+					comp.setPosition(acomp.area.getLeftBorder() + xAdd, acomp.area.getTopBorder() + yAdd);
+			}
+			setChanged();
+			notifyObservers(ChangedState.POSITION);
+		}
+		packing = false;
+	}
+	
 	/* ==========================
 	 * 		Inherited methods
 	 * ==========================
@@ -233,7 +272,7 @@ public class GridLayout extends AbstractWindowComponent/* implements Observer*/ 
 	public void drawOn(MinuetoDrawingSurface canvas)
 	{
 		//if (!packed) {
-			pack();
+			//pack();
 			//setChanged();
 			//notifyObservers();
 		//}
@@ -248,12 +287,14 @@ public class GridLayout extends AbstractWindowComponent/* implements Observer*/ 
 		//}
 	}
 
-	/*@Override
+	@Override
 	public void setPosition(int x, int y)
 	{
+		int xAdd = x - area.getLeftBorder();
+		int yAdd = y - area.getTopBorder();
+		updatePosition(xAdd, yAdd);
 		super.setPosition(x,y);
-		packed = hasChanged();
-	}*/
+	}
 	
 	@Override
 	public int getWidth()
@@ -267,17 +308,55 @@ public class GridLayout extends AbstractWindowComponent/* implements Observer*/ 
 		return Math.max(super.getHeight(), minHeight);
 	}
 	
-	/*@Override
+	@Override
 	public void update(Observable o, Object arg)
 	{
-		packed = false;
-		if (!packing) {
-			setChanged ();
-			notifyObservers();
+		System.out.println("Notified "+arg+" from "+o);
+		ChangedState state = (ChangedState)arg;
+		if (packing)
+		{
+			if (state == null) {
+				System.out.println("Packing and getting null arg for update");
+				setChanged();
+			}
+			else
+			{
+				switch(state)
+				{
+				case POSITION:
+				case IMAGE:
+					break;
+					
+				case SIZE:
+					System.out.println("Dat size change when packing tho");
+					break;
+				}
+			}
 		}
 		else
-			System.out.println(this+" : Notified while packing");
-	}*/
+		{
+			if (state == null) {
+				System.out.println("Re-throwing the null arg for update");
+				setChanged();
+				notifyObservers();
+			}
+			else
+			{
+				switch(state)
+				{
+				case POSITION:
+				case IMAGE:
+					setChanged();
+					notifyObservers(ChangedState.IMAGE);
+					break;
+					
+				case SIZE:
+					pack();
+					break;
+				}
+			}
+		}
+	}
 	
 	@Override
 	public String toString()

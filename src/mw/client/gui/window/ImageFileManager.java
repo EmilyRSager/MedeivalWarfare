@@ -1,4 +1,4 @@
-package mw.client.gui;
+package mw.client.gui.window;
 
 import java.io.IOException;
 import java.io.ObjectInputStream.GetField;
@@ -6,11 +6,11 @@ import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
-import mw.client.files.ProjectFolder;
 import mw.client.gui.api.ExtendedMinuetoColor;
 import mw.client.gui.api.ExtendedMinuetoImage;
 import mw.client.model.ModelTile;
 import mw.client.model.ModelTile.*;
+import mw.filesystem.ProjectFolder;
 
 import org.minueto.MinuetoColor;
 import org.minueto.MinuetoFileException;

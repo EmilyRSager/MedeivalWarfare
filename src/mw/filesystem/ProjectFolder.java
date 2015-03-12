@@ -1,4 +1,4 @@
-package mw.client.files;
+package mw.filesystem;
 
 import java.io.IOException;
 import java.nio.charset.Charset;

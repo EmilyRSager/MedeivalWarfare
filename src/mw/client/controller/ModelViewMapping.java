@@ -2,7 +2,7 @@ package mw.client.controller;
 
 import java.util.HashMap;
 
-import mw.client.gui.ImageTile;
+import mw.client.gui.window.ImageTile;
 import mw.client.model.ModelTile;
 
 /**

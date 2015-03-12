@@ -1,18 +1,14 @@
-package mw.client.gui;
+package mw.client.gui.window;
 
 import mw.client.gui.api.AbstractWindowComponent;
 import mw.client.gui.api.Clickeable;
 import mw.client.gui.api.MouseClickHandler;
-import mw.client.gui.api.WindowArea;
-
-import org.minueto.MinuetoColor;
-import org.minueto.MinuetoEventQueue;
 import org.minueto.handlers.MinuetoKeyboard;
 import org.minueto.handlers.MinuetoKeyboardHandler;
 import org.minueto.image.MinuetoImage;
-import org.minueto.window.MinuetoFrame;
 
-public final class MapComponent extends AbstractWindowComponent implements
+@Deprecated
+public final class SquareMapComponent extends AbstractWindowComponent implements
 		Clickeable, MinuetoKeyboardHandler {
 	
 	private static final int X_OFFSET_STEP = 10;
@@ -21,7 +17,7 @@ public final class MapComponent extends AbstractWindowComponent implements
 	private int xOffset, yOffset;
 	private final int minXOffset, minYOffset;
 	private final int maxXOffset, maxYOffset;
-	private final MapDisplay mapDisp;
+	private final SquareMapDisplay mapDisp;
 	private final MouseClickHandler clickHandler;
 
 	/* ========================
@@ -29,25 +25,21 @@ public final class MapComponent extends AbstractWindowComponent implements
 	 * ========================
 	 */
 	
-	public MapComponent(int x, int y, int width, int height, MapDisplay mapDisp) {
-		super(x, y, Math.min(width, mapDisp.getWidth()), Math.min(height, mapDisp.getHeight()));
+	public SquareMapComponent(int x, int y, int width, int height, SquareMapDisplay mapDisp) {
+		super(x, y, width, height);
 		this.mapDisp = mapDisp;
 		clickHandler = new MouseClickHandler(area, this);
 		
 		minXOffset=0;
 		minYOffset=0;
-		maxXOffset=Math.max(mapDisp.getWidth()-width, 0);
-		maxYOffset=Math.max(mapDisp.getHeight()-height, 0);
+		maxXOffset = Math.max(mapDisp.getWidth()-width, 0);
+		maxYOffset = Math.max(mapDisp.getHeight()-height, 0);
 		
 		xOffset = minXOffset;
 		yOffset = minYOffset;
 		
 	}
 
-	public MapComponent(int width, int height, MapDisplay mapDisp) {
-		this(0, 0, width, height, mapDisp);
-	}
-	
 
 	/* ==========================
 	 * 		Public methods
@@ -69,10 +61,10 @@ public final class MapComponent extends AbstractWindowComponent implements
 	
 
 	@Override
-	public void handleKeyPress(int button) {
+	public void handleKeyPress(int arg0) {
 		final int oldYOffset = yOffset;
 		final int oldXOffset = xOffset;
-		switch(button)
+		switch(arg0)
 		{
 		case MinuetoKeyboard.KEY_DOWN:
 			yOffset+=Y_OFFSET_STEP;
@@ -129,39 +121,4 @@ public final class MapComponent extends AbstractWindowComponent implements
 	 * ========================
 	 */
 
-	/*public static void main(String[] args)
-	{
-		final int width = 12;
-		final int height = 12;
-		ImageTile[][] tiles = new ImageTile[width][height];
-		for (int i=0; i<width; i++)
-		{
-			for (int j=0; j<height; j++)
-			{
-				tiles[i][j] = new ImageTile();
-				tiles[i][j].updateColor(MinuetoColor.RED);
-			}
-		}
-		MapDisplay mapDisp = new MapDisplay(tiles);
-		MapComponent comp = new MapComponent(0, 0, 400, 400, mapDisp);
-		
-		MinuetoFrame window = new MinuetoFrame(400, 400, true);
-		window.setVisible(true);
-		window.draw(comp.getImage(), 0, 0);
-		window.render();
-		MinuetoEventQueue queue = new MinuetoEventQueue();
-		window.registerMouseHandler(new MouseClickHandler(new WindowArea(0, 0, 400, 400), comp), queue);
-		window.registerKeyboardHandler(comp, queue);
-		
-		while(true)
-		{
-			while(queue.hasNext()) {
-				queue.handle();
-				window.clear();
-				window.draw(comp.getImage(), 0, 0);
-				window.render();
-			}
-		}
-	}*/
-	
 }

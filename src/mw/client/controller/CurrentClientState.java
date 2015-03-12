@@ -1,6 +1,6 @@
 package mw.client.controller;
 
-import mw.client.gui.GameWindow;
+import mw.client.gui.window.GameWindow;
 import mw.client.model.Game;
 import mw.shared.SharedColor;
 

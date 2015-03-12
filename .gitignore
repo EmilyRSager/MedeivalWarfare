@@ -5,3 +5,4 @@ srcpath.txt
 config.properties
 *.db
 *~
+.metadata

@@ -3,7 +3,7 @@ package mw.client.controller;
 import java.util.Collection;
 
 import mw.client.controller.ChoiceCenter.ChoiceType;
-import mw.client.gui.ImageTile;
+import mw.client.gui.window.ImageTile;
 import mw.client.model.*;
 import mw.client.network.NetworkController;
 import mw.shared.SharedPossibleGameActions;

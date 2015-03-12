@@ -12,7 +12,7 @@ import java.io.IOException;
 import java.util.Collection;
 import java.util.HashSet;
 
-import mw.client.files.ProjectFolder;
+import mw.filesystem.ProjectFolder;
 import mw.server.gamelogic.Game;
 import mw.server.gamelogic.Player;
 import mw.server.gamelogic.TooManyPlayersException;

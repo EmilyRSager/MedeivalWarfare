@@ -2,8 +2,8 @@ package mw.client.gui.api;
 
 import java.util.List;
 
-import mw.client.gui.Hexagon;
-import mw.client.gui.Hexagon.RelativePosition;
+import mw.client.gui.window.Hexagon;
+import mw.client.gui.window.Hexagon.RelativePosition;
 
 import org.minueto.MinuetoColor;
 import org.minueto.image.MinuetoImage;
