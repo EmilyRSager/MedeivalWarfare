@@ -13,8 +13,8 @@ import mw.server.gamelogic.enums.VillageType;
 import mw.server.gamelogic.exceptions.CantUpgradeException;
 import mw.server.gamelogic.exceptions.NotEnoughIncomeException;
 import mw.server.gamelogic.graph.GraphNode;
-import mw.server.gamelogic.logic.Logic;
 import mw.server.gamelogic.logic.PriceCalculator;
+import mw.server.gamelogic.logic.VillageLogic;
 
 
 
@@ -24,21 +24,27 @@ import mw.server.gamelogic.logic.PriceCalculator;
  */
 public class Village extends Observable implements Serializable
 {
-
 	private int aGold; 
 	private int aWood; 
 	private Tile aCapital; 
 	private VillageType aVillageType; 
 	private Collection<Tile> aTiles;
 
+	/**
+	 * Village Constructor
+	 * @param lVillageTiles
+	 */
 	public Village(Collection<Tile> lVillageTiles) 
 	{
 		aTiles= lVillageTiles; 
 		aGold = 0; 
 		aWood = 0; 
 	}
-
 	
+	/**
+	 * Sets the type of a village to hovel, town or fort. 
+	 * @param pVillageType
+	 */
 	public void setVillageType(VillageType pVillageType)
 	{
 		aVillageType = pVillageType;
@@ -51,103 +57,46 @@ public class Village extends Observable implements Serializable
 	 */
 	public void setCapital(Tile pCapital)
 	{
+		aVillageType = VillageType.HOVEL;
 		aCapital = pCapital;
 		aCapital.setStructureType(StructureType.VILLAGE_CAPITAL);
 		aCapital.setVillageType(VillageType.HOVEL); 
-		aCapital.setWood(aWood);
-		aCapital.setGold(aGold);
 	}
 
-
-/**
- * 
- * @return
- */
+	/**
+	 *Gets the tiles that make up a village
+	 * @return
+	 */
 	public Collection<Tile> getTiles ()
 	{
 		return aTiles; 
 	}
 
-	private void generateGold()
+	public void upgrade(VillageType pVillageType) throws NotEnoughIncomeException, CantUpgradeException 
 	{
-		int addGold = 0;  
-		for (Tile lTile: aTiles)
-		{ 
-			addGold +=Logic.getGoldGenerated(lTile);  
-		}
-		addOrSubtractGold(addGold);
-	}
-	
-	public void upgrade(VillageType pVillageType) throws NotEnoughIncomeException {
-		int upgradeCost = PriceCalculator.getVillageUpgradeCost(pVillageType);
-
-		if (aWood >= upgradeCost) {
-			try {
-				Logic.upgradeVillage(this, aVillageType);
-				addOrSubtractWood(-upgradeCost);
-			} catch (CantUpgradeException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-		else 
-		{
-			throw new NotEnoughIncomeException(aWood - upgradeCost); 
-		}
-
+				VillageLogic.upgradeVillage(this, aVillageType);
 	}
 
 	/**
-	 * goes through the village and adds gold to the village based on the number of meadows/tiles 
-	 * replaces any Tombstones with trees
-	 */
-	public void updateTiles() 
-	{
-		for (Tile pTile : aTiles) 
-		{
-			Logic.clearTombstone(pTile);
-		}
-		generateGold();
-		aCapital.notifyObservers(); 
-	}
-
-
-	/**
-	 * produces meadow/road on the tile and resets the unit to be free 
-	 * assuming that the free state of the unit is "READY"
-	 * this function will do the update for all the units that are on tiles belonging to the village
+	 * Updates the village state at the beginning of a turn
 	 * 
-	 * NOTE: Currently only handles cultivating meadow and building road, could be expanded to handle
-	 * collecting wood as well 
 	 */
-	public void updateUnits()  
+	public void beginTurnUpdate()  
 	{
-		for(GraphNode lNode: aVillageNodes){
-			Tile lTile = lNode.getTile();
-			Unit lUnit = lTile.getUnit();
-
-			if (lUnit!=null) {
-				ActionType lActionType = lUnit.getActionType();
-				if (lActionType.equals(ActionType.CULTIVATING_END)) {
-					lTile.setHasMeadow(true);
-					lUnit.setActionType(ActionType.READY);
-				} else if (lActionType.equals(ActionType.BUILDINGROAD)) {
-					lTile.setStructureType(StructureType.ROAD);
-					lUnit.setActionType(ActionType.READY);
-				} else if (lActionType.equals(ActionType.CHOPPINGTREE)) {
-					lTile.setStructureType(StructureType.NO_STRUCT);
-					lUnit.setActionType(ActionType.READY);
-					addOrSubtractWood(1);
-				}
-				else if (lActionType.equals(ActionType.MOVED))
-				{
-					lUnit.setActionType(ActionType.READY);
-				}
-			}
+		addOrSubtractGold(VillageLogic.generateGold(aTiles));
+		VillageLogic.clearTombstone(aTiles);
+		VillageLogic.generateMeadows(aTiles);
+		VillageLogic.buildRoads(aTiles);
+		VillageLogic.readyUnits(aTiles); 
+		try
+		{
+			VillageLogic.payVillagers(aTiles, this);
+		}
+		catch  (NotEnoughIncomeException e) 
+		{
+			VillageLogic.starveVillage(); 
 		}
 	}
-
-
 
 	/**
 	 * Adds the specified amount of gold to the village, maybe used in the context of takeOver village
@@ -156,8 +105,6 @@ public class Village extends Observable implements Serializable
 	public void addOrSubtractGold(int addGold) 
 	{
 		aGold = aGold + addGold; 
-		aCapital.setGold(aGold);
-		aCapital.notifyObservers();
 	}
 
 	/**
@@ -167,66 +114,41 @@ public class Village extends Observable implements Serializable
 	public void addOrSubtractWood(int addWood) 
 	{
 		aWood = aWood + addWood;
-		aCapital.setWood(aWood);
-		aCapital.notifyObservers();
 	}
 
 	/**
-	 * add a specified Tile to a village, then check if adding that tile caused 
-	 * two villages under the same player to become one Mega-Village
-	 * @precondition ONLY called either after removeTile from an enemy village, or on neutral land 
+	 * Adds a tile to a village
 	 * @param pTile
 	 */
-	public void addTile(GraphNode pGraphNode) 
+	public void addTile(Tile pTile) 
 	{
-		aVillageNodes.add(pGraphNode); 
-		//TODO: needs to be implemented
-		//some type of search here to see if the village has fused
+		aTiles.add(pTile);  
 	}
-
+	
 	/**
-	 * remove a tile from the village, would also take care that if this tile is removed causing a split into
-	 * smaller villages then it is handled here 
-	 * @param t = tile to be removed
+	 * Removes a tile from a village
+	 * @param pTile
 	 */
 	public void removeTile(Tile pTile) 
 	{
-		/* TODO: needs to be implemented */
+		aTiles.remove(pTile);
 	}
 
+	/**
+	 * Returns the village type:  hovel, fort or town 
+	 * @return
+	 */
 	public VillageType getVillageType() 
 	{
 		return aVillageType; 
 	}
-
-	/**
-	 * checks if there's enough gold to pay all villagers 
-	 * if there is then village gold is reduced by the cost
-	 * otherwise a NotEnoughIncomeException is thrown and dealt with in the calling class 
-	 * 
-	 * check in price_calculator class for an upkeep cost calculator method instead of using this
-	 * 
-	 * @param goldCost 
-	 * @throws NotEnoughIncomeException
-	 */
-	public void tryPayingGold(int goldCost) throws NotEnoughIncomeException
-	{
-		if (aGold >= goldCost)
-		{
-			addOrSubtractGold(-goldCost);
-		}
-		else 
-		{
-			throw new NotEnoughIncomeException((aGold-goldCost)); 
-		}
-	}
+	
 	/**
 	 * getter for Village Gold
 	 * @return
 	 */
 	public int getGold() 
 	{
-
 		return aGold;
 	}
 
@@ -239,21 +161,33 @@ public class Village extends Observable implements Serializable
 		return aWood;
 	}
 	
-	@Override
+	/**
+	 * Returns the color of the village
+	 * @return
+	 */
+	public Color getColor() 
+	{
+		return aCapital.getColor();
+	}
+	
+	public boolean contains(Tile pTile)
+	{
+		return aTiles.contains(pTile);
+	}
+	/**
+	 * Returns the Tiles of a village
+	 * @return
+	 * @Override
+	 */
 	public String toString() 
 	{
 		String myString = "The village tiles are: ";
-		
-		for (GraphNode lGraphNode : aVillageNodes)
-		{
-			myString += lGraphNode.getTile().toString();
-		}
-		myString += "/n";
-		return myString; 
-		
-	}
 
-	public Color getColor() {
-		return aCapital.getColor();
+		for (Tile lTile : aTiles)
+		{
+			myString += lTile.toString();
+		}
+		return myString; 
 	}
+	
 }

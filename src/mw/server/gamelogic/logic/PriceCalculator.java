@@ -26,7 +26,7 @@ public class PriceCalculator
 	}
 
 	/**
-	 * @FIXME DOES NOT 
+	 * @FIXME DOES NOT Take into account upgrading peasant to soldier, peasant to knight etc. 
 	 * @param pUnit
 	 * @return
 	 * @throws CantUpgradeException
@@ -47,13 +47,14 @@ public class PriceCalculator
 	}
 
 	/**
-	 * 
+	 * Takes in the type of village desired to upgrade to 
 	 * @param aVillageType new VillageType
 	 * @return the cost
 	 * @throws CantUpgradeException
 	 */
-	public static int getVillageUpgradeCost(VillageType aVillageType){
-		switch (aVillageType) {
+	public static int getVillageUpgradeCost(VillageType pVillageType){
+		switch (pVillageType) 
+		{
 			case HOVEL:
 				return 0;
 			case TOWN:
@@ -70,38 +71,20 @@ public class PriceCalculator
 	 * @return the amount in gold needed for the upkeep
 	 */
 
-	public static int upkeepCostCalculator(Village pVillage){
-		int totalUpkeepCost = 0;
-		Collection<GraphNode> lGraphNodesOfVillageCollection = pVillage.getVillageNodes();
-		for(GraphNode lNode: lGraphNodesOfVillageCollection){
-			Tile lTile = lNode.getTile();
-			Unit lUnit = lTile.getUnit();
-
-			if (lUnit!=null) {
-				switch (lUnit.getUnitType()) {
+	public static int getUpkeepCost(Unit pUnit)
+	{
+				switch (pUnit.getUnitType()) 
+				{
 					case PEASANT:
-						totalUpkeepCost +=2;
-						break;
-
+						return 2;
 					case INFANTRY:
-						totalUpkeepCost += 6;
-						break;
-
+						return  6;
 					case SOLDIER:
-						totalUpkeepCost += 18;
-						break;
-
+						return 18;
 					case KNIGHT:
-						totalUpkeepCost += 54;
-						break;
-
+						return 54;
 					default:
-						break;
+						return 0; 
 				}
-			}
-
-		}
-
-		return totalUpkeepCost;
 	}
 }
