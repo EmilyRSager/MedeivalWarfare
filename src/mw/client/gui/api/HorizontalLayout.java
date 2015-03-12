@@ -46,12 +46,12 @@ public class HorizontalLayout extends GridLayout {
 	 */
 
 	/**
-	 * Appends the given WindowComponent to this HorizontalLayout. This is an easy way to fill in a HorizontalLayout,
-	 * but it cannot be used in conjunction with addComponent(WindowComponent, column).
-	 * @param comp the new WindowComponent to append to this HorizontalLayout
-	 * @throws IllegalStateException if the method addComponent(WindowComponent, column) was used before on this HorizontalLayout
+	 * Appends the given ObservableWindowComponent to this HorizontalLayout. This is an easy way to fill in a HorizontalLayout,
+	 * but it cannot be used in conjunction with addComponent(ObservableWindowComponent, column).
+	 * @param comp the new ObservableWindowComponent to append to this HorizontalLayout
+	 * @throws IllegalStateException if the method addComponent(ObservableWindowComponent, column) was used before on this HorizontalLayout
 	 */
-	public void addComponent(WindowComponent comp)
+	public void addComponent(ObservableWindowComponent comp)
 	{
 		if (currentColumn==-1)
 			throw new IllegalStateException("You cannot use addComponent(comp) after having specified a column for a component");
@@ -60,11 +60,11 @@ public class HorizontalLayout extends GridLayout {
 	}
 	
 	/**
-	 * Adds the given WindowComponent to this HorizontalLayout, in the given column.
-	 * @param comp the new WindowComponent to append to this HorizontalLayout
-	 * @param column the column to add the new WindowComponent into
+	 * Adds the given ObservableWindowComponent to this HorizontalLayout, in the given column.
+	 * @param comp the new ObservableWindowComponent to append to this HorizontalLayout
+	 * @param column the column to add the new ObservableWindowComponent into
 	 */
-	public void addComponent(WindowComponent comp, int column)
+	public void addComponent(ObservableWindowComponent comp, int column)
 	{
 		addComponent(comp, 0, column);
 		currentColumn=-1;

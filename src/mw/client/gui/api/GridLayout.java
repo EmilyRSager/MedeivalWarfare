@@ -13,7 +13,7 @@ import org.minueto.image.MinuetoImage;
  * The GridLayout class provides a basic way of organizing WindowComponents. It takes the form
  * of a grid, specified by a fixed number of rows and columns, that can be filled with WindowComponents.
  * The indexing of GridLayouts starts at 0 and ends at rows-1 or columns-1.
- * Note that a GridLayout is a WindowComponent, allowing nested layouts.
+ * Note that a GridLayout is a ObservableWindowComponent, allowing nested layouts.
  * /!\ When using nested layouts, fill the lowest-level ones before putting these in the top-level layouts.
  * Ex : if layout A is in layout B and layout B is in layout C, A needs to be filled out before the call
  * B.addComponent(A) can be done. Then, B needs to be filled out before the call C.addComponent(B) can be made,
@@ -24,7 +24,7 @@ import org.minueto.image.MinuetoImage;
 public class GridLayout extends AbstractWindowComponent implements Observer {
 
 
-	private final WindowComponent[][] components;
+	private final ObservableWindowComponent[][] components;
 	private final int rowCount, columnCount;
 	private int[] rowHeight;
 	private int[] columnWidth;
@@ -47,7 +47,7 @@ public class GridLayout extends AbstractWindowComponent implements Observer {
 		{
 			rowCount = rows;
 			columnCount = columns;
-			components = new WindowComponent[rowCount][columnCount];
+			components = new ObservableWindowComponent[rowCount][columnCount];
 			rowHeight = new int[rowCount];
 			columnWidth = new int[columnCount];
 			//packed = true;
@@ -86,23 +86,23 @@ public class GridLayout extends AbstractWindowComponent implements Observer {
 	 */
 
 	/**
-	 * Adds the given WindowComponent in the specified row and column.
-	 * @param comp the new WindowComponent to add to this GridLayout
-	 * @param row the row number to add the WindowComponent in
-	 * @param column the column number to add the WindowComponent in
+	 * Adds the given ObservableWindowComponent in the specified row and column.
+	 * @param comp the new ObservableWindowComponent to add to this GridLayout
+	 * @param row the row number to add the ObservableWindowComponent in
+	 * @param column the column number to add the ObservableWindowComponent in
 	 * @throws IllegalArgumentException if the row and/or column number is invalid
 	 */
-	public void addComponent(WindowComponent comp, int row, int column)
+	public void addComponent(ObservableWindowComponent comp, int row, int column)
 	{
-		((Observable)comp).addObserver(this);
+		comp.addObserver(this);
 		setComponent(comp, row, column);
 	}
 	
 	public void removeComponent(int row, int column)
 	{
-		WindowComponent comp = getComponent(row, column);
+		ObservableWindowComponent comp = getComponent(row, column);
 		if (comp != null) {
-			((Observable)comp).deleteObserver(this);
+			comp.deleteObserver(this);
 			setComponent(null, row, column);
 		}
 	}
@@ -148,7 +148,7 @@ public class GridLayout extends AbstractWindowComponent implements Observer {
 			xPos=area.getLeftBorder();
 			for (int j=0;j<columnCount;j++)
 			{
-				WindowComponent comp = components[i][j];
+				ObservableWindowComponent comp = components[i][j];
 				if (comp!=null)
 					comp.setPosition(xPos, yPos);
 				xPos+=columnWidth[j];
@@ -158,18 +158,16 @@ public class GridLayout extends AbstractWindowComponent implements Observer {
 		}
 		newHeight = yPos;
 		
-		ChangedState toNotify = null;
 		if (newWidth != area.getWidth() || newHeight != area.getHeight()) {
 			System.out.println("Size changed for "+this);
 			area.setWidth(newWidth);
 			area.setHeight(newHeight);
-			toNotify = ChangedState.SIZE;
+			setChanged(ChangedState.SIZE);
 		}
 		else {
-			toNotify = ChangedState.IMAGE;
+			setChanged(ChangedState.IMAGE);
 		}
-		setChanged();
-		notifyObservers(toNotify);
+		notifyObservers();
 		
 		packing = false;
 		System.out.println("Finished packing "+this);
@@ -220,14 +218,14 @@ public class GridLayout extends AbstractWindowComponent implements Observer {
 		}
 	}
 	
-	private void setComponent(WindowComponent comp, int row, int column)
+	private void setComponent(ObservableWindowComponent comp, int row, int column)
 	{
 		checkValidCoordinates(row, column);
 		components[row][column] = comp;
 		pack();
 	}
 	
-	private WindowComponent getComponent(int row, int column)
+	private ObservableWindowComponent getComponent(int row, int column)
 	{
 		checkValidCoordinates(row, column);
 		return components[row][column];
@@ -246,14 +244,13 @@ public class GridLayout extends AbstractWindowComponent implements Observer {
 		packing = true;
 		if (xAdd != 0 || yAdd != 0)
 		{
-			for (WindowComponent comp : MultiArrayIterable.toIterable(components))
+			for (ObservableWindowComponent comp : MultiArrayIterable.toIterable(components))
 			{
 				AbstractWindowComponent acomp = (AbstractWindowComponent)comp;
 				if (comp != null)
 					comp.setPosition(acomp.area.getLeftBorder() + xAdd, acomp.area.getTopBorder() + yAdd);
 			}
-			setChanged();
-			notifyObservers(ChangedState.POSITION);
+			setChanged(ChangedState.POSITION);
 		}
 		packing = false;
 	}
@@ -278,7 +275,7 @@ public class GridLayout extends AbstractWindowComponent implements Observer {
 		//}
 		//else
 		//{
-			for (WindowComponent comp : MultiArrayIterable.toIterable(components))
+			for (ObservableWindowComponent comp : MultiArrayIterable.toIterable(components))
 			{
 				if (comp!=null) {
 					comp.drawOn(canvas);
@@ -294,6 +291,7 @@ public class GridLayout extends AbstractWindowComponent implements Observer {
 		int yAdd = y - area.getTopBorder();
 		updatePosition(xAdd, yAdd);
 		super.setPosition(x,y);
+		notifyObservers();
 	}
 	
 	@Override
@@ -346,8 +344,8 @@ public class GridLayout extends AbstractWindowComponent implements Observer {
 				{
 				case POSITION:
 				case IMAGE:
-					setChanged();
-					notifyObservers(ChangedState.IMAGE);
+					setChanged(ChangedState.IMAGE);
+					notifyObservers();
 					break;
 					
 				case SIZE:

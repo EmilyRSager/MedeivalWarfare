@@ -46,12 +46,12 @@ public class VerticalLayout extends GridLayout {
 	 */
 
 	/**
-	 * Appends the given WindowComponent to this VerticalLayout. This is an easy way to fill in a VerticalLayout,
-	 * but it cannot be used in conjunction with addComponent(WindowComponent, row).
-	 * @param comp the new WindowComponent to append to this VerticalLayout
-	 * @throws IllegalStateException if the method addComponent(WindowComponent, row) was used before on this VerticalLayout
+	 * Appends the given ObservableWindowComponent to this VerticalLayout. This is an easy way to fill in a VerticalLayout,
+	 * but it cannot be used in conjunction with addComponent(ObservableWindowComponent, row).
+	 * @param comp the new ObservableWindowComponent to append to this VerticalLayout
+	 * @throws IllegalStateException if the method addComponent(ObservableWindowComponent, row) was used before on this VerticalLayout
 	 */
-	public void addComponent(WindowComponent comp)
+	public void addComponent(ObservableWindowComponent comp)
 	{
 		if (currentRow==-1)
 			throw new IllegalStateException("You cannot use addComponent(comp) after having specified a row for a component");
@@ -60,11 +60,11 @@ public class VerticalLayout extends GridLayout {
 	}
 	
 	/**
-	 * Adds the given WindowComponent to this VerticalLayout, in the given row.
-	 * @param comp the new WindowComponent to append to this VerticalLayout
-	 * @param row the row to add the new WindowComponent into
+	 * Adds the given ObservableWindowComponent to this VerticalLayout, in the given row.
+	 * @param comp the new ObservableWindowComponent to append to this VerticalLayout
+	 * @param row the row to add the new ObservableWindowComponent into
 	 */
-	public void addComponent(WindowComponent comp, int row)
+	public void addComponent(ObservableWindowComponent comp, int row)
 	{
 		addComponent(comp, row, 0);
 		currentRow = -1;

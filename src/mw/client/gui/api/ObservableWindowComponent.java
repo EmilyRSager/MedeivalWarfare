@@ -1,14 +1,28 @@
 package mw.client.gui.api;
 
-import java.util.Observable;
+import mw.util.StateObservable;
 
 import org.minueto.image.MinuetoDrawingSurface;
 
-@Deprecated
-public abstract class ObservableWindowComponent extends Observable implements WindowComponent {
+import mw.client.gui.api.ObservableWindowComponent.ChangedState;
 
-	//protected final Observable observable;
-	protected WindowArea area;
+
+public abstract class ObservableWindowComponent extends StateObservable<ChangedState> 
+												implements WindowComponent {
+
+	public enum ChangedState {
+		IMAGE(1), POSITION(0) , SIZE(2);
+		
+		private final int value;
+		
+		private ChangedState(int val) {
+			value=val;
+		}
+		
+		public int getValue() {
+			return value;
+		}
+	};
 
 
 	/* ========================
@@ -16,9 +30,8 @@ public abstract class ObservableWindowComponent extends Observable implements Wi
 	 * ========================
 	 */
 
-	public ObservableWindowComponent(int x, int y, int width, int height) {
+	public ObservableWindowComponent() {
 		super();
-		area = new WindowArea (x,y,width,height);
 	}
 
 
@@ -26,41 +39,6 @@ public abstract class ObservableWindowComponent extends Observable implements Wi
 	 * 		Public methods
 	 * ==========================
 	 */
-	/*public void addObserver(Observer o) {
-		observable.addObserver(o);
-	}
-
-	protected void clearChanged() {
-		observable.clearChanged();
-	}
-
-	public int countObservers() {
-		return observable.countObservers();
-	}
-
-	public void deleteObserver(Observer o) {
-		observable.deleteObserver(o);
-	}
-
-	public void deleteObservers() {
-		observable.deleteObservers();
-	}
-
-	public boolean hasChanged() {
-		return observable.hasChanged();
-	}
-
-	public void notifyObservers() {
-		observable.notifyObservers();
-	}
-
-	public void notifyObservers(Object arg) {
-		observable.notifyObservers(arg);
-	}
-
-	protected void setChanged() {
-		observable.setChanged();
-	}*/
 
 	/* ==========================
 	 * 		Private methods
@@ -72,14 +50,14 @@ public abstract class ObservableWindowComponent extends Observable implements Wi
 	 * 		Inherited methods
 	 * ==========================
 	 */
-
+	
 	@Override
-	public void drawOn(MinuetoDrawingSurface canvas)
+	protected void setChanged(ChangedState newState)
 	{
-		//canvas.draw(getImage(), area.getLeftBorder(), area.getTopBorder());
-		canvas.draw(getImage().crop(0, 0, area.getWidth(), area.getHeight()), area.getLeftBorder(), area.getTopBorder());
+		ChangedState curr = getChangedState();
+		if (curr == null || newState.getValue() > curr.getValue())
+			super.setChanged(newState);
 	}
-
 
 
 	/* ========================

@@ -1,7 +1,5 @@
 package mw.client.gui.api;
 
-import java.util.Observable;
-
 import org.minueto.image.MinuetoDrawingSurface;
 import org.minueto.image.MinuetoImage;
 
@@ -12,7 +10,7 @@ import org.minueto.image.MinuetoImage;
  * @author Hugo Kapp
  *
  */
-public abstract class AbstractWindowComponent extends Observable implements WindowComponent {
+public abstract class AbstractWindowComponent extends ObservableWindowComponent {
 
 	/*     x
 	 *     ->
@@ -21,10 +19,8 @@ public abstract class AbstractWindowComponent extends Observable implements Wind
 	 * 
 	 */
 	
-	public enum ChangedState { IMAGE, POSITION , SIZE};
 	
 	protected final WindowArea area;
-	private int minWidth, minHeight;
 	
 	/* ========================
 	 * 		Constructors
@@ -41,8 +37,6 @@ public abstract class AbstractWindowComponent extends Observable implements Wind
 	public AbstractWindowComponent(int x, int y, int width, int height) {
 		super();
 		area = new WindowArea(x, y, width, height);
-		minWidth = width;
-		minHeight = height;
 	}
 	
 
@@ -77,7 +71,7 @@ public abstract class AbstractWindowComponent extends Observable implements Wind
 	{
 		if (x != area.getLeftBorder() || y != area.getRightBorder()) {
 			area.setPosition(x, y);
-			setChanged();
+			setChanged(ChangedState.POSITION);
 		}
 	}
 	
