@@ -8,7 +8,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
-import mw.server.gamelogic.Player;
+import mw.server.gamelogic.model.Player;
 
 /**
  * Provides a Globally accessible mapping between ClientIDs and Player classes.

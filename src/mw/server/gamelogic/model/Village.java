@@ -1,10 +1,15 @@
-package mw.server.gamelogic;
+package mw.server.gamelogic.model;
 
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Observable;
 import java.util.Set;
+
+import mw.server.gamelogic.Logic;
+import mw.server.gamelogic.exceptions.CantUpgradeException;
+import mw.server.gamelogic.exceptions.NotEnoughIncomeException;
+import mw.server.gamelogic.graph.GraphNode;
 
 
 

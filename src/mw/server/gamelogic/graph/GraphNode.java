@@ -1,7 +1,9 @@
-package mw.server.gamelogic;
+package mw.server.gamelogic.graph;
 
 import java.io.Serializable;
 import java.util.Collection;
+
+import mw.server.gamelogic.model.Tile;
 
 public class GraphNode extends AbstractGraphNode implements Serializable {
 

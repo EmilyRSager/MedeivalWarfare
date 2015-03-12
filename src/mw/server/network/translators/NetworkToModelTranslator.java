@@ -1,8 +1,8 @@
 package mw.server.network.translators;
 
-import mw.server.gamelogic.ActionType;
-import mw.server.gamelogic.UnitType;
-import mw.server.gamelogic.VillageType;
+import mw.server.gamelogic.model.ActionType;
+import mw.server.gamelogic.model.UnitType;
+import mw.server.gamelogic.model.VillageType;
 import mw.shared.SharedActionType;
 import mw.shared.SharedTile;
 

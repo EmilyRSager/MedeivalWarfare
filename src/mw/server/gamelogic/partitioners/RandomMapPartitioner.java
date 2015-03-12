@@ -5,36 +5,28 @@
 
 package mw.server.gamelogic.partitioners;
 
+import java.util.Collection;
 import java.util.Set;
 
-import mw.client.model.GameMap;
-import mw.server.gamelogic.Color;
-import mw.server.gamelogic.GraphNode;
 import mw.server.gamelogic.PathFinder;
-import mw.server.gamelogic.RandomColorGenerator;
-import mw.server.gamelogic.Tile;
-import mw.server.gamelogic.Village;
-import mw.server.gamelogic.VillageType;
+import mw.server.gamelogic.graph.GraphNode;
+import mw.server.gamelogic.model.Color;
+import mw.server.gamelogic.model.GameMap;
+import mw.server.gamelogic.model.RandomColorGenerator;
+import mw.server.gamelogic.model.Tile;
+import mw.server.gamelogic.model.Village;
+import mw.server.gamelogic.model.VillageType;
 
 /**
  * 
  */
-public final class RandomMapPartitioner extends AbstractMapPartitioner {
-
-	/**
-	 * @param pGameMap
-	 */
-	public RandomMapPartitioner(GameMap pGameMap) {
-		super(pGameMap);
-		//TODO
-	}
-
+public final class RandomMapPartitioner implements IMapPartitioner {
+	
 	/**
 	 * @see mw.server.gamelogic.partitioners.AbstractMapPartitioner#partition()
 	 */
 	@Override
-	public void partition() {
-		aGameMap.availableColors.add(Color.NEUTRAL);
+	public void partition(GameMap pGameMap, Collection<Color> pColors) {
 
 		//assign colors to the tiles
 		for (GraphNode lGraphNode : graph.allNodes()) {

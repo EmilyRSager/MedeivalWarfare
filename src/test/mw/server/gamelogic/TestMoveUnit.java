@@ -5,16 +5,16 @@ import static org.junit.Assert.*;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import mw.server.gamelogic.Color;
-import mw.server.gamelogic.Game;
-import mw.server.gamelogic.GameController;
-import mw.server.gamelogic.Player;
-import mw.server.gamelogic.StructureType;
-import mw.server.gamelogic.Tile;
-import mw.server.gamelogic.TooManyPlayersException;
-import mw.server.gamelogic.Unit;
-import mw.server.gamelogic.UnitType;
-import mw.server.gamelogic.VillageType;
+import mw.server.gamelogic.controllers.GameController;
+import mw.server.gamelogic.exceptions.TooManyPlayersException;
+import mw.server.gamelogic.model.Color;
+import mw.server.gamelogic.model.Game;
+import mw.server.gamelogic.model.Player;
+import mw.server.gamelogic.model.StructureType;
+import mw.server.gamelogic.model.Tile;
+import mw.server.gamelogic.model.Unit;
+import mw.server.gamelogic.model.UnitType;
+import mw.server.gamelogic.model.VillageType;
 import mw.util.MultiArrayIterable;
 
 import org.junit.Test;

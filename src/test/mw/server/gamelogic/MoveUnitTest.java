@@ -3,6 +3,11 @@ import java.util.HashSet;
 import java.util.Set;
 
 import mw.server.gamelogic.*;
+import mw.server.gamelogic.controllers.GameController;
+import mw.server.gamelogic.model.Game;
+import mw.server.gamelogic.model.StructureType;
+import mw.server.gamelogic.model.Tile;
+import mw.server.gamelogic.model.UnitType;
 import static org.junit.Assert.*;
 
 import org.junit.Test;

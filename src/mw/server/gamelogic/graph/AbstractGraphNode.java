@@ -1,4 +1,4 @@
-package mw.server.gamelogic;
+package mw.server.gamelogic.graph;
 
 
 

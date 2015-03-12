@@ -2,9 +2,9 @@ package mw.server.network.controllers;
 
 import com.sun.security.ntlm.Client;
 
-import mw.server.gamelogic.Game;
-import mw.server.gamelogic.GameController;
-import mw.server.gamelogic.Player;
+import mw.server.gamelogic.controllers.GameController;
+import mw.server.gamelogic.model.Game;
+import mw.server.gamelogic.model.Player;
 import mw.server.network.mappers.ClientChannelMapper;
 import mw.server.network.mappers.PlayerMapper;
 import mw.shared.clientcommands.NotifyBeginTurnCommand;

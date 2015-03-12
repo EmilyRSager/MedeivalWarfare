@@ -3,11 +3,11 @@ package mw.server.network.translators;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import mw.server.gamelogic.ActionType;
-import mw.server.gamelogic.PossibleGameActions;
-import mw.server.gamelogic.Tile;
-import mw.server.gamelogic.TileController;
-import mw.server.gamelogic.UnitType;
+import mw.server.gamelogic.controllers.TileController;
+import mw.server.gamelogic.model.ActionType;
+import mw.server.gamelogic.model.PossibleGameActions;
+import mw.server.gamelogic.model.Tile;
+import mw.server.gamelogic.model.UnitType;
 import mw.shared.SharedActionType;
 import mw.shared.SharedCoordinates;
 import mw.shared.SharedPossibleGameActions;

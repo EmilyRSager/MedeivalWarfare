@@ -3,7 +3,17 @@
  * March 4, 2015
  */
 
-package mw.server.gamelogic;
+package mw.server.gamelogic.controllers;
+
+import mw.server.gamelogic.model.Color;
+import mw.server.gamelogic.model.Game;
+import mw.server.gamelogic.model.GameMap;
+import mw.server.gamelogic.model.StructureType;
+import mw.server.gamelogic.model.Tile;
+import mw.server.gamelogic.model.Unit;
+import mw.server.gamelogic.model.UnitType;
+import mw.server.gamelogic.model.Village;
+import mw.server.gamelogic.model.VillageType;
 
 
 

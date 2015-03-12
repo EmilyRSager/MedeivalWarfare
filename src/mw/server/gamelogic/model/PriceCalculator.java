@@ -1,6 +1,9 @@
-package mw.server.gamelogic;
+package mw.server.gamelogic.model;
 
 import java.util.Collection;
+
+import mw.server.gamelogic.exceptions.CantUpgradeException;
+import mw.server.gamelogic.graph.GraphNode;
 
 public class PriceCalculator 
 {

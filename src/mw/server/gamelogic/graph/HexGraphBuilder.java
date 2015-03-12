@@ -1,12 +1,12 @@
-package mw.server.gamelogic;
+package mw.server.gamelogic.graph;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 
-public class HexToGraph {
+public class HexGraphBuilder {
 
-	public  static HashMap<GraphNode, Collection<GraphNode>> ConvertFlatToppedHexes(GraphNode [][] pCoordinates)
+	public static HashMap<GraphNode, Collection<GraphNode>> ConvertFlatToppedHexes(GraphNode [][] pCoordinates)
 	{
 		HashMap<GraphNode, Collection<GraphNode>> graph;
 		graph = new HashMap<GraphNode, Collection<GraphNode>>();

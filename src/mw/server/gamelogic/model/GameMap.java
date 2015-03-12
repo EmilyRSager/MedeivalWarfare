@@ -1,4 +1,4 @@
-package mw.server.gamelogic;
+package mw.server.gamelogic.model;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -6,6 +6,11 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
+
+import mw.server.gamelogic.PathFinder;
+import mw.server.gamelogic.graph.Graph;
+import mw.server.gamelogic.graph.GraphNode;
+import mw.server.gamelogic.graph.HexGraphBuilder;
 
 import com.google.gson.GsonBuilder;
 
@@ -208,7 +213,7 @@ public class GameMap  implements Serializable{
 			}
 		}
 
-		graph = new Graph(HexToGraph.ConvertFlatToppedHexes(aNodes));
+		graph = new Graph(HexGraphBuilder.ConvertFlatToppedHexes(aNodes));
 		for (GraphNode lGraphNode : graph.allNodes()) 
 		{	
 			Tile lTile = lGraphNode.getTile(); 
@@ -383,7 +388,7 @@ public class GameMap  implements Serializable{
 			}
 		}
 
-		graph = new Graph(HexToGraph.ConvertFlatToppedHexes(aNodes));
+		graph = new Graph(HexGraphBuilder.ConvertFlatToppedHexes(aNodes));
 
 		Set<GraphNode> villageSet = new HashSet<GraphNode>();
 

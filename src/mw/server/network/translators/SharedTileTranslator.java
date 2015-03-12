@@ -5,12 +5,12 @@
 
 package mw.server.network.translators;
 
-import mw.server.gamelogic.Color;
-import mw.server.gamelogic.Game;
-import mw.server.gamelogic.StructureType;
-import mw.server.gamelogic.Tile;
-import mw.server.gamelogic.TileController;
-import mw.server.gamelogic.UnitType;
+import mw.server.gamelogic.controllers.TileController;
+import mw.server.gamelogic.model.Color;
+import mw.server.gamelogic.model.Game;
+import mw.server.gamelogic.model.StructureType;
+import mw.server.gamelogic.model.Tile;
+import mw.server.gamelogic.model.UnitType;
 import mw.shared.SharedColor;
 import mw.shared.SharedCoordinates;
 import mw.shared.SharedTile;
@@ -61,16 +61,16 @@ public class SharedTileTranslator {
 	 * @param pVillageType
 	 * @return
 	 */
-	public static VillageType translateVillageType(mw.server.gamelogic.VillageType pVillageType){
-		if(pVillageType == mw.server.gamelogic.VillageType.HOVEL){
+	public static VillageType translateVillageType(mw.server.gamelogic.model.VillageType pVillageType){
+		if(pVillageType == mw.server.gamelogic.model.VillageType.HOVEL){
 			return VillageType.HOVEL;
 		}
 		
-		else if(pVillageType == mw.server.gamelogic.VillageType.TOWN){
+		else if(pVillageType == mw.server.gamelogic.model.VillageType.TOWN){
 			return VillageType.TOWN;
 		}
 		
-		else if(pVillageType == mw.server.gamelogic.VillageType.FORT){
+		else if(pVillageType == mw.server.gamelogic.model.VillageType.FORT){
 			return VillageType.FORT;
 		}
 		
@@ -85,23 +85,23 @@ public class SharedTileTranslator {
 	 */
 	public static SharedTile.UnitType translateUnitType(UnitType pUnitType){
 		
-		if(pUnitType == mw.server.gamelogic.UnitType.NO_UNIT){
+		if(pUnitType == mw.server.gamelogic.model.UnitType.NO_UNIT){
 			return SharedTile.UnitType.NONE;
 		}
 		
-		else if(pUnitType == mw.server.gamelogic.UnitType.PEASANT){
+		else if(pUnitType == mw.server.gamelogic.model.UnitType.PEASANT){
 			return SharedTile.UnitType.PEASANT;
 		}
 		
-		else if (pUnitType == mw.server.gamelogic.UnitType.INFANTRY){
+		else if (pUnitType == mw.server.gamelogic.model.UnitType.INFANTRY){
 			return SharedTile.UnitType.INFANTRY;
 		}
 		
-		else if(pUnitType == mw.server.gamelogic.UnitType.SOLDIER){
+		else if(pUnitType == mw.server.gamelogic.model.UnitType.SOLDIER){
 			return SharedTile.UnitType.SOLDIER;
 		}
 		
-		else if(pUnitType == mw.server.gamelogic.UnitType.KNIGHT){
+		else if(pUnitType == mw.server.gamelogic.model.UnitType.KNIGHT){
 			return SharedTile.UnitType.KNIGHT;
 		}
 		

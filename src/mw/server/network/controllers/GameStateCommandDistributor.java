@@ -9,8 +9,8 @@ import java.util.Observable;
 import java.util.Observer;
 import java.util.Set;
 
-import mw.server.gamelogic.Game;
-import mw.server.gamelogic.Tile;
+import mw.server.gamelogic.model.Game;
+import mw.server.gamelogic.model.Tile;
 import mw.server.network.communication.ClientChannel;
 import mw.server.network.mappers.ClientChannelMapper;
 import mw.server.network.translators.SharedTileTranslator;

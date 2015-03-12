@@ -1,4 +1,4 @@
-package mw.server.gamelogic;
+package mw.server.gamelogic.model;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -6,6 +6,10 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Stack;
 
+import mw.server.gamelogic.Logic;
+import mw.server.gamelogic.exceptions.CantUpgradeException;
+import mw.server.gamelogic.exceptions.NotEnoughIncomeException;
+import mw.server.gamelogic.exceptions.TooManyPlayersException;
 import mw.util.CircularIterator;
 
 /**
@@ -376,21 +380,6 @@ public class Game extends RandomColorGenerator implements Serializable{
 	}
 
 	/**
-	 * @deprecated
-	 * @param pTile
-	 */
-	public void buildRoad(Tile pTile) 
-	{
-		Unit u = pTile.getUnit();  
-		UnitType unitType;
-		unitType = u.getUnitType();
-		if (unitType == UnitType.PEASANT) 
-		{
-			u.setActionType(ActionType.BUILDINGROAD);
-		}
-	}
-
-	/**
 	 * Upgrades the given village from its current type to the newType
 	 * @param pVillage
 	 * @param pNewType
@@ -409,11 +398,9 @@ public class Game extends RandomColorGenerator implements Serializable{
 	 * Gets the game map for the current game
 	 * @return
 	 */
-	protected GameMap getGameMap()
+	public GameMap getGameMap()
 	{
-
 		return aMap;
-
 	}
 
 	/**
