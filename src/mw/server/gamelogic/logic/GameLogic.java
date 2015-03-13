@@ -2,6 +2,7 @@ package mw.server.gamelogic.logic;
 
 import java.util.ArrayList;
 
+import mw.server.gamelogic.enums.StructureType;
 import mw.server.gamelogic.enums.UnitType;
 import mw.server.gamelogic.enums.VillageType;
 import mw.server.gamelogic.exceptions.CantUpgradeException;
@@ -21,37 +22,40 @@ public class GameLogic
 	 * @throws CantUpgradeException
 	 * returns the list of units you can upgrade to, doesn't actually hire a villager 
 	 */
-	public static ArrayList<UnitType> wantToHireVillager(Tile pTile) 
+	public static ArrayList<UnitType> getVillagerHireOrUpgradeTypes(Tile pTile) 
 	{
 		ArrayList<UnitType> rArray = new ArrayList<UnitType>();
-
-		if (pTile.getUnit()==(null))
+		if (pTile.getStructureType()!= StructureType.TREE && pTile.getStructureType()!=StructureType.VILLAGE_CAPITAL
+				&& pTile.getStructureType()!=StructureType.TOMBSTONE && pTile.getStructureType()!=StructureType.WATCHTOWER)
 		{
-			rArray.add(UnitType.INFANTRY); 
-			rArray.add(UnitType.KNIGHT); 
-			rArray.add(UnitType.PEASANT); 
-			rArray.add(UnitType.SOLDIER); 			
-		}
-		else 
-		{
-			if (pTile.getUnit().getUnitType().equals(UnitType.PEASANT))
+			if (pTile.getUnit()==(null))
 			{
-				rArray.add(UnitType.INFANTRY);
-				rArray.add(UnitType.SOLDIER); 
-				rArray.add(UnitType.KNIGHT);
-			}
-			if (pTile.getUnit().getUnitType().equals(UnitType.INFANTRY))
-			{
-				rArray.add(UnitType.SOLDIER); 
-				rArray.add(UnitType.KNIGHT);
-			}
-			if (pTile.getUnit().getUnitType().equals(UnitType.SOLDIER))
-			{
+				rArray.add(UnitType.INFANTRY); 
 				rArray.add(UnitType.KNIGHT); 
+				rArray.add(UnitType.PEASANT); 
+				rArray.add(UnitType.SOLDIER); 			
 			}
-			if (pTile.getUnit().getUnitType().equals(UnitType.KNIGHT)) 
+			else 
 			{
-				return null; 
+				if (pTile.getUnit().getUnitType().equals(UnitType.PEASANT))
+				{
+					rArray.add(UnitType.INFANTRY);
+					rArray.add(UnitType.SOLDIER); 
+					rArray.add(UnitType.KNIGHT);
+				}
+				if (pTile.getUnit().getUnitType().equals(UnitType.INFANTRY))
+				{
+					rArray.add(UnitType.SOLDIER); 
+					rArray.add(UnitType.KNIGHT);
+				}
+				if (pTile.getUnit().getUnitType().equals(UnitType.SOLDIER))
+				{
+					rArray.add(UnitType.KNIGHT); 
+				}
+				if (pTile.getUnit().getUnitType().equals(UnitType.KNIGHT)) 
+				{
+					return null; 
+				}
 			}
 		}
 		return rArray; 

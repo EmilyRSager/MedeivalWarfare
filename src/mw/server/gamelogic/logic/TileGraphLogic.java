@@ -5,13 +5,11 @@
 package mw.server.gamelogic.logic;
 
 import java.util.Collection;
-import java.util.HashSet;
-
-
 import mw.server.gamelogic.enums.Color;
 import mw.server.gamelogic.enums.StructureType;
 import mw.server.gamelogic.enums.UnitType;
 import mw.server.gamelogic.enums.VillageType;
+import mw.server.gamelogic.graph.Graph;
 import mw.server.gamelogic.state.Tile;
 import mw.server.gamelogic.state.Unit;
 
@@ -20,11 +18,9 @@ import mw.server.gamelogic.state.Unit;
 
 public final class TileGraphLogic {
 
-	public static boolean isReachableNode(Tile t1, Tile t2)
+	public static boolean isReachableNode(Graph<Tile> pGraph, Tile crtTile, Tile startTile)
 	{
-		Tile crtTile = pCrt.getTile(); 
-		Tile startTile = pStart.getTile();
-		Collection<Tile> pCrtNeighbors = getNeighbors(pCrt); 
+		Collection<Tile> pCrtNeighbors = pGraph. getNeighbors(crtTile); 
 		if (startTile.hasUnit())
 		{
 			Unit pUnit = startTile.getUnit();
@@ -45,17 +41,14 @@ public final class TileGraphLogic {
 				return (moveUnitToEnemyTerritory(pUnit, crtTile, pCrtNeighbors)); 
 			}
 		}
-		
-			return pStart.equals(pCrt); 
-		
+
+		return crtTile.equals(startTile); 
+
 
 
 	}
-	public static boolean isPathOver(Tile t1, Tile t2)
+	public static boolean isPathOver(Graph<Tile> pGraph, Tile startTile, Tile destinationTile)
 	{
-		Tile destinationTile = pCrt.getTile(); 
-		Tile startTile = pStart.getTile();
-		
 		if (isNeutralLand(destinationTile)) 
 		{
 			return true; 
@@ -87,7 +80,7 @@ public final class TileGraphLogic {
 				return true; 
 			}
 			return false; 
-			
+
 		}
 	}
 	private static boolean isSeaTile(Tile crtTile) {
@@ -118,17 +111,7 @@ public final class TileGraphLogic {
 		}
 		return false;
 	}
-	private static Collection<Tile> getNeighbors(GraphNode pNode) {
-		Collection <GraphNode> tNeighbors = pNode.getAdjacentNodes(); 
-		Collection <Tile> rNeighbors = new HashSet<Tile>();
-		for (GraphNode lNode : tNeighbors)
-		{
-			rNeighbors.add(lNode.getTile()); 
-		}
-		return rNeighbors; 
 
-
-	}
 	/**
 	 * Returns true if a unit can move to a given tile 
 	 * @precondition destinationTile must be neutral land	
@@ -232,7 +215,7 @@ public final class TileGraphLogic {
 			{
 				return true; 
 			}
-			
+
 		}
 		if (dVillageType == VillageType.FORT)
 		{
@@ -240,7 +223,7 @@ public final class TileGraphLogic {
 			{
 				return true; 
 			}
-			
+
 		}
 		return false; 
 
@@ -284,7 +267,7 @@ public final class TileGraphLogic {
 		}
 		return true;
 	}
-	
+
 	private static boolean unitCanClearTombstone(Unit pUnit)
 	{
 		UnitType pUnitType = pUnit.getUnitType(); 
@@ -345,27 +328,23 @@ public final class TileGraphLogic {
 		}
 		return false; 
 	}
-	public static boolean isVillageBoundary(Tile t1, Tile t2)
+	public static boolean isVillageBoundary(Graph<Tile> pGraph, Tile pStartTile, Tile pCrtTile)
 	{
-		Collection<GraphNode> pAdjNodes = pNode.getAdjacentNodes(); 
+		Collection<Tile> lNeighbors = pGraph.getNeighbors(pCrtTile);
 		boolean areAllNeighborsSameColor = true; 
-		for (GraphNode lGraphNode : pAdjNodes)
+		for (Tile lTile : lNeighbors)
 		{
-			if (!(lGraphNode.getTile().getColor() == startNode.getTile().getColor()))
+			if (!(lTile.getColor() == pStartTile.getColor()))
 			{
 				areAllNeighborsSameColor = false; 
 			}
 		}
 		return areAllNeighborsSameColor; 
-	
+
 	}
-	public static boolean tilesAreSameColor(Tile startNode, Tile pNode)
+	public static boolean tilesAreSameColor(Tile t1, Tile t2)
 	{
-		if (startNode.getTile().getColor() == pNode.getTile().getColor())
-		{
-			return true; 
-		}
-		return false; 
+		return t1.getColor() == t2.getColor();
 	}
 }
 
