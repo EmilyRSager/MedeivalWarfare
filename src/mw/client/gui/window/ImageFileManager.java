@@ -1,23 +1,17 @@
 package mw.client.gui.window;
 
-import java.io.IOException;
-import java.io.ObjectInputStream.GetField;
-import java.nio.charset.Charset;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-
-import mw.client.gui.api.extminueto.ExtendedMinuetoColor;
 import mw.client.gui.api.extminueto.ExtendedMinuetoImage;
-import mw.client.model.ModelTile;
 import mw.client.model.ModelTile.*;
 import mw.filesystem.ProjectFolder;
+import mw.util.Cache;
+import mw.util.CacheValueComputer;
 
 import org.minueto.MinuetoColor;
 import org.minueto.MinuetoFileException;
 import org.minueto.image.MinuetoImage;
 import org.minueto.image.MinuetoImageFile;
 
-public class ImageFileManager 
+public class ImageFileManager
 {
 	private static final int STRUCT_ICON_SIZE = ImageTile.DEFAULT_TILE_WIDTH - 10;
 	private static final int UNIT_ICON_SIZE = ImageTile.DEFAULT_TILE_WIDTH - 0;
@@ -30,6 +24,15 @@ public class ImageFileManager
 	private static final String TERRAIN_FOLDER = getImageSizeFolder(TERRAIN_ICON_SIZE);
 	private static final String ROAD_FOLDER = getImageSizeFolder(ROAD_ICON_SIZE);
 	
+	private static final Cache<String, MinuetoImage> cachedImages
+			= new Cache<String, MinuetoImage>(new CacheValueComputer<String, MinuetoImage>() {
+				
+				@Override
+				public MinuetoImage computeValue(String arg) {
+					return ImageFileManager.loadImageFile(arg);
+				}
+				
+			});
 	
 	private static String getImageSizeFolder(int size)
 	{
@@ -93,7 +96,7 @@ public class ImageFileManager
 				throw new IllegalArgumentException("Terrain value "+t+" has no image associated with it");
 		}
 
-		MinuetoImage image = loadImageFile(fileName);
+		MinuetoImage image = cachedImages.getValue(fileName);//loadImageFile(fileName);
 		return image;
 	}
 	
@@ -124,7 +127,7 @@ public class ImageFileManager
 				throw new IllegalArgumentException("UnitType value "+u+" has no image associated with it");
 		}
 		
-		MinuetoImage image = loadImageFile(fileName);
+		MinuetoImage image = cachedImages.getValue(fileName);//loadImageFile(fileName);
 		return image;
 	}
 	
@@ -149,14 +152,14 @@ public class ImageFileManager
 				throw new IllegalArgumentException("StructureType value "+s+" has no image associated with it");
 		}
 		
-		MinuetoImage image = loadImageFile(fileName);
+		MinuetoImage image = cachedImages.getValue(fileName);//loadImageFile(fileName);
 		return image;
 	}
 	
 	public static MinuetoImage getRoadImage()
 	{
 		String fileName = ROAD_FOLDER + "road.png";
-		MinuetoImage image = loadImageFile(fileName);
+		MinuetoImage image = cachedImages.getValue(fileName);//loadImageFile(fileName);
 		return image;
 	}
 	
@@ -170,7 +173,8 @@ public class ImageFileManager
 		img = ExtendedMinuetoImage.drawInTheMiddleOf(img, seaImage);
 		return img;*/
 		MinuetoImage image = new MinuetoImage(ImageTile.DEFAULT_TILE_WIDTH, ImageTile.DEFAULT_TILE_HEIGHT);
-		MinuetoImage seaImage = loadImageFile(getImageSizeFolder(70) + "catansea.png");
+		String fileName = getImageSizeFolder(70) + "catansea.png";
+		MinuetoImage seaImage = cachedImages.getValue(fileName);//loadImageFile(fileName);
 		image = ExtendedMinuetoImage.drawInTheMiddleOf(image, seaImage);
 		return image;
 	}
