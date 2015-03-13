@@ -27,11 +27,11 @@ public class PathFinder //has classic DFS
 			Tile crt =  S.pop(); 
 			pGraph.setVisited(pSourceTile, true);
 			for(Tile lTile : pGraph.getNeighbors(crt)) {
-				if(TileGraphLogic.isReachableNode(pSourceTile, lTile)) {
+				if(TileGraphLogic.isReachableNode(pGraph, pSourceTile, lTile)) {
 					reachableTiles.add(lTile);
 				}
 				
-				if (!TileGraphLogic.isPathOver(pSourceTile, lTile)) {
+				if (!TileGraphLogic.isPathOver(pGraph, pSourceTile, lTile)) {
 					
 					//TODO should check this condition first?
 					if(!pGraph.isVisited(lTile)) {
@@ -69,13 +69,13 @@ public class PathFinder //has classic DFS
 					continue; 
 				}
 				
-				if (TileGraphLogic.isVillageBoundary(pSourceTile, lTile) 
+				if (TileGraphLogic.isVillageBoundary(pGraph, pSourceTile, lTile) 
 						&& TileGraphLogic.tilesAreSameColor(pSourceTile, lTile)) {
 					
 					villageSet.add(lTile);	
 				}
 				
-				if (!TileGraphLogic.isVillageBoundary(pSourceTile, lTile) 
+				if (!TileGraphLogic.isVillageBoundary(pGraph, pSourceTile, lTile) 
 						&& TileGraphLogic.tilesAreSameColor(pSourceTile, lTile)){
 					
 					//TODO Should check this condition first?

@@ -14,7 +14,6 @@ import com.google.gson.Gson;
 
 public class Tile  extends Observable implements Serializable
 {
-	
 	private StructureType aStructureType; 
 	private VillageType aVillageType; 
     private Unit aUnit; 
@@ -41,6 +40,16 @@ public class Tile  extends Observable implements Serializable
     	aVillageType = VillageType.NO_VILLAGE;
     	aGold = 0;
     	aWood = 0; 
+    }
+    
+    /**
+     * overloaded constructor
+     * @param pX
+     * @param pY
+     */
+    public Tile ( int pX, int pY)
+    {
+    	 new Tile(StructureType.NO_STRUCT, pX, pY);
     }
     
     /**
