@@ -25,11 +25,6 @@ public class GameMap implements Serializable{
 	private Graph<Tile> aTileGraph; 
 	private Tile[][] aTiles; 
 	private Collection<Village> aVillages; 
-	
-	public static void main(String[] args) {
-		GameMap g = new GameMap(5, 5);
-		System.out.println(g.toString());
-	}
 
 	/**
 	 * @param height
