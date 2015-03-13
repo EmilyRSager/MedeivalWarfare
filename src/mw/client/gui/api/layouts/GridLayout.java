@@ -135,7 +135,6 @@ public class GridLayout extends AbstractWindowComponent implements Observer {
 	 */
 	private void pack()
 	{
-		System.out.println("Start packing "+this);
 		packing = true;
 		
 		computeRowHeights();
@@ -161,7 +160,6 @@ public class GridLayout extends AbstractWindowComponent implements Observer {
 		newHeight = yPos;
 		
 		if (newWidth != area.getWidth() || newHeight != area.getHeight()) {
-			System.out.println("Size changed for "+this);
 			area.setWidth(newWidth);
 			area.setHeight(newHeight);
 			setChanged(ChangedState.SIZE);
@@ -172,7 +170,6 @@ public class GridLayout extends AbstractWindowComponent implements Observer {
 		notifyObservers();
 		
 		packing = false;
-		System.out.println("Finished packing "+this);
 		
 		/*if (!packed) {
 			System.out.println(this+" : repack");
@@ -314,12 +311,10 @@ public class GridLayout extends AbstractWindowComponent implements Observer {
 	@Override
 	public void update(Observable o, Object arg)
 	{
-		System.out.println("Notified "+arg+" from "+o);
 		ChangedState state = (ChangedState)arg;
 		if (packing)
 		{
 			if (state == null) {
-				System.out.println("Packing and getting null arg for update");
 				setChanged();
 			}
 			else
@@ -339,7 +334,6 @@ public class GridLayout extends AbstractWindowComponent implements Observer {
 		else
 		{
 			if (state == null) {
-				System.out.println("Re-throwing the null arg for update");
 				setChanged();
 				notifyObservers();
 			}

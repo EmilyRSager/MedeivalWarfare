@@ -2,13 +2,32 @@ package mw.client.gui.api.extminueto;
 
 import org.minueto.MinuetoColor;
 
-public final class ExtendedMinuetoColor {
+@SuppressWarnings("serial")
+public final class ExtendedMinuetoColor extends MinuetoColor {
 
 	public static final MinuetoColor GREY = averageColors(MinuetoColor.BLACK, MinuetoColor.WHITE);
 	public static final MinuetoColor DARK_GREY = mixColors(MinuetoColor.BLACK, MinuetoColor.WHITE, 0.75);
 	public static final MinuetoColor LIGHT_GREY = mixColors(MinuetoColor.BLACK, MinuetoColor.WHITE, 0.25);
 	
+	
+	public ExtendedMinuetoColor(MinuetoColor color) {
+		super(color.getRed(), color.getGreen(), color.getBlue(),  color.getAlpha());
+	}
+	
+	@Override
+	public boolean equals(Object o)
+	{
+		if (!(o instanceof MinuetoColor))
+			return false;
+		MinuetoColor other = (MinuetoColor)o;
+		return this.getARGBColorValue()==other.getARGBColorValue();
+	}
 
+	@Override
+	public int hashCode() {
+		return getARGBColorValue();
+	}
+	
 	/* ========================
 	 * 		Static methods
 	 * ========================

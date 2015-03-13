@@ -6,6 +6,9 @@ import mw.client.gui.api.basics.WindowArea;
 import mw.client.gui.window.Hexagon;
 import mw.client.gui.window.Hexagon.Point;
 import mw.client.gui.window.Hexagon.RelativePosition;
+import mw.client.gui.window.ImageTile;
+import mw.util.Cache;
+import mw.util.CacheValueComputer;
 
 import org.minueto.MinuetoColor;
 import org.minueto.image.MinuetoImage;
@@ -152,20 +155,57 @@ public final class ExtendedMinuetoImage /*extends MinuetoImage */{
 		return coloredHexagon(Hexagon.getHexagon(width,height), color);
 	}
 	
+	
+	private static final Cache<ExtendedMinuetoColor, MinuetoImage> cachedHexImages = new Cache<ExtendedMinuetoColor, MinuetoImage>(new CacheValueComputer<ExtendedMinuetoColor, MinuetoImage>() {
+
+		@Override
+		public MinuetoImage computeValue(ExtendedMinuetoColor arg)
+		{
+			return ExtendedMinuetoImage.computeColoredHexagon(ImageTile.DEFAULT_HEXAGON, arg);
+		}
+		
+	});
+	
 	public static MinuetoImage coloredHexagon(Hexagon hex, MinuetoColor color)
 	{
-		final int width = hex.getWidth();
-		final int height = hex.getHeight();
-		MinuetoImage img = new MinuetoImage(width,height);
-		for (int i=0; i<width; i++)
+		if (hex.equals(ImageTile.DEFAULT_HEXAGON))
+			return cachedHexImages.getValue(new ExtendedMinuetoColor(color));
+		else
+			return computeColoredHexagon(hex, color);
+	}
+	
+	private static MinuetoImage computeColoredHexagon(Hexagon hex, MinuetoColor color)
+	{
+		MinuetoImage img = new MinuetoImage(hex.getWidth(),hex.getHeight());
+		for (int j=0; j<hex.getHeight(); j++)
 		{
-			for (int j=0;j<height;j++)
-			{
-				if (hex.locatePoint(i,j)==RelativePosition.CENTER)
-					img.setPixel(i, j, color);
-			}
+			img.drawLine(color,
+					findLeftBorder(hex, j), j,
+					findRightBorder(hex, j), j);
 		}
 		return img;
+	}
+	
+	private static int findLeftBorder(Hexagon hex, int y)
+	{
+		for (int i=0; i <= hex.getHexOffset(); i++)
+		{
+			if (hex.locatePoint(i, y) == RelativePosition.CENTER)
+				return i;
+		}
+		return -1;
+	}
+	
+	private static int findRightBorder(Hexagon hex, int y)
+	{
+		final int start = hex.getWidth();
+		final int end = start - hex.getHexOffset() -1;
+		for (int i=start; i >=end ; i--)
+		{
+			if (hex.locatePoint(i, y) == RelativePosition.CENTER)
+				return i;
+		}
+		return -1;
 	}
 	
 }

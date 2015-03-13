@@ -45,19 +45,15 @@ public final class MainApplication {
 		
 		waitABit();
 		testUpdate(SharedColor.BLUE);
-		System.out.println("Updated blue");
 		waitABit();
 		testUpdate(SharedColor.YELLOW);
-		System.out.println("Updated yellow");
 		waitABit();
 		DisplayUpdater.showVillageResources(200, 200);
-		System.out.println("Showed vilalge resources");
 		List<String> crap = new ArrayList<String>();
 		crap.add("crap1");
 		crap.add("crap2");
 		crap.add("crap3 is actually long");
 		DisplayUpdater.displayChoice(ChoiceType.UNIT_ACTION, crap);
-		System.out.println("Showed choice");
 		DisplayUpdater.showEndTurnButton(true);
 		waitABit();
 		

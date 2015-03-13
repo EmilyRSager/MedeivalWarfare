@@ -31,6 +31,7 @@ public class MapDisplay extends Observable
 	private final int tileWidth;
 	private final int tileHeight;
 	private final Hexagon hex;
+	private final int hexOffset;
 	
 	
 	/* ========================
@@ -50,6 +51,7 @@ public class MapDisplay extends Observable
 		tileWidth = tiles[0][0].getImage().getWidth();
 		tileHeight = tiles[0][0].getImage().getHeight();
 		hex = Hexagon.getHexagon(tileWidth, tileHeight);
+		hexOffset = hex.getHexOffset()+1;
 		
 		buildImage();
 		setObserver();
@@ -69,7 +71,7 @@ public class MapDisplay extends Observable
 	
 	public int getWidth()
 	{
-		return (tileWidth-hex.getHexOffset()) * tiles.length + hex.getHexOffset();
+		return (tileWidth-hexOffset) * tiles.length + hexOffset;
 	}
 	
 	public int getHeight()
@@ -79,7 +81,7 @@ public class MapDisplay extends Observable
 
 	public ImageTile getClickedTile(int x, int y)
 	{
-		int xIndex = (int) x / (tileWidth-hex.getHexOffset());
+		int xIndex = (int) x / (tileWidth-hexOffset);
 		int yIndex;
 		
 		boolean oddRow = (xIndex % 2 == 1);
@@ -97,7 +99,7 @@ public class MapDisplay extends Observable
 		
 		yIndex = y/tileHeight;
 		
-		int relX = x % (tileWidth-hex.getHexOffset());
+		int relX = x % (tileWidth-hexOffset);
 		int relY = y % tileHeight;
 		
 		Hexagon.RelativePosition relPos = hex.locatePoint(relX, relY);
@@ -157,7 +159,7 @@ public class MapDisplay extends Observable
 		int xPos, yPos;
 		for(int i = 0; i < tiles.length; i++)
 		{
-			xPos = i*(tileWidth-hex.getHexOffset());
+			xPos = i*(tileWidth-hexOffset);
 			for(int j = 0; j < tiles[i].length; j++)
 			{
 				if (i%2 == 0)
@@ -178,7 +180,7 @@ public class MapDisplay extends Observable
 	
 	private Pair<Integer> computeCoordinates(int xIdx, int yIdx)
 	{
-		int xPos = xIdx*(tileWidth-hex.getHexOffset());
+		int xPos = xIdx*(tileWidth-hexOffset);
 		int yPos;
 		if (xIdx%2 == 0)
 			yPos = yIdx * tileHeight;

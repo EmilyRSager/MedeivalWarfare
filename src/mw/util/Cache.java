@@ -7,6 +7,9 @@ public class Cache<InputType, OutputType> {
 	private final HashMap<InputType, OutputType> cachedResults;
 	private final CacheValueComputer<InputType, OutputType> valueComputer;
 	
+	private int hitCount;
+	private int reqCount;
+	
 	/* ========================
 	 * 		Constructors
 	 * ========================
@@ -16,6 +19,8 @@ public class Cache<InputType, OutputType> {
 	{
 		valueComputer = computer;
 		cachedResults = new HashMap<InputType, OutputType>();
+		hitCount = 0;
+		reqCount = 0;
 	}
 
 
@@ -27,15 +32,22 @@ public class Cache<InputType, OutputType> {
 
 	public OutputType getValue(InputType arg)
 	{
+		OutputType res;
 		if (cachedResults.containsKey(arg)) {
-			return cachedResults.get(arg);
+			System.out.println("Hit "+arg);
+			hitCount++;
+			res = cachedResults.get(arg);
 		}
 		else
 		{
-			OutputType res = valueComputer.computeValue(arg);
+			System.out.println("Miss "+arg);
+			res = valueComputer.computeValue(arg);
 			cachedResults.put(arg, res);
-			return res;
 		}
+		reqCount++;
+		System.out.println("Hit rate = "+(double)hitCount/reqCount);
+		
+		return res;
 	}
 
 	/* ==========================
