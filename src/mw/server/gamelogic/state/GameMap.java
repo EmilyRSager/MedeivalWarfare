@@ -24,7 +24,12 @@ import com.google.gson.GsonBuilder;
 public class GameMap implements Serializable{ 
 	private Graph<Tile> aTileGraph; 
 	private Tile[][] aTiles; 
-	private Collection<Village> aVillages;  
+	private Collection<Village> aVillages; 
+	
+	public static void main(String[] args) {
+		GameMap g = new GameMap(5, 5);
+		System.out.println(g.toString());
+	}
 
 	/**
 	 * @param height
@@ -32,12 +37,20 @@ public class GameMap implements Serializable{
 	 * @param rGenerate
 	 * Generates a new map with specified dimensions 
 	 */
-	public GameMap(int height, int width)
-	{ 
-		aTiles = new Tile [height][width];
+	public GameMap(int pHeight, int pWidth) {
+		//initialize 2d Tile array
+		aTiles = new Tile[pWidth][pHeight];
+		for(int lRow = 0; lRow < pHeight; lRow++){ 
+			for(int lCol = 0; lCol < pWidth; lCol++){
+				aTiles[lRow][lCol] = new Tile(lRow, lCol);
+			}
+		}
+		
+		//initialize Villages
 		aVillages = new HashSet<Village>();
 		
-		//build graph of tiles that maintains Tile neighbors
+		//initialize and build graph of tiles that maintains Tile neighbors
+		aTileGraph = new Graph<Tile>();
 		HexGraphBuilder.buildGraph(aTileGraph, aTiles);
 	}
 	
@@ -93,19 +106,18 @@ public class GameMap implements Serializable{
 	 * Randomly generates trees with (20%) probability
 	 * Randomly generates meadows with (10%) probability
 	 */
-	private void randomlyGenerateTreesAndMeadows(Tile lTile)  
-	{
+	private void randomlyGenerateTreesAndMeadows(Tile lTile) {
 		Random rTreesAndMeadows = new Random();
 		
 		if (lTile.getStructureType().equals(StructureType.NO_STRUCT) && lTile.getVillageType().equals(VillageType.NO_VILLAGE)) {
 			int k = rTreesAndMeadows.nextInt(9);
-			//line below may not be needed
-			//lTile.setColor(RandomColorGenerator.generateRandomColor());
-			if (k == 4 || k == 7) //2 numbers have been randomly picked to assign 20% prob of getting a tree
-			{
+			
+			//2 numbers have been randomly picked to assign 20% prob of getting a tree
+			if (k == 4 || k == 7) {
 				lTile.setStructureType(StructureType.TREE);
-			} else if (k == 2) //10% prob of getting a meadow on the tile 
-			{
+				
+			//10% prob of getting a meadow on the tile 
+			} else if (k == 2) {
 				lTile.setMeadow(true);
 			}
 		}
