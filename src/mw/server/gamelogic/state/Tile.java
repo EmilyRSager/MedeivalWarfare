@@ -2,17 +2,19 @@ package mw.server.gamelogic.state;
 
 import java.io.Serializable;
 import java.util.Observable;
+
 import mw.server.gamelogic.enums.Color;
 import mw.server.gamelogic.enums.StructureType;
 import mw.server.gamelogic.enums.VillageType;
-import com.google.gson.Gson;
+import mw.shared.Coordinates;
+
+import com.google.gson.GsonBuilder;
 
 
 /**
  * @author emilysager
  */
-
-public class Tile  extends Observable implements Serializable
+public class Tile extends Observable implements Serializable
 {
 	private StructureType aStructureType; 
 	private VillageType aVillageType; 
@@ -21,8 +23,16 @@ public class Tile  extends Observable implements Serializable
     private int aX; 
     private int aY; 
     private Color myColor;
-    private int aWood; 
-    private int aGold; 
+    
+    /**
+     * overloaded constructor
+     * @param pX
+     * @param pY
+     */
+    public Tile (int pX, int pY)
+    {
+    	 this(StructureType.NO_STRUCT, pX, pY);
+    }
     
     /**
      * Tile constructor
@@ -30,35 +40,13 @@ public class Tile  extends Observable implements Serializable
      * @param pX
      * @param pY
      */
-    public Tile(StructureType pStructureType, int pX, int pY) 
-    { 
+    public Tile(StructureType pStructureType, int pX, int pY)  { 
     	aX = pX; 
     	aY = pY; 
     	aStructureType = pStructureType; 
     	myColor = Color.NEUTRAL;
     	aHasMeadow = false; 
     	aVillageType = VillageType.NO_VILLAGE;
-    	aGold = 0;
-    	aWood = 0; 
-    }
-    
-    /**
-     * overloaded constructor
-     * @param pX
-     * @param pY
-     */
-    public Tile ( int pX, int pY)
-    {
-    	 new Tile(StructureType.NO_STRUCT, pX, pY);
-    }
-    
-    /**
-     * 
-     * @return
-     */
-    public boolean hasUnit()
-    {
-    	return aUnit != null;
     }
     
    /**
@@ -67,17 +55,16 @@ public class Tile  extends Observable implements Serializable
     */
     public String toString()
     {
-    	return new Gson().toJson(this);
+    	return new GsonBuilder().setPrettyPrinting().create().toJson(this);
     }
 
    /**
     * Returns the coordinates of a Tile in [x, y] form
     * @return
     */
-    public int [] getTileCoordinates()
+    public Coordinates getCoordinates()
     {
-    	int[] rCoord = {aX, aY}; 
-    	return rCoord; 
+    	return new Coordinates(aX, aY);
     }
     
   /**
@@ -88,6 +75,15 @@ public class Tile  extends Observable implements Serializable
     {
        myColor = pColor; 
        setChanged();
+    }
+    
+    /**
+     * Returns the color property of tile
+     * @return
+     */
+    public Color getColor() 
+    {
+        return myColor; 
     }
 
     /**
@@ -104,7 +100,7 @@ public class Tile  extends Observable implements Serializable
      */
     public void setStructureType(StructureType pStructureType) 
     {
-         aStructureType = pStructureType; 
+        aStructureType = pStructureType; 
         setChanged();  
     }
  
@@ -125,14 +121,13 @@ public class Tile  extends Observable implements Serializable
        aHasMeadow = pHasMeadow; 
        setChanged();  
     }
-   
+    
     /**
-     * Returns the color property of tile
-     * @return
+     * @return true if there is a Unit on this tile, false otherwise
      */
-    public Color getColor() 
+    public boolean hasUnit()
     {
-        return myColor; 
+    	return aUnit != null;
     }
     
     /**
@@ -151,45 +146,7 @@ public class Tile  extends Observable implements Serializable
 	public void setUnit(Unit pUnit)
 	{
 		aUnit = pUnit; 
-		 setChanged();
-	}
-
-	/**
-	 * adds wood to the tile.  should only be called on the village capital
-	 * @param pWood
-	 */
-		public void setWood(int pWood)
-	{
-			aWood = pWood;
-			setChanged();
-	}
-		
-		/**
-		 * adds gold to the tile.  should only be called on the village capital
-		 * @param pGold
-		 */
-	public void setGold(int pGold)
-	{
-			aGold = pGold;
-			setChanged();
-	}
-
-	/**
-	 * Returns the gold of the village if the tile is the village capital, otherwise returns 0; 
-	 * @return
-	 */
-	public int getGold()
-	{
-		return aGold; 
-	}
-	
-	/**
-	 * Returns the wood of the village if the tile is the village capital, otherwise returns 0; 
-	 * @return
-	 */
-	public int getWood() 
-	{
-		return aWood;
+		setChanged();
 	}
 	
 	/**
@@ -203,7 +160,6 @@ public class Tile  extends Observable implements Serializable
 	}
 	
 	/**
-	 * 
 	 * @return
 	 */
 	public VillageType getVillageType()
