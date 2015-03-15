@@ -159,9 +159,7 @@ public class Game extends RandomColorGenerator implements Serializable{
 	public void hireVillager(Coordinates pCoordinates, UnitType pUnitType) throws NotEnoughIncomeException
 	{
 		Tile pTile = aMap.getTile(pCoordinates);
-
 		//Decrement the Gold held by the hiring village
-
 		int lHireCost = PriceCalculator.getUnitHireCost(pUnitType);
 		if (aMap.getVillage(pTile).getGold() >= lHireCost) 
 		{
