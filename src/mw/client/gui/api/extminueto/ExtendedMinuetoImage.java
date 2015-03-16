@@ -141,12 +141,9 @@ public final class ExtendedMinuetoImage /*extends MinuetoImage */{
 	public static MinuetoImage coloredSquare(int width, int height, MinuetoColor c)
 	{
 		MinuetoImage img = new MinuetoImage(width, height);
-		for(int i = 0; i < width; i++)
+		for(int i = 0; i < height; i++)
 		{
-			for(int j = 0; j < height; j++)
-			{
-				img.setPixel(i, j, c);
-			}
+			img.drawLine(c, 0, i, img.getWidth(), i);
 		}
 		return img;
 	}

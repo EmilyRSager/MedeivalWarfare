@@ -18,12 +18,18 @@ import org.minueto.image.MinuetoText;
  */
 public abstract class AbstractButton extends AbstractWindowComponent implements MinuetoMouseHandler {
 
-	public static final MinuetoColor DEFAULT_BORDER_COLOR = ExtendedMinuetoColor.DARK_GREY;
+	//public static final MinuetoColor DEFAULT_BORDER_COLOR = ExtendedMinuetoColor.DARK_GREY;
 	
-	private static final int NORMAL_BORDER_THICKNESS = 1;
-	private static final int SELECTED_BORDER_THICKNESS = 2;
-	private static final int BORDER_MARGIN =1; 
-	private static final int TOTAL_MARGIN = SELECTED_BORDER_THICKNESS+BORDER_MARGIN;
+	private static final int BORDER_THICKNESS = 1;
+	//private static final int SELECTED_BORDER_THICKNESS = 2;
+	private static final int X_BORDER_MARGIN = 5; 
+	private static final int Y_BORDER_MARGIN = 2;
+	private static final int TOTAL_X_MARGIN = BORDER_THICKNESS + X_BORDER_MARGIN;
+	private static final int TOTAL_Y_MARGIN = BORDER_THICKNESS + Y_BORDER_MARGIN;
+	
+	private static final MinuetoColor TOP_COLOR = ExtendedMinuetoColor.mixColors(MinuetoColor.BLACK, MinuetoColor.WHITE, 0.05);
+	private static final MinuetoColor BOT_COLOR = ExtendedMinuetoColor.mixColors(MinuetoColor.BLACK, MinuetoColor.WHITE, 0.08);
+	private static final MinuetoColor PRESSED_COLOR = ExtendedMinuetoColor.mixColors(MinuetoColor.BLACK, MinuetoColor.WHITE, 0.12);
 	
 	private MinuetoImage normalImage;
 	private MinuetoImage selectedImage;
@@ -46,18 +52,27 @@ public abstract class AbstractButton extends AbstractWindowComponent implements 
 		
 		MinuetoImage textImage = new MinuetoText(text, TextDisplay.DEFAULT_FONT, TextDisplay.DEFAULT_TEXT_COLOR);
 		
-		area.setWidth(textImage.getWidth()+2*TOTAL_MARGIN);
-		area.setHeight(textImage.getHeight()+2*TOTAL_MARGIN);
+		area.setWidth(textImage.getWidth()+2*TOTAL_X_MARGIN);
+		area.setHeight(textImage.getHeight()+2*TOTAL_Y_MARGIN);
 		
 
 		MinuetoImage basicImage = new MinuetoImage(getWidth(),getHeight());
-		basicImage.draw(textImage, TOTAL_MARGIN, TOTAL_MARGIN);
-		normalImage = ExtendedMinuetoImage.drawBorder(basicImage, DEFAULT_BORDER_COLOR, NORMAL_BORDER_THICKNESS);
-		/*normalImage.setPixel(NORMAL_BORDER_THICKNESS, NORMAL_BORDER_THICKNESS, DEFAULT_BORDER_COLOR);
-		normalImage.setPixel(getWidth()-NORMAL_BORDER_THICKNESS, NORMAL_BORDER_THICKNESS, DEFAULT_BORDER_COLOR);
-		normalImage.setPixel(getWidth()-NORMAL_BORDER_THICKNESS, getHeight()-NORMAL_BORDER_THICKNESS, DEFAULT_BORDER_COLOR);
-		normalImage.setPixel(NORMAL_BORDER_THICKNESS, getHeight()-NORMAL_BORDER_THICKNESS, DEFAULT_BORDER_COLOR);*/
-		selectedImage = ExtendedMinuetoImage.drawBorder(basicImage, DEFAULT_BORDER_COLOR, SELECTED_BORDER_THICKNESS);
+		basicImage.draw(textImage, TOTAL_X_MARGIN, TOTAL_Y_MARGIN);
+		//normalImage = ExtendedMinuetoImage.drawBorder(basicImage, DEFAULT_BORDER_COLOR, NORMAL_BORDER_THICKNESS);
+		//selectedImage = ExtendedMinuetoImage.drawBorder(basicImage, DEFAULT_BORDER_COLOR, SELECTED_BORDER_THICKNESS);
+		
+		MinuetoImage topHalf = ExtendedMinuetoImage.coloredSquare(area.getWidth(), area.getHeight()/2, TOP_COLOR);
+		MinuetoImage botHalf = ExtendedMinuetoImage.coloredSquare(area.getWidth(), area.getHeight()/2, BOT_COLOR);
+		
+		normalImage = new MinuetoImage(getWidth(), getHeight());
+		normalImage.draw(topHalf, 0, 0);
+		normalImage.draw(botHalf, 0, area.getHeight()/2);
+		normalImage.draw(basicImage, 0, 0);
+		normalImage = ExtendedMinuetoImage.drawBorder(normalImage);
+		
+		selectedImage = ExtendedMinuetoImage.coloredSquare(area.getWidth(), area.getHeight(), PRESSED_COLOR);
+		selectedImage.draw(basicImage, 0, 0);
+		selectedImage = ExtendedMinuetoImage.drawBorder(selectedImage);
 		
 		clicking = false;
 	}

@@ -24,7 +24,7 @@ import org.minueto.window.MinuetoFrame;
 
 public class GameWindow implements Observer {
 	
-	public static final MinuetoColor BACKGROUND_COLOR = ExtendedMinuetoColor.mixColors(MinuetoColor.BLACK, MinuetoColor.WHITE, 0.10);
+	public static final MinuetoColor BACKGROUND_COLOR = ExtendedMinuetoColor.mixColors(MinuetoColor.BLACK, MinuetoColor.WHITE, 0.05);
 	public static final int DEFAULT_MAP_WIDTH = 1000;
 	public static final int DEFAULT_MAP_HEIGHT = 600;
 	public static final int CONTROL_LAYOUT_HEIGHT = 150;
@@ -167,7 +167,7 @@ public class GameWindow implements Observer {
 			break;
 		}
 		//choiceLayout.setWindow(this);
-		this.render();
+		//this.render();
 	}
 	
 	public void addEndTurnButton()
@@ -184,7 +184,7 @@ public class GameWindow implements Observer {
 	{
 		window.unregisterMouseHandler(endTurn, queue);
 		windowLayout.removeComponent(1);
-		this.render();
+		//this.render();
 	}
 	
 	public void removeAllChoices()
@@ -194,13 +194,13 @@ public class GameWindow implements Observer {
 		for (AbstractButton b : choiceButtonsList)
 			window.unregisterMouseHandler(b, queue);
 		choiceButtonsList = new ArrayList<AbstractButton>();
-		render();
+		//render();
 	}
 
 	public void hideVillageResources()
 	{
 		controlBarLayout.removeComponent(0);
-		render();
+		//render();
 	}
 	
 	/* ==========================

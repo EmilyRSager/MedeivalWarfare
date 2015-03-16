@@ -175,6 +175,7 @@ public class MapDisplay extends Observable
 	private void updateImage(int xIdx, int yIdx)
 	{
 		Pair<Integer> pos = computeCoordinates(xIdx, yIdx);
+		System.out.println("Updating the image of the tile "+xIdx+","+yIdx);
 		mapImage.draw(tiles[xIdx][yIdx].getImage(), pos.getVal1(), pos.getVal2());
 	}
 	

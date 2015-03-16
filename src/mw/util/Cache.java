@@ -34,18 +34,18 @@ public class Cache<InputType, OutputType> {
 	{
 		OutputType res;
 		if (cachedResults.containsKey(arg)) {
-			System.out.println("Hit "+arg);
+			//System.out.println("Hit "+arg);
 			hitCount++;
 			res = cachedResults.get(arg);
 		}
 		else
 		{
-			System.out.println("Miss "+arg);
+			//System.out.println("Miss "+arg);
 			res = valueComputer.computeValue(arg);
 			cachedResults.put(arg, res);
 		}
 		reqCount++;
-		System.out.println("Hit rate = "+(double)hitCount/reqCount);
+		//System.out.println("Hit rate = "+(double)hitCount/reqCount);
 		
 		return res;
 	}

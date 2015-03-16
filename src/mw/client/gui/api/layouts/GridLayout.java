@@ -25,7 +25,8 @@ import org.minueto.image.MinuetoImage;
  */
 public class GridLayout extends AbstractWindowComponent implements Observer {
 
-
+	private static final int MARGIN = 5;
+	
 	private final ObservableWindowComponent[][] components;
 	private final int rowCount, columnCount;
 	private int[] rowHeight;
@@ -152,12 +153,13 @@ public class GridLayout extends AbstractWindowComponent implements Observer {
 				ObservableWindowComponent comp = components[i][j];
 				if (comp!=null)
 					comp.setPosition(xPos, yPos);
-				xPos+=columnWidth[j];
+				xPos+=columnWidth[j] + MARGIN;
 			}
 			newWidth = Math.max(newWidth, xPos);
-			yPos+=rowHeight[i];
+			yPos+=rowHeight[i] + MARGIN;
 		}
-		newHeight = yPos;
+		newHeight = yPos - MARGIN;
+		newWidth -= MARGIN;
 		
 		if (newWidth != area.getWidth() || newHeight != area.getHeight()) {
 			area.setWidth(newWidth);

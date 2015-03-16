@@ -1,7 +1,12 @@
 package mw.client.app;
 
 import java.awt.BorderLayout;
+import java.awt.Container;
+import java.awt.LayoutManager;
 
+import javax.swing.AbstractButton;
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 
@@ -12,20 +17,15 @@ public final class SwingTest {
 
 	public static void main(String[] args) {
 		JFrame window = new JFrame("Test window");
-		MinuetoPanel minu = new MinuetoPanel(100, 100);
-		
-		window.setContentPane(minu);
+		Container pane = window.getContentPane();
+		pane.setLayout(new BoxLayout(pane, BoxLayout.PAGE_AXIS));
+		pane.add(new JButton("End turn"));
+		pane.add(new JLabel("Gold : 200"));
+		pane.add(new JLabel("Wood : 200"));
 		
 		window.pack();
 		
 		window.setVisible(true);
-		System.out.println("set window visible");
-		minu.setVisible(true);
-		System.out.println("set visible");
-		//minu.setVisible(true);
-		
-		minu.drawLine(MinuetoColor.BLACK, 0, 0, 50, 50);
-		System.out.println("finished");
 	}
 
 }

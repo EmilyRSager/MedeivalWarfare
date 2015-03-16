@@ -20,9 +20,12 @@ public final class TextDisplay extends AbstractWindowComponent {
 	public static final int DEFAULT_FONT_SIZE = 16;
 	public static final MinuetoFont DEFAULT_FONT = new MinuetoFont(DEFAULT_FONT_NAME, DEFAULT_FONT_SIZE, false,false);
 	public static final MinuetoColor DEFAULT_TEXT_COLOR = MinuetoColor.BLACK;
-	public static final MinuetoColor BORDER_COLOR = MinuetoColor.BLACK;
 	
-	private static final int BORDER_MARGIN = 2;
+	private static final MinuetoColor BORDER_COLOR = ExtendedMinuetoColor.LIGHT_GREY;
+	private static final MinuetoColor BACKGROUND_COLOR = MinuetoColor.WHITE;
+	
+	private static final int X_BORDER_MARGIN = 8;
+	private static final int Y_BORDER_MARGIN = 2;
 	
 	private MinuetoText label;
 	
@@ -41,8 +44,8 @@ public final class TextDisplay extends AbstractWindowComponent {
 	{
 		super(x, y, 0, 0);
 		label = new MinuetoText(text, DEFAULT_FONT, DEFAULT_TEXT_COLOR);
-		area.setHeight(label.getHeight()+2*BORDER_MARGIN);
-		area.setWidth(label.getWidth()+2*BORDER_MARGIN);
+		area.setHeight(label.getHeight()+2*Y_BORDER_MARGIN);
+		area.setWidth(label.getWidth()+2*X_BORDER_MARGIN);
 	}
 	
 	/**
@@ -69,9 +72,9 @@ public final class TextDisplay extends AbstractWindowComponent {
 
 	@Override
 	public MinuetoImage getImage() {
-		MinuetoImage img = new MinuetoImage(area.getWidth(),area.getHeight());
-		img.draw(label, BORDER_MARGIN, BORDER_MARGIN);
-		img = ExtendedMinuetoImage.drawBorder(img, ExtendedMinuetoColor.GREY);
+		MinuetoImage img = ExtendedMinuetoImage.coloredSquare(getWidth(), getHeight(), BACKGROUND_COLOR);//new MinuetoImage(area.getWidth(),area.getHeight());
+		img.draw(label, X_BORDER_MARGIN, Y_BORDER_MARGIN);
+		img = ExtendedMinuetoImage.drawBorder(img, BORDER_COLOR);
 		return img;
 	}
 	
