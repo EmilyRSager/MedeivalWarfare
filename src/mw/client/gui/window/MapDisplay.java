@@ -9,7 +9,7 @@ import org.minueto.image.MinuetoImage;
 import mw.client.controller.guimodel.ActionInterpreter;
 import mw.client.controller.guimodel.ModelViewMapping;
 import mw.client.gui.api.basics.Displayable;
-import mw.client.gui.api.interaction.Clickeable;
+import mw.client.gui.api.interactive.Clickeable;
 import mw.client.model.ModelTile;
 import mw.util.MultiArrayIterable;
 import mw.util.Pair;

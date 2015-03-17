@@ -1,4 +1,4 @@
-package mw.client.gui.api.interaction;
+package mw.client.gui.api.interactive;
 
 import mw.client.gui.api.basics.WindowArea;
 

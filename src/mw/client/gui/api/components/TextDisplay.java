@@ -28,6 +28,7 @@ public final class TextDisplay extends AbstractWindowComponent {
 	private static final int Y_BORDER_MARGIN = 2;
 	
 	private MinuetoText label;
+	private MinuetoImage image;
 	
 	/* ========================
 	 * 		Constructors
@@ -46,6 +47,7 @@ public final class TextDisplay extends AbstractWindowComponent {
 		label = new MinuetoText(text, DEFAULT_FONT, DEFAULT_TEXT_COLOR);
 		area.setHeight(label.getHeight()+2*Y_BORDER_MARGIN);
 		area.setWidth(label.getWidth()+2*X_BORDER_MARGIN);
+		image = buildImage(label);
 	}
 	
 	/**
@@ -63,6 +65,23 @@ public final class TextDisplay extends AbstractWindowComponent {
 	 * ==========================
 	 */
 
+	
+
+
+	/* ==========================
+	 * 		Private methods
+	 * ==========================
+	 */
+	
+	
+	private MinuetoImage buildImage(MinuetoText label)
+	{
+		MinuetoImage img = ExtendedMinuetoImage.coloredSquare(getWidth(), getHeight(), BACKGROUND_COLOR);//new MinuetoImage(area.getWidth(),area.getHeight());
+		img.draw(label, X_BORDER_MARGIN, Y_BORDER_MARGIN);
+		img = ExtendedMinuetoImage.drawBorder(img, BORDER_COLOR);
+		return img;
+	}
+	
 
 	/* ==========================
 	 * 		Inherited methods
@@ -72,10 +91,7 @@ public final class TextDisplay extends AbstractWindowComponent {
 
 	@Override
 	public MinuetoImage getImage() {
-		MinuetoImage img = ExtendedMinuetoImage.coloredSquare(getWidth(), getHeight(), BACKGROUND_COLOR);//new MinuetoImage(area.getWidth(),area.getHeight());
-		img.draw(label, X_BORDER_MARGIN, Y_BORDER_MARGIN);
-		img = ExtendedMinuetoImage.drawBorder(img, BORDER_COLOR);
-		return img;
+		return image;
 	}
 	
 	/*public void drawOn(MinuetoDrawingSurface canvas)
@@ -84,5 +100,7 @@ public final class TextDisplay extends AbstractWindowComponent {
 		canvas.drawLine(DEFAULT_COLOR, coordX, coordY+height, coordX+width, coordY+height);
 		System.out.println("width="+width+", height="+height);
 	}*/
+	
+
 
 }

@@ -4,8 +4,8 @@ import java.util.Observable;
 import java.util.Observer;
 
 import mw.client.gui.api.basics.AbstractWindowComponent;
-import mw.client.gui.api.interaction.Clickeable;
-import mw.client.gui.api.interaction.MouseClickHandler;
+import mw.client.gui.api.interactive.Clickeable;
+import mw.client.gui.api.interactive.MouseClickHandler;
 
 import org.minueto.handlers.MinuetoKeyboard;
 import org.minueto.handlers.MinuetoKeyboardHandler;
