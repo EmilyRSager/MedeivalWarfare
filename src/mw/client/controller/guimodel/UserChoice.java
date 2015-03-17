@@ -1,4 +1,4 @@
-package mw.client.controller;
+package mw.client.controller.guimodel;
 
 import java.util.ArrayList;
 import java.util.Collection;

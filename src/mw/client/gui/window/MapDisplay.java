@@ -6,8 +6,8 @@ import java.util.Observer;
 import org.minueto.handlers.MinuetoMouse;
 import org.minueto.image.MinuetoImage;
 
-import mw.client.controller.ActionInterpreter;
-import mw.client.controller.ModelViewMapping;
+import mw.client.controller.guimodel.ActionInterpreter;
+import mw.client.controller.guimodel.ModelViewMapping;
 import mw.client.gui.api.basics.Displayable;
 import mw.client.gui.api.interaction.Clickeable;
 import mw.client.model.ModelTile;

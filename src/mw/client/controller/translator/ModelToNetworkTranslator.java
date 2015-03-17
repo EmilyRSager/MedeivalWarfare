@@ -1,4 +1,4 @@
-package mw.client.controller;
+package mw.client.controller.translator;
 
 import mw.client.model.Coordinates;
 import mw.shared.SharedCoordinates;

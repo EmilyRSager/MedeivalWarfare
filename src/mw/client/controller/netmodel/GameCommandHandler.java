@@ -1,6 +1,10 @@
-package mw.client.controller;
+package mw.client.controller.netmodel;
 
 import mw.client.app.MainApplication;
+import mw.client.controller.CurrentClientState;
+import mw.client.controller.guimodel.DisplayUpdater;
+import mw.client.controller.model.NewStateApplier;
+import mw.client.controller.translator.NetworkModelTranslator;
 import mw.client.model.ModelTile;
 import mw.shared.SharedTile;
 

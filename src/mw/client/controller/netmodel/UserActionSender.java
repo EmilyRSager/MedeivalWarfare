@@ -1,8 +1,11 @@
-package mw.client.controller;
+package mw.client.controller.netmodel;
 
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
 
+import mw.client.controller.guimodel.ActionInterpreter;
+import mw.client.controller.model.ModelQuerier;
+import mw.client.controller.translator.ModelToNetworkTranslator;
 import mw.client.model.ModelTile;
 import mw.client.network.NetworkController;
 import mw.shared.SharedActionType;

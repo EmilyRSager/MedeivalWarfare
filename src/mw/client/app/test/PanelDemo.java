@@ -1,4 +1,4 @@
-package mw.client.app;
+package mw.client.app.test;
 
 /**
  * @(#)RectangleDemo.java        1.00 15/09/2004

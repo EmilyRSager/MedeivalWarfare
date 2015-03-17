@@ -1,6 +1,6 @@
 package mw.shared.clientcommands;
 
-import mw.client.controller.GameCommandHandler;
+import mw.client.controller.netmodel.GameCommandHandler;
 
 public class NotifyEndTurnCommand extends AbstractClientCommand {
 	private final String aType = "NotifyEndTurnCommand";

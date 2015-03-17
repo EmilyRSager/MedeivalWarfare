@@ -1,11 +1,12 @@
-package mw.client.controller;
+package mw.client.controller.guimodel;
 
 import java.util.List;
 
 import org.minueto.MinuetoColor;
 import org.minueto.image.MinuetoImage;
 
-import mw.client.controller.ChoiceCenter.ChoiceType;
+import mw.client.controller.CurrentClientState;
+import mw.client.controller.guimodel.ChoiceCenter.ChoiceType;
 import mw.client.gui.api.extminueto.ExtendedMinuetoColor;
 import mw.client.gui.api.layouts.VerticalLayout;
 import mw.client.gui.window.GameWindow;

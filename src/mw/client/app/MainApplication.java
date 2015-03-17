@@ -7,14 +7,14 @@ import java.util.Random;
 
 import org.minueto.MinuetoEventQueue;
 
-import mw.client.controller.ActionInterpreter;
-import mw.client.controller.ChoiceCenter.ChoiceType;
-import mw.client.controller.ClientSynchronization;
+import mw.client.controller.guimodel.ActionInterpreter;
+import mw.client.controller.guimodel.DisplayUpdater;
+import mw.client.controller.guimodel.ModelViewMapping;
+import mw.client.controller.guimodel.TileModificationHandler;
+import mw.client.controller.guimodel.ChoiceCenter.ChoiceType;
+import mw.client.controller.model.NewStateApplier;
+import mw.client.controller.netmodel.ClientSynchronization;
 import mw.client.controller.CurrentClientState;
-import mw.client.controller.DisplayUpdater;
-import mw.client.controller.ModelViewMapping;
-import mw.client.controller.NewStateApplier;
-import mw.client.controller.TileModificationHandler;
 import mw.client.gui.window.GameWindow;
 import mw.client.gui.window.ImageTile;
 import mw.client.gui.window.MapDisplay;

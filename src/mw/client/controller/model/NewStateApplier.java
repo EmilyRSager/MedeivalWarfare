@@ -1,6 +1,7 @@
 
-package mw.client.controller;
+package mw.client.controller.model;
 
+import mw.client.controller.translator.NetworkModelTranslator;
 import mw.client.model.Coordinates;
 import mw.client.model.Game;
 import mw.client.model.ModelTile;

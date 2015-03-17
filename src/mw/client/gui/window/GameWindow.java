@@ -5,9 +5,9 @@ import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
-import mw.client.controller.ActionInterpreter;
-import mw.client.controller.ChoiceCenter;
-import mw.client.controller.ChoiceCenter.ChoiceType;
+import mw.client.controller.guimodel.ActionInterpreter;
+import mw.client.controller.guimodel.ChoiceCenter;
+import mw.client.controller.guimodel.ChoiceCenter.ChoiceType;
 import mw.client.gui.api.components.AbstractButton;
 import mw.client.gui.api.components.TextDisplay;
 import mw.client.gui.api.extminueto.ExtendedMinuetoColor;

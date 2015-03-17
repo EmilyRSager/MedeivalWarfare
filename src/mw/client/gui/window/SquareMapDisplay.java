@@ -2,8 +2,8 @@ package mw.client.gui.window;
 import java.util.Observer;
 import java.lang.Math;
 
-import mw.client.controller.ActionInterpreter;
-import mw.client.controller.ModelViewMapping;
+import mw.client.controller.guimodel.ActionInterpreter;
+import mw.client.controller.guimodel.ModelViewMapping;
 import mw.client.gui.api.basics.Displayable;
 import mw.client.gui.api.components.TextDisplay;
 import mw.client.gui.api.interaction.Clickeable;

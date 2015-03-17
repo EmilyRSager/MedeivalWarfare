@@ -1,4 +1,4 @@
-package mw.client.app;
+package mw.client.app.test;
 
 import java.awt.BorderLayout;
 import java.awt.Container;

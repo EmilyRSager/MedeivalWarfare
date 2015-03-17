@@ -1,4 +1,4 @@
-package mw.client.app;
+package mw.client.app.test;
 
 import mw.client.gui.api.components.TextDisplay;
 

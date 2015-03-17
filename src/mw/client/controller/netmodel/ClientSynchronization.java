@@ -1,4 +1,4 @@
-package mw.client.controller;
+package mw.client.controller.netmodel;
 
 import java.util.concurrent.locks.ReentrantLock;
 

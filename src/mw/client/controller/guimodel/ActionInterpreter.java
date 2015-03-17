@@ -1,8 +1,10 @@
-package mw.client.controller;
+package mw.client.controller.guimodel;
 
 import java.util.Collection;
 
-import mw.client.controller.ChoiceCenter.ChoiceType;
+import mw.client.controller.guimodel.ChoiceCenter.ChoiceType;
+import mw.client.controller.model.ModelQuerier;
+import mw.client.controller.netmodel.UserActionSender;
 import mw.client.gui.window.ImageTile;
 import mw.client.model.*;
 import mw.client.network.NetworkController;

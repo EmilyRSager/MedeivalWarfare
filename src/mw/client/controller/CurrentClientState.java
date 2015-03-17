@@ -1,5 +1,6 @@
 package mw.client.controller;
 
+import mw.client.controller.model.ModelQuerier;
 import mw.client.gui.window.GameWindow;
 import mw.client.model.Game;
 import mw.shared.SharedColor;

@@ -1,10 +1,12 @@
-package mw.client.controller;
+package mw.client.controller.guimodel;
 
 import java.util.Observable;
 import java.util.Observer;
 
 import org.minueto.MinuetoColor;
 
+import mw.client.controller.model.ModelQuerier;
+import mw.client.controller.translator.ModelGUITranslator;
 import mw.client.gui.window.ImageTile;
 import mw.client.model.ModelTile;
 import mw.shared.SharedColor;
