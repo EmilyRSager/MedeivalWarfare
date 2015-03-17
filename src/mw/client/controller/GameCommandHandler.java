@@ -39,13 +39,17 @@ public final class GameCommandHandler {
 	 */
 	public static void newTileState(SharedTile newState)
 	{
+		ClientSynchronization.gameLock.lock();
 		NewStateApplier.applyChanges(CurrentClientState.getCurrentGame(), newState);
+		ClientSynchronization.gameLock.unlock();
 	}
 	
 	public static void setNowPlaying(boolean nowPlaying)
 	{
+		ClientSynchronization.gameLock.lock();
 		CurrentClientState.getCurrentGame().setPlaying(nowPlaying);
 		DisplayUpdater.showEndTurnButton(nowPlaying);
+		ClientSynchronization.gameLock.unlock();
 	}
 	
 }

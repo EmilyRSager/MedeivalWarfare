@@ -9,6 +9,7 @@ import org.minueto.MinuetoEventQueue;
 
 import mw.client.controller.ActionInterpreter;
 import mw.client.controller.ChoiceCenter.ChoiceType;
+import mw.client.controller.ClientSynchronization;
 import mw.client.controller.CurrentClientState;
 import mw.client.controller.DisplayUpdater;
 import mw.client.controller.ModelViewMapping;
@@ -164,7 +165,9 @@ public final class MainApplication {
 					MinuetoEventQueue queue = window.getEventQueue();
 					while(queue.hasNext())
 					{
+						ClientSynchronization.gameLock.lock();
 						queue.handle();
+						ClientSynchronization.gameLock.unlock();
 					}
 				}
 			}

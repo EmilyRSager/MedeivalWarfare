@@ -91,7 +91,10 @@ public class UserActionSender {
 		if (waitingForActions)
 		{
 			possibleActions = actions;
+			
+			ClientSynchronization.gameLock.lock();
 			ActionInterpreter.singleton().handleNewPossibleActions(actions);
+			ClientSynchronization.gameLock.unlock();
 			
 			waitingForActions = false;
 			actionsReady = true;
@@ -173,12 +176,14 @@ public class UserActionSender {
 
 		while (waitingForActions && !actionsReady)
 		{
+			ClientSynchronization.gameLock.unlock();
 			try	{
 				possibleActionsReady.await();
 			}
 			catch (InterruptedException e) {
 				e.printStackTrace();
 			}
+			ClientSynchronization.gameLock.lock();
 		}
 		//waitingForActions = false;
 		//actionsReady = true;
