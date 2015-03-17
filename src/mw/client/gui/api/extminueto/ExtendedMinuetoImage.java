@@ -53,6 +53,19 @@ public final class ExtendedMinuetoImage /*extends MinuetoImage */{
 		return retImg;
 	}
 	
+	public static MinuetoImage addMargin(MinuetoImage image, int xMargin, int yMargin, MinuetoColor backgroundColor)
+	{
+		MinuetoImage retImg = ExtendedMinuetoImage.coloredSquare(image.getWidth()+2*xMargin, image.getHeight()+2*yMargin, backgroundColor);
+		retImg.draw(image, xMargin, yMargin);
+		return retImg;
+	}
+	
+	public static MinuetoImage drawBackground(MinuetoImage image, MinuetoColor backgroundColor)
+	{
+		MinuetoImage retImg = ExtendedMinuetoImage.coloredSquare(image.getWidth(), image.getHeight(), backgroundColor);
+		retImg.draw(image, 0, 0);
+		return retImg;
+	}
 	
 	/* ========================
 	 * 		Borders

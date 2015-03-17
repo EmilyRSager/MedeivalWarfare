@@ -11,6 +11,7 @@ import mw.client.controller.guimodel.ChoiceCenter.ChoiceType;
 import mw.client.gui.api.components.AbstractButton;
 import mw.client.gui.api.components.TextDisplay;
 import mw.client.gui.api.extminueto.ExtendedMinuetoColor;
+import mw.client.gui.api.interactive.TextField;
 import mw.client.gui.api.layouts.HorizontalLayout;
 import mw.client.gui.api.layouts.VerticalLayout;
 
@@ -112,13 +113,21 @@ public class GameWindow implements Observer {
 	{
 		window.registerMouseHandler(h, queue);
 	}
-	
+
+	public void unregisterMouseHandler(MinuetoMouseHandler h)
+	{
+		window.unregisterMouseHandler(h, queue);
+	}
 
 	public void registerKeyboardHandler(MinuetoKeyboardHandler h) 
 	{
 		window.registerKeyboardHandler(h, queue);
 	}
-	
+
+	public void unregisterKeyboardHandler(MinuetoKeyboardHandler h) 
+	{
+		window.unregisterKeyboardHandler(h, queue);
+	}
 	
 	public void displayVillageResources(int gold, int wood)
 	{
@@ -201,6 +210,14 @@ public class GameWindow implements Observer {
 	{
 		controlBarLayout.removeComponent(0);
 		//render();
+	}
+	
+	public void testAddTextField()
+	{
+		hideVillageResources();
+		TextField field = new TextField(200);
+		controlBarLayout.addComponent(field, 0);
+		field.setWindow(this);
 	}
 	
 	/* ==========================

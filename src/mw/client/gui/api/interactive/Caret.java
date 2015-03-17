@@ -1,17 +1,21 @@
 package mw.client.gui.api.interactive;
 
-public class Caret {
+import org.minueto.handlers.MinuetoKeyboardHandler;
 
+public class Caret implements MinuetoKeyboardHandler {
 
+	private final TextField textField;
+	private int position;
+	
 	/* ========================
 	 * 		Constructors
 	 * ========================
 	 */
 
-
-	public Caret()
+	public Caret(TextField textField)
 	{
-		// TODO Auto-generated constructor stub
+		this.textField = textField;
+		position = 0;
 	}
 
 	/* ==========================
@@ -31,6 +35,27 @@ public class Caret {
 	 * ==========================
 	 */
 
+	@Override
+	public void handleKeyPress(int key)
+	{
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void handleKeyRelease(int key)
+	{
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void handleKeyType(char c)
+	{
+		System.out.println("Inserting the char '"+c+"'");
+		textField.insertChar(c, position);
+		position++;
+	}
 
 
 	/* ========================

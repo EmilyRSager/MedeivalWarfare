@@ -48,7 +48,7 @@ public final class MainApplication {
 		testUpdate(SharedColor.BLUE);
 		waitABit();
 		testUpdate(SharedColor.YELLOW);
-		waitABit();
+		//waitABit();
 		DisplayUpdater.showVillageResources(200, 200);
 		List<String> crap = new ArrayList<String>();
 		crap.add("crap1");
@@ -56,7 +56,10 @@ public final class MainApplication {
 		crap.add("crap3 is actually long");
 		DisplayUpdater.displayChoice(ChoiceType.UNIT_ACTION, crap);
 		DisplayUpdater.showEndTurnButton(true);
-		waitABit();
+		
+		//waitABit();
+		window.testAddTextField();
+		
 		
 		while(true)
 		{
