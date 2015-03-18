@@ -196,6 +196,10 @@ public class Game extends RandomColorGenerator implements Serializable{
 		return crtIterator.isAtBeginning();
 	}
 
+	public Collection<Village> getVillages()
+	{
+		return aMap.getVillages();
+	}
 	/**
 	 * Updates the state of the game at the beginning of a Unit's turn
 	 */
@@ -317,6 +321,11 @@ public class Game extends RandomColorGenerator implements Serializable{
 	public Player getCurrentPlayer() 
 	{
 		return aCurrentPlayer;
+	}
+
+	public void recalculateVillages() {
+		aMap.recalculateVillages();
+		
 	}
 }
 

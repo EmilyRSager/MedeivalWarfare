@@ -114,13 +114,19 @@ public class Village extends Observable implements Serializable
 		aWood = aWood + addWood;
 	}
 
+	public Tile getCapital()
+	{
+		return aCapital;
+	}
 	/**
 	 * Adds a tile to a village
 	 * @param pTile
 	 */
 	public void addTile(Tile pTile) 
 	{
+		pTile.setColor(getColor());
 		aTiles.add(pTile);  
+		
 	}
 	
 	/**
@@ -129,6 +135,7 @@ public class Village extends Observable implements Serializable
 	 */
 	public void removeTile(Tile pTile) 
 	{
+		pTile.setColor(Color.NEUTRAL);
 		aTiles.remove(pTile);
 	}
 

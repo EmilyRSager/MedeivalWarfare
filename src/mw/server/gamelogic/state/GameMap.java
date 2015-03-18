@@ -7,6 +7,7 @@ import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
 
+import mw.server.gamelogic.enums.Color;
 import mw.server.gamelogic.enums.StructureType;
 import mw.server.gamelogic.enums.VillageType;
 import mw.server.gamelogic.graph.Graph;
@@ -40,44 +41,44 @@ public class GameMap implements Serializable{
 				aTiles[lRow][lCol] = new Tile(lRow, lCol);
 			}
 		}
-		
+
 		//initialize Villages
 		aVillages = new HashSet<Village>();
-		
+
 		//initialize and build graph of tiles that maintains Tile neighbors
 		aTileGraph = new Graph<Tile>();
 		HexGraphBuilder.buildGraph(aTileGraph, aTiles);
 	}
-	
+
 	/**
 	 * this method can be called at the beginning of a turn to create new trees as defined in the 
 	 * design spec
 	 */
 	public void generateTrees(){
-		
+
 		Random rand1 = new Random();
 		Random rand2 = new Random();
 
 		for(Tile lTile : MultiArrayIterable.toIterable(aTiles)){
-			
+
 			if (lTile.getStructureType() == StructureType.TREE) {
 				//we are only picking those tiles from the map that have a tree on them 
 
 				Collection<Tile> lNeighbors = aTileGraph.getNeighbors(lTile);
-				
+
 				ArrayList<Tile> lNeighboringEmptyOrMeadowTiles = new ArrayList<Tile>();
 				for(Tile lNeighbor : lNeighbors){
 					StructureType lStructureType = lNeighbor.getStructureType();
 					if ((lStructureType == StructureType.NO_STRUCT 
 							|| lStructureType == StructureType.TREE 
 							|| lTile.getVillageType() == VillageType.NO_VILLAGE)) {
-						
+
 						if (!lNeighbor.hasUnit() ) {
 							lNeighboringEmptyOrMeadowTiles.add(lTile);
 						}
 					}
 				}
-				
+
 				//above gives us all the neigboring tiles which are empty or have a tree on them 
 				int max=lNeighboringEmptyOrMeadowTiles.size();
 
@@ -103,21 +104,21 @@ public class GameMap implements Serializable{
 	 */
 	private void randomlyGenerateTreesAndMeadows(Tile lTile) {
 		Random rTreesAndMeadows = new Random();
-		
+
 		if (lTile.getStructureType().equals(StructureType.NO_STRUCT) && lTile.getVillageType().equals(VillageType.NO_VILLAGE)) {
 			int k = rTreesAndMeadows.nextInt(9);
-			
+
 			//2 numbers have been randomly picked to assign 20% prob of getting a tree
 			if (k == 4 || k == 7) {
 				lTile.setStructureType(StructureType.TREE);
-				
-			//10% prob of getting a meadow on the tile 
+
+				//10% prob of getting a meadow on the tile 
 			} else if (k == 2) {
 				lTile.setMeadow(true);
 			}
 		}
 	}
-	
+
 	/**
 	 * Returns the set of tiles a unit can move to
 	 * May return an empty set 
@@ -127,7 +128,7 @@ public class GameMap implements Serializable{
 	public Set<Tile> getPossibleMoves(Tile pSourceTile) {
 		return PathFinder.getReachableTiles(aTileGraph, pSourceTile);
 	}
-	
+
 	/**
 	 * @param pCoord
 	 * @return Tile with Coordinated pCoord
@@ -143,7 +144,7 @@ public class GameMap implements Serializable{
 	public String toString() {
 		return new GsonBuilder().setPrettyPrinting().create().toJson(aTiles);
 	}
-	
+
 	/**
 	 * For adding observers to every tile in a game
 	 * @return
@@ -151,7 +152,7 @@ public class GameMap implements Serializable{
 	public Tile[][] getTiles() {
 		return aTiles; 
 	}
-	
+
 	/**
 	 * @return Collection of villages on this map
 	 */
@@ -170,26 +171,43 @@ public class GameMap implements Serializable{
 				return lVillage;
 			}
 		}
-		
+
 		return null;
 	}
+	public void recalculateVillages()
+	{
+		aVillages.clear();
+		for (Tile lTile : aTileGraph.allNodes())
+		{
+			Set<Tile> temp = PathFinder.getVillage(aTileGraph, lTile); 
+			boolean villageAlreadyExists = false; 
+			//makes sure a village doesn't already exist to avoid duplicate references 
+			for (Village lVillage: aVillages)
+			{
+				if (lVillage.getTiles().equals(temp)) 
+				{
+					villageAlreadyExists = true;  //needs a better name -- represents whether we should create a village or not
+				}
+			}
 
-	/**
-	 * @param v1
-	 * @param v2
-	 * @return
-	 */
-	public boolean canFuse(Village v1, Village v2) {
-		//TODO
-		
-		return false; 
-	}
-
-	/**
-	 * @param invadedVillage
-	 * @param invadingVillage
-	 */
-	public void fuseVillages(Village invadedVillage, Village invadingVillage) {
-		//TODO
+			if (!villageAlreadyExists)
+			{
+				//don't create a village if it's neutral land, or the village is too small to be supported
+				if (temp.size()>=3 && temp.iterator().next().getColor()!=Color.NEUTRAL)
+				{
+					Village v = new Village (temp);
+					aVillages.add(v); 
+					villageAlreadyExists = false; 
+				}
+				//Non-villages need to be returned to neutral color 
+				if (temp.size()<3 )
+				{
+					for (Tile vTile: temp)
+					{
+						vTile.setColor(Color.NEUTRAL);
+					}
+				}
+			}
+		}
 	}
 }
