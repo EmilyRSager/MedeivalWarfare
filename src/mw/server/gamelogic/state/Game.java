@@ -118,8 +118,9 @@ public class Game extends RandomColorGenerator implements Serializable{
 	 * @param pTile
 	 * @param pUnitType
 	 */
-	public void upgradeUnit(Tile pTile, UnitType pUnitType) 
+	public void upgradeUnit(Coordinates pCoordinates, UnitType pUnitType) 
 	{
+		Tile pTile = aMap.getTile(pCoordinates);
 		Unit pUnit = pTile.getUnit();
 		pUnit.setUnitType(pUnitType);
 		pTile.notifyObservers();
@@ -132,8 +133,9 @@ public class Game extends RandomColorGenerator implements Serializable{
 	 * @param startTile
 	 * @return
 	 */
-	public PossibleGameActions tileIsClicked(Tile startTile)
+	public PossibleGameActions tileIsClicked(Coordinates pStartCoordinates)
 	{
+		Tile startTile = aMap.getTile(pStartCoordinates);
 		VillageType VillageUpgradeType = GameLogic.getPossibleVillageUpgrades(startTile.getVillageType()); 
 		Collection<Tile> ReachableTiles = new HashSet<Tile>();
 		Collection<ActionType> UnitActions = new ArrayList<ActionType>();
@@ -228,8 +230,10 @@ public class Game extends RandomColorGenerator implements Serializable{
 	 * @param startTile
 	 * @param pDestinationTile
 	 */
-	public void moveUnit(Tile startTile, Tile pDestinationTile) 
+	public void moveUnit(Coordinates pStartCoordinates,Coordinates pDestinationCoordinates) 
 	{
+		Tile startTile =  aMap.getTile(pStartCoordinates); 
+		Tile pDestinationTile = aMap.getTile(pDestinationCoordinates);
 		Unit crtUnit = startTile.getUnit();
 		if (Logic.updateGameState(crtUnit, startTile, pDestinationTile, this, aMap)) 
 		{
@@ -260,8 +264,9 @@ public class Game extends RandomColorGenerator implements Serializable{
 	 * @param pTile
 	 * @param pActionType
 	 */
-	public void setActionType(Tile pTile, ActionType pActionType)
+	public void setActionType(Coordinates pCoord, ActionType pActionType)
 	{
+		Tile pTile = aMap.getTile(pCoord);
 		Unit pUnit = pTile.getUnit(); 
 		if (pUnit != null)
 		{
@@ -278,8 +283,10 @@ public class Game extends RandomColorGenerator implements Serializable{
 	 * @param pNewType
 	 * @throws CantUpgradeException 
 	 */
-	public void upgradeVillage(Village pVillage, VillageType pNewVillageType) throws CantUpgradeException, NotEnoughIncomeException 
+	public void upgradeVillage(Coordinates pVillageCoord, VillageType pNewVillageType) throws CantUpgradeException, NotEnoughIncomeException 
 	{
+		Tile pTile =aMap.getTile(pVillageCoord);
+		Village pVillage = getVillage(pTile);
 		pVillage.upgrade(pNewVillageType);
 	}
 

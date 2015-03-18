@@ -8,9 +8,12 @@ package mw.server.gamelogic.controllers;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import mw.server.gamelogic.PossibleGameActions;
 import mw.server.gamelogic.enums.ActionType;
 import mw.server.gamelogic.enums.UnitType;
 import mw.server.gamelogic.enums.VillageType;
+import mw.server.gamelogic.exceptions.CantUpgradeException;
+import mw.server.gamelogic.exceptions.NotEnoughIncomeException;
 import mw.server.gamelogic.exceptions.TooManyPlayersException;
 import mw.server.gamelogic.state.Game;
 import mw.server.gamelogic.state.Player;
@@ -76,8 +79,9 @@ public class GameController {
 	 * @param pGame
 	 * @param pCoordinates
 	 * @param upgradeType
+	 * @throws NotEnoughIncomeException 
 	 */
-	public static void hireUnit(Game pGame, Coordinates pUnitCoordinates, UnitType upgradeType)
+	public static void hireUnit(Game pGame, Coordinates pUnitCoordinates, UnitType upgradeType) throws NotEnoughIncomeException
 	{
 		pGame.hireVillager(pUnitCoordinates, upgradeType);
 	}
@@ -110,7 +114,7 @@ public class GameController {
 	 * @param pUnitCoordinatess
 	 * @param upgradeType
 	 */
-	public static void upgradeUnit(Game pGame, Coordinates pUnitCoordinatess, UnitType upgradeType)
+	public static void upgradeUnit(Game pGame, Coordinates pUnitCoordinates, UnitType upgradeType)
 	{
 		pGame.upgradeUnit(pUnitCoordinates, upgradeType);
 	}
@@ -120,8 +124,10 @@ public class GameController {
 	 * @param pGame
 	 * @param pVillageCoordinates
 	 * @param pVillageType
+	 * @throws NotEnoughIncomeException 
+	 * @throws CantUpgradeException 
 	 */
-	public static void upgradeVillage(Game pGame, Coordinates pVillageCoordinates, VillageType pVillageType)
+	public static void upgradeVillage(Game pGame, Coordinates pVillageCoordinates, VillageType pVillageType) throws CantUpgradeException, NotEnoughIncomeException
 	{
 		pGame.upgradeVillage(pVillageCoordinates, pVillageType);
 	}
