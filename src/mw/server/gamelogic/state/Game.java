@@ -249,14 +249,18 @@ public class Game extends RandomColorGenerator implements Serializable{
 	 * @param startTile
 	 * @param pDestinationTile
 	 */
-	public void takeoverTile(Tile startTile, Tile pDestinationTile) 
+	public void takeoverNeutralTile(Tile startTile, Tile pDestinationTile) 
 	{
 		pDestinationTile.setColor(startTile.getColor());
 		Village lCapturingVillage = aMap.getVillage(startTile);
 		lCapturingVillage.addTile(pDestinationTile);
 		//TODO -- recalculate village 
 		//aMap.recalculateVillages();
-		//moveUnit(startTile, pDestinationTile);			
+	}
+	
+	public void takeoverEnemyTile(Tile startTile, Tile pDestinationTile)
+	{
+		
 	}
 
 	/**

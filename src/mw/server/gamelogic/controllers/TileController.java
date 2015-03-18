@@ -14,6 +14,7 @@ import mw.server.gamelogic.state.GameMap;
 import mw.server.gamelogic.state.Tile;
 import mw.server.gamelogic.state.Unit;
 import mw.server.gamelogic.state.Village;
+import mw.shared.Coordinates;
 
 
 public class TileController {
@@ -25,8 +26,7 @@ public class TileController {
 	public static int getGold(Tile pTile, Game pGame){
 		if (pTile.getVillageType()!=VillageType.NO_VILLAGE)
 		{
-			GameMap crtMap = pGame.getGameMap();  
-			Village crtVillage = crtMap.getVillage(pTile); 
+			Village crtVillage = pGame.getVillage(pTile); 
 			int gold = crtVillage.getGold(); 
 			return gold; 
 		}
@@ -44,8 +44,7 @@ public class TileController {
 	{
 		if (pTile.getVillageType()!=VillageType.NO_VILLAGE)
 		{
-			GameMap crtMap = pGame.getGameMap(); 
-			Village crtVillage = crtMap.getVillage(pTile); 
+			Village crtVillage = pGame.getVillage(pTile); 
 			int wood = crtVillage.getWood(); 
 			return wood; 
 		}
@@ -74,8 +73,8 @@ public class TileController {
 	 * @param pTile
 	 * @return
 	 */
-	public static int[] getCoordinates(Tile pTile){
-		return pTile.getTileCoordinates();
+	public static Coordinates getCoordinates(Tile pTile){
+		return pTile.getCoordinates();
 	}
 
 	/**

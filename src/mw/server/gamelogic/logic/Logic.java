@@ -67,7 +67,7 @@ public class Logic {
 		UnitType crtUnitType = crtUnit.getUnitType(); 
 		if (isNeutral(pDestinationTile))
 		{
-			pGame.takeoverTile(startTile, pDestinationTile);
+			pGame.takeoverNeutralTile(startTile, pDestinationTile);
 			tookOverTile = true;
 		} 
 		if (tilesAreSameColor(startTile, pDestinationTile))
@@ -88,6 +88,11 @@ public class Logic {
 			default:
 				break;
 			}
+		}
+		else 
+		{
+			pGame.takeoverEnemyTile(startTile, pDestinationTile);
+			tookOverTile = true; 
 		}
 		return tookOverTile;
 	}
