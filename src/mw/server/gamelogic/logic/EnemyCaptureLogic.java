@@ -21,11 +21,16 @@ public class EnemyCaptureLogic {
 		{
 			invadedVillage.removeTile(invadedTile);
 			invadingVillage.addTile(invadedTile);
-			Collection<Tile> currentCapitals = getCurrentCapitals(pGame);
-			Collection<Village> startConfiguration = pGame.getVillages(); 
-			recalculateVillages(pGame);
 			
+			//Collection<Tile> currentCapitals = getCurrentCapitals(pGame);
+			//Collection<Village> startConfiguration = pGame.getVillages(); 
+			//recalculateVillages(pGame);
 			
+			for(Tile lTile : pGame.getNeighbors()){
+				if(lTile.getColor() == invadingVillage.getColor() && !pGame.getVillage(lTile).equals(pGame.getVillage(invadedTile))){
+					fuseVillages(invadingVillage, invadedVillage);
+				}
+			}
 			
 		}
 		
