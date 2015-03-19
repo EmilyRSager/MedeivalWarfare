@@ -1,6 +1,6 @@
 package mw.client.controller.netmodel;
 
-import mw.client.app.MainApplication;
+import mw.client.app.ClientApplication;
 import mw.client.controller.CurrentClientState;
 import mw.client.controller.guimodel.DisplayUpdater;
 import mw.client.controller.model.NewStateApplier;
@@ -33,8 +33,8 @@ public final class GameCommandHandler {
 				gameTiles[i][j] = NetworkModelTranslator.translateSharedTile(newTiles[i][j]);
 			}
 		}
-		MainApplication.newGame(gameTiles);
-		MainApplication.concurrentlyDisplay();
+		ClientApplication.newGame(gameTiles);
+		ClientApplication.concurrentlyDisplay();
 	}
 	
 	/**

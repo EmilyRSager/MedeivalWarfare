@@ -1,6 +1,6 @@
 package mw.client.controller;
 
-import mw.client.app.MainApplication;
+import mw.client.app.test.GUITest;
 import mw.shared.SharedColor;
 import mw.shared.SharedCoordinates;
 import mw.shared.SharedTile;
@@ -22,7 +22,7 @@ public final class TestStuffProvider {
 	}
 
 	public static SharedTile[][] getNewTiles() {
-		return getNewSharedTiles(MainApplication.DEFAULT_MAP_WIDTH, MainApplication.DEFAULT_MAP_HEIGHT);
+		return getNewSharedTiles(GUITest.DEFAULT_MAP_WIDTH, GUITest.DEFAULT_MAP_HEIGHT);
 	}
 	
 	public static SharedTile getNewTile(int x, int y)

@@ -2,17 +2,12 @@ package mw.client.app;
 
 
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
 
 import org.minueto.MinuetoEventQueue;
 
 import mw.client.controller.guimodel.ActionInterpreter;
-import mw.client.controller.guimodel.DisplayUpdater;
 import mw.client.controller.guimodel.ModelViewMapping;
 import mw.client.controller.guimodel.TileModificationHandler;
-import mw.client.controller.guimodel.ChoiceCenter.ChoiceType;
-import mw.client.controller.model.NewStateApplier;
 import mw.client.controller.netmodel.ClientSynchronization;
 import mw.client.controller.CurrentClientState;
 import mw.client.gui.window.GameWindow;
@@ -20,92 +15,23 @@ import mw.client.gui.window.ImageTile;
 import mw.client.gui.window.MapDisplay;
 import mw.client.model.Game;
 import mw.client.model.GameMap;
-import mw.client.model.Player;
 import mw.client.model.ModelTile;
-import mw.shared.SharedColor;
-import mw.shared.SharedCoordinates;
-import mw.shared.SharedTile;
+import mw.client.network.NetworkDriver;
 
-public final class MainApplication {
+public final class ClientApplication {
 
-	private static final Player PLAYER = new Player(SharedColor.YELLOW, "player");
 	
-	public final static int DEFAULT_MAP_WIDTH = 18;
-	public final static int DEFAULT_MAP_HEIGHT = 18;
-	
-	
-	private static GameWindow window;
-	private static Game game;
+	public static GameWindow window;
+	public static Game game;
 	private static boolean displaying = false;
 	//private static ModelTile randomTile;
 	
+	
 	public static void main(String[] args)
 	{
-		newGame();
-		startDisplay();
-		
-		waitABit();
-		testUpdate(SharedColor.BLUE);
-		waitABit();
-		testUpdate(SharedColor.YELLOW);
-		//waitABit();
-		DisplayUpdater.showVillageResources(200, 200);
-		List<String> crap = new ArrayList<String>();
-		crap.add("crap1");
-		crap.add("crap2");
-		crap.add("crap3 is actually long");
-		DisplayUpdater.displayChoice(ChoiceType.UNIT_ACTION, crap);
-		DisplayUpdater.showEndTurnButton(true);
-		
-		//waitABit();
-		window.testAddTextField();
-		
-		
-		while(true)
-		{
-			MinuetoEventQueue queue = window.getEventQueue();
-			while(queue.hasNext())
-			{
-				queue.handle();
-			}
-		}
+		NetworkDriver.main(args);
 	}
 	
-	public static void waitABit()
-	{
-		try {
-			Thread.sleep(500);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-	
-	public static void testUpdate(SharedColor c)
-	{
-		Random r = new Random();
-		SharedTile newST = new SharedTile(c,
-					new SharedCoordinates(r.nextInt(DEFAULT_MAP_HEIGHT), r.nextInt(DEFAULT_MAP_WIDTH)),
-					SharedTile.Terrain.SEA, false,
-					SharedTile.UnitType.NONE,
-					SharedTile.VillageType.NONE, 0, 0);
-		NewStateApplier.applyChanges(game, newST);
-	}
-	
-	public static void newGame()
-	{
-		ModelTile[][] newTiles = new ModelTile[DEFAULT_MAP_WIDTH][DEFAULT_MAP_HEIGHT];
-		for (int i=0; i<DEFAULT_MAP_WIDTH; i++)
-		{
-			for (int j=0; j<DEFAULT_MAP_HEIGHT; j++)
-			{
-				ModelTile t = new ModelTile(j, i);
-				t.setColor(SharedColor.GREEN);
-				newTiles[i][j] = t;
-			}
-		}
-		newGame(newTiles);
-	}
 	
 	public static void newGame(ModelTile[][] tiles)
 	{
@@ -135,7 +61,7 @@ public final class MainApplication {
 		}
 		
 		GameMap m = new GameMap(tileList);
-		game = new Game(m, PLAYER);
+		game = new Game(m, null);
 		
 		MapDisplay mapdisp = new MapDisplay(displayedTiles);
 		window = new GameWindow(mapdisp);
@@ -148,12 +74,14 @@ public final class MainApplication {
 		CurrentClientState.setCurrentGameWindow(window);
 	}
 	
+	
 	public static void startDisplay()
 	{
 		//window.setVisible(true);
 		window.render();
 		displaying = true;
 	}
+	
 	
 	public static void concurrentlyDisplay()
 	{

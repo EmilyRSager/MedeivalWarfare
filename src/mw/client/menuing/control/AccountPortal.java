@@ -1,5 +1,7 @@
 package mw.client.menuing.control;
 
+import mw.client.network.NetworkController;
+
 public final class AccountPortal {
 
 
@@ -34,4 +36,9 @@ public final class AccountPortal {
 	 * ========================
 	 */
 
+	public static void tryLogin(String username, String password)
+	{
+		NetworkController.authenticateUser(username, password);
+	}
+	
 }
