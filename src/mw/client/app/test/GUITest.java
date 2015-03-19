@@ -4,21 +4,25 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import mw.client.app.ClientApplication;
+import mw.client.controller.CurrentClientState;
 import mw.client.controller.guimodel.DisplayUpdater;
 import mw.client.controller.guimodel.ChoiceCenter.ChoiceType;
+import mw.client.controller.guimodel.GameInitializer;
 import mw.client.controller.model.NewStateApplier;
+import mw.client.model.Game;
 import mw.client.model.ModelTile;
 import mw.shared.SharedColor;
 import mw.shared.SharedCoordinates;
 import mw.shared.SharedTile;
+import mw.client.gui.window.GameWindow;
 
 import org.minueto.MinuetoEventQueue;
 
 public final class GUITest {
 	
 
-	//private static final Player PLAYER = new Player(SharedColor.YELLOW, "player");
+	private static Game game;
+	private static GameWindow gameWindow;
 
 	public final static int DEFAULT_MAP_WIDTH = 18;
 	public final static int DEFAULT_MAP_HEIGHT = 18;
@@ -26,7 +30,9 @@ public final class GUITest {
 	public static void main(String[] args)
 	{
 		newGame();
-		ClientApplication.startDisplay();
+		
+		game = CurrentClientState.getCurrentGame();
+		gameWindow = CurrentClientState.getCurrentGameWindow();
 		
 		waitABit();
 		testUpdate(SharedColor.BLUE);
@@ -42,19 +48,18 @@ public final class GUITest {
 		DisplayUpdater.showEndTurnButton(true);
 		
 		//waitABit();
-		ClientApplication.window.testAddTextField();
+		gameWindow.testAddTextField();
 		
 		
 		while(true)
 		{
-			MinuetoEventQueue queue = ClientApplication.window.getEventQueue();
+			MinuetoEventQueue queue = gameWindow.getEventQueue();
 			while(queue.hasNext())
 			{
 				queue.handle();
 			}
 		}
 	}
-	
 
 	
 	public static void waitABit()
@@ -76,7 +81,7 @@ public final class GUITest {
 					SharedTile.Terrain.SEA, false,
 					SharedTile.UnitType.NONE,
 					SharedTile.VillageType.NONE, 0, 0);
-		NewStateApplier.applyChanges(ClientApplication.game, newST);
+		NewStateApplier.applyChanges(game, newST);
 	}
 	
 	public static void newGame()
@@ -91,7 +96,7 @@ public final class GUITest {
 				newTiles[i][j] = t;
 			}
 		}
-		ClientApplication.newGame(newTiles);
+		GameInitializer.newGame(newTiles);
 	}
 
 
