@@ -100,7 +100,9 @@ public class TextField extends AbstractWindowComponent
 	private void buildImage()
 	{
 		image = ExtendedMinuetoImage.coloredSquare(getWidth(), getHeight(), MinuetoColor.WHITE);
-		MinuetoText mintext = new MinuetoText(text, TextDisplay.DEFAULT_FONT, TextDisplay.DEFAULT_TEXT_COLOR);
+		int pos = caret.getPosition();
+		String dispText = text.substring(0, pos) + '|' + text.substring(pos);
+		MinuetoText mintext = new MinuetoText(dispText, TextDisplay.DEFAULT_FONT, TextDisplay.DEFAULT_TEXT_COLOR);
 		image.draw(mintext, X_MARGIN, Y_MARGIN);//ExtendedMinuetoImage.drawInTheMiddleOf(image, mintext);
 		//image.draw(mintext, 0, 0);
 		//image = ExtendedMinuetoImage.addMargin(image, X_MARGIN, Y_MARGIN, MinuetoColor.WHITE);

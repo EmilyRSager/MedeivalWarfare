@@ -1,5 +1,6 @@
 package mw.client.gui.api.interactive;
 
+import org.minueto.handlers.MinuetoKeyboard;
 import org.minueto.handlers.MinuetoKeyboardHandler;
 
 public class Caret implements MinuetoKeyboardHandler {
@@ -23,6 +24,9 @@ public class Caret implements MinuetoKeyboardHandler {
 	 * ==========================
 	 */
 
+	public int getPosition() {
+		return position;
+	}
 
 	/* ==========================
 	 * 		Private methods
@@ -45,16 +49,29 @@ public class Caret implements MinuetoKeyboardHandler {
 	@Override
 	public void handleKeyRelease(int key)
 	{
-		// TODO Auto-generated method stub
-		
+		switch(key)
+		{
+		case MinuetoKeyboard.KEY_LEFT:
+			position = Math.max(0, position-1);
+			break;
+			
+		case MinuetoKeyboard.KEY_RIGHT:
+			position = Math.min(textField.getText().length(), position+1);
+			break;
+			
+		case MinuetoKeyboard.KEY_ESC:
+			textField.disable();
+			break;
+		}
+		textField.setText(textField.getText());
 	}
 
 	@Override
 	public void handleKeyType(char c)
 	{
 		System.out.println("Inserting the char '"+c+"'");
-		textField.insertChar(c, position);
 		position++;
+		textField.insertChar(c, position-1);
 	}
 
 
