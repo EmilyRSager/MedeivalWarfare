@@ -1,20 +1,48 @@
 package mw.client.app.test;
 
-import mw.client.gui.api.components.TextDisplay;
-
-import org.minueto.MinuetoColor;
-import org.minueto.image.MinuetoText;
 import org.minueto.window.MinuetoFrame;
+
+import mw.client.gui.api.components.AbstractButton;
+import mw.client.gui.api.components.TextDisplay;
+import mw.client.gui.api.interactive.TextField;
+import mw.client.gui.api.layouts.GridLayout;
+import mw.client.gui.api.layouts.HorizontalLayout;
+import mw.client.gui.api.layouts.VerticalLayout;
 
 public final class APITest {
 
 	public static void main(String[] args) {
-		MinuetoFrame frame = new MinuetoFrame(100, 100, true);
+		MinuetoFrame frame = new MinuetoFrame(300, 100, true);
 		frame.setVisible(true);
-		//TextDisplay label = new TextDisplay(0, 0, 100, 100, "Hayo");
-		//label.drawOn(frame);
-		MinuetoText label = new MinuetoText("Hoho",TextDisplay.DEFAULT_FONT, MinuetoColor.BLACK);
-		frame.draw(label, 0, 0);
+		
+		VerticalLayout mainLayout = new VerticalLayout(3);
+		
+		GridLayout fieldsLayout = new GridLayout(2, 2);
+		HorizontalLayout usernameLayout = new HorizontalLayout(2);
+		HorizontalLayout pwdLayout = new HorizontalLayout(2);
+		
+		TextField usernameField = new TextField(150);
+		fieldsLayout.addComponent(new TextDisplay("Username :"), 0, 0);
+		fieldsLayout.addComponent(usernameField, 0, 1);
+		//mainLayout.addComponent(usernameLayout, 0);
+		
+		TextField pwdField = new TextField(150);
+		fieldsLayout.addComponent(new TextDisplay("Password :"), 1, 0);
+		fieldsLayout.addComponent(pwdField, 1, 1);
+		//mainLayout.addComponent(pwdLayout, 1);
+		mainLayout.addComponent(fieldsLayout, 0);
+		
+		mainLayout.addComponent(new AbstractButton("Login") {
+			
+			@Override
+			public void buttonClick(int mouseButton)
+			{
+				System.out.println("Username = "+usernameField.getText());
+				System.out.println("Password = "+pwdField.getText());
+			}
+		}, 2);
+		
+		mainLayout.drawOn(frame);
 		frame.render();
 	}
 
