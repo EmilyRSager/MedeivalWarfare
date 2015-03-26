@@ -258,13 +258,14 @@ public class Game extends RandomColorGenerator implements Serializable{
 		pDestinationTile.setColor(startTile.getColor());
 		Village lCapturingVillage = aMap.getVillage(startTile);
 		lCapturingVillage.addTile(pDestinationTile);
-		//TODO -- recalculate village 
-		//aMap.recalculateVillages();
 	}
 	
 	public void takeoverEnemyTile(Tile startTile, Tile pDestinationTile)
 	{
-		
+		Village invadedVillage = getVillage(pDestinationTile);
+		Village invadingVillage = getVillage(startTile);
+		EnemyCaptureLogic.CaptureTile(invadingVillage, invadedVillage, pDestinationTile, this, aCurrentPlayer);  //capture the tile  and fuse the necessary villages
+		aMap.deleteVillages();
 	}
 
 	/**
@@ -328,9 +329,9 @@ public class Game extends RandomColorGenerator implements Serializable{
 		return aMap.getNeighbors(pTile); 
 	}
 
-	public void fuseVillages(Collection<Village> pToFuse,  Tile invadingCapital)
+	public void fuseVillages(Collection<Village> pToFuse,  Tile invadingCapital, Player pCurrentPlayer)
 	{
-		 aMap.fuseVillages(pToFuse, invadingCapital);
+		 aMap.fuseVillages(pToFuse, invadingCapital, pCurrentPlayer);
 	}
 
 }

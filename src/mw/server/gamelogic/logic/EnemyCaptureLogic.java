@@ -2,19 +2,17 @@ package mw.server.gamelogic.logic;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashSet;
 
-import mw.client.model.GameMap;
 import mw.server.gamelogic.enums.StructureType;
-import mw.server.gamelogic.graph.Graph;
 import mw.server.gamelogic.state.Game;
+import mw.server.gamelogic.state.Player;
 import mw.server.gamelogic.state.Tile;
 import mw.server.gamelogic.state.Village;
 
 public class EnemyCaptureLogic {
 
 
-	public static void CaptureTile(Village invadingVillage, Village invadedVillage,  Tile invadedTile, Game pGame)
+	public static void CaptureTile(Village invadingVillage, Village invadedVillage,  Tile invadedTile, Game pGame, Player aCurrentPlayer)
 	{
 
 		//Case for invading a non-village capital
@@ -32,27 +30,14 @@ public class EnemyCaptureLogic {
 				{
 					if (!pGame.getVillage(lTile).equals(invadingVillage)) // make sure we aren't just looking at the invading village over and over
 						toFuse.add(pGame.getVillage(lTile)); 
+						aCurrentPlayer.removeVillage(pGame.getVillage(lTile));
 					needToFuse = true; 
 				}
 			}
 			if(needToFuse)
 			{
-				pGame.fuseVillages(toFuse, invadingCapital);
+				pGame.fuseVillages(toFuse, invadingCapital, aCurrentPlayer);
 			}
-
 		}
-
 	}
-
-	public static Collection<Tile>  getCurrentCapitals(Game pGame)
-	{
-		Collection <Village> lInitialVillages = pGame.getVillages(); 
-		Collection <Tile> lCurrentCapitals = new HashSet<Tile>(); 
-		for (Village lVillage: lInitialVillages)
-		{
-			lCurrentCapitals.add(lVillage.getCapital()); 
-		}
-		return lCurrentCapitals;
-	}
-
 }  

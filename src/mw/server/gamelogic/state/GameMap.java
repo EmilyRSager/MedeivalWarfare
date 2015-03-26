@@ -17,6 +17,7 @@ import mw.shared.Coordinates;
 import mw.util.MultiArrayIterable;
 
 import com.google.gson.GsonBuilder;
+import com.sun.java.util.jar.pack.Instruction.Switch;
 
 /**
  * GameMap class definition.
@@ -179,7 +180,7 @@ public class GameMap implements Serializable{
 		return aTileGraph.getNeighbors(pTile);
 	}
 
-	public void  fuseVillages(Collection<Village> pToFuse, Tile invadingCapital ) 
+	public void  fuseVillages(Collection<Village> pToFuse, Tile invadingCapital, Player pCurrentPlayer ) 
 	{
 		Collection<Tile> lVillageTiles = new HashSet<Tile>(); 
 		int lGold = 0; 
@@ -211,8 +212,47 @@ public class GameMap implements Serializable{
 		lFusedVillage.addOrSubtractGold(lGold);
 		lFusedVillage.addOrSubtractWood(lWood);
 		aVillages.add(lFusedVillage); 
+		pCurrentPlayer.addVillage(lFusedVillage);
 
 
+	}
+
+	public void deleteVillages(Collection<Player> aPlayers, Player pCurrentPlayer) {
+		for (Village lVillage : aVillages)
+		{
+			if (lVillage.getTiles().size() < 3)
+			{
+				Color crtColor = lVillage.getTiles().iterator().next().getColor(); 
+				for (Player lPlayer : aPlayers)
+				{
+					if (lPlayer.getPlayerColor() == crtColor && lPlayer.getPlayerColor()!=pCurrentPlayer.getPlayerColor())
+					{
+						lPlayer.removeVillage(lVillage);
+					}
+				}
+			}
+			aVillages.remove(lVillage);
+			for (Tile lTile : lVillage.getTiles())
+			{
+				lTile.setColor(Color.NEUTRAL); 
+				StructureType lStructureType = lTile.getStructureType();
+				switch (lStructureType)
+				{
+				case VILLAGE_CAPITAL: 
+					lTile.setStructureType(StructureType.NO_STRUCT);
+				case WATCHTOWER: 
+					lTile.setStructureType(lStructureType);
+				default:
+					break;
+				}
+				if (lTile.hasUnit())
+				{
+					lTile.setStructureType(StructureType.TOMBSTONE);
+				}
+			}
+			
+		}
+		
 	}
 
 }
