@@ -171,43 +171,48 @@ public class GameMap implements Serializable{
 				return lVillage;
 			}
 		}
-
 		return null;
 	}
-	public void recalculateVillages()
-	{
-		aVillages.clear();
-		for (Tile lTile : aTileGraph.allNodes())
-		{
-			Set<Tile> temp = PathFinder.getVillage(aTileGraph, lTile); 
-			boolean villageAlreadyExists = false; 
-			//makes sure a village doesn't already exist to avoid duplicate references 
-			for (Village lVillage: aVillages)
-			{
-				if (lVillage.getTiles().equals(temp)) 
-				{
-					villageAlreadyExists = true;  //needs a better name -- represents whether we should create a village or not
-				}
-			}
 
-			if (!villageAlreadyExists)
+	public Collection<Tile> getNeighbors(Tile pTile)
+	{
+		return aTileGraph.getNeighbors(pTile);
+	}
+
+	public void  fuseVillages(Collection<Village> pToFuse, Tile invadingCapital ) 
+	{
+		Collection<Tile> lVillageTiles = new HashSet<Tile>(); 
+		int lGold = 0; 
+		int lWood = 0; 
+		for (Village lVillage : pToFuse) 
+		{
+			lVillageTiles.addAll(lVillage.getTiles()); 	//aggregate all the tiles from the villages to fuse 
+			
+			if (aVillages.contains(lVillage))
 			{
-				//don't create a village if it's neutral land, or the village is too small to be supported
-				if (temp.size()>=3 && temp.iterator().next().getColor()!=Color.NEUTRAL)
+				lGold += lVillage.getGold(); 
+				lWood += lVillage.getWood(); 
+				aVillages.remove(lVillage); //delete the old villages
+			}		
+		}
+		//deal with the village capital, gold and wood
+		for (Tile lTile : lVillageTiles)
+		{
+			if (lTile.getStructureType() == StructureType.VILLAGE_CAPITAL)
+			{
+				if(!lTile.equals(invadingCapital))
 				{
-					Village v = new Village (temp);
-					aVillages.add(v); 
-					villageAlreadyExists = false; 
-				}
-				//Non-villages need to be returned to neutral color 
-				if (temp.size()<3 )
-				{
-					for (Tile vTile: temp)
-					{
-						vTile.setColor(Color.NEUTRAL);
-					}
+					lTile.setStructureType(StructureType.NO_STRUCT);
 				}
 			}
 		}
+		Village lFusedVillage = new Village(lVillageTiles); 
+		lFusedVillage.setCapital(invadingCapital);
+		lFusedVillage.addOrSubtractGold(lGold);
+		lFusedVillage.addOrSubtractWood(lWood);
+		aVillages.add(lFusedVillage); 
+
+
 	}
+
 }

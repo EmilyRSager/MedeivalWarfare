@@ -322,10 +322,16 @@ public class Game extends RandomColorGenerator implements Serializable{
 	{
 		return aCurrentPlayer;
 	}
-
-	public void recalculateVillages() {
-		aMap.recalculateVillages();
-		
+	
+	public Collection<Tile> getNeighbors(Tile pTile)
+	{
+		return aMap.getNeighbors(pTile); 
 	}
+
+	public void fuseVillages(Collection<Village> pToFuse,  Tile invadingCapital)
+	{
+		 aMap.fuseVillages(pToFuse, invadingCapital);
+	}
+
 }
 

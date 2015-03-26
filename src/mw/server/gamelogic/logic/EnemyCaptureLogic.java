@@ -1,5 +1,6 @@
 package mw.server.gamelogic.logic;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 
@@ -12,29 +13,37 @@ import mw.server.gamelogic.state.Village;
 
 public class EnemyCaptureLogic {
 
-	
+
 	public static void CaptureTile(Village invadingVillage, Village invadedVillage,  Tile invadedTile, Game pGame)
 	{
- 
+
 		//Case for invading a non-village capital
 		if (invadedTile.getStructureType() != StructureType.VILLAGE_CAPITAL);
 		{
 			invadedVillage.removeTile(invadedTile);
 			invadingVillage.addTile(invadedTile);
-			
-			//Collection<Tile> currentCapitals = getCurrentCapitals(pGame);
-			//Collection<Village> startConfiguration = pGame.getVillages(); 
-			//recalculateVillages(pGame);
-			
-			for(Tile lTile : pGame.getNeighbors()){
-				if(lTile.getColor() == invadingVillage.getColor() && !pGame.getVillage(lTile).equals(pGame.getVillage(invadedTile))){
-					fuseVillages(invadingVillage, invadedVillage);
+			Tile invadingCapital = invadingVillage.getCapital(); 
+			Collection<Village> toFuse = new ArrayList<Village>(); 
+			boolean needToFuse = false; 
+
+			for(Tile lTile : pGame.getNeighbors(invadedTile))
+			{
+				if(lTile.getColor() == invadingVillage.getColor() ) //check the neighbors to see which same-color villages are fuse candidates
+				{
+					if (!pGame.getVillage(lTile).equals(invadingVillage)) // make sure we aren't just looking at the invading village over and over
+						toFuse.add(pGame.getVillage(lTile)); 
+					needToFuse = true; 
 				}
 			}
-			
+			if(needToFuse)
+			{
+				pGame.fuseVillages(toFuse, invadingCapital);
+			}
+
 		}
-		
+
 	}
+
 	public static Collection<Tile>  getCurrentCapitals(Game pGame)
 	{
 		Collection <Village> lInitialVillages = pGame.getVillages(); 
@@ -46,8 +55,4 @@ public class EnemyCaptureLogic {
 		return lCurrentCapitals;
 	}
 
-	public static void recalculateVillages(Game pGame)
-	{
-		pGame.recalculateVillages(); 
-	}
 }  
