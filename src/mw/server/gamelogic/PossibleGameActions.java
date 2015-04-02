@@ -12,10 +12,12 @@ public class PossibleGameActions
 	private Collection<Tile> aMovable; 
 	private Collection<UnitType> aUpgradableUnits;   
 	private Collection <ActionType>  aPossibleActions; 
-	VillageType aUpgradableVillage;
+	private VillageType aUpgradableVillage;
+	private boolean canBuildWatchtower; 
 
-	public PossibleGameActions (Collection<Tile> pMovable, Collection<UnitType> pUnitTypes, Collection<ActionType> pActionTypes, VillageType pVillageType)
+	public PossibleGameActions (Collection<Tile> pMovable, Collection<UnitType> pUnitTypes, Collection<ActionType> pActionTypes, VillageType pVillageType, boolean pWatchtower)
 	{
+		canBuildWatchtower = pWatchtower; 
 		aMovable = pMovable; 
 		aUpgradableUnits = pUnitTypes;
 		aPossibleActions = pActionTypes; 

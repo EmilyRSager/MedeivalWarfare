@@ -20,9 +20,6 @@ import mw.server.gamelogic.state.Village;
  */
 public class Logic {
 
-
-
-
 	/**
 	 * 
 	 * @param pUnit
@@ -216,7 +213,7 @@ public class Logic {
 			pDestinationTile.setStructureType(StructureType.NO_STRUCT);
 			startTile.setUnit(null);
 			crtUnit.setActionType(ActionType.MOVED);
-			System.out.println("[Gamelogic] Action Type of Peasant set to moved");
+			//System.out.println("[Gamelogic] Action Type of Peasant set to moved");
 			break;
 
 		case TOMBSTONE: 

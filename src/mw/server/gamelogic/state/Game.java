@@ -9,6 +9,7 @@ import java.util.Stack;
 import mw.server.gamelogic.PossibleGameActions;
 import mw.server.gamelogic.enums.ActionType;
 import mw.server.gamelogic.enums.Color;
+import mw.server.gamelogic.enums.StructureType;
 import mw.server.gamelogic.enums.UnitType;
 import mw.server.gamelogic.enums.VillageType;
 import mw.server.gamelogic.exceptions.CantUpgradeException;
@@ -139,6 +140,7 @@ public class Game extends RandomColorGenerator implements Serializable{
 		VillageType VillageUpgradeType = GameLogic.getPossibleVillageUpgrades(startTile.getVillageType()); 
 		Collection<Tile> ReachableTiles = new HashSet<Tile>();
 		Collection<ActionType> UnitActions = new ArrayList<ActionType>();
+		boolean canBuildWatchTower = GameLogic.canBuildWatchtower(startTile, this); 
 
 		//get possible reachable tiles and possible unit actions if the tile has a unit
 		if (startTile.hasUnit())
@@ -148,7 +150,7 @@ public class Game extends RandomColorGenerator implements Serializable{
 			UnitActions = Logic.getPossibleActions(pUnit, startTile);
 		}
 		Collection<UnitType> UnitUpgrade = GameLogic.getVillagerHireOrUpgradeTypes(startTile);
-		PossibleGameActions possible = new PossibleGameActions(ReachableTiles, UnitUpgrade, UnitActions, VillageUpgradeType);
+		PossibleGameActions possible = new PossibleGameActions(ReachableTiles, UnitUpgrade, UnitActions, VillageUpgradeType, canBuildWatchTower);
 		return possible; 
 	}
 
@@ -266,6 +268,15 @@ public class Game extends RandomColorGenerator implements Serializable{
 		Village invadingVillage = getVillage(startTile);
 		EnemyCaptureLogic.CaptureTile(invadingVillage, invadedVillage, pDestinationTile, this, aCurrentPlayer);  //capture the tile  and fuse the necessary villages
 		aMap.deleteVillages(aPlayers, aCurrentPlayer);
+	}
+	
+	/**
+	 * builds a Watchtower
+	 */
+	public void buildWatchtower(Coordinates pCoordinates) 
+	{
+		Tile lTile = aMap.getTile(pCoordinates); 
+		lTile.setStructureType(StructureType.WATCHTOWER); 
 	}
 
 	/**
