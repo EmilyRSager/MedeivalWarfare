@@ -169,10 +169,16 @@ public class VillageLogic
 	/**
 	 * Replaces all villagers in a village with tombstones
 	 */
-	public static void starveVillage()
+	public static void starveVillage(Collection<Tile> pTiles)
 	{
-		//TODO
-		
+		for (Tile lTile : pTiles)
+		{
+			if (lTile.hasUnit())
+			{
+				lTile.setUnit(null);
+				lTile.setStructureType(StructureType.TOMBSTONE);
+			}
+		}
 	}
 
 }

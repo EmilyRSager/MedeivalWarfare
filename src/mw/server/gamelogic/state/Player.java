@@ -16,35 +16,44 @@ import mw.server.gamelogic.enums.Color;
 public class Player implements Serializable{
 
 	private Color aColor; 
-    private Collection<Village> aVillages;
-	
+	private Collection<Village> aVillages;
+
 	public Player ()
 	{
 		aVillages = new HashSet<Village>();
 	}
-	
-    public void assignColor(Color pColor)
-    {
-      aColor = pColor; 
-    }
-    
-    public Color getPlayerColor()
-    {
-    	return aColor; 
-    }
 
-    public void removeVillage(Village pVillage) 
-    {
-        aVillages.remove(pVillage); 
-    }
+	public void assignColor(Color pColor)
+	{
+		aColor = pColor; 
+	}
 
-    public Collection<Village> getVillages() 
-    {
-    	return aVillages; 
-    }
+	public Color getPlayerColor()
+	{
+		return aColor; 
+	}
+
+	public void removeVillage(Village pVillage) 
+	{
+		aVillages.remove(pVillage); 
+	}
+
+	public Collection<Village> getVillages() 
+	{
+		return aVillages; 
+	}
 
 	public void addVillage(Village lVillage) {
 		aVillages.add(lVillage);
-		
+
+	}
+
+	public boolean isEliminated()
+	{
+		if (aVillages.size() == 0)
+		{
+			return true;
+		}
+		return false;
 	}
 }

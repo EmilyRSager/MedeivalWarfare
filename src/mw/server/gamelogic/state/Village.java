@@ -92,7 +92,7 @@ public class Village extends Observable implements Serializable
 		}
 		catch  (NotEnoughIncomeException e) 
 		{
-			VillageLogic.starveVillage(); 
+			VillageLogic.starveVillage(aTiles); 
 		}
 	}
 
