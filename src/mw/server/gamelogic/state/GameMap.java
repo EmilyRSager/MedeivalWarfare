@@ -17,7 +17,6 @@ import mw.shared.Coordinates;
 import mw.util.MultiArrayIterable;
 
 import com.google.gson.GsonBuilder;
-import com.sun.java.util.jar.pack.Instruction.Switch;
 
 /**
  * GameMap class definition.

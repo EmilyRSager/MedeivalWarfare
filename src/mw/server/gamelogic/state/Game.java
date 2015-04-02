@@ -9,7 +9,6 @@ import java.util.Stack;
 import mw.server.gamelogic.PossibleGameActions;
 import mw.server.gamelogic.enums.ActionType;
 import mw.server.gamelogic.enums.Color;
-import mw.server.gamelogic.enums.StructureType;
 import mw.server.gamelogic.enums.UnitType;
 import mw.server.gamelogic.enums.VillageType;
 import mw.server.gamelogic.exceptions.CantUpgradeException;
@@ -25,6 +24,7 @@ import mw.util.CircularIterator;
  * Game class definition.
  * @author emilysager
  */
+@SuppressWarnings("serial")
 public class Game extends RandomColorGenerator implements Serializable{
 	private static final int DEFAULT_WIDTH = 18;
 	private static final int DEFAULT_HEIGHT = 18;
@@ -265,7 +265,7 @@ public class Game extends RandomColorGenerator implements Serializable{
 		Village invadedVillage = getVillage(pDestinationTile);
 		Village invadingVillage = getVillage(startTile);
 		EnemyCaptureLogic.CaptureTile(invadingVillage, invadedVillage, pDestinationTile, this, aCurrentPlayer);  //capture the tile  and fuse the necessary villages
-		aMap.deleteVillages();
+		aMap.deleteVillages(aPlayers, aCurrentPlayer);
 	}
 
 	/**
