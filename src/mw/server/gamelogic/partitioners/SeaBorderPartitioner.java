@@ -70,7 +70,7 @@ public class SeaBorderPartitioner extends AbstractMapPartitioner {
 		int lWidth = lTiles[0].length;
 		int lHeight = lTiles.length;
 		
-		//traverse horizantally
+		//traverse horizontally
 		for(int i = pLayer; i < (lWidth - pLayer); i++){
 			lLayerTiles.add(lTiles[pLayer][i]); //
 			lLayerTiles.add(lTiles[lHeight - pLayer][i]);

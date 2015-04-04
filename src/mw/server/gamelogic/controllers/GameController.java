@@ -114,6 +114,10 @@ public class GameController {
 		pGame.upgradeUnit(pUnitCoordinates, upgradeType);
 	}
 	
+	public static void combineVillagers(Game pGame, Coordinates p1, Coordinates p2)
+	{
+		pGame.combineVillagers(p1, p2);
+	}
 	public static void buildWatchtower(Game pGame, Coordinates pCoordinates)
 	{
 		pGame.buildWatchtower(pCoordinates);

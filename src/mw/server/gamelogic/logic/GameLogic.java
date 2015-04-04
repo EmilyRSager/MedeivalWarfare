@@ -2,13 +2,16 @@ package mw.server.gamelogic.logic;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 
+import mw.server.gamelogic.enums.ActionType;
 import mw.server.gamelogic.enums.StructureType;
 import mw.server.gamelogic.enums.UnitType;
 import mw.server.gamelogic.enums.VillageType;
 import mw.server.gamelogic.exceptions.CantUpgradeException;
 import mw.server.gamelogic.state.Game;
 import mw.server.gamelogic.state.Tile;
+import mw.server.gamelogic.state.Unit;
 import mw.server.gamelogic.state.Village;
 
 /**
@@ -27,6 +30,7 @@ public class GameLogic
 	public static ArrayList<UnitType> getVillagerHireOrUpgradeTypes(Tile pTile, Game pGame) 
 	{
 
+		
 		Village lVillage = pGame.getVillage(pTile);
 		VillageType lVillageType = lVillage.getVillageType();
 
@@ -34,6 +38,13 @@ public class GameLogic
 		if (pTile.getStructureType()!= StructureType.TREE && pTile.getStructureType()!=StructureType.VILLAGE_CAPITAL
 				&& pTile.getStructureType()!=StructureType.TOMBSTONE && pTile.getStructureType()!=StructureType.WATCHTOWER)
 		{
+			for (Tile lTile : pGame.getNeighbors(pTile))
+			{
+				if (lTile.getStructureType() == StructureType.VILLAGE_CAPITAL && lVillageType == VillageType.FORT)
+				{
+					rArray.add(UnitType.CANNON); 
+				}
+			}
 			if (pTile.getUnit()==(null))
 			{
 				switch (lVillageType) 
@@ -85,7 +96,10 @@ public class GameLogic
 				}
 				if (pTile.getUnit().getUnitType().equals(UnitType.SOLDIER))
 				{
-					rArray.add(UnitType.KNIGHT); 
+					if (lVillageType == VillageType.FORT)
+					{
+						rArray.add(UnitType.KNIGHT); 
+					}
 				}
 				if (pTile.getUnit().getUnitType().equals(UnitType.KNIGHT)) 
 				{
@@ -122,7 +136,7 @@ public class GameLogic
 		Collection <Tile> lNeighbors = pGame.getNeighbors(pTile);
 		Village lVillage =  pGame.getVillage(pTile);
 		int lVillageWood = lVillage.getWood();
-		VillageType pVillageType =lVillage.getVillageType();
+		VillageType pVillageType = lVillage.getVillageType();
 		if (lVillageWood < 5)
 		{
 			return false; 
@@ -143,5 +157,26 @@ public class GameLogic
 			}
 		}
 		return true;
+	}
+
+	public static Collection<Tile> getCombinableUnitTiles(Tile startTile, Game pGame) 
+	{
+		Collection<Tile>rCombinable = new HashSet<Tile>(); 
+		Village startVillage = pGame.getVillage(startTile); 
+		for (Tile lTile: startVillage.getTiles())
+		{
+			if (lTile.hasUnit())
+			{
+				Unit lUnit = lTile.getUnit(); 
+				if (lUnit.getUnitType() != UnitType.KNIGHT && lUnit.getUnitType() != UnitType.CANNON)
+				{
+					if (lUnit.getActionType() == ActionType.READY)
+					{
+						rCombinable.add(lTile); 
+					}
+				}
+			}
+		}
+		return rCombinable; 
 	}
 }

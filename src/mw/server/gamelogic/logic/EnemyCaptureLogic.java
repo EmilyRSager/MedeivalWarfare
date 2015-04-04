@@ -29,15 +29,17 @@ public class EnemyCaptureLogic {
 				if(lTile.getColor() == invadingVillage.getColor() ) //check the neighbors to see which same-color villages are fuse candidates
 				{
 					if (!pGame.getVillage(lTile).equals(invadingVillage)) // make sure we aren't just looking at the invading village over and over
+					{ 
 						toFuse.add(pGame.getVillage(lTile)); 
 						aCurrentPlayer.removeVillage(pGame.getVillage(lTile));
-					needToFuse = true; 
+						needToFuse = true; 
+					}
 				}
-			}
-			if(needToFuse)
-			{
-				pGame.fuseVillages(toFuse, invadingCapital, aCurrentPlayer);
+				if(needToFuse)
+				{
+					pGame.fuseVillages(toFuse, invadingCapital, aCurrentPlayer);
+				}
 			}
 		}
 	}
-}  
+}

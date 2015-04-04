@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Stack;
-
 import mw.server.gamelogic.PossibleGameActions;
 import mw.server.gamelogic.enums.ActionType;
 import mw.server.gamelogic.enums.Color;
@@ -25,6 +24,7 @@ import mw.util.CircularIterator;
  * Game class definition.
  * @author emilysager
  */
+
 @SuppressWarnings("serial")
 public class Game extends RandomColorGenerator implements Serializable{
 	private static final int DEFAULT_WIDTH = 18;
@@ -141,6 +141,7 @@ public class Game extends RandomColorGenerator implements Serializable{
 		Collection<Tile> ReachableTiles = new HashSet<Tile>();
 		Collection<ActionType> UnitActions = new ArrayList<ActionType>();
 		boolean canBuildWatchTower = GameLogic.canBuildWatchtower(startTile, this); 
+		Collection<Tile> combinableUnitTiles = GameLogic.getCombinableUnitTiles(startTile, this); 
 
 		//get possible reachable tiles and possible unit actions if the tile has a unit
 		if (startTile.hasUnit())
@@ -150,7 +151,7 @@ public class Game extends RandomColorGenerator implements Serializable{
 			UnitActions = Logic.getPossibleActions(pUnit, startTile);
 		}
 		Collection<UnitType> UnitUpgrade = GameLogic.getVillagerHireOrUpgradeTypes(startTile, this);
-		PossibleGameActions possible = new PossibleGameActions(ReachableTiles, UnitUpgrade, UnitActions, VillageUpgradeType, canBuildWatchTower);
+		PossibleGameActions possible = new PossibleGameActions(ReachableTiles, UnitUpgrade, UnitActions, VillageUpgradeType, canBuildWatchTower, combinableUnitTiles);
 		return possible; 
 	}
 
@@ -164,18 +165,25 @@ public class Game extends RandomColorGenerator implements Serializable{
 	{
 		Tile pTile = aMap.getTile(pCoordinates);
 		//Decrement the Gold held by the hiring village
-		int lHireCost = PriceCalculator.getUnitHireCost(pUnitType);
-		if (aMap.getVillage(pTile).getGold() >= lHireCost) 
+		int lHireCost = PriceCalculator.getUnitHireCost(pUnitType); 
+		int lWoodCost = 0; 
+		if (pUnitType == UnitType.CANNON)
 		{
-			aMap.getVillage(pTile).addOrSubtractGold(-lHireCost);			
+			lWoodCost = 12; 
+		}
+		if (aMap.getVillage(pTile).getGold() >= lHireCost && aMap.getVillage(pTile).getWood() > lWoodCost) 
+		{
+			aMap.getVillage(pTile).addOrSubtractGold(-lHireCost);	
+			aMap.getVillage(pTile).addOrSubtractWood(-lWoodCost);
 			Unit pUnit = new Unit(pUnitType); 
 			pTile.setUnit(pUnit);
 			pTile.notifyObservers();
 		}
 		else 
 		{
-			throw new NotEnoughIncomeException(lHireCost - aMap.getVillage(pTile).getGold()); 
-		}//place a new unit on pTile
+			throw new NotEnoughIncomeException("Hiring a " +  pUnitType.toString().toLowerCase() +" costs: " + lHireCost + " gold and " +lWoodCost +  " wood. " +
+		"\n This village has " + 	aMap.getVillage(pTile).getGold() + "gold and " + aMap.getVillage(pTile).getWood() + "wood. "); 
+		}
 	}
 
 	/**
@@ -202,6 +210,7 @@ public class Game extends RandomColorGenerator implements Serializable{
 	{
 		return aMap.getVillages();
 	}
+	
 	/**
 	 * Updates the state of the game at the beginning of a Unit's turn
 	 */
@@ -277,6 +286,16 @@ public class Game extends RandomColorGenerator implements Serializable{
 	{
 		Tile lTile = aMap.getTile(pCoordinates); 
 		lTile.setStructureType(StructureType.WATCHTOWER); 
+	}
+	
+	/**
+	 * Puts a cannon on the tile with the parameter coordinates
+	 * @param pCoordinates
+	 */
+	public void buyCannon(Coordinates pCoordinates)
+	{
+		Tile lTile = aMap.getTile(pCoordinates);
+		lTile.setUnit(new Unit(UnitType.CANNON));
 	}
 
 	/**

@@ -3,11 +3,14 @@ package mw.server.gamelogic.exceptions;
 @SuppressWarnings("serial")
 public class NotEnoughIncomeException extends Exception {
 
-	@SuppressWarnings("unused")
-	private int aDeficit; 
+	String pMessage; 
 	
-	public NotEnoughIncomeException (int pDeficit)
+	public NotEnoughIncomeException (String lString)
 	{
-		aDeficit = pDeficit; 
+		pMessage = lString; 
+	}
+	public NotEnoughIncomeException()
+	{
+		
 	}
 }
