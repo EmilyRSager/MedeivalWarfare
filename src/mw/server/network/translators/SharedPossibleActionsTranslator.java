@@ -3,16 +3,14 @@ package mw.server.network.translators;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import mw.server.gamelogic.ActionType;
-import mw.server.gamelogic.PossibleGameActions;
-import mw.server.gamelogic.Tile;
-import mw.server.gamelogic.TileController;
-import mw.server.gamelogic.UnitType;
+import mw.server.gamelogic.controllers.TileController;
+import mw.server.gamelogic.enums.ActionType;
+import mw.server.gamelogic.enums.UnitType;
+import mw.server.gamelogic.state.Tile;
+import mw.shared.Coordinates;
 import mw.shared.SharedActionType;
-import mw.shared.SharedCoordinates;
 import mw.shared.SharedPossibleGameActions;
 import mw.shared.SharedTile;
-import mw.shared.SharedTile.VillageType;
 
 public abstract class SharedPossibleActionsTranslator {
 
@@ -24,7 +22,7 @@ public abstract class SharedPossibleActionsTranslator {
 	 */
 	public static SharedPossibleGameActions translatePossibleGameActions(PossibleGameActions serverPossibleActions)
 	{
-		Collection<SharedCoordinates> sharedMoves = new ArrayList<SharedCoordinates>();
+		Collection<Coordinates> sharedMoves = new ArrayList<Coordinates>();
 		Collection<Tile> serverMoves = serverPossibleActions.getMovableTiles();
 		for (Tile t : serverMoves) {
 			sharedMoves.add(SharedTileTranslator.translateCoordinates(TileController.getCoordinates(t)));

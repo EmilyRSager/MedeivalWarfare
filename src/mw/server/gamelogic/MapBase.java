@@ -1,5 +1,7 @@
 package mw.server.gamelogic;
 
+import mw.server.gamelogic.state.GameMap;
+
 
 
 
