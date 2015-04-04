@@ -6,6 +6,7 @@
 package mw.server.gamelogic.partitioners;
 
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Set;
 
 import mw.server.gamelogic.enums.Color;
@@ -35,21 +36,22 @@ public class RandomMapPartitioner extends AbstractMapPartitioner {
 	@Override
 	public void partition(Collection<Color> pColors) {
 
-		//assign colors to the tiles
+		Collection<Village> aVillages = new HashSet<Village>();
+ 		//assign colors to the tiles
 		for (Tile lTile : MultiArrayIterable.toIterable(aGameMap.getTiles())) {
-			lTile.setColor(RandomColorGenerator.generateRandomColor(availableColors));
+			lTile.setColor(RandomColorGenerator.generateRandomColor(pColors));
 		}
 
 		//initializes villages
-		for (GraphNode lGraphNode : graph.allNodes())
+		for (Tile lTile : MultiArrayIterable.toIterable(aGameMap.getTiles()))
 		{
-			Set<GraphNode> villageSet = PathFinder.getVillage(lGraphNode, graph); 
+			Set<Tile> villageSet = PathFinder.getVillage( aGameMap.getGraph(), lTile); 
 			boolean villageAlreadyExists = false; 
 
 			//makes sure a village doesn't already exist to avoid duplicate references 
 			for (Village lVillage: aVillages)
 			{
-				if (lVillage.getVillageNodes().equals(villageSet) )
+				if (lVillage.getTiles().equals(villageSet) )
 				{
 					villageAlreadyExists = true;  //needs a better name -- represents whether we should create a village or not
 				}
@@ -58,7 +60,7 @@ public class RandomMapPartitioner extends AbstractMapPartitioner {
 			if (!villageAlreadyExists)
 			{
 				//don't create a village if it's neutral land, or the village is too small to be supported
-				if (villageSet.size()>=3 && villageSet.iterator().next().getTile().getColor()!=Color.NEUTRAL)
+				if (villageSet.size()>=3 && villageSet.iterator().next().getColor()!=Color.NEUTRAL)
 				{
 					Village v = new Village (villageSet);
 					aVillages.add(v); 
@@ -67,9 +69,9 @@ public class RandomMapPartitioner extends AbstractMapPartitioner {
 				//Non-villages need to be returned to neutral color 
 				if (villageSet.size()<3 )
 				{
-					for (GraphNode vGraphNode: villageSet)
+					for (Tile vTile: villageSet)
 					{
-						vGraphNode.getTile().setColor(Color.NEUTRAL);
+						vTile.setColor(Color.NEUTRAL);
 					}
 				}
 			}

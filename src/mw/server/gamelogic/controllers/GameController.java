@@ -118,6 +118,11 @@ public class GameController {
 	{
 		pGame.upgradeUnit(pUnitCoordinates, upgradeType);
 	}
+	
+	public static void buildWatchtower(Game pGame, Coordinates pCoordinates)
+	{
+		pGame.buildWatchtower(pCoordinates);
+	}
 
 	/**
 	 * 

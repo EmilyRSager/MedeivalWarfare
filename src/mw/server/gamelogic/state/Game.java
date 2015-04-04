@@ -149,7 +149,7 @@ public class Game extends RandomColorGenerator implements Serializable{
 			ReachableTiles = aMap.getPossibleMoves(startTile);
 			UnitActions = Logic.getPossibleActions(pUnit, startTile);
 		}
-		Collection<UnitType> UnitUpgrade = GameLogic.getVillagerHireOrUpgradeTypes(startTile);
+		Collection<UnitType> UnitUpgrade = GameLogic.getVillagerHireOrUpgradeTypes(startTile, this);
 		PossibleGameActions possible = new PossibleGameActions(ReachableTiles, UnitUpgrade, UnitActions, VillageUpgradeType, canBuildWatchTower);
 		return possible; 
 	}
@@ -261,7 +261,7 @@ public class Game extends RandomColorGenerator implements Serializable{
 		Village lCapturingVillage = aMap.getVillage(startTile);
 		lCapturingVillage.addTile(pDestinationTile);
 	}
-	
+
 	public void takeoverEnemyTile(Tile startTile, Tile pDestinationTile)
 	{
 		Village invadedVillage = getVillage(pDestinationTile);
@@ -269,7 +269,7 @@ public class Game extends RandomColorGenerator implements Serializable{
 		EnemyCaptureLogic.CaptureTile(invadingVillage, invadedVillage, pDestinationTile, this, aCurrentPlayer);  //capture the tile  and fuse the necessary villages
 		aMap.deleteVillages(aPlayers, aCurrentPlayer);
 	}
-	
+
 	/**
 	 * builds a Watchtower
 	 */
@@ -334,7 +334,7 @@ public class Game extends RandomColorGenerator implements Serializable{
 	{
 		return aCurrentPlayer;
 	}
-	
+
 	public Collection<Tile> getNeighbors(Tile pTile)
 	{
 		return aMap.getNeighbors(pTile); 
@@ -342,8 +342,63 @@ public class Game extends RandomColorGenerator implements Serializable{
 
 	public void fuseVillages(Collection<Village> pToFuse,  Tile invadingCapital, Player pCurrentPlayer)
 	{
-		 aMap.fuseVillages(pToFuse, invadingCapital, pCurrentPlayer);
+		aMap.fuseVillages(pToFuse, invadingCapital, pCurrentPlayer);
 	}
+	
 
+	//TODO move this into a logic class 
+	public UnitType wantToCombineVillagers(Coordinates p1, Coordinates p2) 
+	{
+		UnitType combinedVillager = UnitType.NO_UNIT;
+		Tile lTile1 = aMap.getTile(p1);
+		Tile lTile2 = aMap.getTile(p2); 
+		if (lTile1.hasUnit() && lTile2.hasUnit())
+		{
+			UnitType lUnitType1  = lTile1.getUnit().getUnitType(); 
+			UnitType lUnitType2 = lTile2.getUnit().getUnitType(); 
+
+			switch (lUnitType1)
+			{
+			case PEASANT: 
+				switch (lUnitType2) 
+				{
+				case PEASANT:
+					combinedVillager = UnitType.INFANTRY;
+					break;
+				case INFANTRY: 
+					combinedVillager = UnitType.SOLDIER; 
+					break;
+				case SOLDIER: 
+					combinedVillager = UnitType.KNIGHT;
+					break;
+				default:
+					break;
+				}
+				break; 
+			case INFANTRY: 
+				switch (lUnitType2) 
+				{
+				case PEASANT:
+					combinedVillager = UnitType.SOLDIER;
+					break;
+				case INFANTRY: 
+					combinedVillager = UnitType.KNIGHT; 
+					break;
+				default:
+					break;
+			}
+				break; 
+			case SOLDIER: 
+				switch (lUnitType2) 
+				{
+				case PEASANT:
+					combinedVillager = UnitType.KNIGHT;
+					break;
+				default:
+					break;
+				}
+		}
+	}
+		return combinedVillager; 
 }
-
+}

@@ -7,9 +7,10 @@ package mw.server.gamelogic.enums;
  * KEEP THEM IN THIS ORDER OR DIE
  */
 public enum UnitType {
-	 NO_UNIT,      //what is the purpose of no unit here ?
+	 NO_UNIT,      
 	PEASANT,
 	INFANTRY,
     SOLDIER,
+    CANNON,
     KNIGHT; 
 }

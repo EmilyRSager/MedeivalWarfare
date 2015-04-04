@@ -24,31 +24,64 @@ public class GameLogic
 	 * @throws CantUpgradeException
 	 * returns the list of units you can upgrade to, doesn't actually hire a villager 
 	 */
-	public static ArrayList<UnitType> getVillagerHireOrUpgradeTypes(Tile pTile) 
+	public static ArrayList<UnitType> getVillagerHireOrUpgradeTypes(Tile pTile, Game pGame) 
 	{
+
+		Village lVillage = pGame.getVillage(pTile);
+		VillageType lVillageType = lVillage.getVillageType();
+
 		ArrayList<UnitType> rArray = new ArrayList<UnitType>();
 		if (pTile.getStructureType()!= StructureType.TREE && pTile.getStructureType()!=StructureType.VILLAGE_CAPITAL
 				&& pTile.getStructureType()!=StructureType.TOMBSTONE && pTile.getStructureType()!=StructureType.WATCHTOWER)
 		{
 			if (pTile.getUnit()==(null))
 			{
-				rArray.add(UnitType.INFANTRY); 
-				rArray.add(UnitType.KNIGHT); 
-				rArray.add(UnitType.PEASANT); 
-				rArray.add(UnitType.SOLDIER); 			
+				switch (lVillageType) 
+				{
+				case HOVEL: 
+					rArray.add(UnitType.PEASANT); 
+					rArray.add(UnitType.INFANTRY); 
+					break;
+				case TOWN: 
+					rArray.add(UnitType.PEASANT); 
+					rArray.add(UnitType.SOLDIER); 
+					rArray.add(UnitType.INFANTRY); 
+					break;
+				case FORT: 
+					rArray.add(UnitType.INFANTRY); 
+					rArray.add(UnitType.KNIGHT); 
+					rArray.add(UnitType.PEASANT); 
+					rArray.add(UnitType.SOLDIER); 
+				default: 
+					break; 
+				}
 			}
 			else 
 			{
+
 				if (pTile.getUnit().getUnitType().equals(UnitType.PEASANT))
 				{
+
 					rArray.add(UnitType.INFANTRY);
-					rArray.add(UnitType.SOLDIER); 
-					rArray.add(UnitType.KNIGHT);
+					if (lVillageType == VillageType.TOWN ||lVillageType == VillageType.FORT)
+					{
+						rArray.add(UnitType.SOLDIER); 
+					}
+					if (lVillageType == VillageType.FORT)
+					{
+						rArray.add(UnitType.KNIGHT);
+					}
 				}
 				if (pTile.getUnit().getUnitType().equals(UnitType.INFANTRY))
 				{
-					rArray.add(UnitType.SOLDIER); 
-					rArray.add(UnitType.KNIGHT);
+					if (lVillageType == VillageType.TOWN ||lVillageType == VillageType.FORT)
+					{
+						rArray.add(UnitType.SOLDIER); 
+					}
+					if (lVillageType == VillageType.FORT)
+					{
+						rArray.add(UnitType.KNIGHT);
+					}
 				}
 				if (pTile.getUnit().getUnitType().equals(UnitType.SOLDIER))
 				{

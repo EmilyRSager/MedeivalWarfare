@@ -228,23 +228,33 @@ public final class TileGraphLogic {
 		return false; 
 
 	}
+	
 	private static boolean isProtected(Unit pUnit, Tile destinationTile, Collection<Tile> destinationNeighbors)
 	{
 		UnitType pUnitType = pUnit.getUnitType(); 
 		for (Tile lTile : destinationNeighbors)
 		{
 			Unit lUnit = lTile.getUnit();
-			if (lUnit != null){
-				if(lUnit.getUnitType().ordinal() >= pUnitType.ordinal()) {
+			if (lUnit != null)
+			{
+				if(lUnit.getUnitType().ordinal() >= pUnitType.ordinal()) 
+				{
 					return false;
 				}
 			}
 		}
 		if (isWatchtowerGuardingTile(destinationTile, destinationNeighbors))
 		{
-			return false; 
+			switch (pUnitType)
+			{
+			case SOLDIER: 
+				return false; 
+			case KNIGHT: 
+				return false; 
+			default: 
+				break; 
+			} 
 		}
-
 		return true; 
 	}
 	private static boolean unitCanTakeOver(Unit crtUnit, Unit enemyUnit)

@@ -253,5 +253,9 @@ public class GameMap implements Serializable{
 		}
 		
 	}
+	
+	public Graph<Tile> getGraph() {
+		return aTileGraph; 
+	}
 
 }
