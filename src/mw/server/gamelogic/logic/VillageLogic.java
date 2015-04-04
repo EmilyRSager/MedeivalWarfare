@@ -124,7 +124,7 @@ public class VillageLogic
 			}
 			pVillage.addOrSubtractWood(- upgradeCost);
 		}
-		else throw new NotEnoughIncomeException(upgradeCost - pVillage.getWood()); 
+		else throw new NotEnoughIncomeException("Village requires " + upgradeCost + " wood to upgrade." + "This village currently has " + pVillage.getWood() + " wood." ); 
 	}
 
 	/**
@@ -146,7 +146,7 @@ public class VillageLogic
 		}
 		if (totalUpkeepCost > pVillage.getGold())
 		{
-			throw new NotEnoughIncomeException(totalUpkeepCost - pVillage.getGold()); 
+			throw new NotEnoughIncomeException("There is not enough gold for the total upkeep cost of this village."); 
 		}
 	}
 

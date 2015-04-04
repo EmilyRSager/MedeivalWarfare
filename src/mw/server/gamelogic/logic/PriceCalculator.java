@@ -15,6 +15,8 @@ public class PriceCalculator
 				return 20;
 			case SOLDIER:
 				return 30;
+			case CANNON: 
+				return 35; 
 			default:
 				return 40;
 		}
@@ -76,6 +78,8 @@ public class PriceCalculator
 						return  6;
 					case SOLDIER:
 						return 18;
+					case CANNON: 
+						return 5; 
 					case KNIGHT:
 						return 54;
 					default:
