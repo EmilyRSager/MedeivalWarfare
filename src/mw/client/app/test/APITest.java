@@ -1,8 +1,10 @@
 package mw.client.app.test;
 
+import org.minueto.MinuetoEventQueue;
 import org.minueto.window.MinuetoFrame;
 
 import mw.client.gui.api.components.AbstractButton;
+import mw.client.gui.api.components.ResizableWindow;
 import mw.client.gui.api.components.TextDisplay;
 import mw.client.gui.api.interactive.TextField;
 import mw.client.gui.api.layouts.GridLayout;
@@ -11,8 +13,9 @@ import mw.client.gui.api.layouts.VerticalLayout;
 
 public final class APITest {
 
-	public static void main(String[] args) {
-		MinuetoFrame frame = new MinuetoFrame(300, 100, true);
+	public static void main(String[] args) throws InterruptedException {
+		MinuetoEventQueue queue = new MinuetoEventQueue();
+		ResizableWindow frame = new ResizableWindow(300, 100, queue, "Login screen");
 		frame.setVisible(true);
 		
 		VerticalLayout mainLayout = new VerticalLayout(3);
@@ -42,6 +45,11 @@ public final class APITest {
 			}
 		}, 2);
 		
+		mainLayout.drawOn(frame);
+		frame.render();
+		
+		Thread.sleep(1500);
+		frame.resize(mainLayout.getWidth(), mainLayout.getHeight());
 		mainLayout.drawOn(frame);
 		frame.render();
 	}
