@@ -215,6 +215,14 @@ public class GameMap implements Serializable{
 
 
 	}
+	
+	public void addVillages(Collection<Village> pVillages){
+		aVillages.addAll(pVillages);
+	}
+	
+	public void addVillage(Village pVillage){
+		aVillages.add(pVillage);
+	}
 
 	public void deleteVillages(Collection<Player> aPlayers, Player pCurrentPlayer) {
 		for (Village lVillage : aVillages)

@@ -9,13 +9,12 @@ import java.util.Observable;
 import java.util.Observer;
 import java.util.Set;
 
-
 import mw.server.gamelogic.state.Game;
 import mw.server.gamelogic.state.Tile;
-
 import mw.server.network.communication.ClientChannel;
 import mw.server.network.mappers.ClientChannelMapper;
 import mw.server.network.translators.SharedTileTranslator;
+import mw.shared.SharedTile;
 import mw.shared.clientcommands.AbstractClientCommand;
 import mw.shared.clientcommands.NewGameCommand;
 import mw.shared.clientcommands.UpdateTileCommand;
@@ -61,6 +60,9 @@ public class GameStateCommandDistributor implements Observer {
 	 * @param pGameMap
 	 */
 	public void newGame(Tile[][] pGameMap) {
+		SharedTile[][] lSharedTiles = SharedTileTranslator.translateMap(pGameMap, aGame);
+		System.out.printf("[Server] Map width = [%d]. Map height = [%d].\n", lSharedTiles[0].length, lSharedTiles.length);
+		
 		AbstractClientCommand lClientCommand = 
 				new NewGameCommand(SharedTileTranslator.translateMap(pGameMap, aGame));
 

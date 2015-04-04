@@ -26,7 +26,10 @@ public class TileController {
 	public static int getGold(Tile pTile, Game pGame){
 		if (pTile.getVillageType()!=VillageType.NO_VILLAGE)
 		{
-			Village crtVillage = pGame.getVillage(pTile); 
+			Village crtVillage = pGame.getVillage(pTile);
+			
+			System.out.println("[server] Tile color = " + pTile.getColor());
+			
 			int gold = crtVillage.getGold(); 
 			return gold; 
 		}
