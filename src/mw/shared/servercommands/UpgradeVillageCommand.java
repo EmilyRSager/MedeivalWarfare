@@ -5,10 +5,10 @@
 
 package mw.shared.servercommands;
 
-import mw.server.gamelogic.GameController;
+import mw.server.gamelogic.controllers.GameController;
 import mw.server.network.mappers.GameMapper;
 import mw.server.network.translators.NetworkToModelTranslator;
-import mw.shared.SharedCoordinates;
+import mw.shared.Coordinates;
 import mw.shared.SharedTile;
 
 /**
@@ -16,13 +16,13 @@ import mw.shared.SharedTile;
  */
 public class UpgradeVillageCommand extends AbstractServerCommand {
 	private final String aType = "UpgradeVillageCommand";
-	private SharedCoordinates aVillageCoordinates;
+	private Coordinates aVillageCoordinates;
 	private SharedTile.VillageType aVillageType;
 	
 	/**
 	 * Constructor
 	 */
-	public UpgradeVillageCommand(SharedCoordinates pVillageCoordinates, SharedTile.VillageType pVillageType) {
+	public UpgradeVillageCommand(Coordinates pVillageCoordinates, SharedTile.VillageType pVillageType) {
 		aVillageCoordinates = pVillageCoordinates;
 		aVillageType = pVillageType;
 	}
@@ -42,8 +42,7 @@ public class UpgradeVillageCommand extends AbstractServerCommand {
 	public void execute(Integer pClientID) {
 		GameController.upgradeVillage(
 				GameMapper.getInstance().getGame(pClientID),
-				aVillageCoordinates.getX(),
-				aVillageCoordinates.getY(),
+				aVillageCoordinates,
 				NetworkToModelTranslator.translateVillageType(aVillageType)
 				);
 
