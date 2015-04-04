@@ -5,6 +5,9 @@
 
 package mw.server.admin;
 
+import java.util.List;
+
+import com.google.gson.Gson;
 import mw.client.model.Game;
 
 /**
@@ -14,6 +17,7 @@ import mw.client.model.Game;
  * TODO This class could be an observer of current game and be updated of necessary information.
  */
 public class Account {
+	private int aID;
 	private String aUserName;
 	private String aPassword;
 	private int aWins, aLosses;
@@ -24,7 +28,8 @@ public class Account {
 	 * @param pUsername
 	 * @param pPassword
 	 */
-	public Account(String pUsername, String pPassword){
+	public Account(int pID, String pUsername, String pPassword){
+		aID = pID;
 		aUserName = pUsername;
 		aPassword = pPassword;
 		aWins = 0;
@@ -46,6 +51,13 @@ public class Account {
 	 */
 	public void setCurrentGame(Game pCurrentGame){
 		aCurrentGame = pCurrentGame;
+	}
+	
+	/**
+	 * @return this account's ID
+	 */
+	public int getID(){
+		return aID;
 	}
 
 	/**
@@ -92,4 +104,15 @@ public class Account {
 		aLosses++;
 	}
 	
+	@Override public String toString(){
+		return new Gson().toJson(this);
+	}
+	
+	@Override public boolean equals(Object pObject){
+		if(!(pObject instanceof Account)){
+			return false;
+		}
+		Account lTargetAccount = (Account)pObject;
+		return aID == lTargetAccount.getID();
+	}
 }

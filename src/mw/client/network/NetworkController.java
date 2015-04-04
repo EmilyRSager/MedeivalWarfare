@@ -20,11 +20,13 @@ public class NetworkController {
 	private static ServerChannel aServerChannel;
 	
 	/**
-	 * initializes aServerChannel
+	 * Initializes aServerChannel. Does nothing if the server channel is already initialized.
 	 * @param pServerChannel
 	 */
-	public static void initializeServerChannel(ServerChannel pServerChannel){
-		aServerChannel = pServerChannel;
+	public static void initialize(){
+		if(aServerChannel == null){			
+			aServerChannel = new ServerChannel();
+		}
 	}
 	
 	/**
