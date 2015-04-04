@@ -3,10 +3,6 @@ package mw.server.app;
 
 import mw.server.network.communication.MainServerThread;
 
-/**
- * @author cbloom7
- * Provides access to initializing the server code.
- */
 public class MainApplication {
 	
 	/**

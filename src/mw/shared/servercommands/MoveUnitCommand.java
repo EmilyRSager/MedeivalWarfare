@@ -5,24 +5,24 @@
 
 package mw.shared.servercommands;
 
-import mw.server.gamelogic.GameController;
+import mw.server.gamelogic.controllers.GameController;
 import mw.server.network.mappers.GameMapper;
-import mw.shared.SharedCoordinates;
+import mw.shared.Coordinates;
 
 /**
  * 
  */
 public class MoveUnitCommand extends AbstractServerCommand {
 	private final String aType = "MoveUnitCommand";
-	private SharedCoordinates aSourceCoordinates;
-	private SharedCoordinates aDestinationCoordinates;
+	private Coordinates aSourceCoordinates;
+	private Coordinates aDestinationCoordinates;
 
 	/**
 	 * Constructor
 	 * @param pSourceCoordinates
 	 * @param pDestinationCoordinates
 	 */
-	public MoveUnitCommand(SharedCoordinates pSourceCoordinates, SharedCoordinates pDestinationCoordinates){
+	public MoveUnitCommand(Coordinates pSourceCoordinates, Coordinates pDestinationCoordinates){
 		aSourceCoordinates = pSourceCoordinates;
 		aDestinationCoordinates = pDestinationCoordinates;
 	}
@@ -42,10 +42,8 @@ public class MoveUnitCommand extends AbstractServerCommand {
 	public void execute(Integer pClientID) {
 		GameController.moveUnit(
 				GameMapper.getInstance().getGame(pClientID),
-				aSourceCoordinates.getX(),
-				aSourceCoordinates.getY(),
-				aDestinationCoordinates.getX(),
-				aDestinationCoordinates.getY()
+				aSourceCoordinates,
+				aDestinationCoordinates
 				);
 
 	}

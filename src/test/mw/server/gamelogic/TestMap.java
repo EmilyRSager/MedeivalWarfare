@@ -13,10 +13,10 @@ import java.util.Collection;
 import java.util.HashSet;
 
 import mw.filesystem.ProjectFolder;
-import mw.server.gamelogic.Game;
-import mw.server.gamelogic.Player;
-import mw.server.gamelogic.TooManyPlayersException;
-import mw.server.gamelogic.Village;
+import mw.server.gamelogic.state.Game;
+import mw.server.gamelogic.state.Player;
+import mw.server.gamelogic.exceptions.TooManyPlayersException;
+import mw.server.gamelogic.state.Village;
 
 public class TestMap {
 	private static Game aTestGame; 
@@ -25,7 +25,7 @@ public class TestMap {
 	//create a save game class and serialize and assign the game to it and then have something to load the game and 
 	// bring it back into 
 	
-	public static Game testMapCreate() throws TooManyPlayersException, IOException{
+	public static Game testMapCreate() throws mw.server.gamelogic.exceptions.TooManyPlayersException, IOException{
 		
 		//check here if the game has already been created in which case, load it from there 
 		//else create it 

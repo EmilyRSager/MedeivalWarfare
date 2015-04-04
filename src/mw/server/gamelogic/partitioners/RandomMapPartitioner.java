@@ -6,28 +6,30 @@
 package mw.server.gamelogic.partitioners;
 
 import java.util.Collection;
+
+import java.util.HashSet;
+
 import java.util.Set;
 
-import mw.client.model.GameMap;
-import mw.server.gamelogic.Color;
-import mw.server.gamelogic.GraphNode;
-import mw.server.gamelogic.PathFinder;
-import mw.server.gamelogic.RandomColorGenerator;
-import mw.server.gamelogic.Tile;
-import mw.server.gamelogic.Village;
-import mw.server.gamelogic.VillageType;
+import mw.server.gamelogic.enums.Color;
+import mw.server.gamelogic.enums.VillageType;
+import mw.server.gamelogic.graph.PathFinder;
+import mw.server.gamelogic.state.GameMap;
+import mw.server.gamelogic.state.Tile;
+import mw.server.gamelogic.state.Village;
+import mw.server.gamelogic.util.RandomColorGenerator;
+import mw.util.MultiArrayIterable;
 
 /**
  * 
  */
-public final class RandomMapPartitioner extends AbstractMapPartitioner {
-
+public class RandomMapPartitioner extends AbstractMapPartitioner {
+	
 	/**
 	 * @param pGameMap
 	 */
 	public RandomMapPartitioner(GameMap pGameMap) {
 		super(pGameMap);
-		//TODO
 	}
 
 	/**
@@ -35,24 +37,26 @@ public final class RandomMapPartitioner extends AbstractMapPartitioner {
 	 */
 	@Override
 	public void partition(Collection<Color> pColors) {
-		aGameMap.availableColors.add(Color.NEUTRAL);
 
-		//assign colors to the tiles
-		for (GraphNode lGraphNode : graph.allNodes()) {
-			Tile lTile = lGraphNode.getTile(); 
-			lTile.setColor(RandomColorGenerator.generateRandomColor(availableColors));
+		pColors.add(Color.NEUTRAL);
+
+
+		Collection<Village> aVillages = new HashSet<Village>();
+ 		//assign colors to the tiles
+		for (Tile lTile : MultiArrayIterable.toIterable(aGameMap.getTiles())) {
+			lTile.setColor(RandomColorGenerator.generateRandomColor(pColors));
 		}
 
 		//initializes villages
-		for (GraphNode lGraphNode : graph.allNodes())
+		for (Tile lTile : MultiArrayIterable.toIterable(aGameMap.getTiles()))
 		{
-			Set<GraphNode> villageSet = PathFinder.getVillage(lGraphNode, graph); 
+			Set<Tile> villageSet = PathFinder.getVillage( aGameMap.getGraph(), lTile); 
 			boolean villageAlreadyExists = false; 
 
 			//makes sure a village doesn't already exist to avoid duplicate references 
 			for (Village lVillage: aVillages)
 			{
-				if (lVillage.getVillageNodes().equals(villageSet) )
+				if (lVillage.getTiles().equals(villageSet) )
 				{
 					villageAlreadyExists = true;  //needs a better name -- represents whether we should create a village or not
 				}
@@ -61,7 +65,7 @@ public final class RandomMapPartitioner extends AbstractMapPartitioner {
 			if (!villageAlreadyExists)
 			{
 				//don't create a village if it's neutral land, or the village is too small to be supported
-				if (villageSet.size()>=3 && villageSet.iterator().next().getTile().getColor()!=Color.NEUTRAL)
+				if (villageSet.size()>=3 && villageSet.iterator().next().getColor()!=Color.NEUTRAL)
 				{
 					Village v = new Village (villageSet);
 					aVillages.add(v); 
@@ -70,9 +74,9 @@ public final class RandomMapPartitioner extends AbstractMapPartitioner {
 				//Non-villages need to be returned to neutral color 
 				if (villageSet.size()<3 )
 				{
-					for (GraphNode vGraphNode: villageSet)
+					for (Tile vTile: villageSet)
 					{
-						vGraphNode.getTile().setColor(Color.NEUTRAL);
+						vTile.setColor(Color.NEUTRAL);
 					}
 				}
 			}
@@ -84,10 +88,6 @@ public final class RandomMapPartitioner extends AbstractMapPartitioner {
 			for (Tile lTile: lVillage.getTiles()) {
 				lVillage.setCapital(lTile);
 				lVillage.setVillageType(VillageType.HOVEL);
-
-				lVillage.addOrSubtractGold(100);
-				lVillage.addOrSubtractWood(100);
-
 				break; 
 
 			}

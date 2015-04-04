@@ -4,7 +4,7 @@ import java.util.Collection;
 
 public class SharedPossibleGameActions {
 
-	private Collection<SharedCoordinates> possibleMoves; 
+	private Collection<Coordinates> possibleMoves; 
 	private Collection<SharedTile.UnitType> possibleUnitHireUpgrade;
 	private Collection <SharedActionType>  possibleUnitActions;	// not required for the demo
 	SharedTile.VillageType upgradableVillageType;
@@ -15,7 +15,7 @@ public class SharedPossibleGameActions {
 	 * ========================
 	 */
 	
-	public SharedPossibleGameActions (Collection<SharedCoordinates> moves, Collection<SharedTile.UnitType> pUnitTypes, Collection<SharedActionType> pActionTypes, SharedTile.VillageType pVillageType)
+	public SharedPossibleGameActions (Collection<Coordinates> moves, Collection<SharedTile.UnitType> pUnitTypes, Collection<SharedActionType> pActionTypes, SharedTile.VillageType pVillageType)
 	{
 		possibleMoves = moves;
 		possibleUnitHireUpgrade = pUnitTypes;
@@ -29,7 +29,7 @@ public class SharedPossibleGameActions {
 	 * ==========================
 	 */
 	
-	public Collection<SharedCoordinates> getMovableTiles()
+	public Collection<Coordinates> getMovableTiles()
 	{
 		return possibleMoves;
 	}

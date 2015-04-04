@@ -3,7 +3,7 @@ package mw.client.controller.translator;
 import mw.client.model.Coordinates;
 import mw.client.model.ModelTile;
 import mw.client.model.ModelTile.StructureType;
-import mw.shared.SharedCoordinates;
+import mw.shared.Coordinates;
 import mw.shared.SharedTile;
 
 /**
@@ -40,7 +40,7 @@ public final class NetworkModelTranslator {
 	 * @param sharedCoord the SharedCoordinates to be translated
 	 * @return a Model Coordinates that represents the given sharedCoord
 	 */
-	public static Coordinates translateSharedCoordinates(SharedCoordinates sharedCoord)
+	public static Coordinates translateSharedCoordinates(Coordinates sharedCoord)
 	{
 		return new Coordinates(sharedCoord.getX(),sharedCoord.getY());
 	}

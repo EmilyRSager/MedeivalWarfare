@@ -13,7 +13,7 @@ public final class SharedTile {
 	public enum Terrain { GRASS, TREE, MEADOW, TOMBSTONE, SEA };
 	
 	private final SharedColor color;
-	private final SharedCoordinates coord;
+	private final Coordinates coord;
 	private final Terrain terrain;
 	private final boolean hasRoad;
 	
@@ -38,7 +38,7 @@ public final class SharedTile {
 	 * @param wood : the wood of the village on this SharedTile
 	 * @throws IllegalArgumentException if the color or the coordinates are invalid
 	 */
-	public SharedTile(SharedColor color, SharedCoordinates coordinates, Terrain terrain, boolean hasRoad, UnitType unit, VillageType village, int gold, int wood)
+	public SharedTile(SharedColor color, Coordinates coordinates, Terrain terrain, boolean hasRoad, UnitType unit, VillageType village, int gold, int wood)
 	{
 		if (color==null || coordinates==null)
 			throw new IllegalArgumentException("A SharedTile needs a color and coordinates");
@@ -60,7 +60,7 @@ public final class SharedTile {
 	 * @param hasRoad : represents the fact that the SharedTile has a road or not
 	 * @param unit : the unit type of the unit on the SharedTile
 	 */
-	public SharedTile(SharedColor color, SharedCoordinates coordinates, Terrain terrain, boolean hasRoad, UnitType unit)
+	public SharedTile(SharedColor color, Coordinates coordinates, Terrain terrain, boolean hasRoad, UnitType unit)
 	{
 		this(color,coordinates,terrain,hasRoad,unit,VillageType.NONE,0,0);
 	}
@@ -72,7 +72,7 @@ public final class SharedTile {
 	 * @param terrain : the Terrain of the SharedTile
 	 * @param hasRoad : represents the fact that the SharedTile has a road or not
 	 */
-	public SharedTile(SharedColor color, SharedCoordinates coordinates, Terrain terrain, boolean hasRoad)
+	public SharedTile(SharedColor color, Coordinates coordinates, Terrain terrain, boolean hasRoad)
 	{
 		this(color,coordinates,terrain,hasRoad,UnitType.NONE,VillageType.NONE,0,0);
 	}
@@ -84,7 +84,7 @@ public final class SharedTile {
 		return color;
 	}
 	
-	public SharedCoordinates getCoordinates() {
+	public Coordinates getCoordinates() {
 		return coord;
 	}
 	
