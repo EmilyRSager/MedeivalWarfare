@@ -3,7 +3,6 @@ package mw.client.controller.translator;
 import mw.client.model.Coordinates;
 import mw.client.model.ModelTile;
 import mw.client.model.ModelTile.StructureType;
-import mw.shared.Coordinates;
 import mw.shared.SharedTile;
 
 /**
@@ -22,7 +21,7 @@ public final class NetworkModelTranslator {
 	{
 		if (sharedTile==null)
 			return null;
-		ModelTile newTile = new ModelTile(sharedTile.getCoordinates().getX(), sharedTile.getCoordinates().getY());
+		ModelTile newTile = new ModelTile(sharedTile.getCoordinates().X, sharedTile.getCoordinates().Y);
 		newTile.setColor(sharedTile.getColor());
 		newTile.setRoad(sharedTile.hasRoad());
 		newTile.setStructureType(translateSharedVillageType(sharedTile.getVillage()));
@@ -40,9 +39,9 @@ public final class NetworkModelTranslator {
 	 * @param sharedCoord the SharedCoordinates to be translated
 	 * @return a Model Coordinates that represents the given sharedCoord
 	 */
-	public static Coordinates translateSharedCoordinates(Coordinates sharedCoord)
+	public static Coordinates translateSharedCoordinates(mw.shared.Coordinates sharedCoord)
 	{
-		return new Coordinates(sharedCoord.getX(),sharedCoord.getY());
+		return new Coordinates(sharedCoord.X,sharedCoord.Y);
 	}
 	
 	/**

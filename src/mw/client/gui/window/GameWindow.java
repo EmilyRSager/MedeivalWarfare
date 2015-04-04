@@ -8,7 +8,11 @@ import java.util.Observer;
 import mw.client.controller.guimodel.ActionInterpreter;
 import mw.client.controller.guimodel.ChoiceCenter;
 import mw.client.controller.guimodel.ChoiceCenter.ChoiceType;
+import mw.client.gui.api.basics.ObservableWindowComponent;
+import mw.client.gui.api.basics.ObservableWindowComponent.ChangedState;
+import mw.client.gui.api.basics.WindowComponent;
 import mw.client.gui.api.components.AbstractButton;
+import mw.client.gui.api.components.ResizableWindow;
 import mw.client.gui.api.components.TextDisplay;
 import mw.client.gui.api.extminueto.ExtendedMinuetoColor;
 import mw.client.gui.api.interactive.TextField;
@@ -30,7 +34,7 @@ public class GameWindow implements Observer {
 	public static final int DEFAULT_MAP_HEIGHT = 600;
 	public static final int CONTROL_LAYOUT_HEIGHT = 150;
 	
-	private final MinuetoFrame window;
+	private final ResizableWindow window;
 	private final MinuetoEventQueue queue;
 	private MapDisplay md;
 	private MapComponent mapComp;
@@ -68,13 +72,12 @@ public class GameWindow implements Observer {
 		
 		windowLayout.addComponent(mapComp, 0);
 		windowLayout.addComponent(controlBarLayout, 2);
-		window = new MinuetoFrame(windowLayout.getWidth(), windowLayout.getHeight(), true);
+		window = new ResizableWindow(windowLayout.getWidth(), windowLayout.getHeight(), queue, "Medieval Warfare");
 		
 		mapComp.setWindow(this);
 		windowLayout.setWindow(this);
 		//controlBarLayout.setWindow(this);
 		window.setVisible(true);
-		window.setTitle("Medieval Warfare");
 		GameWindow dumbRef = this;
 		window.registerFocusHandler(new MinuetoFocusHandler() {
 			
@@ -111,22 +114,22 @@ public class GameWindow implements Observer {
 
 	public void registerMouseHandler(MinuetoMouseHandler h)
 	{
-		window.registerMouseHandler(h, queue);
+		window.registerMouseHandler(h);
 	}
 
 	public void unregisterMouseHandler(MinuetoMouseHandler h)
 	{
-		window.unregisterMouseHandler(h, queue);
+		window.unregisterMouseHandler(h);
 	}
 
 	public void registerKeyboardHandler(MinuetoKeyboardHandler h) 
 	{
-		window.registerKeyboardHandler(h, queue);
+		window.registerKeyboardHandler(h);
 	}
 
 	public void unregisterKeyboardHandler(MinuetoKeyboardHandler h) 
 	{
-		window.unregisterKeyboardHandler(h, queue);
+		window.unregisterKeyboardHandler(h);
 	}
 	
 	public void displayVillageResources(int gold, int wood)
@@ -191,7 +194,7 @@ public class GameWindow implements Observer {
 	
 	public void removeEndTurnButton()
 	{
-		window.unregisterMouseHandler(endTurn, queue);
+		window.unregisterMouseHandler(endTurn);
 		windowLayout.removeComponent(1);
 		//this.render();
 	}
@@ -201,7 +204,7 @@ public class GameWindow implements Observer {
 		controlBarLayout.removeComponent(1);
 		controlBarLayout.removeComponent(2);
 		for (AbstractButton b : choiceButtonsList)
-			window.unregisterMouseHandler(b, queue);
+			window.unregisterMouseHandler(b);
 		choiceButtonsList = new ArrayList<AbstractButton>();
 		//render();
 	}
@@ -233,6 +236,15 @@ public class GameWindow implements Observer {
 
 	@Override
 	public void update(Observable o, Object arg) {
+		if (arg instanceof ChangedState) {
+			ChangedState changedState = (ChangedState)arg;
+			WindowComponent comp = (WindowComponent)o;
+			if (changedState == ChangedState.SIZE && comp == windowLayout) {
+				System.out.println("[GameWindow] The layout now has size "+comp.getWidth()+", "+comp.getHeight());
+				window.resize(comp.getWidth(), comp.getHeight());
+				comp.drawOn(window);
+			}
+		}
 		render();
 	}
 
