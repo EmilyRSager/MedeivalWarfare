@@ -7,12 +7,7 @@ public class EndTurnCommand extends AbstractServerCommand{
 	private final String aType = "EndTurnCommand";
 	
 	@Override
-	public boolean isValid(Integer pClientID) {
-		return true;
-	}
-
-	@Override
-	public void execute(Integer pClientID) {
+	public void execute(Integer pClientID) throws Exception {
 		EndTurnController.endTurn(GameMapper.getInstance().getGame(pClientID), pClientID);
 	}
 }

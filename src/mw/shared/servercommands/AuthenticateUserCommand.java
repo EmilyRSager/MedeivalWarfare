@@ -25,25 +25,8 @@ public class AuthenticateUserCommand extends AbstractServerCommand {
 	}
 
 	@Override
-	public boolean isValid(Integer pClientID) {
-		/*
-		 * Need to load from a database at server startup. This might need to be a database query.
-		 */
-		Account lAccount = AccountDatabase.getInstance().getAccount(aUsername);
-		if(lAccount.hasCredentials(aPassword)){
-			return true;
-		}
-		
-		return false;
-	}
-
-	@Override
-	public void execute(Integer pClientID) {
-		AccountMapper.getInstance().putAccounts(pClientID,
-				AccountDatabase.getInstance().getAccount(aUsername);
-		
-		AdminCommandController.getInstance().sendCommand(
-				new AccountVerifiedCommand());
+	public void execute(Integer pClientID) throws Exception {
+		//TODO
 	}
 
 }

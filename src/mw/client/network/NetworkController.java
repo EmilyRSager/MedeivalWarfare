@@ -24,7 +24,7 @@ public class NetworkController {
 	 * @param pServerChannel
 	 */
 	public static void initialize(){
-		if(aServerChannel == null){			
+		if(aServerChannel == null){
 			aServerChannel = new ServerChannel();
 		}
 	}

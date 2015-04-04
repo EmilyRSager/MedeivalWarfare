@@ -12,15 +12,6 @@ import mw.server.network.controllers.GameInitializationController;
  */
 public class RequestNewGameCommand extends AbstractServerCommand {
 	private final String aType = "RequestNewGameCommand";
-	
-	/**
-	 * @param pClientID
-	 * @see mw.shared.servercommands.AbstractServerCommand#isValid(java.lang.Integer)
-	 */
-	@Override	
-	public boolean isValid(Integer pClientID) {
-		return true;
-	}
 
 	/**
 	 * Adds pClientID to the global GameLobby. This will initiate the creation of a Game
@@ -30,7 +21,7 @@ public class RequestNewGameCommand extends AbstractServerCommand {
 	 * @see mw.shared.servercommands.AbstractServerCommand#execute(java.lang.Integer)
 	 */
 	@Override
-	public void execute(Integer pClientID) {
+	public void execute(Integer pClientID) throws Exception{
 		GameInitializationController.getInstance().requestNewGame(pClientID);
 	}
 

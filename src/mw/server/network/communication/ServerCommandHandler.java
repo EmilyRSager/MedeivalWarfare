@@ -8,6 +8,8 @@ package mw.server.network.communication;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
+import mw.server.network.mappers.ClientChannelMapper;
+import mw.shared.clientcommands.ErrorMessageCommand;
 import mw.shared.servercommands.AbstractServerCommand;
 
 /** 
@@ -66,7 +68,7 @@ public class ServerCommandHandler {
 	/*
 	 * Nested Thread class ServerCommandHandlerThread handles all ServerCommands, for all games.
 	 */
-	class ServerCommandHandlerThread extends Thread{
+	class ServerCommandHandlerThread extends Thread {
 		public void run(){
 			while(true){
 				try {
@@ -74,12 +76,11 @@ public class ServerCommandHandler {
 					AbstractServerCommand lServerCommand = lServerCommandWrapper.getServerCommand();
 					int lClientID = lServerCommandWrapper.getClientID();
 					
-					if(! lServerCommand.isValid(lClientID)){
-						
-					}
-					
-					else{
+					try {
 						lServerCommand.execute(lClientID);
+					} catch (Exception e) {
+						ClientChannelMapper.getInstance().getChannel(lClientID).sendCommand(
+								new ErrorMessageCommand(e.getMessage()));
 					}
 					
 				} catch (InterruptedException e) {

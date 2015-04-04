@@ -11,12 +11,13 @@ import mw.client.controller.guimodel.GameInitializer;
 import mw.client.controller.model.NewStateApplier;
 import mw.client.model.Game;
 import mw.client.model.ModelTile;
+import mw.shared.Coordinates;
 import mw.shared.SharedColor;
-import mw.shared.SharedCoordinates;
 import mw.shared.SharedTile;
 import mw.client.gui.window.GameWindow;
 
 import org.minueto.MinuetoEventQueue;
+import org.minueto.MinuetoEventQueueEmptyException;
 
 public final class GUITest {
 	
@@ -51,14 +52,19 @@ public final class GUITest {
 		gameWindow.testAddTextField();
 		
 		
-		while(true)
+		/*while(true)
 		{
 			MinuetoEventQueue queue = gameWindow.getEventQueue();
 			while(queue.hasNext())
 			{
-				queue.handle();
+				try {
+					queue.handle();
+				}
+				catch (MinuetoEventQueueEmptyException e) {
+					System.out.println("The event queue has a next element, but is empty");
+				}
 			}
-		}
+		}*/
 	}
 
 	
@@ -77,7 +83,7 @@ public final class GUITest {
 	{
 		Random r = new Random();
 		SharedTile newST = new SharedTile(c,
-					new SharedCoordinates(r.nextInt(DEFAULT_MAP_HEIGHT), r.nextInt(DEFAULT_MAP_WIDTH)),
+					new Coordinates(r.nextInt(DEFAULT_MAP_HEIGHT), r.nextInt(DEFAULT_MAP_WIDTH)),
 					SharedTile.Terrain.SEA, false,
 					SharedTile.UnitType.NONE,
 					SharedTile.VillageType.NONE, 0, 0);

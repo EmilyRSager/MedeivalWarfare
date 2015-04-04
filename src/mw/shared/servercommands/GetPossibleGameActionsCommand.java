@@ -15,19 +15,9 @@ public class GetPossibleGameActionsCommand extends AbstractServerCommand {
 	public GetPossibleGameActionsCommand(Coordinates pSharedCoordinates) {
 		aSharedCoordinates = pSharedCoordinates;
 	}
-	
-	/**
-	 * 
-	 * @param pClientID
-	 * @return true if move is valid.
-	 */
-	@Override
-	public boolean isValid(Integer pClientID) {
-		return true;
-	}
 
 	@Override
-	public void execute(Integer pClientID) {
+	public void execute(Integer pClientID) throws Exception {
 		GetPossibleActionsController.getPossibleActions(
 				pClientID,
 				GameMapper.getInstance().getGame(pClientID),
