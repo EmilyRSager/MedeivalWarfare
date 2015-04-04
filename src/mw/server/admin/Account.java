@@ -6,8 +6,11 @@
 package mw.server.admin;
 
 import java.util.List;
+import java.util.UUID;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
 import mw.client.model.Game;
 
 /**
@@ -17,7 +20,7 @@ import mw.client.model.Game;
  * TODO This class could be an observer of current game and be updated of necessary information.
  */
 public class Account {
-	private int aID;
+	private UUID aUUID;
 	private String aUserName;
 	private String aPassword;
 	private int aWins, aLosses;
@@ -28,8 +31,8 @@ public class Account {
 	 * @param pUsername
 	 * @param pPassword
 	 */
-	public Account(int pID, String pUsername, String pPassword){
-		aID = pID;
+	public Account(UUID pUUID, String pUsername, String pPassword){
+		aUUID = pUUID;
 		aUserName = pUsername;
 		aPassword = pPassword;
 		aWins = 0;
@@ -56,8 +59,8 @@ public class Account {
 	/**
 	 * @return this account's ID
 	 */
-	public int getID(){
-		return aID;
+	public UUID getID(){
+		return aUUID;
 	}
 
 	/**
@@ -105,7 +108,7 @@ public class Account {
 	}
 	
 	@Override public String toString(){
-		return new Gson().toJson(this);
+		return new GsonBuilder().setPrettyPrinting().create().toJson(this);
 	}
 	
 	@Override public boolean equals(Object pObject){
@@ -113,6 +116,6 @@ public class Account {
 			return false;
 		}
 		Account lTargetAccount = (Account)pObject;
-		return aID == lTargetAccount.getID();
+		return aUUID == lTargetAccount.getID();
 	}
 }

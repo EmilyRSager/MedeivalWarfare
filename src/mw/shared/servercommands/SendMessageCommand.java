@@ -27,21 +27,6 @@ public class SendMessageCommand extends AbstractServerCommand {
 		aMessage = pMessage;
 		aRecipientClientIDs = pRecipientClientIDs;
 	}
-	
-	/**
-	 * @param int pClientID, the identification number the client who sent this message to the server.
-	 * @see mw.shared.servercommands.AbstractNetworkMessage#isValid(int)
-	 */
-	@Override
-	public boolean isValid(Integer pClientID) {
-		//if not all recipients are available, the message is invalid. 
-		if(!ClientChannelMapper.getInstance().containsAll(aRecipientClientIDs)){
-			return false;
-		}
-		
-		return true;
-	}
-
 	/**
 	 * The point of this test class is to write this function. A TestServerMessage object will be created
 	 * on the client, serialized, sent over the network to the server, deserialized by the server, and then
@@ -55,7 +40,11 @@ public class SendMessageCommand extends AbstractServerCommand {
 	 * @see mw.shared.servercommands.AbstractNetworkMessage#execute(int)
 	 */
 	@Override
-	public void execute(Integer pClientID) {
+	public void execute(Integer pClientID) throws Exception {
+		//if not all recipients are available, the message is invalid. 
+		if(!ClientChannelMapper.getInstance().containsAll(aRecipientClientIDs)){
+			throw new Exception();
+		}
 		AdminCommandController.getInstance().distributeChatMessage(aMessage, aRecipientClientIDs);
 	}
 }

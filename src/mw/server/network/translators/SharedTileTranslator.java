@@ -152,11 +152,11 @@ public class SharedTileTranslator {
 	
 	/**
 	 * 
-	 * @param pCoordinates
+	 * @param coordinates
 	 * @return
 	 */
-	public static Coordinates translateCoordinates(int[] pCoordinates){
-		return new Coordinates(pCoordinates[0], pCoordinates[1]);
+	public static Coordinates translateCoordinates(Coordinates coordinates){
+		return coordinates;
 	}
 
 	/**

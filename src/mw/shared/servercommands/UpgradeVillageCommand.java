@@ -26,20 +26,11 @@ public class UpgradeVillageCommand extends AbstractServerCommand {
 		aVillageCoordinates = pVillageCoordinates;
 		aVillageType = pVillageType;
 	}
-	
-	/**
-	 * @see mw.shared.servercommands.AbstractServerCommand#isValid(java.lang.Integer)
-	 */
-	@Override
-	public boolean isValid(Integer pClientID) {
-		return true;
-	}
-
 	/**
 	 * @see mw.shared.servercommands.AbstractServerCommand#execute(java.lang.Integer)
 	 */
 	@Override
-	public void execute(Integer pClientID) {
+	public void execute(Integer pClientID) throws Exception {
 		GameController.upgradeVillage(
 				GameMapper.getInstance().getGame(pClientID),
 				aVillageCoordinates,

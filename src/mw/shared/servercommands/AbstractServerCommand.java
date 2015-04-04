@@ -15,6 +15,5 @@ public abstract class AbstractServerCommand {
 	 * correct type on the server.
 	 */
 	
-	public abstract boolean isValid(Integer pClientID);
-	public abstract void execute(Integer pClientID);
+	public abstract void execute(Integer pClientID) throws Exception;
 }

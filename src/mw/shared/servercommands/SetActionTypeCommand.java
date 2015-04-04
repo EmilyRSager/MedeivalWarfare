@@ -30,18 +30,10 @@ public class SetActionTypeCommand extends AbstractServerCommand {
 	}
 
 	/**
-	 * @see mw.shared.servercommands.AbstractServerCommand#isValid(java.lang.Integer)
-	 */
-	@Override
-	public boolean isValid(Integer pClientID) {
-		return true;
-	}
-
-	/**
 	 * @see mw.shared.servercommands.AbstractServerCommand#execute(java.lang.Integer)
 	 */
 	@Override
-	public void execute(Integer pClientID) {
+	public void execute(Integer pClientID) throws Exception {
 		GameController.setActionType(
 				GameMapper.getInstance().getGame(pClientID),
 				aUnitCoordinates,

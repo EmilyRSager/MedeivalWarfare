@@ -1,28 +1,111 @@
 package mw.server.admin;
 
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Scanner;
+import java.util.UUID;
 
+import com.google.gson.Gson;
+
+import mw.util.Cache;
+import mw.util.CacheValueComputer;
 import mw.filesystem.ProjectFolder;
 
 public class AccountManager {
-	private static final String ACCOUNT_DATA_FILE_NAME = "accountdata.txt";
+	private static final String ACCOUNTS_FOLDER_PATH = "accountdata/accounts/";
+	private static AccountManager aAccountManager;
+	private HashMap<UUID, Account> aAccountCache;
+	
+	/**
+	 * Constructor
+	 */
+	private AccountManager(){
+		aAccountCache = new HashMap<UUID, Account>();
+	}
+	
+	/**
+	 * @return static singleton instance
+	 */
+	public static AccountManager getInstance(){
+		if(aAccountManager == null){
+			aAccountManager = new AccountManager();
+		}
+		
+		return aAccountManager;
+	}
+	
+	/**
+	 * Creates a new account 
+	 * @param pUsername
+	 * @param pPassword
+	 * @return 
+	 * @throws Exception
+	 */
+	public Account createAccount(String pUsername, String pPassword) throws Exception{
+		//TODO verify account doesn't exist already
+		UUID lUUID = UUID.randomUUID();
+		Account lNewAccount = new Account(lUUID, pUsername, pPassword);
+		
+		saveAccountData(lNewAccount);
+		
+		
+		aAccountCache.put(lUUID, lNewAccount);
+		return lNewAccount;
+	}
+	
+	/**
+	 * @param pUUID
+	 * @return
+	 */
+	public Account getAccount(UUID pUUID){
+		if(aAccountCache.containsKey(pUUID)){
+			return aAccountCache.get(pUUID);
+		}
+		else{
+			Account lAccount = loadAccount(pUUID);
+			aAccountCache.put(pUUID, lAccount);
+			return lAccount;
+		}
+	}
+	
+	/**
+	 * @param pUUID
+	 * @return
+	 */
+	private Account loadAccount(UUID pUUID){
+		Scanner lScanner = new Scanner(getAccountsFilePath(pUUID));
+		
+		String lSerializedAccount = null;
+		while(lScanner.hasNextLine()){
+			lSerializedAccount += lScanner.nextLine();
+		}
+		
+		Account lAccount = new Gson().fromJson(lSerializedAccount, Account.class);
+		
+		lScanner.close();
+		return lAccount;
+	}
 
-	public static void saveAccount(Account pAccount){
+	/**
+	 * @param pAccount
+	 */
+	public void saveAccountData(Account pAccount){
 		FileWriter lFileWriter = null;
 		try {
-			lFileWriter = new FileWriter(getAccountDataFilePath());
-		} catch (IOException e) {
+			String lAccountFilePath = getAccountsFilePath(pAccount.getID());
+			System.out.println(lAccountFilePath);
+			lFileWriter = new FileWriter(lAccountFilePath);
+		} catch (IOException e){
 			System.out.println("[AccountSerializer] Failed to load the account data file.");
 			e.printStackTrace();
 		}
-		
-		String lSerializedAccount = pAccount.toString();
-		System.out.println("[AccountSerializer] Writing following account info to data file:");
-		System.out.println(lSerializedAccount);
 
 		try {
-			lFileWriter.append(pAccount.toString());
+			
+			lFileWriter.write(pAccount.toString());
 		} catch (IOException e) {
 			System.out.println("[AccountSerializer] Failed to write account data to the account data file.");
 			e.printStackTrace();
@@ -32,24 +115,26 @@ public class AccountManager {
 			try {
 				lFileWriter.close();
 			} catch (IOException e) {
-				System.out.println("[AccountSerializer] Failed to ");
+				System.out.println("[AccountSerializer] Failed to close file writer.");
 				e.printStackTrace();
 			}
 		}
 	}
 
-	public static Account loadAccount(int pAccountID){
-		Account lAccount = null;
-
-		return lAccount;
-	}
-
-	private static String getAccountDataFilePath(){
-		return ProjectFolder.getPath() + ACCOUNT_DATA_FILE_NAME;
+	private static String getAccountsFilePath(UUID pAccountID){
+		return ProjectFolder.getPath() + ACCOUNTS_FOLDER_PATH + pAccountID;
 	}
 
 	public static void main(String[] args) {
-		Account a = new Account(1, "Charlie", "Hugo");
-		saveAccount(a);
+		Account a;
+		try {
+			a = AccountManager.getInstance().createAccount("Charlie", "Hugo");
+			a.incrementLosses();
+			a.incrementWins();
+			AccountManager.getInstance().saveAccountData(a);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 }

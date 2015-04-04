@@ -28,22 +28,13 @@ public class UpgradeUnitCommand extends AbstractServerCommand {
 		aUnitCoordinates = pUnitCoordinates;
 		aUnitType = pUnitType;
 	}
-	
-	/**
-	 * @see mw.shared.servercommands.AbstractServerCommand#isValid(java.lang.Integer)
-	 * @param pClientID
-	 */
-	@Override
-	public boolean isValid(Integer pClientID) {
-		return true;
-	}
 
 	/**
 	 * @see mw.shared.servercommands.AbstractServerCommand#execute(java.lang.Integer)
 	 * @param pClientID
 	 */
 	@Override
-	public void execute(Integer pClientID) {
+	public void execute(Integer pClientID) throws Exception {
 		GameController.upgradeUnit(
 				GameMapper.getInstance().getGame(pClientID),
 				aUnitCoordinates,

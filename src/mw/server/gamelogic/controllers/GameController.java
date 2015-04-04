@@ -53,7 +53,6 @@ public class GameController {
 	}
 	
 	/**
-	 * 
 	 * @param pGame
 	 * @param pCoordinates
 	 * @return
@@ -75,7 +74,6 @@ public class GameController {
 	}
 
 	/**
-	 * 
 	 * @param pGame
 	 * @param pCoordinates
 	 * @param upgradeType
@@ -87,7 +85,6 @@ public class GameController {
 	}
 
 	/**
-	 * 
 	 * @param pGame
 	 * @param pSourceCoordinates
 	 * @param pDestination
@@ -98,7 +95,6 @@ public class GameController {
 	}
 
 	/**
-	 * 
 	 * @param pGame
 	 * @param pUnitCoordinates
 	 * @param pActionType
@@ -109,7 +105,6 @@ public class GameController {
 	}
 
 	/**
-	 * 
 	 * @param pGame
 	 * @param pUnitCoordinatess
 	 * @param upgradeType
@@ -125,7 +120,6 @@ public class GameController {
 	}
 
 	/**
-	 * 
 	 * @param pGame
 	 * @param pVillageCoordinates
 	 * @param pVillageType
