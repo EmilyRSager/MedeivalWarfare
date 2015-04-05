@@ -39,7 +39,7 @@ public class SwingLoginWindow {
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				boolean status = MenuActionSender.tryLogin(username.getText(), password.getText());
+				boolean status = MenuActionSender.tryCreateAccount(username.getText(), password.getText());
 				if (status)
 					System.out.println("You successfuly logged in !");
 				else

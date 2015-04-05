@@ -2,10 +2,13 @@ package mw.server.network.controllers;
 
 
 
-import mw.server.gamelogic.controllers.GameController;
+import java.util.UUID;
 
+import mw.server.gamelogic.controllers.GameController;
 import mw.server.gamelogic.state.Game;
 import mw.server.gamelogic.state.Player;
+import mw.server.network.communication.ClientCommunicationController;
+import mw.server.network.mappers.AccountMapper;
 import mw.server.network.mappers.ClientChannelMapper;
 import mw.server.network.mappers.PlayerMapper;
 import mw.shared.clientcommands.NotifyBeginTurnCommand;
@@ -24,8 +27,9 @@ public class EndTurnController {
 	 * clients is not smart (I don't think, maybe it's ok).
 	 * @param pGame
 	 */
-	public static void endTurn(Game pGame, Integer pEndingClientID){
-		ClientChannelMapper.getInstance().getChannel(pEndingClientID).sendCommand(new NotifyEndTurnCommand());
+	public static void endTurn(Game pGame, UUID pEndingAccountID){
+		Integer lEndingClientID = AccountMapper.getInstance().getClientID(pEndingAccountID);
+		ClientChannelMapper.getInstance().getChannel(lEndingClientID).sendCommand(new NotifyEndTurnCommand());
 		
 		GameController.endTurn(pGame);
 		
@@ -33,9 +37,7 @@ public class EndTurnController {
 		Player lNewCurrentPlayer = GameController.getCurrentPlayer(pGame);
 		
 		//get the client associated with the current player
-		Integer lClientID = PlayerMapper.getInstance().getClient(lNewCurrentPlayer);
-		
-		//Notify client 
-		ClientChannelMapper.getInstance().getChannel(lClientID).sendCommand(new NotifyBeginTurnCommand());
+		UUID lAccountID = PlayerMapper.getInstance().getAccount(lNewCurrentPlayer);
+		ClientCommunicationController.sendCommand(lAccountID, new NotifyBeginTurnCommand());
 	}
 }

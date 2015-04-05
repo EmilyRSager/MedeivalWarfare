@@ -17,7 +17,7 @@ import mw.server.network.communication.ClientChannel;
  * based on their IDs.
  */
 public class ClientChannelMapper {
-	private static ClientChannelMapper aClientChannelManagerInstance;
+	private static ClientChannelMapper aClientChannelMapper;
 	private ConcurrentMap<Integer, ClientChannel> aClientChannelMap;
 	
 	private ClientChannelMapper(){
@@ -30,11 +30,11 @@ public class ClientChannelMapper {
 	 * @return the static ClientChannelManager instance
 	 */
 	public static ClientChannelMapper getInstance(){
-		if(aClientChannelManagerInstance == null){
-			aClientChannelManagerInstance = new ClientChannelMapper();
+		if(aClientChannelMapper == null){
+			aClientChannelMapper = new ClientChannelMapper();
 		}
 		
-		return aClientChannelManagerInstance;
+		return aClientChannelMapper;
 	}
 	
 	/**
@@ -97,6 +97,6 @@ public class ClientChannelMapper {
 	 * @return none
 	 */
 	public void removeChannel(int pClientID){
-		aClientChannelManagerInstance.removeChannel(pClientID);
+		aClientChannelMap.remove(pClientID);
 	}
 }
