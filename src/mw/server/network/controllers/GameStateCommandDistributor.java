@@ -8,10 +8,14 @@ package mw.server.network.controllers;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.Set;
+import java.util.UUID;
+
+import com.sun.org.apache.xerces.internal.parsers.IntegratedParserConfiguration;
 
 import mw.server.gamelogic.state.Game;
 import mw.server.gamelogic.state.Tile;
 import mw.server.network.communication.ClientChannel;
+import mw.server.network.mappers.AccountMapper;
 import mw.server.network.mappers.ClientChannelMapper;
 import mw.server.network.translators.SharedTileTranslator;
 import mw.shared.SharedTile;
@@ -24,7 +28,7 @@ import mw.shared.clientcommands.UpdateTileCommand;
  * There will be one instance of this class observing each game that exists on the server.
  */
 public class GameStateCommandDistributor implements Observer {
-	private Set<Integer> aClientIDs; //the set of clients who are participating in a Game instance
+	private Set<UUID> aAccountIDs; //the set of clients who are participating in a Game instance
 	
 	/**
 	 * As of right now, this class passes a Game object to the SharedTileTranslator, which passes
@@ -35,10 +39,10 @@ public class GameStateCommandDistributor implements Observer {
 
 	/**
 	 * Constructor.
-	 * @param a set of ClientIDs to be notified of changes to GameState
+	 * @param a set of AccountIDs to be notified of changes to GameState
 	 */
-	public GameStateCommandDistributor(Set<Integer> pClientIDs, Game pGame) {
-		aClientIDs = pClientIDs;
+	public GameStateCommandDistributor(Set<UUID> pAccountIDs, Game pGame) {
+		aAccountIDs = pAccountIDs;
 		aGame = pGame;
 	}
 
@@ -70,21 +74,26 @@ public class GameStateCommandDistributor implements Observer {
 	}
 
 	/**
-	 * Invokes sendCommand on each client in the set aClientIDs. 
+	 * Invokes sendCommand on each client in the set aAccountIDs. 
 	 * @param pClientMessage
 	 */
 	private void distributeCommand(AbstractClientCommand pClientCommand) {
-		for(ClientChannel lClientOnServer : ClientChannelMapper.getInstance().getChannelSet(aClientIDs)){
-			lClientOnServer.sendCommand(pClientCommand);
+		for(UUID lUUID : aAccountIDs){
+			//check which user is logged on, send them a message updating the game state
+			if(AccountMapper.getInstance().containsAccountIDKey(lUUID)){
+				Integer lClientID = AccountMapper.getInstance().getClientID(lUUID);
+				ClientChannel lTargetChannel = ClientChannelMapper.getInstance().getChannel(lClientID);
+				lTargetChannel.sendCommand(pClientCommand);
+			}
 		}
 	}
 	
 	/**
 	 * 
-	 * @param pClientIDs
+	 * @param pAccountIDs
 	 * @return
 	 */
-	private Integer extractRandom(Set<Integer> pClientIDs){
-		return pClientIDs.iterator().next();
+	private UUID extractRandom(Set<UUID> pAccountIDs){
+		return pAccountIDs.iterator().next();
 	}
 }

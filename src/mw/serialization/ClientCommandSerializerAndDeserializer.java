@@ -17,6 +17,7 @@ import mw.shared.clientcommands.NotifyBeginTurnCommand;
 import mw.shared.clientcommands.NotifyEndTurnCommand;
 import mw.shared.clientcommands.SetColorCommand;
 import mw.shared.clientcommands.UpdateTileCommand;
+import mw.shared.clientcommands.UserAuthenticatedCommand;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -39,6 +40,7 @@ public class ClientCommandSerializerAndDeserializer {
 		aTypeMap.put("SetColorCommand", new TypeToken<SetColorCommand>(){}.getType());
 		aTypeMap.put("UpdateTileCommand", new TypeToken<UpdateTileCommand>(){}.getType());
 		aTypeMap.put("ErrorMessageCommand", new TypeToken<ErrorMessageCommand>(){}.getType());
+		aTypeMap.put("UserAuthenticatedCommand", new TypeToken<UserAuthenticatedCommand>(){}.getType());
 	}
 	
 	/**

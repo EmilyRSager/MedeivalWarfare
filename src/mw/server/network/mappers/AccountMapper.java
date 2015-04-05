@@ -46,9 +46,9 @@ public class AccountMapper {
 	
 	/**
 	 * @param pClientID
-	 * @return Accoutn associated with pClientID if it exists
+	 * @return Account associated with pClientID if it exists
 	 */
-	public UUID getAccountUUID(Integer pClientID){
+	public UUID getAccountID(Integer pClientID){
 		return aUUIDMap.get(pClientID);
 	}
 	
@@ -60,12 +60,34 @@ public class AccountMapper {
 		return aClientIDMap.get(pUUID);
 	}
 	
+	/**
+	 * @param pClientID
+	 * @return
+	 */
+	public boolean containsClientIDKey(Integer pClientID){
+		return aUUIDMap.containsKey(pClientID);
+	}
+	
+	/**
+	 * @param pUUID
+	 * @return
+	 */
+	public boolean containsAccountIDKey(UUID pUUID){
+		return aClientIDMap.containsKey(pUUID);
+	}
+	
+	/**
+	 * @param pUUID
+	 */
 	public void remove(UUID pUUID){
 		Integer lTargetClientID = aClientIDMap.get(pUUID);
 		aUUIDMap.remove(lTargetClientID);
 		aClientIDMap.remove(pUUID);
 	}
 	
+	/**
+	 * @param pClientID
+	 */
 	public void remove(Integer pClientID){
 		UUID lTargetUUID = aUUIDMap.get(pClientID);
 		aUUIDMap.remove(pClientID);

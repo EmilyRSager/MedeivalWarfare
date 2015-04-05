@@ -1,15 +1,12 @@
 package mw.server.network.controllers;
 
 import java.util.Set;
+import java.util.UUID;
 
-import mw.client.controller.TestStuffProvider;
-import mw.server.network.communication.ClientChannel;
+import mw.server.network.mappers.AccountMapper;
 import mw.server.network.mappers.ClientChannelMapper;
-import mw.shared.SharedTile;
 import mw.shared.clientcommands.AbstractClientCommand;
 import mw.shared.clientcommands.MessageReceivedCommand;
-import mw.shared.clientcommands.NewGameCommand;
-import mw.shared.clientcommands.UpdateTileCommand;
 
 /**
  * @singleton
@@ -18,12 +15,6 @@ import mw.shared.clientcommands.UpdateTileCommand;
  */
 public class AdminCommandController {
 	private static AdminCommandController aAdminMessageDistributor;
-	private ClientChannelMapper aClientChannelManager;
-	
-	private AdminCommandController(){
-		aClientChannelManager = ClientChannelMapper.getInstance();
-	}
-	
 	/**
 	 * Singleton implementation
 	 * @return the static instance of AdminMessageDistributor
@@ -37,47 +28,30 @@ public class AdminCommandController {
 	}
 	
 	/**
-	 * TEST
-	 */
-	public void testSentGameCommand(){
-		
-		AbstractClientCommand lClientCommand = 
-				new NewGameCommand(TestStuffProvider.getNewSharedTiles(10, 10));
-		aClientChannelManager.getChannel(0).sendCommand(lClientCommand);
-	}
-	
-	/**
-	 * TEST sending a shared tile over the network.s
-	 * @param pSharedTile
-	 */
-	public void testSendSharedTileCommand(SharedTile pSharedTile){
-		AbstractClientCommand lClientCommand = 
-				new UpdateTileCommand(pSharedTile);
-		aClientChannelManager.getChannel(0).sendCommand(lClientCommand);
-	}
-	
-	/**
-	 * Reports an error message to client pClientID.
+	 * Reports an error message to client pAccountID.
 	 * @param pErrorString
-	 * @param pClientID
+	 * @param pAccountID
 	 */
-	public void reportErrorMessage(String pErrorMessage, Integer pClientID){
-		AbstractClientCommand lClientCommand = null;
+	public void reportErrorMessage(String pErrorMessage, UUID pAccountID){
+		AbstractClientCommand lAccountCommand = null;
+		Integer lClientID = AccountMapper.getInstance().getClientID(pAccountID);
 		
-		aClientChannelManager.getChannel(pClientID).sendCommand(lClientCommand);
+		ClientChannelMapper.getInstance().getChannel(lClientID).sendCommand(lAccountCommand);
 	}
 	
 	/**
-	 * Distributes a chat message to all the clients in the set pClientIDs.
+	 * Distributes a chat message to all the clients in the set pAccountIDs.
 	 * @param pString
-	 * @param pClientIDs
+	 * @param pAccountIDs
 	 */
-	public void distributeChatMessage(String pMessage, Set<Integer> pClientIDs){
-		AbstractClientCommand lClientCommand = 
-				new MessageReceivedCommand(pMessage);
+	public void distributeChatMessage(String pMessage, Set<UUID> pAccountIDs){
+		AbstractClientCommand lClientCommand = new MessageReceivedCommand(pMessage);
 		
-		for(ClientChannel lClientChannel : aClientChannelManager.getChannelSet(pClientIDs)){
-			lClientChannel.sendCommand(lClientCommand);
+		for(UUID lAccountID : pAccountIDs){
+			if(AccountMapper.getInstance().containsAccountIDKey(lAccountID)){
+				Integer lClientID = AccountMapper.getInstance().getClientID(lAccountID);
+				ClientChannelMapper.getInstance().getChannel(lClientID).sendCommand(lClientCommand);
+			}
 		}
 	}
 }

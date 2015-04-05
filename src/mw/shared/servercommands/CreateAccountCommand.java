@@ -4,6 +4,8 @@ import java.util.UUID;
 
 import mw.server.admin.AccountManager;
 import mw.server.network.mappers.AccountMapper;
+import mw.server.network.mappers.ClientChannelMapper;
+import mw.shared.clientcommands.AccountCreatedCommand;
 
 public class CreateAccountCommand extends AbstractServerCommand {
 	private final String aType = "CreateAccountCommand";
@@ -20,6 +22,7 @@ public class CreateAccountCommand extends AbstractServerCommand {
 		//TODO more elegantly deal with create account error
 		UUID lAccountUUID = AccountManager.getInstance().createAccount(aUsername, aPassword);
 		AccountMapper.getInstance().put(pClientID, lAccountUUID);
+		ClientChannelMapper.getInstance().getChannel(pClientID).sendCommand(new AccountCreatedCommand());
 	}
 
 }
