@@ -21,7 +21,7 @@ import mw.client.model.Game;
  */
 public class Account {
 	private UUID aUUID;
-	private String aUserName;
+	private String aUsername;
 	private String aPassword;
 	private int aWins, aLosses;
 	private Game aCurrentGame;
@@ -33,7 +33,7 @@ public class Account {
 	 */
 	public Account(UUID pUUID, String pUsername, String pPassword){
 		aUUID = pUUID;
-		aUserName = pUsername;
+		aUsername = pUsername;
 		aPassword = pPassword;
 		aWins = 0;
 		aLosses = 0;
@@ -64,10 +64,17 @@ public class Account {
 	}
 
 	/**
+	 * @return account password
+	 */
+	public String getPassword(){
+		return aPassword;
+	}
+	
+	/**
 	 * @return the Account's userName
 	 */
-	public String getUserName() {
-		return aUserName;
+	public String getUsername() {
+		return aUsername;
 	}
 	
 	/**
@@ -108,7 +115,7 @@ public class Account {
 	}
 	
 	@Override public String toString(){
-		return new GsonBuilder().setPrettyPrinting().create().toJson(this);
+		return new Gson().toJson(this);
 	}
 	
 	@Override public boolean equals(Object pObject){

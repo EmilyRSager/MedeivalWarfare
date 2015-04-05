@@ -11,6 +11,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 import mw.server.network.mappers.ClientChannelMapper;
 import mw.shared.clientcommands.ErrorMessageCommand;
 import mw.shared.servercommands.AbstractServerCommand;
+import mw.util.Tuple2;
 
 /** 
  * @singleton
@@ -25,14 +26,14 @@ import mw.shared.servercommands.AbstractServerCommand;
 public class ServerCommandHandler {
 	
 	private static ServerCommandHandler aServerCommandHandler;
-	private BlockingQueue<ServerCommandWrapper> aServerCommandQueue;
+	private BlockingQueue<Tuple2<AbstractServerCommand, Integer>> aServerCommandQueue;
 	
 	/**
 	 * Constructor. Initiates a ServerCommandHandlerThread, which exists for the entire execution
 	 * of the server program.
 	 */
 	private ServerCommandHandler(){
-		aServerCommandQueue = new LinkedBlockingQueue<ServerCommandWrapper>();
+		aServerCommandQueue = new LinkedBlockingQueue<Tuple2<AbstractServerCommand,Integer>>();
 		ServerCommandHandlerThread lServerCommandHandlerThread = new ServerCommandHandlerThread();
 		lServerCommandHandlerThread.start();
 	}
@@ -57,8 +58,7 @@ public class ServerCommandHandler {
 	 */
 	public synchronized void handle(AbstractServerCommand pServerCommand, int pClientID){
 		try {
-			aServerCommandQueue.put(
-					new ServerCommandWrapper(pServerCommand, pClientID));
+			aServerCommandQueue.put(new Tuple2<AbstractServerCommand, Integer>(pServerCommand, pClientID));
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -72,9 +72,9 @@ public class ServerCommandHandler {
 		public void run(){
 			while(true){
 				try {
-					ServerCommandWrapper lServerCommandWrapper = aServerCommandQueue.take();
-					AbstractServerCommand lServerCommand = lServerCommandWrapper.getServerCommand();
-					int lClientID = lServerCommandWrapper.getClientID();
+					Tuple2<AbstractServerCommand, Integer> lCommandTuple = aServerCommandQueue.take();
+					AbstractServerCommand lServerCommand = lCommandTuple.getVal1();
+					int lClientID = lCommandTuple.getVal2();
 					
 					try {
 						lServerCommand.execute(lClientID);
@@ -89,27 +89,6 @@ public class ServerCommandHandler {
 					e.printStackTrace();
 				}
 			}
-		}
-	}
-
-	/*
-	 * Nested class maintains the ClientID attribute.
-	 */
-	class ServerCommandWrapper{
-		AbstractServerCommand aAbstractServerCommand;
-		int aClientID;
-		
-		ServerCommandWrapper(AbstractServerCommand pServerCommand, int pClientID) {
-			aAbstractServerCommand = pServerCommand;
-			aClientID = pClientID;
-		}
-		
-		public AbstractServerCommand getServerCommand(){
-			return aAbstractServerCommand;
-		}
-		
-		public int getClientID(){
-			return aClientID;
 		}
 	}
 }

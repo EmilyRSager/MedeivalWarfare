@@ -5,8 +5,11 @@
 
 package mw.shared.servercommands;
 
+import java.util.UUID;
+
 import mw.server.gamelogic.controllers.GameController;
 import mw.server.gamelogic.exceptions.NotEnoughIncomeException;
+import mw.server.network.mappers.AccountMapper;
 import mw.server.network.mappers.GameMapper;
 import mw.server.network.translators.NetworkToModelTranslator;
 import mw.shared.Coordinates;
@@ -34,16 +37,12 @@ public class HireUnitCommand extends AbstractServerCommand {
 	 */
 	@Override
 	public void execute(Integer pClientID) throws Exception {
-		try {
-			GameController.hireUnit(
-					GameMapper.getInstance().getGame(pClientID),
-					aUnitCoordinates,
-					NetworkToModelTranslator.translateUnitType(aUnitType)
-					);
-		} catch (NotEnoughIncomeException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		UUID lAccountID = AccountMapper.getInstance().getAccountID(pClientID);
+		GameController.hireUnit(
+				GameMapper.getInstance().getGame(lAccountID),
+				aUnitCoordinates,
+				NetworkToModelTranslator.translateUnitType(aUnitType)
+				);
 
 	}
 

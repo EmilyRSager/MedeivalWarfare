@@ -2,9 +2,13 @@ package mw.client.app.test;
 
 import java.awt.Container;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 
 import javax.swing.*;
+
+import mw.client.controller.menuing.MenuActionSender;
 
 public class SwingLoginWindow {
 
@@ -29,6 +33,19 @@ public class SwingLoginWindow {
 		JLabel pLabel = new JLabel("Password:");
 		JPasswordField password = new JPasswordField(10);
 		JButton login = new JButton("Login");
+		
+		login.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e)
+			{
+				boolean status = MenuActionSender.tryCreateAccount(username.getText(), password.getText());
+				if (status)
+					System.out.println("You successfuly logged in !");
+				else
+					System.out.println("You didn't login.");
+			}
+		});
 		
 		pane.add(uLabel);
 		pane.add(username);

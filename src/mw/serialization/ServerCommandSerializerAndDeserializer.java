@@ -9,15 +9,15 @@ import java.util.HashMap;
 
 import mw.shared.servercommands.AbstractServerCommand;
 import mw.shared.servercommands.AuthenticateUserCommand;
+import mw.shared.servercommands.CreateAccountCommand;
 import mw.shared.servercommands.EndTurnCommand;
 import mw.shared.servercommands.GetPossibleGameActionsCommand;
 import mw.shared.servercommands.HireUnitCommand;
+import mw.shared.servercommands.LogoutCommand;
 import mw.shared.servercommands.MoveUnitCommand;
 import mw.shared.servercommands.RequestNewGameCommand;
 import mw.shared.servercommands.SendMessageCommand;
 import mw.shared.servercommands.SetActionTypeCommand;
-import mw.shared.servercommands.TestNewGameCommand;
-import mw.shared.servercommands.TestSharedTileCommand;
 import mw.shared.servercommands.UpgradeUnitCommand;
 import mw.shared.servercommands.UpgradeVillageCommand;
 
@@ -33,20 +33,17 @@ public class ServerCommandSerializerAndDeserializer{
 	
 	private ServerCommandSerializerAndDeserializer() {
 		aTypeMap.put("AuthenticateUserCommand", new TypeToken<AuthenticateUserCommand>(){}.getType());
+		aTypeMap.put("CreateAccountCommand", new TypeToken<CreateAccountCommand>(){}.getType());
 		aTypeMap.put("EndTurnCommand", new TypeToken<EndTurnCommand>(){}.getType());
 		aTypeMap.put("GetPossibleGameActionsCommand", new TypeToken<GetPossibleGameActionsCommand>(){}.getType());
 		aTypeMap.put("HireUnitCommand", new TypeToken<HireUnitCommand>(){}.getType());
+		aTypeMap.put("LogoutCommand", new TypeToken<LogoutCommand>(){}.getType());
 		aTypeMap.put("MoveUnitCommand", new TypeToken<MoveUnitCommand>(){}.getType());
 		aTypeMap.put("RequestNewGameCommand", new TypeToken<RequestNewGameCommand>(){}.getType());
 		aTypeMap.put("SendMessageCommand", new TypeToken<SendMessageCommand>(){}.getType());
 		aTypeMap.put("SetActionTypeCommand", new TypeToken<SetActionTypeCommand>(){}.getType());
 		aTypeMap.put("UpgradeUnitCommand", new TypeToken<UpgradeUnitCommand>(){}.getType());
 		aTypeMap.put("UpgradeVillageCommand", new TypeToken<UpgradeVillageCommand>(){}.getType());
-		
-		//TEST commands
-		aTypeMap.put("TestSharedTileCommand", new TypeToken<TestSharedTileCommand>(){}.getType());
-		aTypeMap.put("TestNewGameCommand", new TypeToken<TestNewGameCommand>(){}.getType());
-		
 	}
 	
 	/**

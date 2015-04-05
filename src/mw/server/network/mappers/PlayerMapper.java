@@ -7,25 +7,26 @@ package mw.server.network.mappers;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.UUID;
 
 import mw.server.gamelogic.state.Player;
 
 
 /**
- * Provides a Globally accessible mapping between ClientIDs and Player classes.
- * Different CommandHandlers will use this class to find Client's that need to receive messages,
+ * Provides a Globally accessible mapping between AccountIDs and Player classes.
+ * Different CommandHandlers will use this class to find Account's that need to receive messages,
  * based on their IDs.
  */
 public class PlayerMapper {
 	private static PlayerMapper aPlayerManagerInstance;
-	private HashMap<Integer, Player> aPlayerMap;
+	private HashMap<UUID, Player> aPlayerMap;
 	
-	//TODO for now, maintain a mapping from Players to Clients for simplicity. Seems super inelegant, not sure if this should be changed
-	private HashMap<Player, Integer> aClientMap;
+	//TODO for now, maintain a mapping from Players to Accounts for simplicity. Seems super inelegant, not sure if this should be changed
+	private HashMap<Player, UUID> aAccountMap;
 	
 	private PlayerMapper(){
-		aPlayerMap = new HashMap<Integer, Player>();
-		aClientMap = new HashMap<Player, Integer>();
+		aPlayerMap = new HashMap<UUID, Player>();
+		aAccountMap = new HashMap<Player, UUID>();
 	}
 	
 	/**
@@ -46,52 +47,52 @@ public class PlayerMapper {
 	 * @param The Player to be added to the map
 	 * @return none
 	 */
-	public void putPlayer(Integer pClientID, Player pPlayer){
-		aPlayerMap.put(pClientID, pPlayer);
+	public void putPlayer(UUID pAccountID, Player pPlayer){
+		aPlayerMap.put(pAccountID, pPlayer);
 		
 		/**
 		 * @fixme 
 		 * Override the equals/hashcode method in the Player class.
 		 */
-		aClientMap.put(pPlayer, pClientID);
+		aAccountMap.put(pPlayer, pAccountID);
 	}
 	
 	/**
-	 * @param the ClientID that of the Player to be returned
-	 * @return the Player that corresponds to pClientID
+	 * @param the AccountID that of the Player to be returned
+	 * @return the Player that corresponds to pAccountID
 	 */
-	public Player getPlayer(Integer pClientID){
-		return aPlayerMap.get(pClientID);
+	public Player getPlayer(UUID pAccountID){
+		return aPlayerMap.get(pAccountID);
 	}
 	
 	/**
-	 * @param pClientIDs
+	 * @param pAccountIDs
 	 * @return set of Players
 	 */
-	public Set<Player> getPlayerSet(Set<Integer> pClientIDs){
+	public Set<Player> getPlayerSet(Set<UUID> pAccountIDs){
 		Set<Player> lPlayerSet = new HashSet<Player>();
-		for(Integer lClientID : pClientIDs){
-			lPlayerSet.add(getPlayer(lClientID));
+		for(UUID lAccountID : pAccountIDs){
+			lPlayerSet.add(getPlayer(lAccountID));
 		}
 		
 		return lPlayerSet;
 	}
 	
 	/**
-	 * @param pClientID
-	 * @return true if there exists a Player with pClientID
+	 * @param pAccountID
+	 * @return true if there exists a Player with pAccountID
 	 */
-	public boolean contains(Integer pClientID){
-		return aPlayerMap.containsKey(pClientID);
+	public boolean contains(UUID pAccountID){
+		return aPlayerMap.containsKey(pAccountID);
 	}
 	
 	/**
-	 * @param pClientIDs
-	 * @return true if there exists a Player for every Integer in pClientIDs
+	 * @param pAccountIDs
+	 * @return true if there exists a Player for every UUID in pAccountIDs
 	 */
-	public boolean containsAll(Set<Integer> pClientIDs){
-		for(Integer lClientID : pClientIDs){
-			if(!aPlayerMap.containsKey(lClientID)){
+	public boolean containsAll(Set<UUID> pAccountIDs){
+		for(UUID lAccountID : pAccountIDs){
+			if(!aPlayerMap.containsKey(lAccountID)){
 				return false;
 			}
 		}
@@ -100,21 +101,21 @@ public class PlayerMapper {
 	}
 	
 	/**
-	 * Removes the client specified by ClientID from the Player map
-	 * @param pClientID
+	 * Removes the client specified by AccountID from the Player map
+	 * @param pAccountID
 	 * @return none
 	 */
-	public void removePlayer(int pClientID){
-		Player lPlayer = aPlayerMap.get(pClientID);
-		aPlayerMap.remove(pClientID);
-		aClientMap.remove(lPlayer);
+	public void removePlayer(int pAccountID){
+		Player lPlayer = aPlayerMap.get(pAccountID);
+		aPlayerMap.remove(pAccountID);
+		aAccountMap.remove(lPlayer);
 	}
 	
 	/**
 	 * @param pPlayer
-	 * @return Client associated with pPlayer
+	 * @return Account associated with pPlayer
 	 */
-	public Integer getClient(Player pPlayer){
-		return aClientMap.get(pPlayer);
+	public UUID getAccount(Player pPlayer){
+		return aAccountMap.get(pPlayer);
 	}
 }
