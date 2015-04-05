@@ -3,11 +3,12 @@ package mw.client.controller.menuing;
 public abstract class ScreenSwitcher {
 
 
-	public enum ScreenKind { NONE, LOGIN };
+	public enum ScreenKind { NONE, LOGIN, CREATE_ACCOUNT };
 	
-	private static final ScreenKind currentScreen = ScreenKind.NONE;
+	private static ScreenKind currentScreen = ScreenKind.NONE;
 	
 	private static LoginWindow loginScreen;
+	private static CreateAccountWindow createAccountScreen;
 
 	/* ========================
 	 * 		Constructors
@@ -33,6 +34,10 @@ public abstract class ScreenSwitcher {
 			
 		case LOGIN:
 			loginScreen = new LoginWindow();
+			break;
+			
+		case CREATE_ACCOUNT:
+			createAccountScreen = new CreateAccountWindow();
 			break;
 		}
 		currentScreen = newScreen;
@@ -81,7 +86,11 @@ public abstract class ScreenSwitcher {
 			break;
 			
 		case LOGIN:
-			valid = false;
+			valid = (next == ScreenKind.CREATE_ACCOUNT);
+			break;
+			
+		case CREATE_ACCOUNT:
+			valid=false;
 			break;
 		}
 		
