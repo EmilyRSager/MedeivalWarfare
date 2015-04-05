@@ -7,6 +7,8 @@ public class SharedPossibleGameActions {
 	private Collection<Coordinates> possibleMoves; 
 	private Collection<SharedTile.UnitType> possibleUnitHireUpgrade;
 	private Collection <SharedActionType>  possibleUnitActions;	// not required for the demo
+	private Collection<Coordinates> aCombinableUnitTiles;
+	private Collection<Coordinates> aHirableUnitTiles; 
 	SharedTile.VillageType upgradableVillageType;
 
 
@@ -15,12 +17,14 @@ public class SharedPossibleGameActions {
 	 * ========================
 	 */
 	
-	public SharedPossibleGameActions (Collection<Coordinates> moves, Collection<SharedTile.UnitType> pUnitTypes, Collection<SharedActionType> pActionTypes, SharedTile.VillageType pVillageType)
+	public SharedPossibleGameActions (Collection<Coordinates> moves, Collection<SharedTile.UnitType> pUnitTypes, Collection<SharedActionType> pActionTypes, SharedTile.VillageType pVillageType, Collection<Coordinates> pCombinable, Collection<Coordinates> pHirable)
 	{
 		possibleMoves = moves;
 		possibleUnitHireUpgrade = pUnitTypes;
 		possibleUnitActions = pActionTypes; 
 		upgradableVillageType = pVillageType;
+		aCombinableUnitTiles = pCombinable;
+		aHirableUnitTiles = pHirable;
 	}
 
 
@@ -48,5 +52,14 @@ public class SharedPossibleGameActions {
 	{
 		return upgradableVillageType; 
 	}
-
-}
+	
+	public Collection<Coordinates> getCombinableUnitTiles()
+	{
+		return aCombinableUnitTiles;
+	}
+	
+	public Collection<Coordinates> getHirableUnitTiles()
+	{
+		return aHirableUnitTiles;
+	}
+ }

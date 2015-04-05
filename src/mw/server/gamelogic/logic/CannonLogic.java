@@ -9,10 +9,8 @@ public class CannonLogic
 
 	public static boolean isReachableNode(Tile crtTile, Tile startTile, Collection<Tile> pCrtNeighbors)
 	{
-		if ()
-		{
-			
-		}
+		
+	
 		return true; 
 	}
 }

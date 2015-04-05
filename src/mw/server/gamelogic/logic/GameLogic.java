@@ -29,29 +29,35 @@ public class GameLogic
 	 */
 	public static ArrayList<UnitType> getVillagerHireOrUpgradeTypes(Tile pTile, Game pGame) 
 	{
-
 		
 		Village lVillage = pGame.getVillage(pTile);
 		VillageType lVillageType = lVillage.getVillageType();
+		System.out.println("The Village Type is " + lVillageType);
 
 		ArrayList<UnitType> rArray = new ArrayList<UnitType>();
-		if (pTile.getStructureType()!= StructureType.TREE && pTile.getStructureType()!=StructureType.VILLAGE_CAPITAL
+		if (pTile.getStructureType()!= StructureType.TREE 
 				&& pTile.getStructureType()!=StructureType.TOMBSTONE && pTile.getStructureType()!=StructureType.WATCHTOWER)
 		{
+			System.out.println("Checking for different cases");
 			for (Tile lTile : pGame.getNeighbors(pTile))
 			{
 				if (lTile.getStructureType() == StructureType.VILLAGE_CAPITAL && lVillageType == VillageType.FORT)
 				{
 					rArray.add(UnitType.CANNON); 
+					break;
 				}
 			}
+			System.out.println(pTile.hasUnit()); 
 			if (pTile.getUnit()==(null))
 			{
+				System.out.println("Finding Unit Hire Types");
+				
 				switch (lVillageType) 
 				{
 				case HOVEL: 
 					rArray.add(UnitType.PEASANT); 
 					rArray.add(UnitType.INFANTRY); 
+					System.out.println("Can upgrade to Peasant and Infantry");
 					break;
 				case TOWN: 
 					rArray.add(UnitType.PEASANT); 

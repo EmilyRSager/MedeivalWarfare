@@ -166,4 +166,12 @@ public class Tile extends Observable implements Serializable
 	{
 		return aVillageType; 	
 	}
+
+	public boolean isEmpty() {
+		if (!hasUnit() && aVillageType == VillageType.NO_VILLAGE && aStructureType == StructureType.NO_STRUCT)
+		{
+			return true;
+		}
+		return false;
+	}
 }

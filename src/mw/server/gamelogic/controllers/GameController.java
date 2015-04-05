@@ -84,6 +84,7 @@ public class GameController {
 		pGame.hireVillager(pUnitCoordinates, upgradeType);
 	}
 
+	
 	/**
 	 * @param pGame
 	 * @param pSourceCoordinates

@@ -151,9 +151,16 @@ public class Game extends RandomColorGenerator implements Serializable{
 			UnitActions = Logic.getPossibleActions(pUnit, startTile);
 		}
 		Collection<UnitType> UnitUpgrade = GameLogic.getVillagerHireOrUpgradeTypes(startTile, this);
-		PossibleGameActions possible = new PossibleGameActions(ReachableTiles, UnitUpgrade, UnitActions, VillageUpgradeType, canBuildWatchTower, combinableUnitTiles);
+		Collection<Tile> hirableUnitTiles = wantToHireVillager(startTile);
+		PossibleGameActions possible = new PossibleGameActions(ReachableTiles, UnitUpgrade, UnitActions, VillageUpgradeType, canBuildWatchTower, combinableUnitTiles, hirableUnitTiles);
 		return possible; 
 	}
+	
+	public Collection<Tile> wantToHireVillager(Tile pTile)
+	{
+		return UnitHireLogic.wantToHireUnit(pTile, this);
+	}
+ 
 
 	/**
 	 * @param pTile
@@ -328,9 +335,10 @@ public class Game extends RandomColorGenerator implements Serializable{
 	 */
 	public void upgradeVillage(Coordinates pVillageCoord, VillageType pNewVillageType) throws CantUpgradeException, NotEnoughIncomeException 
 	{
-		Tile pTile =aMap.getTile(pVillageCoord);
+		Tile pTile = aMap.getTile(pVillageCoord);
 		Village pVillage = getVillage(pTile);
 		pVillage.upgrade(pNewVillageType);
+		pTile.notifyObservers();
 	}
 
 	/**
@@ -425,5 +433,10 @@ public class Game extends RandomColorGenerator implements Serializable{
 			}
 		}
 		return combinedVillager; 
+	}
+
+	public void combineVillagers(Coordinates p1, Coordinates p2) {
+		// TODO Auto-generated method stub
+		
 	}
 }

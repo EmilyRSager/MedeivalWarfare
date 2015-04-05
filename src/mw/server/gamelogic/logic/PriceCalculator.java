@@ -53,9 +53,11 @@ public class PriceCalculator
 		switch (pVillageType) 
 		{
 			case HOVEL:
-				return 0;
+				return 8;
 			case TOWN:
+				return 10;
 			case FORT:
+				return 10;
 			default:
 				return 8; 
 		}
