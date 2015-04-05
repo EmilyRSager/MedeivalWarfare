@@ -105,7 +105,7 @@ public class GameInitializationController {
 			}
 
 			//distribute the new Game to each client.
-			lGameStateCommandDistributor.newGame(lGame.getGameTiles());
+			lGameStateCommandDistributor.newGame(lGameTiles);
 			assignClientsToPlayers(lClientIDs, lPlayers);
 
 			//Inform client that it is his turn

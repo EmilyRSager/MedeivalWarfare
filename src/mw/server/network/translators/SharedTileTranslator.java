@@ -27,7 +27,6 @@ public class SharedTileTranslator {
 	 */
 	public static SharedTile[][] translateMap(Tile[][] pGameMap, Game pGame){
 		SharedTile[][] lGameMap = new SharedTile[pGameMap.length][pGameMap[0].length];
-		
 		for(int row = 0; row < pGameMap.length; row++){
 			for(int col = 0; col < pGameMap[0].length; col++){
 				lGameMap[row][col] = translateTile(pGameMap[row][col], pGame);

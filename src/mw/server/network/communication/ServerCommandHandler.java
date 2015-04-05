@@ -79,6 +79,7 @@ public class ServerCommandHandler {
 					try {
 						lServerCommand.execute(lClientID);
 					} catch (Exception e) {
+						e.printStackTrace();
 						ClientChannelMapper.getInstance().getChannel(lClientID).sendCommand(
 								new ErrorMessageCommand(e.getMessage()));
 					}
