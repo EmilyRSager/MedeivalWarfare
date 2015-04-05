@@ -24,14 +24,15 @@ public class TileController {
 	 * @return
 	 */
 	public static int getGold(Tile pTile, Game pGame){
-		if (pTile.getVillageType()!=VillageType.NO_VILLAGE)
+		if (pTile.getVillageType()!= VillageType.NO_VILLAGE)
 		{
 			Village crtVillage = pGame.getVillage(pTile);
-			
-			System.out.println("[server] Tile color = " + pTile.getColor());
-			
-			int gold = crtVillage.getGold(); 
-			return gold; 
+		
+				System.out.println("[server] Tile color = " + pTile.getColor());
+
+				int gold = crtVillage.getGold(); 
+				return gold; 
+	
 		}
 		else
 		{
@@ -47,9 +48,12 @@ public class TileController {
 	{
 		if (pTile.getVillageType()!=VillageType.NO_VILLAGE)
 		{
-			Village crtVillage = pGame.getVillage(pTile); 
-			int wood = crtVillage.getWood(); 
-			return wood; 
+
+			Village crtVillage = pGame.getVillage(pTile);
+
+				int wood = crtVillage.getWood(); 
+				return wood;
+	
 		}
 		else
 		{
@@ -68,7 +72,7 @@ public class TileController {
 		if(lUnit != null){			
 			return pTile.getUnit().getUnitType();
 		}
-		
+
 		return UnitType.NO_UNIT;
 	}
 
