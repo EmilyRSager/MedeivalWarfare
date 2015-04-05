@@ -56,6 +56,9 @@ public final class ActionInterpreter {
 	
 	private final UserActionSender actionSender;
 	private final ChoiceCenter choiceCenter;
+	
+	
+	
 	private boolean hiringUnit;
 	private UnitType hiredUnitType;
 	
@@ -138,7 +141,7 @@ public final class ActionInterpreter {
 	public void secondarySelect(ImageTile dispTarget)
 	{
 		System.out.println("Starting secondary select");
-		if (dispTarget==null)
+		if (dispTarget==null || hiringUnit)
 			unselect();
 		else 
 		{
@@ -153,6 +156,8 @@ public final class ActionInterpreter {
 				//System.out.println("Tried sending move unit, result = "+res);
 				if (res)
 					unselect();
+				else
+					DisplayUpdater.showGeneralMessage("You can't move here");
 			}
 		}
 	}
