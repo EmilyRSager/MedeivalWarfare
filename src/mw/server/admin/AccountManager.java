@@ -9,13 +9,20 @@ import java.util.Scanner;
 import java.util.UUID;
 
 import com.google.gson.Gson;
+import com.sun.org.apache.xml.internal.security.signature.InvalidDigestValueException;
 
 import mw.util.Cache;
 import mw.util.CacheValueComputer;
 import mw.filesystem.ProjectFolder;
 
+/**
+ * @author cbloom7
+ * Awful class that sucks a lot.
+ */
 public class AccountManager {
 	private static final String ACCOUNTS_FOLDER_PATH = "accountdata/accounts/";
+	private static final String PASSWORDS_FILE_PATH = "accountdata/passwords.csv";
+	
 	private static AccountManager aAccountManager;
 	private HashMap<UUID, Account> aAccountCache;
 	
@@ -44,16 +51,17 @@ public class AccountManager {
 	 * @return 
 	 * @throws Exception
 	 */
-	public Account createAccount(String pUsername, String pPassword) throws Exception{
+	public UUID createAccount(String pUsername, String pPassword) throws Exception{
 		//TODO verify account doesn't exist already
 		UUID lUUID = UUID.randomUUID();
 		Account lNewAccount = new Account(lUUID, pUsername, pPassword);
 		
+		//save to disk for persistence
 		saveAccountData(lNewAccount);
-		
+		savePassword(lNewAccount);
 		
 		aAccountCache.put(lUUID, lNewAccount);
-		return lNewAccount;
+		return lUUID;
 	}
 	
 	/**
@@ -72,6 +80,32 @@ public class AccountManager {
 	}
 	
 	/**
+	 * @param pUsername
+	 * @param pPassword
+	 * @return Account id associated with the parameter username and password
+	 * @throws Exception
+	 */
+	public UUID getAccountID(String pUsername, String pPassword) {
+		Scanner lScanner = new Scanner(getPasswordsFilePath());
+		
+		String lAccountInfo = null;
+		String[] lAccountFields;
+		String lUsername, lPassword;
+		while(lScanner.hasNextLine()){
+			lAccountInfo = lScanner.nextLine();
+			lAccountFields = lAccountInfo.split(",");
+			lUsername = lAccountFields[0];
+			lPassword = lAccountFields[1];
+			
+			if(pUsername.equals(lUsername) && pPassword.equals(lPassword)){
+				return UUID.fromString(lAccountFields[2]);
+			}
+		}
+		
+		throw new IllegalArgumentException("Invalid login credentials.");
+	}
+
+	/**
 	 * @param pUUID
 	 * @return
 	 */
@@ -88,6 +122,26 @@ public class AccountManager {
 		lScanner.close();
 		return lAccount;
 	}
+	
+	/**
+	 * @param pAccount
+	 */
+	private void savePassword(Account pAccount){
+		FileWriter lFileWriter = null;
+		try {
+			lFileWriter = new FileWriter(getPasswordsFilePath(), true);
+		} catch (IOException e) {
+			System.out.println("[AccountManager] Failed to open username/password file.");
+			e.printStackTrace();
+		}
+		
+		try {
+			lFileWriter.write(pAccount.getUsername() + "," + pAccount.getPassword() + "," + pAccount.getID().toString() + "\n");
+		} catch (IOException e) {
+			System.out.println("[AccountManager] Failed to save account username/password to file");
+			e.printStackTrace();
+		}
+	}
 
 	/**
 	 * @param pAccount
@@ -96,7 +150,7 @@ public class AccountManager {
 		FileWriter lFileWriter = null;
 		try {
 			String lAccountFilePath = getAccountsFilePath(pAccount.getID());
-			System.out.println(lAccountFilePath);
+			//System.out.println(lAccountFilePath);
 			lFileWriter = new FileWriter(lAccountFilePath);
 		} catch (IOException e){
 			System.out.println("[AccountSerializer] Failed to load the account data file.");
@@ -120,21 +174,12 @@ public class AccountManager {
 			}
 		}
 	}
+	
+	private static String getPasswordsFilePath(){
+		return ProjectFolder.getPath() + PASSWORDS_FILE_PATH;
+	}
 
 	private static String getAccountsFilePath(UUID pAccountID){
 		return ProjectFolder.getPath() + ACCOUNTS_FOLDER_PATH + pAccountID;
-	}
-
-	public static void main(String[] args) {
-		Account a;
-		try {
-			a = AccountManager.getInstance().createAccount("Charlie", "Hugo");
-			a.incrementLosses();
-			a.incrementWins();
-			AccountManager.getInstance().saveAccountData(a);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 	}
 }

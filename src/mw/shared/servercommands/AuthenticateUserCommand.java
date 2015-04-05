@@ -6,8 +6,7 @@
 package mw.shared.servercommands;
 
 import mw.server.admin.Account;
-import mw.server.mappings.AccountManager;
-import mw.server.network.controllers.AdminCommandHandler;
+import mw.server.admin.AccountManager;
 
 public class AuthenticateUserCommand extends AbstractServerCommand {
 	private final String aType = "AuthenticateUserCommand";

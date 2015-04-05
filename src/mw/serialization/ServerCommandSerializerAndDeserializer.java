@@ -9,6 +9,7 @@ import java.util.HashMap;
 
 import mw.shared.servercommands.AbstractServerCommand;
 import mw.shared.servercommands.AuthenticateUserCommand;
+import mw.shared.servercommands.CreateAccountCommand;
 import mw.shared.servercommands.EndTurnCommand;
 import mw.shared.servercommands.GetPossibleGameActionsCommand;
 import mw.shared.servercommands.HireUnitCommand;
@@ -33,6 +34,7 @@ public class ServerCommandSerializerAndDeserializer{
 	
 	private ServerCommandSerializerAndDeserializer() {
 		aTypeMap.put("AuthenticateUserCommand", new TypeToken<AuthenticateUserCommand>(){}.getType());
+		aTypeMap.put("CreateAccountCommand", new TypeToken<CreateAccountCommand>(){}.getType());
 		aTypeMap.put("EndTurnCommand", new TypeToken<EndTurnCommand>(){}.getType());
 		aTypeMap.put("GetPossibleGameActionsCommand", new TypeToken<GetPossibleGameActionsCommand>(){}.getType());
 		aTypeMap.put("HireUnitCommand", new TypeToken<HireUnitCommand>(){}.getType());
