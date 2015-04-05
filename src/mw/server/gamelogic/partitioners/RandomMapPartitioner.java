@@ -69,9 +69,9 @@ public class RandomMapPartitioner extends AbstractMapPartitioner {
 				{
 					Village v = new Village (villageSet);
 					
-					//TODO
+					/*//TODO
 					v.addOrSubtractGold(100);
-					v.addOrSubtractWood(100);
+					v.addOrSubtractWood(100);*/
 					
 					aVillages.add(v); 
 					villageAlreadyExists = false; 

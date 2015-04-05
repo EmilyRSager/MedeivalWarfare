@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Random;
 import java.util.Set;
 
@@ -129,6 +130,7 @@ public class GameMap implements Serializable
 	 * @return
 	 */
 	public Set<Tile> getPossibleMoves(Tile pSourceTile) {
+		System.out.println("[Game] Requesting possible moves from the pathfinder.");
 		return PathFinder.getReachableTiles(aTileGraph, pSourceTile);
 	}
 
@@ -228,8 +230,12 @@ public class GameMap implements Serializable
 	}
 
 	public void deleteVillages(Collection<Player> aPlayers, Player pCurrentPlayer) {
-		for (Village lVillage : aVillages)
+		
+		Iterator<Village> lVillageIterator = aVillages.iterator();
+		
+		while (lVillageIterator.hasNext())
 		{
+			Village lVillage = lVillageIterator.next();
 			if (lVillage.getTiles().size() < 3)
 			{
 				Color crtColor = lVillage.getTiles().iterator().next().getColor(); 
@@ -241,7 +247,8 @@ public class GameMap implements Serializable
 					}
 				}
 			}
-			aVillages.remove(lVillage);
+			//TODO tag villages as being deleted, then delete
+			lVillageIterator.remove();
 			for (Tile lTile : lVillage.getTiles())
 			{
 				lTile.setColor(Color.NEUTRAL); 

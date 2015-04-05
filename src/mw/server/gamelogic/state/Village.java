@@ -7,6 +7,8 @@ import java.util.Observable;
 import java.util.Random;
 import java.util.Set;
 
+import com.sun.glass.ui.View.Capability;
+
 import mw.server.gamelogic.enums.Color;
 import mw.server.gamelogic.enums.StructureType;
 import mw.server.gamelogic.enums.VillageType;
@@ -120,7 +122,8 @@ public class Village extends Observable implements Serializable
 	 */
 	public void addOrSubtractGold(int addGold) 
 	{
-		aGold = aGold + addGold; 
+		aGold = aGold + addGold;
+		aCapital.notifyChanged();
 	}
 
 	/**
@@ -130,6 +133,7 @@ public class Village extends Observable implements Serializable
 	public void addOrSubtractWood(int addWood) 
 	{
 		aWood = aWood + addWood;
+		aCapital.notifyChanged();
 	}
 
 	public Tile getCapital()

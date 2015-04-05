@@ -174,4 +174,9 @@ public class Tile extends Observable implements Serializable
 		}
 		return false;
 	}
+
+	public void notifyChanged() {
+		setChanged();
+		notifyObservers();
+	}
 }

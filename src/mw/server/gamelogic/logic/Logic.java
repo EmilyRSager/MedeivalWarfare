@@ -229,7 +229,7 @@ public class Logic {
 		case VILLAGE_CAPITAL:
 			//TODO 
 			break;
-		default:
+		default: 
 			pDestinationTile.setUnit(crtUnit);
 			startTile.setUnit(null);
 			crtUnit.setActionType(ActionType.READY); //If units move to a road or empty tile they can still move
@@ -333,6 +333,7 @@ public class Logic {
 		}
 		if (needToFuse)
 		{
+			System.out.println("[Game] A Village Fuse is required... attempting to fuse villages.");
 			pGame.fuseVillages(toFuse, startCapital, pCurrentPlayer);
 		}
 	}
