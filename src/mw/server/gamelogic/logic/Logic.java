@@ -1,15 +1,15 @@
 package mw.server.gamelogic.logic;
 
 import java.util.ArrayList;
-
+import java.util.Collection;
 
 import mw.server.gamelogic.enums.ActionType;
 import mw.server.gamelogic.enums.Color;
 import mw.server.gamelogic.enums.StructureType;
 import mw.server.gamelogic.enums.UnitType;
-
 import mw.server.gamelogic.state.Game;
 import mw.server.gamelogic.state.GameMap;
+import mw.server.gamelogic.state.Player;
 import mw.server.gamelogic.state.Tile;
 import mw.server.gamelogic.state.Unit;
 import mw.server.gamelogic.state.Village;
@@ -308,6 +308,33 @@ public class Logic {
 	private static boolean tilesAreSameColor(Tile pTile, Tile pTile2)
 	{
 		return pTile.getColor() == pTile2.getColor();
+	}
+
+	public static void checkFuse(Tile pStartTile, Tile pDestTile, Game pGame) 
+	{
+		Player pCurrentPlayer = pGame.getCurrentPlayer(); 
+		Village startVillage = pGame.getVillage(pStartTile); 
+		startVillage.addTile(pDestTile);
+		Collection<Tile> pNeighbors = pGame.getNeighbors(pDestTile); 
+		Tile startCapital = startVillage.getCapital(); 
+		Collection<Village> toFuse = new ArrayList<Village>(); 
+		boolean needToFuse = false; 
+		for (Tile lTile : pNeighbors)
+		{
+			if (lTile.getColor() == startVillage.getColor())
+			{
+				if (!pGame.getVillage(lTile).equals(startVillage))
+				{
+					toFuse.add(pGame.getVillage(lTile)); 
+					pCurrentPlayer.removeVillage(pGame.getVillage(lTile));
+					needToFuse = true;
+				}
+			}
+		}
+		if (needToFuse)
+		{
+			pGame.fuseVillages(toFuse, startCapital, pCurrentPlayer);
+		}
 	}
 
 }

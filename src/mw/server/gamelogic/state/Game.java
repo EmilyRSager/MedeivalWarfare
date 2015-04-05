@@ -182,7 +182,7 @@ public class Game extends RandomColorGenerator implements Serializable{
 		else 
 		{
 			throw new NotEnoughIncomeException("Hiring a " +  pUnitType.toString().toLowerCase() +" costs: " + lHireCost + " gold and " +lWoodCost +  " wood. " +
-		"\n This village has " + 	aMap.getVillage(pTile).getGold() + "gold and " + aMap.getVillage(pTile).getWood() + "wood. "); 
+					"\n This village has " + 	aMap.getVillage(pTile).getGold() + " gold and " + aMap.getVillage(pTile).getWood() + " wood. "); 
 		}
 	}
 
@@ -210,7 +210,7 @@ public class Game extends RandomColorGenerator implements Serializable{
 	{
 		return aMap.getVillages();
 	}
-	
+
 	/**
 	 * Updates the state of the game at the beginning of a Unit's turn
 	 */
@@ -250,6 +250,10 @@ public class Game extends RandomColorGenerator implements Serializable{
 		Tile startTile =  aMap.getTile(pStartCoordinates); 
 		Tile pDestinationTile = aMap.getTile(pDestinationCoordinates);
 		Unit crtUnit = startTile.getUnit();
+		if (pDestinationTile.getColor() == Color.NEUTRAL)
+		{
+			Logic.checkFuse(startTile, pDestinationTile, this);
+		}
 		if (Logic.updateGameState(crtUnit, startTile, pDestinationTile, this, aMap)) 
 		{
 			crtUnit.setActionType(ActionType.MOVED);
@@ -287,7 +291,7 @@ public class Game extends RandomColorGenerator implements Serializable{
 		Tile lTile = aMap.getTile(pCoordinates); 
 		lTile.setStructureType(StructureType.WATCHTOWER); 
 	}
-	
+
 	/**
 	 * Puts a cannon on the tile with the parameter coordinates
 	 * @param pCoordinates
@@ -363,7 +367,7 @@ public class Game extends RandomColorGenerator implements Serializable{
 	{
 		aMap.fuseVillages(pToFuse, invadingCapital, pCurrentPlayer);
 	}
-	
+
 
 	//TODO move this into a logic class 
 	public UnitType wantToCombineVillagers(Coordinates p1, Coordinates p2) 
@@ -405,7 +409,7 @@ public class Game extends RandomColorGenerator implements Serializable{
 					break;
 				default:
 					break;
-			}
+				}
 				break; 
 			case SOLDIER: 
 				switch (lUnitType2) 
@@ -416,8 +420,10 @@ public class Game extends RandomColorGenerator implements Serializable{
 				default:
 					break;
 				}
+			default:
+				break;
+			}
 		}
-	}
 		return combinedVillager; 
-}
+	}
 }

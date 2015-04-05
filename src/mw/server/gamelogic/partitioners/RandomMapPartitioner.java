@@ -91,6 +91,7 @@ public class RandomMapPartitioner extends AbstractMapPartitioner {
 				break; 
 
 			}
-		}
+		}		
+		aGameMap.addVillages(aVillages);
 	}
 }

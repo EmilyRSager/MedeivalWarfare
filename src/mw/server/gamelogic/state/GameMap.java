@@ -22,7 +22,8 @@ import com.google.gson.GsonBuilder;
  * GameMap class definition.
  * @author emilysager, Abhishek Gupta
  */
-public class GameMap implements Serializable{ 
+public class GameMap implements Serializable
+{ 
 	private Graph<Tile> aTileGraph; 
 	private Tile[][] aTiles; 
 	private Collection<Village> aVillages; 
@@ -187,7 +188,7 @@ public class GameMap implements Serializable{
 		for (Village lVillage : pToFuse) 
 		{
 			lVillageTiles.addAll(lVillage.getTiles()); 	//aggregate all the tiles from the villages to fuse 
-			
+
 			if (aVillages.contains(lVillage))
 			{
 				lGold += lVillage.getGold(); 
@@ -214,6 +215,14 @@ public class GameMap implements Serializable{
 		pCurrentPlayer.addVillage(lFusedVillage);
 
 
+	}
+	
+	public void addVillages(Collection<Village> pVillages){
+		aVillages.addAll(pVillages);
+	}
+	
+	public void addVillage(Village pVillage){
+		aVillages.add(pVillage);
 	}
 
 	public void deleteVillages(Collection<Player> aPlayers, Player pCurrentPlayer) {
@@ -249,11 +258,11 @@ public class GameMap implements Serializable{
 					lTile.setStructureType(StructureType.TOMBSTONE);
 				}
 			}
-			
+
 		}
-		
+
 	}
-	
+
 	public Graph<Tile> getGraph() {
 		return aTileGraph; 
 	}
