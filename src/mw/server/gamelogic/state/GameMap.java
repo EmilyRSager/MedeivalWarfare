@@ -39,7 +39,9 @@ public class GameMap implements Serializable
 		aTiles = new Tile[pWidth][pHeight];
 		for(int lRow = 0; lRow < pHeight; lRow++){ 
 			for(int lCol = 0; lCol < pWidth; lCol++){
-				aTiles[lRow][lCol] = new Tile(lRow, lCol);
+				Tile lTile = new Tile(lRow, lCol);
+				aTiles[lRow][lCol] = lTile;
+				randomlyGenerateTreesAndMeadows(lTile);
 			}
 		}
 
@@ -180,7 +182,7 @@ public class GameMap implements Serializable
 		return aTileGraph.getNeighbors(pTile);
 	}
 
-	public void  fuseVillages(Collection<Village> pToFuse, Tile invadingCapital, Player pCurrentPlayer ) 
+	public void fuseVillages(Collection<Village> pToFuse, Tile invadingCapital, Player pCurrentPlayer ) 
 	{
 		Collection<Tile> lVillageTiles = new HashSet<Tile>(); 
 		int lGold = 0; 

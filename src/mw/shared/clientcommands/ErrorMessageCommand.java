@@ -1,6 +1,9 @@
 package mw.shared.clientcommands;
 
+import mw.client.controller.netmodel.GameCommandHandler;
+
 public class ErrorMessageCommand extends AbstractClientCommand {
+	private final String aType = "ErrorMessageCommand";
 	private String aErrorMessage;
 	
 	public ErrorMessageCommand(String pErrorMessage) {
@@ -14,6 +17,6 @@ public class ErrorMessageCommand extends AbstractClientCommand {
 
 	@Override
 	public void execute() {
-		// TODO
+		GameCommandHandler.displayMessage(aErrorMessage);
 	}
 }

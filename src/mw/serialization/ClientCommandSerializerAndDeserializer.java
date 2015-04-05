@@ -10,6 +10,7 @@ import java.util.HashMap;
 import mw.shared.clientcommands.AbstractClientCommand;
 import mw.shared.clientcommands.AcknowledgementCommand;
 import mw.shared.clientcommands.DisplayPossibleGameActionsCommand;
+import mw.shared.clientcommands.ErrorMessageCommand;
 import mw.shared.clientcommands.MessageReceivedCommand;
 import mw.shared.clientcommands.NewGameCommand;
 import mw.shared.clientcommands.NotifyBeginTurnCommand;
@@ -36,7 +37,8 @@ public class ClientCommandSerializerAndDeserializer {
 		aTypeMap.put("NotifyBeginTurnComand", new TypeToken<NotifyBeginTurnCommand>(){}.getType());
 		aTypeMap.put("NotifyEndTurnCommand", new TypeToken<NotifyEndTurnCommand>(){}.getType());
 		aTypeMap.put("SetColorCommand", new TypeToken<SetColorCommand>(){}.getType());
-		aTypeMap.put("UpdateTileCommand", new TypeToken<UpdateTileCommand>(){}.getType());	
+		aTypeMap.put("UpdateTileCommand", new TypeToken<UpdateTileCommand>(){}.getType());
+		aTypeMap.put("ErrorMessageCommand", new TypeToken<ErrorMessageCommand>(){}.getType());
 	}
 	
 	/**

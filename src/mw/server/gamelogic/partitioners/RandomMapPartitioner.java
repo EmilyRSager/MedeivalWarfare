@@ -68,6 +68,11 @@ public class RandomMapPartitioner extends AbstractMapPartitioner {
 				if (villageSet.size()>=3 && villageSet.iterator().next().getColor()!=Color.NEUTRAL)
 				{
 					Village v = new Village (villageSet);
+					
+					//TODO
+					v.addOrSubtractGold(100);
+					v.addOrSubtractWood(100);
+					
 					aVillages.add(v); 
 					villageAlreadyExists = false; 
 				}
