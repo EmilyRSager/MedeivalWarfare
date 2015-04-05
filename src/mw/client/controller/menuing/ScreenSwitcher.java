@@ -3,7 +3,7 @@ package mw.client.controller.menuing;
 public abstract class ScreenSwitcher {
 
 
-	public enum ScreenKind { NONE, LOGIN, CREATE_ACCOUNT };
+	public enum ScreenKind { NONE, LOGIN, CREATE_ACCOUNT, LOBBY };
 	
 	private static ScreenKind currentScreen = ScreenKind.NONE;
 	
