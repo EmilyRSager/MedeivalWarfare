@@ -84,8 +84,8 @@ public final class GUITest {
 		Random r = new Random();
 		SharedTile newST = new SharedTile(c,
 					new Coordinates(r.nextInt(DEFAULT_MAP_HEIGHT), r.nextInt(DEFAULT_MAP_WIDTH)),
-					SharedTile.Terrain.SEA, false,
-					SharedTile.UnitType.NONE,
+					SharedTile.Terrain.GRASS, false,
+					SharedTile.UnitType.WATCHTOWER,
 					SharedTile.VillageType.NONE, 0, 0);
 		NewStateApplier.applyChanges(game, newST);
 	}

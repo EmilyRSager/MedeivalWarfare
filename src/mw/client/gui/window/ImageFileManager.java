@@ -111,7 +111,7 @@ public class ImageFileManager
 			fileName = UNIT_FOLDER + "peasant.png";
 			break;
 		case INFANTRY:
-			fileName = UNIT_FOLDER + "infantry.png";
+			fileName = UNIT_FOLDER + "infantry.png";//getImageSizeFolder(60)+"cannon1.png";
 			break;
 		case SOLDIER:
 			fileName = UNIT_FOLDER + "soldier.png";
@@ -120,7 +120,7 @@ public class ImageFileManager
 			fileName = UNIT_FOLDER + "knight.png";
 			break;
 		case WATCHTOWER:
-			fileName = UNIT_FOLDER + "watchtower.png";
+			fileName = UNIT_FOLDER + "watchtower.png";//getImageSizeFolder(60)+"castle.png";
 			break;
 			
 			default:
