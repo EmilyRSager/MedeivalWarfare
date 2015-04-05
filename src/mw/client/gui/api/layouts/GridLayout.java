@@ -157,9 +157,7 @@ public class GridLayout extends AbstractWindowComponent implements Observer {
 			}
 			newWidth = Math.max(newWidth, xPos - area.getLeftBorder());
 			yPos+=rowHeight[i] + MARGIN;
-			System.out.println("[GridLayout] row heights sum = "+yPos+"...");
 		}
-		System.out.println("[GridLayout] packed height = "+(yPos-MARGIN-area.getTopBorder()));
 		newHeight = yPos - MARGIN - area.getTopBorder();
 		newWidth -= MARGIN;
 		
@@ -309,7 +307,6 @@ public class GridLayout extends AbstractWindowComponent implements Observer {
 	@Override
 	public int getHeight()
 	{
-		System.out.println("[GridLayout] real height = "+super.getHeight()+", min height = "+minHeight);
 		return Math.max(super.getHeight(), minHeight);
 	}
 	
