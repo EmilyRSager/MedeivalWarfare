@@ -35,7 +35,7 @@ public class Tuple2<E,F> {
 	 */
 
 	@Override
-	public boolean equals(Object o) {
+	public boolean equals(Object o) {		
 		try {
 			Tuple2<E,F> otherPair = (Tuple2<E,F>) o;
 			return valE.equals(otherPair.valE) && valF.equals(otherPair.valF);

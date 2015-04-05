@@ -153,9 +153,16 @@ public class Game extends RandomColorGenerator implements Serializable{
 			UnitActions = Logic.getPossibleActions(pUnit, startTile);
 		}
 		Collection<UnitType> UnitUpgrade = GameLogic.getVillagerHireOrUpgradeTypes(startTile, this);
-		PossibleGameActions possible = new PossibleGameActions(ReachableTiles, UnitUpgrade, UnitActions, VillageUpgradeType, canBuildWatchTower, combinableUnitTiles);
+		Collection<Tile> hirableUnitTiles = wantToHireVillager(startTile);
+		PossibleGameActions possible = new PossibleGameActions(ReachableTiles, UnitUpgrade, UnitActions, VillageUpgradeType, canBuildWatchTower, combinableUnitTiles, hirableUnitTiles);
 		return possible; 
 	}
+	
+	public Collection<Tile> wantToHireVillager(Tile pTile)
+	{
+		return UnitHireLogic.wantToHireUnit(pTile, this);
+	}
+ 
 
 	/**
 	 * @param pTile
@@ -167,19 +174,21 @@ public class Game extends RandomColorGenerator implements Serializable{
 	{
 		Tile pTile = aMap.getTile(pCoordinates);
 		//Decrement the Gold held by the hiring village
-		int lHireCost = PriceCalculator.getUnitHireCost(pUnitType); 
+		int lHireCost = PriceCalculator.getUnitHireCost(pUnitType);
 		int lWoodCost = 0; 
 		if (pUnitType == UnitType.CANNON)
 		{
 			lWoodCost = 12; 
 		}
-		if (aMap.getVillage(pTile).getGold() >= lHireCost && aMap.getVillage(pTile).getWood() > lWoodCost) 
+		if (aMap.getVillage(pTile).getGold() >= lHireCost && aMap.getVillage(pTile).getWood() >= lWoodCost) 
 		{
 			aMap.getVillage(pTile).addOrSubtractGold(-lHireCost);	
 			aMap.getVillage(pTile).addOrSubtractWood(-lWoodCost);
 			Unit pUnit = new Unit(pUnitType); 
 			pTile.setUnit(pUnit);
 			pTile.notifyObservers();
+			aMap.getVillage(pTile).getCapital().notifyObservers();
+			
 		}
 		else 
 		{
@@ -252,13 +261,19 @@ public class Game extends RandomColorGenerator implements Serializable{
 		Tile startTile =  aMap.getTile(pStartCoordinates); 
 		Tile pDestinationTile = aMap.getTile(pDestinationCoordinates);
 		Unit crtUnit = startTile.getUnit();
-		if (pDestinationTile.getColor() == Color.NEUTRAL)
+		Color lColor = pDestinationTile.getColor();
+		if (lColor == Color.NEUTRAL)
 		{
+			System.out.println("[Game] The unit is moving to neutral land.");
 			Logic.checkFuse(startTile, pDestinationTile, this);
 		}
 		if (Logic.updateGameState(crtUnit, startTile, pDestinationTile, this, aMap)) 
 		{
 			crtUnit.setActionType(ActionType.MOVED);
+		}
+		if (lColor == Color.NEUTRAL)
+		{
+			crtUnit.setActionType(ActionType.MOVED);	
 		}
 		startTile.notifyObservers();
 		pDestinationTile.notifyObservers();
@@ -333,6 +348,7 @@ public class Game extends RandomColorGenerator implements Serializable{
 		Tile pTile = aMap.getTile(pVillageCoord);
 		Village pVillage = getVillage(pTile);
 		pVillage.upgrade(pNewVillageType);
+		pTile.notifyObservers();
 	}
 
 	/**
@@ -427,5 +443,10 @@ public class Game extends RandomColorGenerator implements Serializable{
 			}
 		}
 		return combinedVillager; 
+	}
+
+	public void combineVillagers(Coordinates p1, Coordinates p2) {
+		// TODO Auto-generated method stub
+		
 	}
 }

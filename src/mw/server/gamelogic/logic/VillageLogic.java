@@ -112,7 +112,7 @@ public class VillageLogic
 		{
 			switch (pVillageType) {
 			case HOVEL:
-				pVillage.setVillageType(VillageType.TOWN);;
+				pVillage.setVillageType(VillageType.TOWN);
 				break;
 			case TOWN: 
 				pVillage.setVillageType(VillageType.FORT);
@@ -122,7 +122,8 @@ public class VillageLogic
 			default:
 				throw new CantUpgradeException("[Village] Can not upgrade Village due to requested VillageType.");
 			}
-			pVillage.addOrSubtractWood(- upgradeCost);
+			pVillage.addOrSubtractWood(-upgradeCost);
+			System.out.println("[Game] Village upgraded successfully with new type " + pVillage.getVillageType() + ", this village has " + pVillage.getWood() + " wood.");
 		}
 		else throw new NotEnoughIncomeException("Village requires " + upgradeCost + " wood to upgrade." + "This village currently has " + pVillage.getWood() + " wood." ); 
 	}

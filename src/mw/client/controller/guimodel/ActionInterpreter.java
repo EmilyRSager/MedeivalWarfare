@@ -52,12 +52,13 @@ public final class ActionInterpreter {
 	private ModelTile selectedMTile;
 	private ImageTile selectedITile;
 	private SharedPossibleGameActions possibleActions;
-	//private Map<String, Map<String, GameAction>> currentChoices;
-	
 	
 	
 	private final UserActionSender actionSender;
 	private final ChoiceCenter choiceCenter;
+	
+	
+	
 	private boolean hiringUnit;
 	private UnitType hiredUnitType;
 	
@@ -104,7 +105,11 @@ public final class ActionInterpreter {
 				throw new IllegalStateException("User is currently hiring a Unit, but no hired unit type has been selected");
 
 			ModelTile modelTarget = ModelViewMapping.singleton().getModelTile(dispTarget);
-			actionSender.sendUnitHire(modelTarget, hiredUnitType);
+			boolean status = actionSender.tryUnitHire(modelTarget, hiredUnitType);
+			
+			if (!status)
+				DisplayUpdater.showGeneralMessage("You can't hire on this tile");
+			
 			unselect();
 		}
 		else
@@ -136,7 +141,7 @@ public final class ActionInterpreter {
 	public void secondarySelect(ImageTile dispTarget)
 	{
 		System.out.println("Starting secondary select");
-		if (dispTarget==null)
+		if (dispTarget==null || hiringUnit)
 			unselect();
 		else 
 		{
@@ -151,6 +156,8 @@ public final class ActionInterpreter {
 				//System.out.println("Tried sending move unit, result = "+res);
 				if (res)
 					unselect();
+				else
+					DisplayUpdater.showGeneralMessage("You can't move here");
 			}
 		}
 	}
@@ -225,6 +232,7 @@ public final class ActionInterpreter {
 		choiceCenter.clear();
 		
 		actionSender.clearPossibleActions();
+		DisplayUpdater.showGeneralMessage("");
 	}
 	
 	private void unselect() 

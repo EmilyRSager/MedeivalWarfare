@@ -5,6 +5,8 @@
 package mw.server.gamelogic.logic;
 
 import java.util.Collection;
+
+import mw.server.gamelogic.enums.ActionType;
 import mw.server.gamelogic.enums.Color;
 import mw.server.gamelogic.enums.StructureType;
 import mw.server.gamelogic.enums.UnitType;
@@ -20,10 +22,16 @@ public final class TileGraphLogic {
 
 	public static boolean isReachableNode(Graph<Tile> pGraph, Tile crtTile, Tile startTile)
 	{
+		
 		Collection<Tile> pCrtNeighbors = pGraph. getNeighbors(crtTile); 
 		if (startTile.hasUnit())
 		{
 			Unit pUnit = startTile.getUnit();
+			if (pUnit.getActionType() == ActionType.MOVED)
+			{
+				System.out.println("[Game] The unit has previously been moved this turn, and cannot move again.");
+				return false;
+			}
 			if (pUnit.getUnitType() == UnitType.CANNON)
 			{
 				return CannonLogic.isReachableNode(crtTile, startTile, pCrtNeighbors); 
@@ -51,6 +59,7 @@ public final class TileGraphLogic {
 
 
 	}
+	
 	public static boolean isPathOver(Graph<Tile> pGraph, Tile startTile, Tile destinationTile)
 	{
 		if (isNeutralLand(destinationTile)) 
@@ -83,10 +92,12 @@ public final class TileGraphLogic {
 			{
 				return true; 
 			}
+			
 			return false; 
 
 		}
 	}
+	
 	private static boolean isSeaTile(Tile crtTile) {
 		if (crtTile.getColor()== Color.SEATILE)
 		{

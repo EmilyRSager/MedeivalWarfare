@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.Stack;
 
+import mw.server.gamelogic.enums.ActionType;
 import mw.server.gamelogic.logic.TileGraphLogic;
 import mw.server.gamelogic.state.Tile;
 
@@ -25,24 +26,24 @@ public class PathFinder //has classic DFS
 		while (!S.isEmpty())
 		{
 			Tile crt =  S.pop(); 
-			pGraph.setVisited(pSourceTile, true);
+			pGraph.setVisited(crt, true);
 			for(Tile lTile : pGraph.getNeighbors(crt)) {
-				if(TileGraphLogic.isReachableNode(pGraph, pSourceTile, lTile)) {
+				if(TileGraphLogic.isReachableNode(pGraph, lTile, pSourceTile) && !TileGraphLogic.isPathOver(pGraph, pSourceTile, lTile)) {
+					if(!pGraph.isVisited(lTile)) {
 					reachableTiles.add(lTile);
+					S.push(lTile); 
+					}
 				}
 				
-				if (!TileGraphLogic.isPathOver(pGraph, pSourceTile, lTile)) {
-					
-					//TODO should check this condition first?
-					if(!pGraph.isVisited(lTile)) {
-						reachableTiles.add(lTile);
-						S.push(lTile); 
-					}
+				if (TileGraphLogic.isPathOver(pGraph, pSourceTile, lTile) && TileGraphLogic.isReachableNode(pGraph,  lTile, pSourceTile)) 
+				{
+						reachableTiles.add(lTile);			
 				}
 			}	
 		}
-		pGraph.resetAll(); 
+		pGraph.resetAll();
 		return reachableTiles; 
+		
 	}
    
 	/**
