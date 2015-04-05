@@ -1,5 +1,7 @@
 package mw.shared.clientcommands;
 
+import mw.client.controller.menuing.MenuActionSender;
+
 public class UserAuthenticatedCommand extends AbstractClientCommand {
 	private final String aType = "UserAuthenticatedCommand";
 	private boolean aAuthenticated;
@@ -10,8 +12,7 @@ public class UserAuthenticatedCommand extends AbstractClientCommand {
 	
 	@Override
 	public boolean isValid() {
-		// TODO Auto-generated method stub
-		return false;
+		return true;
 	}
 
 	@Override

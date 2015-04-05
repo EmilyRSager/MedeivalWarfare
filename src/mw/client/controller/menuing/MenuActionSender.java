@@ -57,7 +57,7 @@ public final class MenuActionSender {
 	public static boolean tryCreateAccount(String username, String password)
 	{
 		accountCreationResult = new BlockingFuture<Boolean>();
-		NetworkController.createUserAccount(username, password);
+		NetworkController.createAccount(username, password);
 		return accountCreationResult.getValue();
 	}
 	

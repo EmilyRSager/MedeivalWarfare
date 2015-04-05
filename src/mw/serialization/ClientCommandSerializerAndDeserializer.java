@@ -8,6 +8,7 @@ import java.lang.reflect.Type;
 import java.util.HashMap;
 
 import mw.shared.clientcommands.AbstractClientCommand;
+import mw.shared.clientcommands.AccountCreatedCommand;
 import mw.shared.clientcommands.AcknowledgementCommand;
 import mw.shared.clientcommands.DisplayPossibleGameActionsCommand;
 import mw.shared.clientcommands.ErrorMessageCommand;
@@ -31,15 +32,16 @@ public class ClientCommandSerializerAndDeserializer {
 	
 	private ClientCommandSerializerAndDeserializer() {
 		aTypeMap.put("AcknowledgementCommand", new TypeToken<AcknowledgementCommand>(){}.getType());
+		aTypeMap.put("AccountCreatedCommand", new TypeToken<AccountCreatedCommand>(){}.getType());
 		aTypeMap.put("NotifyBeginTurnCommand", new TypeToken<NotifyBeginTurnCommand>(){}.getType());
 		aTypeMap.put("DisplayPossibleGameActionsCommand", new TypeToken<DisplayPossibleGameActionsCommand>(){}.getType());
+		aTypeMap.put("ErrorMessageCommand", new TypeToken<ErrorMessageCommand>(){}.getType());
 		aTypeMap.put("MessageReceivedCommand", new TypeToken<MessageReceivedCommand>(){}.getType());
 		aTypeMap.put("NewGameCommand", new TypeToken<NewGameCommand>(){}.getType());
 		aTypeMap.put("NotifyBeginTurnComand", new TypeToken<NotifyBeginTurnCommand>(){}.getType());
 		aTypeMap.put("NotifyEndTurnCommand", new TypeToken<NotifyEndTurnCommand>(){}.getType());
 		aTypeMap.put("SetColorCommand", new TypeToken<SetColorCommand>(){}.getType());
 		aTypeMap.put("UpdateTileCommand", new TypeToken<UpdateTileCommand>(){}.getType());
-		aTypeMap.put("ErrorMessageCommand", new TypeToken<ErrorMessageCommand>(){}.getType());
 		aTypeMap.put("UserAuthenticatedCommand", new TypeToken<UserAuthenticatedCommand>(){}.getType());
 	}
 	
