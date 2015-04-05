@@ -67,7 +67,7 @@ public class GameWindow implements Observer {
 			}
 		};
 		
-		windowLayout = new VerticalLayout(0, 0, 3);
+		windowLayout = new VerticalLayout(0, 0, 4);
 		controlBarLayout = new HorizontalLayout(0, 0, CONTROL_LAYOUT_HEIGHT, 3);
 		
 		windowLayout.addComponent(mapComp, 0);
@@ -221,6 +221,11 @@ public class GameWindow implements Observer {
 		TextField field = new TextField(200);
 		controlBarLayout.addComponent(field, 0);
 		field.setWindow(this);
+	}
+	
+	public void showMessage(String message) 
+	{
+		windowLayout.addComponent(new TextDisplay(message), 3);
 	}
 	
 	/* ==========================

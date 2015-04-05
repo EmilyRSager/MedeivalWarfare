@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Stack;
+
 import mw.server.gamelogic.PossibleGameActions;
 import mw.server.gamelogic.enums.ActionType;
 import mw.server.gamelogic.enums.Color;
@@ -16,6 +17,7 @@ import mw.server.gamelogic.exceptions.NotEnoughIncomeException;
 import mw.server.gamelogic.exceptions.TooManyPlayersException;
 import mw.server.gamelogic.logic.*;
 import mw.server.gamelogic.partitioners.RandomMapPartitioner;
+import mw.server.gamelogic.partitioners.SeaBorderPartitioner;
 import mw.server.gamelogic.util.RandomColorGenerator;
 import mw.shared.Coordinates;
 import mw.util.CircularIterator;
@@ -72,7 +74,7 @@ public class Game extends RandomColorGenerator implements Serializable{
 			}
 		}
 
-		aMap = new GameMap(pWidth, pHeight); 
+		aMap = new GameMap(pWidth, pHeight);
 		new RandomMapPartitioner(aMap).partition(availableColors); 
 		assignVillageToPlayers();
 		crtIterator = new CircularIterator<Player>(pPlayers);

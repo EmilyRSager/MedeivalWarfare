@@ -4,7 +4,7 @@ import java.util.Collection;
 
 public class SharedPossibleGameActions {
 
-	private Collection<Coordinates> possibleMoves; 
+	private Collection<Coordinates> possibleMoves;
 	private Collection<SharedTile.UnitType> possibleUnitHireUpgrade;
 	private Collection <SharedActionType>  possibleUnitActions;	// not required for the demo
 	private Collection<Coordinates> aCombinableUnitTiles;

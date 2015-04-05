@@ -32,6 +32,7 @@ public class GameLogic
 		
 		Village lVillage = pGame.getVillage(pTile);
 		VillageType lVillageType = lVillage.getVillageType();
+
 		System.out.println("The Village Type is " + lVillageType);
 
 		ArrayList<UnitType> rArray = new ArrayList<UnitType>();
