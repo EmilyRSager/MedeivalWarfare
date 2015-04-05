@@ -3,6 +3,7 @@ package mw.server.network.controllers;
 import java.util.Set;
 import java.util.UUID;
 
+import mw.server.network.communication.ClientCommunicationController;
 import mw.server.network.mappers.AccountMapper;
 import mw.server.network.mappers.ClientChannelMapper;
 import mw.shared.clientcommands.AbstractClientCommand;
@@ -31,12 +32,12 @@ public class AdminCommandController {
 	 * Reports an error message to client pAccountID.
 	 * @param pErrorString
 	 * @param pAccountID
+	 * @unused
 	 */
 	public void reportErrorMessage(String pErrorMessage, UUID pAccountID){
-		AbstractClientCommand lAccountCommand = null;
+		AbstractClientCommand lClientCommand = null;
 		Integer lClientID = AccountMapper.getInstance().getClientID(pAccountID);
-		
-		ClientChannelMapper.getInstance().getChannel(lClientID).sendCommand(lAccountCommand);
+		ClientChannelMapper.getInstance().getChannel(lClientID).sendCommand(lClientCommand);
 	}
 	
 	/**
@@ -48,10 +49,7 @@ public class AdminCommandController {
 		AbstractClientCommand lClientCommand = new MessageReceivedCommand(pMessage);
 		
 		for(UUID lAccountID : pAccountIDs){
-			if(AccountMapper.getInstance().containsAccountIDKey(lAccountID)){
-				Integer lClientID = AccountMapper.getInstance().getClientID(lAccountID);
-				ClientChannelMapper.getInstance().getChannel(lClientID).sendCommand(lClientCommand);
-			}
+			ClientCommunicationController.sendCommand(lAccountID, lClientCommand);
 		}
 	}
 }

@@ -11,6 +11,7 @@ import java.util.UUID;
 import com.google.gson.Gson;
 import com.sun.org.apache.xml.internal.security.signature.InvalidDigestValueException;
 
+import mw.shared.servercommands.CreateAccountCommand;
 import mw.util.Cache;
 import mw.util.CacheValueComputer;
 import mw.filesystem.ProjectFolder;
@@ -52,7 +53,9 @@ public class AccountManager {
 	 * @throws Exception
 	 */
 	public UUID createAccount(String pUsername, String pPassword) throws Exception{
-		//TODO verify account doesn't exist already
+		if(!areValidCrentials(pUsername, pPassword)){
+			throw new IllegalArgumentException("Invalid account credentials. Try a different username.");
+		}
 		UUID lUUID = UUID.randomUUID();
 		Account lNewAccount = new Account(lUUID, pUsername, pPassword);
 		
@@ -107,7 +110,7 @@ public class AccountManager {
 
 	/**
 	 * @param pUUID
-	 * @return
+	 * @return the account with the parameter ID
 	 */
 	private Account loadAccount(UUID pUUID){
 		Scanner lScanner = new Scanner(getAccountsFilePath(pUUID));
@@ -121,6 +124,31 @@ public class AccountManager {
 		
 		lScanner.close();
 		return lAccount;
+	}
+	
+	/**
+	 * @param pUsername
+	 * @param pPassword
+	 * @return true if the parameter credentials are valid. False if the username already exists
+	 */
+	private boolean areValidCrentials(String pUsername, String pPassword){
+		Scanner lScanner = new Scanner(getPasswordsFilePath());
+		String lCredentials, lTmpUsername;
+		String[] lCredentialsFields;
+		
+		
+		while(lScanner.hasNextLine()){
+			lCredentials = lScanner.nextLine();
+			lCredentialsFields = lCredentials.split(",");
+			lTmpUsername = lCredentialsFields[0];
+			if(pUsername.equals(lTmpUsername)){
+				lScanner.close();
+				return false;
+			}
+		}
+		
+		lScanner.close();
+		return true;
 	}
 	
 	/**

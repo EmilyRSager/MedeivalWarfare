@@ -5,7 +5,10 @@
 
 package mw.shared.servercommands;
 
+import java.util.UUID;
+
 import mw.server.gamelogic.controllers.GameController;
+import mw.server.network.mappers.AccountMapper;
 import mw.server.network.mappers.GameMapper;
 import mw.server.network.translators.NetworkToModelTranslator;
 import mw.shared.Coordinates;
@@ -34,8 +37,9 @@ public class SetActionTypeCommand extends AbstractServerCommand {
 	 */
 	@Override
 	public void execute(Integer pClientID) throws Exception {
+		UUID lAccountID = AccountMapper.getInstance().getAccountID(pClientID);
 		GameController.setActionType(
-				GameMapper.getInstance().getGame(pClientID),
+				GameMapper.getInstance().getGame(lAccountID),
 				aUnitCoordinates,
 				NetworkToModelTranslator.translateActionType(aActionType)
 				);

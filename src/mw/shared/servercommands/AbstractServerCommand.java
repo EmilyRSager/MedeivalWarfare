@@ -5,6 +5,8 @@
 
 package mw.shared.servercommands;
 
+import java.util.UUID;
+
 /**
  * Represents the root class that all possible messages sent from the Client to the Server must extend.
  */

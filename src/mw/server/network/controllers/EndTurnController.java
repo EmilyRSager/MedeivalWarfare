@@ -7,6 +7,7 @@ import java.util.UUID;
 import mw.server.gamelogic.controllers.GameController;
 import mw.server.gamelogic.state.Game;
 import mw.server.gamelogic.state.Player;
+import mw.server.network.communication.ClientCommunicationController;
 import mw.server.network.mappers.AccountMapper;
 import mw.server.network.mappers.ClientChannelMapper;
 import mw.server.network.mappers.PlayerMapper;
@@ -37,9 +38,6 @@ public class EndTurnController {
 		
 		//get the client associated with the current player
 		UUID lAccountID = PlayerMapper.getInstance().getAccount(lNewCurrentPlayer);
-		Integer lClientID = AccountMapper.getInstance().getClientID(lAccountID); 
-				
-		//Notify client 
-		ClientChannelMapper.getInstance().getChannel(lClientID).sendCommand(new NotifyBeginTurnCommand());
+		ClientCommunicationController.sendCommand(lAccountID, new NotifyBeginTurnCommand());
 	}
 }

@@ -16,10 +16,15 @@ import mw.server.gamelogic.exceptions.TooManyPlayersException;
 import mw.server.gamelogic.state.Game;
 import mw.server.gamelogic.state.Player;
 import mw.server.gamelogic.state.Tile;
+import mw.server.network.communication.ClientChannel;
+import mw.server.network.communication.ClientCommunicationController;
 import mw.server.network.lobby.GameLobby;
+import mw.server.network.mappers.AccountMapper;
+import mw.server.network.mappers.ClientChannelMapper;
 import mw.server.network.mappers.GameMapper;
 import mw.server.network.mappers.PlayerMapper;
 import mw.server.network.translators.SharedTileTranslator;
+import mw.shared.clientcommands.AbstractClientCommand;
 import mw.shared.clientcommands.AcknowledgementCommand;
 import mw.shared.clientcommands.NotifyBeginTurnCommand;
 import mw.shared.clientcommands.SetColorCommand;
@@ -106,9 +111,10 @@ public class GameInitializationController {
 			lGameStateCommandDistributor.newGame(lGameTiles);
 			assignAccountsToPlayers(lAccountIDs, lPlayers);
 
+			
 			//Inform client that it is his turn
 			UUID lCurrentAccountID = PlayerMapper.getInstance().getAccount(GameController.getCurrentPlayer(lGame));
-			ClientChannelMapper.getInstance().getChannel(lCurrentAccountID).sendCommand(new NotifyBeginTurnCommand());
+			ClientCommunicationController.sendCommand(lCurrentAccountID, new NotifyBeginTurnCommand());
 			
 		} catch (TooManyPlayersException e) {
 			System.out.println("[Server] Tried to create a Game with too many players.");
@@ -136,12 +142,7 @@ public class GameInitializationController {
 			//get player color
 			Color lPlayerColor = lPlayer.getPlayerColor();
 
-			//get client channel associated with current player
-			AccountChannel lAccountChannel = AccountChannelMapper.getInstance().getChannel(lAccountID);
-
-			//send command to client informing it of its color
-			lAccountChannel.sendCommand(
-					new SetColorCommand(SharedTileTranslator.translateColor(lPlayerColor)));
+			ClientCommunicationController.sendCommand(lAccountID, new SetColorCommand(SharedTileTranslator.translateColor(lPlayerColor)));
 		}
 	}
 
@@ -150,10 +151,9 @@ public class GameInitializationController {
 	 * @param pAccountID
 	 */
 	private void acknowledgeGameRequest(UUID pAccountID){
-		AbstractAccountCommand lAccountCommand =
+		AbstractClientCommand lClientCommand =
 				new AcknowledgementCommand("Game request received. Insufficient current users. Please wait for more clients to join lobby.");
 
-		//send acknowledgement to clients
-		AccountChannelMapper.getInstance().getChannel(pAccountID).sendCommand(lAccountCommand);
+		ClientCommunicationController.sendCommand(pAccountID, lClientCommand);
 	}
 }

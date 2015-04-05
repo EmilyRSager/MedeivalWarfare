@@ -14,7 +14,9 @@ import com.sun.org.apache.xerces.internal.parsers.IntegratedParserConfiguration;
 
 import mw.server.gamelogic.state.Game;
 import mw.server.gamelogic.state.Tile;
+import mw.server.gamelogic.state.Village;
 import mw.server.network.communication.ClientChannel;
+import mw.server.network.communication.ClientCommunicationController;
 import mw.server.network.mappers.AccountMapper;
 import mw.server.network.mappers.ClientChannelMapper;
 import mw.server.network.translators.SharedTileTranslator;
@@ -52,10 +54,18 @@ public class GameStateCommandDistributor implements Observer {
 	 */
 	@Override
 	public void update(Observable pObservable, Object pObject) {
+		if(pObservable instanceof Tile){
+			
+		}
+		else if(pObservable instanceof Village){
+			//TODO
+		}
+		else{
+			//TODO
+		}
+		
 		Tile lTile = (Tile) pObservable;
-		AbstractClientCommand lClientCommand = 
-				new UpdateTileCommand(SharedTileTranslator.translateTile(lTile, aGame));
-
+		AbstractClientCommand lClientCommand = new UpdateTileCommand(SharedTileTranslator.translateTile(lTile, aGame));
 		distributeCommand(lClientCommand);
 	}
 
@@ -65,11 +75,7 @@ public class GameStateCommandDistributor implements Observer {
 	 */
 	public void newGame(Tile[][] pGameMap) {
 		SharedTile[][] lSharedTiles = SharedTileTranslator.translateMap(pGameMap, aGame);
-		System.out.printf("[Server] Map width = [%d]. Map height = [%d].\n", lSharedTiles[0].length, lSharedTiles.length);
-		
-		AbstractClientCommand lClientCommand = 
-				new NewGameCommand(SharedTileTranslator.translateMap(pGameMap, aGame));
-
+		AbstractClientCommand lClientCommand = new NewGameCommand(lSharedTiles);
 		distributeCommand(lClientCommand);
 	}
 
@@ -79,17 +85,11 @@ public class GameStateCommandDistributor implements Observer {
 	 */
 	private void distributeCommand(AbstractClientCommand pClientCommand) {
 		for(UUID lUUID : aAccountIDs){
-			//check which user is logged on, send them a message updating the game state
-			if(AccountMapper.getInstance().containsAccountIDKey(lUUID)){
-				Integer lClientID = AccountMapper.getInstance().getClientID(lUUID);
-				ClientChannel lTargetChannel = ClientChannelMapper.getInstance().getChannel(lClientID);
-				lTargetChannel.sendCommand(pClientCommand);
-			}
+			ClientCommunicationController.sendCommand(lUUID, pClientCommand);
 		}
 	}
 	
 	/**
-	 * 
 	 * @param pAccountIDs
 	 * @return
 	 */
