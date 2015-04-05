@@ -258,6 +258,7 @@ public class Game extends RandomColorGenerator implements Serializable{
 	 */
 	public void moveUnit(Coordinates pStartCoordinates,Coordinates pDestinationCoordinates) 
 	{
+		//DON'T MAKE CHANGES TO THIS METHOD UNLESS YOU ARE EMILY 
 		Tile startTile =  aMap.getTile(pStartCoordinates); 
 		Tile pDestinationTile = aMap.getTile(pDestinationCoordinates);
 		Unit crtUnit = startTile.getUnit();
@@ -288,6 +289,7 @@ public class Game extends RandomColorGenerator implements Serializable{
 
 	public void takeoverEnemyTile(Tile startTile, Tile pDestinationTile)
 	{
+		System.out.println("[Game] Unit is attempting to take over enemy territory.");
 		Village invadedVillage = getVillage(pDestinationTile);
 		Village invadingVillage = getVillage(startTile);
 		EnemyCaptureLogic.CaptureTile(invadingVillage, invadedVillage, pDestinationTile, this, aCurrentPlayer);  //capture the tile  and fuse the necessary villages

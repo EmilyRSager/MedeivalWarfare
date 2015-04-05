@@ -12,6 +12,7 @@ public class ClientTestDriver {
 			MenuActionSender.tryLogin("Charlie", "Bloomfield");
 		else
 			MenuActionSender.tryLogin("Hugo", "Kapp");
+		
 		NetworkController.requestNewGame();
 	}
 }

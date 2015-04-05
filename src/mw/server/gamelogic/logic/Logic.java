@@ -66,6 +66,7 @@ public class Logic {
 	 
 		if (tilesAreSameColor(startTile, pDestinationTile))
 		{	
+			System.out.println("[Game] Moving unit within village. ");
 			switch (crtUnitType)
 			{
 			case PEASANT:
