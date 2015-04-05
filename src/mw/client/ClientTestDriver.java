@@ -6,7 +6,7 @@ import mw.client.network.NetworkController;
 public class ClientTestDriver {
 	public static void main(String[] args) {
 		NetworkController.initialize();
-		MenuActionSender.tryCreateAccount("Hugo", "Kapp");
+		MenuActionSender.tryLogin("Charlie", "Bloomfield");
 		NetworkController.requestNewGame();
 	}
 }

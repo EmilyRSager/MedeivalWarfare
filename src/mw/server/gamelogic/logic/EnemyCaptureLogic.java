@@ -18,6 +18,7 @@ public class EnemyCaptureLogic {
 		//Case for invading a non-village capital
 		if (invadedTile.getStructureType() != StructureType.VILLAGE_CAPITAL);
 		{
+			System.out.println("[Game] The tile this Unit is trying to take over is not the village capital.");
 			fuse(invadingVillage, invadedVillage, invadedTile, pGame, aCurrentPlayer);
 		}
 		if(invadedTile.getStructureType() == StructureType.VILLAGE_CAPITAL)
@@ -61,6 +62,7 @@ public class EnemyCaptureLogic {
 			}
 			if(needToFuse)
 			{
+				System.out.println("[Game] Village fusing necessary.  Attempting to fusing villages. ");
 				pGame.fuseVillages(toFuse, invadingCapital, aCurrentPlayer);
 			}
 		}
