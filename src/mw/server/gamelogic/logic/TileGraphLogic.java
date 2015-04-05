@@ -24,6 +24,10 @@ public final class TileGraphLogic {
 		if (startTile.hasUnit())
 		{
 			Unit pUnit = startTile.getUnit();
+			if (pUnit.getUnitType() == UnitType.CANNON)
+			{
+				return CannonLogic.isReachableNode(crtTile, startTile, pCrtNeighbors); 
+			}
 			if (isSeaTile(crtTile))
 			{
 				return false; 
@@ -189,7 +193,6 @@ public final class TileGraphLogic {
 		{
 			return unitCanClearTombstone(pUnit); 
 		}
-
 		if (isCapitalOnTile(destinationTile))
 		{
 			return canUnitInvadeCapital(pUnit, destinationTile); 

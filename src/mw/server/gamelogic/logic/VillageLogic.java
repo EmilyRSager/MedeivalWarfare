@@ -146,7 +146,7 @@ public class VillageLogic
 		}
 		if (totalUpkeepCost > pVillage.getGold())
 		{
-			throw new NotEnoughIncomeException("There is not enough gold for the total upkeep cost of this village."); 
+			throw new NotEnoughIncomeException("There is not enough gold for the total upkeep cost of this village. Village will be starved."); 
 		}
 	}
 
