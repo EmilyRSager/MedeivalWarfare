@@ -1,5 +1,6 @@
 package mw.server.admin;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -22,18 +23,22 @@ import mw.filesystem.ProjectFolder;
  */
 public class AccountManager {
 	private static final String ACCOUNTS_FOLDER_PATH = "accountdata/accounts/";
-	private static final String PASSWORDS_FILE_PATH = "accountdata/passwords.csv";
-	
+	private static final String PASSWORDS_FILE_PATH = "accountdata/passwords";
+
+	private static int USERNAME_INDEX = 0;
+	private static int PASSWORD_INDEX = 1;
+	private static int UUID_INDEX = 2;
+
 	private static AccountManager aAccountManager;
 	private HashMap<UUID, Account> aAccountCache;
-	
+
 	/**
 	 * Constructor
 	 */
 	private AccountManager(){
 		aAccountCache = new HashMap<UUID, Account>();
 	}
-	
+
 	/**
 	 * @return static singleton instance
 	 */
@@ -41,10 +46,10 @@ public class AccountManager {
 		if(aAccountManager == null){
 			aAccountManager = new AccountManager();
 		}
-		
+
 		return aAccountManager;
 	}
-	
+
 	/**
 	 * Creates a new account 
 	 * @param pUsername
@@ -52,21 +57,70 @@ public class AccountManager {
 	 * @return 
 	 * @throws Exception
 	 */
-	public UUID createAccount(String pUsername, String pPassword) throws Exception{
+	public UUID createAccount(String pUsername, String pPassword) throws IllegalArgumentException{
 		if(!areValidCrentials(pUsername, pPassword)){
 			throw new IllegalArgumentException("Invalid account credentials. Try a different username.");
 		}
 		UUID lUUID = UUID.randomUUID();
 		Account lNewAccount = new Account(lUUID, pUsername, pPassword);
-		
+
 		//save to disk for persistence
 		saveAccountData(lNewAccount);
 		savePassword(lNewAccount);
-		
+
 		aAccountCache.put(lUUID, lNewAccount);
 		return lUUID;
 	}
-	
+
+	/**
+	 * @param pUsername
+	 * @param pPassword
+	 * @return true if the parameter credentials are valid. False if the username already exists
+	 */
+	private boolean areValidCrentials(String pUsername, String pPassword){
+		Scanner lScanner = null;
+		try {
+			lScanner = new Scanner(new File(getPasswordsFilePath()));
+			String lCredentials, lExistingUsername;
+			String[] lCredentialsFields;
+			while(lScanner.hasNextLine()){
+				lCredentials = lScanner.nextLine();
+				lCredentialsFields = lCredentials.split(",");
+
+				System.out.println("Credentials = " + lCredentials);
+				//System.out.printf("[areValidCredentials] Username = [%s]. Password = [%s].", lCredentialsFields[0], lCredentialsFields[1]);
+
+				lExistingUsername = lCredentialsFields[USERNAME_INDEX];
+				if(pUsername.equals(lExistingUsername)){
+					lScanner.close();
+					return false;
+				}
+			}
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return true;
+	}
+
+	/**
+	 * @param pAccount
+	 */
+	private void savePassword(Account pAccount){
+		System.out.println("Writing [" + pAccount.getUsername() + "," + pAccount.getPassword() + "," + pAccount.getID().toString() + "] to passwords file.");
+
+		FileWriter lFileWriter = null;
+		try {
+			lFileWriter = new FileWriter(getPasswordsFilePath(), true);
+			lFileWriter.write(pAccount.getUsername() + "," + pAccount.getPassword() + "," + pAccount.getID().toString() + "\n");
+			lFileWriter.close();
+		} catch (IOException e) {
+			System.out.println("[AccountManager] Failed to write username/password info.");
+			e.printStackTrace();
+		}
+	}
+
 	/**
 	 * @param pUUID
 	 * @return
@@ -81,94 +135,45 @@ public class AccountManager {
 			return lAccount;
 		}
 	}
-	
+
 	/**
 	 * @param pUsername
 	 * @param pPassword
 	 * @return Account id associated with the parameter username and password
 	 * @throws Exception
 	 */
-	public UUID getAccountID(String pUsername, String pPassword) {
-		Scanner lScanner = new Scanner(getPasswordsFilePath());
-		
+	public UUID getAccountID(String pUsername, String pPassword) throws IllegalArgumentException {
+		Scanner lScanner = null;
+		try {
+			lScanner = new Scanner(new File(getPasswordsFilePath()));
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
 		String lAccountInfo = null;
 		String[] lAccountFields;
 		String lUsername, lPassword;
-		while(lScanner.hasNextLine()){
+		while(lScanner.hasNextLine()){			
 			lAccountInfo = lScanner.nextLine();
-			lAccountFields = lAccountInfo.split(",");
-			lUsername = lAccountFields[0];
-			lPassword = lAccountFields[1];
+			System.out.println("Line read from passwords file = " + lAccountInfo);
 			
-			if(pUsername.equals(lUsername) && pPassword.equals(lPassword)){
-				return UUID.fromString(lAccountFields[2]);
-			}
-		}
-		
-		throw new IllegalArgumentException("Invalid login credentials.");
-	}
+			lAccountFields = lAccountInfo.split(",");
+			lUsername = lAccountFields[USERNAME_INDEX];
+			lPassword = lAccountFields[PASSWORD_INDEX];
 
-	/**
-	 * @param pUUID
-	 * @return the account with the parameter ID
-	 */
-	private Account loadAccount(UUID pUUID){
-		Scanner lScanner = new Scanner(getAccountsFilePath(pUUID));
-		
-		String lSerializedAccount = null;
-		while(lScanner.hasNextLine()){
-			lSerializedAccount += lScanner.nextLine();
-		}
-		
-		Account lAccount = new Gson().fromJson(lSerializedAccount, Account.class);
-		
-		lScanner.close();
-		return lAccount;
-	}
-	
-	/**
-	 * @param pUsername
-	 * @param pPassword
-	 * @return true if the parameter credentials are valid. False if the username already exists
-	 */
-	private boolean areValidCrentials(String pUsername, String pPassword){
-		Scanner lScanner = new Scanner(getPasswordsFilePath());
-		String lCredentials, lTmpUsername;
-		String[] lCredentialsFields;
-		
-		
-		while(lScanner.hasNextLine()){
-			lCredentials = lScanner.nextLine();
-			lCredentialsFields = lCredentials.split(",");
-			lTmpUsername = lCredentialsFields[0];
-			if(pUsername.equals(lTmpUsername)){
+			if(pUsername.equals(lUsername) && pPassword.equals(lPassword)){
 				lScanner.close();
-				return false;
+				
+				UUID lUUID = UUID.fromString(lAccountFields[UUID_INDEX]);
+				System.out.println("U = " + lUsername + ". P = " + lPassword + ". ID = " + lUUID);
+				
+				return lUUID;
 			}
 		}
-		
+
 		lScanner.close();
-		return true;
-	}
-	
-	/**
-	 * @param pAccount
-	 */
-	private void savePassword(Account pAccount){
-		FileWriter lFileWriter = null;
-		try {
-			lFileWriter = new FileWriter(getPasswordsFilePath(), true);
-		} catch (IOException e) {
-			System.out.println("[AccountManager] Failed to open username/password file.");
-			e.printStackTrace();
-		}
-		
-		try {
-			lFileWriter.write(pAccount.getUsername() + "," + pAccount.getPassword() + "," + pAccount.getID().toString() + "\n");
-		} catch (IOException e) {
-			System.out.println("[AccountManager] Failed to save account username/password to file");
-			e.printStackTrace();
-		}
+		throw new IllegalArgumentException("Invalid login credentials.");
 	}
 
 	/**
@@ -180,29 +185,39 @@ public class AccountManager {
 			String lAccountFilePath = getAccountsFilePath(pAccount.getID());
 			//System.out.println(lAccountFilePath);
 			lFileWriter = new FileWriter(lAccountFilePath);
-		} catch (IOException e){
-			System.out.println("[AccountSerializer] Failed to load the account data file.");
-			e.printStackTrace();
-		}
-
-		try {
-			
 			lFileWriter.write(pAccount.toString());
+			lFileWriter.close();
 		} catch (IOException e) {
-			System.out.println("[AccountSerializer] Failed to write account data to the account data file.");
+			System.out.println("[AccountManager] Failed to close file writer.");
 			e.printStackTrace();
-		}
-
-		if(lFileWriter != null){
-			try {
-				lFileWriter.close();
-			} catch (IOException e) {
-				System.out.println("[AccountSerializer] Failed to close file writer.");
-				e.printStackTrace();
-			}
 		}
 	}
-	
+
+	/**
+	 * @param pUUID
+	 * @return the account with the parameter ID
+	 */
+	private Account loadAccount(UUID pUUID){
+		Scanner lScanner = null;
+		Account lAccount = null;
+		
+		try {
+			lScanner = new Scanner(new File(getAccountsFilePath(pUUID)));
+			String lSerializedAccount = "";
+			while(lScanner.hasNextLine()){
+				lSerializedAccount += lScanner.nextLine();
+			}
+			
+			lAccount = new Gson().fromJson(lSerializedAccount, Account.class);
+			
+			lScanner.close();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+
+		return lAccount;
+	}
+
 	private static String getPasswordsFilePath(){
 		return ProjectFolder.getPath() + PASSWORDS_FILE_PATH;
 	}

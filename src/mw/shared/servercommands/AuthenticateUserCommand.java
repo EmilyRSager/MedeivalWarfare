@@ -9,6 +9,8 @@ import java.util.UUID;
 
 import mw.server.admin.Account;
 import mw.server.admin.AccountManager;
+import mw.server.network.controllers.AdminCommandController;
+import mw.server.network.controllers.AuthenticationController;
 import mw.server.network.mappers.AccountMapper;
 import mw.server.network.mappers.ClientChannelMapper;
 import mw.shared.clientcommands.UserAuthenticatedCommand;
@@ -29,9 +31,7 @@ public class AuthenticateUserCommand extends AbstractServerCommand {
 
 	@Override
 	public void execute(Integer pClientID) throws Exception {
-		UUID lAccountID = AccountManager.getInstance().getAccountID(aUsername, aPassword);
-		AccountMapper.getInstance().put(pClientID, lAccountID);
-		ClientChannelMapper.getInstance().getChannel(pClientID).sendCommand(new UserAuthenticatedCommand());
+		AdminCommandController.getInstance().authenticateUser(pClientID, aUsername, aPassword);
 	}
 
 }

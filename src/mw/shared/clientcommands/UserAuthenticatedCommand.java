@@ -2,7 +2,12 @@ package mw.shared.clientcommands;
 
 public class UserAuthenticatedCommand extends AbstractClientCommand {
 	private final String aType = "UserAuthenticatedCommand";
-
+	private boolean aAuthenticated;
+	
+	public UserAuthenticatedCommand(boolean pAuthenticated) {
+		aAuthenticated = pAuthenticated;
+	}
+	
 	@Override
 	public boolean isValid() {
 		// TODO Auto-generated method stub
@@ -11,8 +16,7 @@ public class UserAuthenticatedCommand extends AbstractClientCommand {
 
 	@Override
 	public void execute() {
-		// TODO Auto-generated method stub
-
+		MenuActionSender.setAuthenticationResult(aAuthenticated);
 	}
 
 }
