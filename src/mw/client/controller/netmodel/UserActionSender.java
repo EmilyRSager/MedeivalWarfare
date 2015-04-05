@@ -145,10 +145,18 @@ public class UserActionSender {
 		NetworkController.upgradeVillage(coord, vt);
 	}
 
-	public void sendUnitHire(ModelTile unitTile, UnitType ut)
+	public boolean tryUnitHire(ModelTile unitTile, UnitType ut)
 	{
+		waitForActions();
 		Coordinates coord = getCoordinates(unitTile);
-		NetworkController.hireUnit(coord, ut);
+		
+		if (possibleActions.getHirableUnitTiles().contains(coord)) 
+		{
+			NetworkController.hireUnit(coord, ut);
+			return true;
+		}
+		else
+			return false;
 	}
 
 	public void sendUnitAction(ModelTile unitTile, SharedActionType at)
@@ -188,17 +196,8 @@ public class UserActionSender {
 			}
 			ClientSynchronization.gameLock.lock();
 		}
-		//waitingForActions = false;
-		//actionsReady = true;
-
 		possibleActionsLock.unlock();
 	}
-	
-	
-	/* ==========================
-	 * 		Inherited methods
-	 * ==========================
-	 */
 
 
 
