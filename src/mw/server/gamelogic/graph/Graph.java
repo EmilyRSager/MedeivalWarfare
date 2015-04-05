@@ -52,7 +52,6 @@ public class Graph <T> implements Serializable {
 	}
 	
 	/**
-	 * 
 	 * @param pNode
 	 * @return
 	 */
@@ -63,10 +62,8 @@ public class Graph <T> implements Serializable {
 	/**
 	 * set all nodes in this graph to unvisited
 	 */
-	public void resetAll()
-	{
-		for (T lNode: aEdges.keySet())
-		{
+	public void resetAll(){
+		for (T lNode: aEdges.keySet()){
 			setVisited(lNode, false);
 		}
 	}

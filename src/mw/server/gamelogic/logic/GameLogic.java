@@ -29,10 +29,12 @@ public class GameLogic
 	 */
 	public static ArrayList<UnitType> getVillagerHireOrUpgradeTypes(Tile pTile, Game pGame) 
 	{
-
 		
 		Village lVillage = pGame.getVillage(pTile);
 		VillageType lVillageType = lVillage.getVillageType();
+		
+		//TODO
+		System.out.printf("[server] This village has size : %d.\n", lVillage.getTiles().size());
 
 		ArrayList<UnitType> rArray = new ArrayList<UnitType>();
 		if (pTile.getStructureType()!= StructureType.TREE && pTile.getStructureType()!=StructureType.VILLAGE_CAPITAL
