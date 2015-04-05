@@ -7,7 +7,7 @@ public abstract class ScreenSwitcher {
 	
 	private static final ScreenKind currentScreen = ScreenKind.NONE;
 	
-	private static LoginScreen loginScreen;
+	private static LoginWindow loginScreen;
 
 	/* ========================
 	 * 		Constructors
@@ -24,6 +24,7 @@ public abstract class ScreenSwitcher {
 	
 	public static void switchScreen(ScreenKind newScreen)
 	{
+		checkTransition(currentScreen, newScreen);
 		closeCurrentWindow();
 		switch (newScreen)
 		{
@@ -31,7 +32,7 @@ public abstract class ScreenSwitcher {
 			break;
 			
 		case LOGIN:
-			loginScreen = new LoginScreen();
+			loginScreen = new LoginWindow();
 			break;
 		}
 		currentScreen = newScreen;
@@ -70,6 +71,22 @@ public abstract class ScreenSwitcher {
 	 * ========================
 	 */
 	
-	
+	private static void checkTransition(ScreenKind current, ScreenKind next)
+	{
+		boolean valid = true;
+		switch (current)
+		{
+		case NONE:
+			valid = (next == ScreenKind.LOGIN);
+			break;
+			
+		case LOGIN:
+			valid = false;
+			break;
+		}
+		
+		if (!valid)
+			throw new IllegalStateException("Can't switch from "+current+" screen to "+next+" screen");
+	}
 
 }
