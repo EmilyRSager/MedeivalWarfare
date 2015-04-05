@@ -87,9 +87,6 @@ public class AccountManager {
 				lCredentials = lScanner.nextLine();
 				lCredentialsFields = lCredentials.split(",");
 
-				System.out.println("Credentials = " + lCredentials);
-				//System.out.printf("[areValidCredentials] Username = [%s]. Password = [%s].", lCredentialsFields[0], lCredentialsFields[1]);
-
 				lExistingUsername = lCredentialsFields[USERNAME_INDEX];
 				if(pUsername.equals(lExistingUsername)){
 					lScanner.close();
@@ -108,8 +105,6 @@ public class AccountManager {
 	 * @param pAccount
 	 */
 	private void savePassword(Account pAccount){
-		System.out.println("Writing [" + pAccount.getUsername() + "," + pAccount.getPassword() + "," + pAccount.getID().toString() + "] to passwords file.");
-
 		FileWriter lFileWriter = null;
 		try {
 			lFileWriter = new FileWriter(getPasswordsFilePath(), true);
@@ -156,8 +151,6 @@ public class AccountManager {
 		String lUsername, lPassword;
 		while(lScanner.hasNextLine()){			
 			lAccountInfo = lScanner.nextLine();
-			System.out.println("Line read from passwords file = " + lAccountInfo);
-			
 			lAccountFields = lAccountInfo.split(",");
 			lUsername = lAccountFields[USERNAME_INDEX];
 			lPassword = lAccountFields[PASSWORD_INDEX];
@@ -183,7 +176,6 @@ public class AccountManager {
 		FileWriter lFileWriter = null;
 		try {
 			String lAccountFilePath = getAccountsFilePath(pAccount.getID());
-			//System.out.println(lAccountFilePath);
 			lFileWriter = new FileWriter(lAccountFilePath);
 			lFileWriter.write(pAccount.toString());
 			lFileWriter.close();
