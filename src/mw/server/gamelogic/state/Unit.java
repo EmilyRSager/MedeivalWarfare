@@ -43,20 +43,10 @@ public class Unit extends Observable {
     }
 
     public void setActionType(ActionType pActionType) 
-    {
-    	if (pActionType == ActionType.READY)
-    	{
-    		StackTraceElement[] debuggerStackTrace = Thread.currentThread().getStackTrace(); 
-    		for (int i = 0; i<debuggerStackTrace.length; i++)
-    		{
-    			System.out.println(debuggerStackTrace[i].getClassName() + " :: " + debuggerStackTrace[i].getMethodName());
-    		}
-    	}
-    	
+    {	
     	System.out.println("[Game] The Unit's actionType has been set to " + pActionType);
         aActionType = pActionType; 
         setChanged();
-        
     }
 
    

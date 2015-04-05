@@ -41,6 +41,15 @@ public class Village extends Observable implements Serializable
 		aWood = 100; 
 	}
 	
+	public Village (Collection<Tile> pVillageTiles, int pGold, int pWood, Tile pCapital, VillageType pVillageType)
+	{
+		aTiles = pVillageTiles;
+		aGold = pGold;
+		aWood = pWood;
+		aCapital = pCapital;
+		aVillageType = pVillageType;
+	}
+	
 	/**
 	 * Sets the type of a village to hovel, town or fort. 
 	 * @param pVillageType
@@ -79,6 +88,11 @@ public class Village extends Observable implements Serializable
 		aCapital = pCapital;
 		aCapital.setStructureType(StructureType.VILLAGE_CAPITAL);
 		aCapital.setVillageType(VillageType.HOVEL); 
+	}
+	
+	public void removeCapital()
+	{
+		aCapital = null;
 	}
 
 	/**

@@ -267,10 +267,9 @@ public class Game extends RandomColorGenerator implements Serializable{
 			System.out.println("[Game] The unit is moving to neutral land.");
 			Logic.checkFuse(startTile, pDestinationTile, this);
 		}
-		if (Logic.updateGameState(crtUnit, startTile, pDestinationTile, this, aMap)) 
-		{
-			crtUnit.setActionType(ActionType.MOVED);
-		}
+		
+		Logic.updateGameState(crtUnit, startTile, pDestinationTile, this, aMap);
+	
 		if (lColor == Color.NEUTRAL)
 		{
 			crtUnit.setActionType(ActionType.MOVED);	
@@ -285,12 +284,7 @@ public class Game extends RandomColorGenerator implements Serializable{
 	 * @param startTile
 	 * @param pDestinationTile
 	 */
-	public void takeoverNeutralTile(Tile startTile, Tile pDestinationTile) 
-	{
-		pDestinationTile.setColor(startTile.getColor());
-		Village lCapturingVillage = aMap.getVillage(startTile);
-		lCapturingVillage.addTile(pDestinationTile);
-	}
+
 
 	public void takeoverEnemyTile(Tile startTile, Tile pDestinationTile)
 	{
