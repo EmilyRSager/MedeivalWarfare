@@ -54,9 +54,9 @@ public class LoginWindow
 			}
 		});
 		
-		createAcc = new JButton("Create new account");
+		create = new JButton("Create new account");
 		
-		createAcc.addActionListener(new ActionListener() {
+		create.addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e)
@@ -70,9 +70,10 @@ public class LoginWindow
 		pane.add(pLabel);
 		pane.add(password);
 		pane.add(login);
-		pane.add(createAcc);
+		pane.add(create);
 		
 		window.pack();
+		window.setLocationRelativeTo(null);
 		window.setVisible(true);
 		
 	}
