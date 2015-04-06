@@ -35,7 +35,6 @@ public class Game extends RandomColorGenerator implements Serializable{
 	private Collection<Player> aPlayers;
 	private GameMap aMap;  
 	private Player aCurrentPlayer;
-	private final String aName;
 	CircularIterator<Player> crtIterator;
 
 	/**
@@ -43,9 +42,9 @@ public class Game extends RandomColorGenerator implements Serializable{
 	 * @param pPlayers
 	 * @throws TooManyPlayersException
 	 */
-	public Game(Collection<Player> pPlayers, String pName) throws TooManyPlayersException 
+	public Game(Collection<Player> pPlayers) throws TooManyPlayersException 
 	{
-		this(pPlayers, DEFAULT_WIDTH, DEFAULT_HEIGHT, pName);
+		this(pPlayers, DEFAULT_WIDTH, DEFAULT_HEIGHT);
 	}
 
 	/**
@@ -54,10 +53,9 @@ public class Game extends RandomColorGenerator implements Serializable{
 	 * @param pHeight
 	 * @throws TooManyPlayersException 
 	 */
-	public Game (Collection<Player> pPlayers, int pWidth, int pHeight, String pName) throws TooManyPlayersException {
+	public Game (Collection<Player> pPlayers, int pWidth, int pHeight) throws TooManyPlayersException {
 
 		aPlayers  = pPlayers;
-		aName = pName;
 		Stack <Color> myColors = new Stack <Color>(); 
 		myColors.push(Color.BLUE); 
 		myColors.push(Color.GREEN);
@@ -456,7 +454,5 @@ public class Game extends RandomColorGenerator implements Serializable{
 		
 	}
 	
-	public String getName(){
-		return aName;
-	}
+	
 }
