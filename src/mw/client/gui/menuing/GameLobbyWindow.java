@@ -1,4 +1,4 @@
-package mw.client.menuing.control;
+package mw.client.gui.menuing;
 
 import java.awt.BorderLayout;
 import java.awt.Container;
@@ -18,7 +18,6 @@ public class GameLobbyWindow {
 	private final JList<String> gameList;
 	private final JScrollPane sPane;
 	private final JPanel buttonContainer;
-	private final GridLayout buttonLayout;
 	private final JButton create;
 	private final JButton join;
 	
@@ -56,8 +55,6 @@ public class GameLobbyWindow {
 		});
 		
 		buttonContainer = new JPanel();
-		buttonLayout = new GridLayout(0,2);
-		buttonContainer.setLayout(buttonLayout);
 		buttonContainer.add(create);
 		buttonContainer.add(join);
 		

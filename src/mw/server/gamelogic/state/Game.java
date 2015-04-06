@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Stack;
+import java.util.UUID;
 
 import mw.server.gamelogic.PossibleGameActions;
 import mw.server.gamelogic.enums.ActionType;
@@ -292,8 +293,15 @@ public class Game extends RandomColorGenerator implements Serializable{
 		System.out.println("[Game] Unit is attempting to take over enemy territory.");
 		Village invadedVillage = getVillage(pDestinationTile);
 		Village invadingVillage = getVillage(startTile);
-		EnemyCaptureLogic.CaptureTile(invadingVillage, invadedVillage, pDestinationTile, this, aCurrentPlayer);  //capture the tile  and fuse the necessary villages
-		aMap.deleteVillages(aPlayers, aCurrentPlayer);
+		System.out.println("[Game] The invaded village has initial size " + invadedVillage.getTiles().size());
+		System.out.println("[Game] The invading village has initial size " + invadingVillage.getTiles().size());
+		
+		//capture the tile  and fuse the necessary villages
+		EnemyCaptureLogic.CaptureTile(invadingVillage, invadedVillage, pDestinationTile, this, aCurrentPlayer); 
+		
+		System.out.println("[Game] The invaded village has final size " + invadedVillage.getTiles().size());
+		System.out.println("[Game] The invading village has final size " + invadingVillage.getTiles().size());
+		aMap.updateVillages(aPlayers, aCurrentPlayer, invadedVillage);
 	}
 
 	/**
@@ -445,4 +453,6 @@ public class Game extends RandomColorGenerator implements Serializable{
 		// TODO Auto-generated method stub
 		
 	}
+	
+	
 }

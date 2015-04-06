@@ -62,7 +62,8 @@ public class AccountManager {
 			throw new IllegalArgumentException("Invalid account credentials. Try a different username.");
 		}
 		UUID lUUID = UUID.randomUUID();
-		Account lNewAccount = new Account(lUUID, pUsername, pPassword);
+		//null param temporary for the gameaccount info
+		Account lNewAccount = new Account(lUUID, pUsername, pPassword, null);
 
 		//save to disk for persistence
 		saveAccountData(lNewAccount);

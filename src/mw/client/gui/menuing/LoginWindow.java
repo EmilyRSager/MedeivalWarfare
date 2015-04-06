@@ -9,6 +9,9 @@ import java.awt.event.KeyEvent;
 import javax.swing.*;
 
 import mw.client.controller.menuing.MenuActionSender;
+import mw.client.controller.menuing.MenuControl;
+import mw.client.controller.menuing.ScreenSwitcher;
+import mw.client.controller.menuing.ScreenSwitcher.ScreenKind;
 
 public class LoginWindow 
 {

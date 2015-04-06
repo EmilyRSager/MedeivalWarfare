@@ -12,6 +12,7 @@ import mw.client.gui.api.basics.ObservableWindowComponent;
 import mw.client.gui.api.basics.ObservableWindowComponent.ChangedState;
 import mw.client.gui.api.basics.WindowComponent;
 import mw.client.gui.api.components.AbstractButton;
+import mw.client.gui.api.components.BlockComponent;
 import mw.client.gui.api.components.ResizableWindow;
 import mw.client.gui.api.components.TextDisplay;
 import mw.client.gui.api.extminueto.ExtendedMinuetoColor;
@@ -36,10 +37,13 @@ public class GameWindow implements Observer {
 	
 	private final ResizableWindow window;
 	private final MinuetoEventQueue queue;
+	
 	private MapDisplay md;
 	private MapComponent mapComp;
+	
 	private VerticalLayout windowLayout;
 	private HorizontalLayout controlBarLayout;
+	
 	private AbstractButton endTurn;
 	private List<AbstractButton> choiceButtonsList;
 	
@@ -71,7 +75,7 @@ public class GameWindow implements Observer {
 		controlBarLayout = new HorizontalLayout(0, 0, CONTROL_LAYOUT_HEIGHT, 3);
 		
 		windowLayout.addComponent(mapComp, 0);
-		windowLayout.addComponent(controlBarLayout, 2);
+		windowLayout.addComponent(new BlockComponent(0, CONTROL_LAYOUT_HEIGHT, controlBarLayout), 2);
 		window = new ResizableWindow(windowLayout.getWidth(), windowLayout.getHeight(), queue, "Medieval Warfare");
 		
 		mapComp.setWindow(this);
@@ -248,11 +252,10 @@ public class GameWindow implements Observer {
 			int height = comp.getHeight();
 			if (changedState == ChangedState.SIZE 
 					&& comp == windowLayout 
-					&& width != window.getWidth() 
-					&& height != window.getHeight())
+					&& (width != window.getWidth() || height != window.getHeight()))
 			{
-				System.out.println("[GameWindow] The layout now has size "+comp.getWidth()+", "+comp.getHeight());
-				window.resize(comp.getWidth(), comp.getHeight());
+				System.out.println("[GameWindow] The layout now has size "+width+", "+height);
+				window.resize(width, height);
 				comp.drawOn(window);
 			}
 		}

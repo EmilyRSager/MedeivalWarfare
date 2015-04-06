@@ -57,6 +57,8 @@ public final class GameCommandHandler {
 	}
 	
 	public static void displayMessage(String message) {
+		if (message == null)
+			message = "";
 		ClientSynchronization.gameLock.lock();
 		DisplayUpdater.showGeneralMessage(message);
 		ClientSynchronization.gameLock.unlock();

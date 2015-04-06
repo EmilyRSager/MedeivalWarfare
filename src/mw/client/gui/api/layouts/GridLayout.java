@@ -32,7 +32,7 @@ public class GridLayout extends AbstractWindowComponent implements Observer {
 	private int[] rowHeight;
 	private int[] columnWidth;
 	
-	private final int minWidth, minHeight;
+	//private final int minWidth, minHeight;
 	//private boolean packed;
 	private boolean packing;
 
@@ -44,8 +44,8 @@ public class GridLayout extends AbstractWindowComponent implements Observer {
 	public GridLayout(int x, int y, int width, int height, int rows, int columns)
 	{
 		super(x, y, width, height);
-		minWidth = width;
-		minHeight = height;
+		//minWidth = width;
+		//minHeight = height;
 		if (columns>0 && rows>0)
 		{
 			rowCount = rows;
@@ -298,17 +298,17 @@ public class GridLayout extends AbstractWindowComponent implements Observer {
 		packing = false;
 	}
 	
-	@Override
+	/*@Override
 	public int getWidth()
 	{
 		return Math.max(super.getWidth(), minWidth);
-	}
+	}*/
 	
-	@Override
+	/*@Override
 	public int getHeight()
 	{
 		return Math.max(super.getHeight(), minHeight);
-	}
+	}*/
 	
 	@Override
 	public void update(Observable o, Object arg)

@@ -5,14 +5,15 @@
 
 package mw.server.network.controllers;
 
+import java.io.IOException;
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 import java.util.UUID;
 
+import test.mw.server.gamelogic.SaveGame;
 import mw.server.admin.Account;
+import mw.server.admin.AccountGameInfo;
 import mw.server.admin.AccountManager;
 import mw.server.gamelogic.controllers.GameController;
 import mw.server.gamelogic.enums.Color;
@@ -22,7 +23,6 @@ import mw.server.gamelogic.state.Player;
 import mw.server.gamelogic.state.Tile;
 import mw.server.network.communication.ClientCommunicationController;
 import mw.server.network.lobby.GameLobby;
-import mw.server.network.lobby.GameRoom;
 import mw.server.network.mappers.GameMapper;
 import mw.server.network.mappers.PlayerMapper;
 import mw.server.network.translators.LobbyTranslator;
@@ -115,7 +115,7 @@ public class GameInitializationController {
 			lGame = GameController.newGame(lNumPlayers); //throws exception if too many players
 
 			/* Map the clients to the given Game.
-			 * TODO this may be unnesecary as there will be a mapping between AccountIDs and Players as well
+			 * TODO this may be unnecessary as there will be a mapping between AccountIDs and Players as well
 			 */
 			GameMapper.getInstance().putGame(pAccountIDs, lGame); //add clients to Game Mapping
 
@@ -136,7 +136,23 @@ public class GameInitializationController {
 			//distribute the new Game to each client.
 			lGameStateCommandDistributor.newGame(lGameTiles);
 			assignAccountsToPlayers(pAccountIDs, lPlayers);
-
+			
+			for (UUID accountUUID : pAccountIDs) {
+				Account lAccount = AccountManager.getInstance().getAccount(accountUUID);
+				AccountGameInfo lAccountGameInfo = lAccount.getaAccountGameInfo();
+				Color playerColor = PlayerMapper.getInstance().getPlayer(accountUUID).getPlayerColor();
+				//TODO: fix the following line for name 
+				lAccountGameInfo.setCurrentGame(new Tuple2<String, Color>("", playerColor ));
+				lAccountGameInfo.addToActiveGames(lAccountGameInfo.getCurrentGame());
+				AccountManager.getInstance().saveAccountData(lAccount);
+			}
+			
+			try {
+				SaveGame.SaveMyGame(lGame);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			
 			//Inform client that it is his turn
 			UUID lCurrentAccountID = PlayerMapper.getInstance().getAccount(GameController.getCurrentPlayer(lGame));

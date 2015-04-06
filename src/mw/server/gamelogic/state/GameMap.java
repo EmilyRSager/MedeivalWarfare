@@ -268,47 +268,90 @@ public class GameMap implements Serializable
 		aVillages.add(pVillage);
 	}
 
-	public void deleteVillages(Collection<Player> aPlayers, Player pCurrentPlayer) {
-
-		System.out.println("[Game] Checking for villages which need to be deleted.");
-		Iterator<Village> lVillageIterator = aVillages.iterator();
-
-		while (lVillageIterator.hasNext())
+	public void updateVillages(Collection<Player> aPlayers, Player pCurrentPlayer,  Village pInvadedVillage)
+	{
+		Set<Set<Tile>> lVillageSegments = new HashSet<Set<Tile>>();
+		Player invadedPlayer = aPlayers.iterator().next(); 
+		for (Player lPlayer : aPlayers)
 		{
-			Village lVillage = lVillageIterator.next();
-			if (lVillage.getTiles().size() < 3)
+			if (lPlayer.getPlayerColor() == pInvadedVillage.getColor())
 			{
-				Color crtColor = lVillage.getColor();
-				for (Player lPlayer : aPlayers)
-				{
-					if (lPlayer.getPlayerColor() == crtColor && lPlayer.getPlayerColor()!=pCurrentPlayer.getPlayerColor())
-					{
-						lPlayer.removeVillage(lVillage);
-					}
-				}
-				for (Tile lTile : lVillage.getTiles())
-				{
-					lTile.setColor(Color.NEUTRAL); 
-					StructureType lStructureType = lTile.getStructureType();
-					switch (lStructureType)
-					{
-					case VILLAGE_CAPITAL: 
-						lTile.setStructureType(StructureType.NO_STRUCT);
-					case WATCHTOWER: 
-						lTile.setStructureType(lStructureType);
-					default:
-						break;
-					}
-					if (lTile.hasUnit())
-					{
-						lTile.setStructureType(StructureType.TOMBSTONE);
-					}
-				}
-				lVillageIterator.remove();
-
+				invadedPlayer = lPlayer;
 			}
 		}
+		boolean deleteInvaded = false;
+		
+		//Iterate over all the tiles in the invaded village
+		Iterator<Tile> lTileIterator = pInvadedVillage.getTiles().iterator();
+		while(lTileIterator.hasNext())
+		{
+			Tile lTile = lTileIterator.next();
+			
+			//get the connected tiles 
+			Set<Tile> segment = PathFinder.getVillage(aTileGraph, lTile); 
+			lVillageSegments.add(segment);
+			
+		}
+		System.out.println("[Game] This village is broken into " + (lVillageSegments.size()) + " segments.");
+		int i = 1;
+		for (Set<Tile> v : lVillageSegments)
+		{	
+			System.out.print("[Game] The color of segment " + i +" is ");
+			System.out.println(v.iterator().next().getColor() + " and the size is " + v.size());
+			i++;
+		}
+		
+		for (Set<Tile> villageSegement : lVillageSegments)
+		{
+			//make any groups less than three neutral land 
+			if(villageSegement.size() < 3)
+			{
+				
+				Iterator<Tile> lNeutralTileIterator = villageSegement.iterator();
+				while(lNeutralTileIterator.hasNext())
+				{
+					Tile lNeutralTile = lNeutralTileIterator.next(); 
+					
+					lNeutralTile.setColor(Color.NEUTRAL);
+					
+					if (lNeutralTile.hasUnit())
+					{
+						lNeutralTile.setUnit(null);
+						lNeutralTile.setStructureType(StructureType.TOMBSTONE);
+					}
+					
+					if(lNeutralTile.equals(pInvadedVillage.getCapital()))
+					{
+						lNeutralTile.setStructureType(StructureType.NO_STRUCT);
+						lNeutralTile.setVillageType(VillageType.NO_VILLAGE);
+						deleteInvaded = true;
+					}
 
+					lNeutralTile.notifyObservers();
+					lNeutralTileIterator.remove();
+				}
+			}
+			
+			//make any groups greater than three new villages
+			else 
+			{
+				if(!villageSegement.contains(pInvadedVillage.getCapital()))
+				{
+					System.out.println("[Game] Creating a new village.");
+					pInvadedVillage.removeTiles(villageSegement);
+					Village lVillage = new Village(villageSegement);
+					lVillage.setRandomCapital();
+					invadedPlayer.addVillage(lVillage);
+					aVillages.add(lVillage);
+				}
+			}
+		}
+		if (deleteInvaded)
+		{
+			invadedPlayer.removeVillage(pInvadedVillage);
+			aVillages.remove(pInvadedVillage);
+			pInvadedVillage.getReadyForGarbageCollection();
+		}
 	}
 
 	public Graph<Tile> getGraph() {

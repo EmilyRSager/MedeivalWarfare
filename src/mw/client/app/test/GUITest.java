@@ -50,6 +50,7 @@ public final class GUITest {
 		
 		//waitABit();
 		gameWindow.testAddTextField();
+		DisplayUpdater.showGeneralMessage("I am a general message");
 		
 		
 		/*while(true)
