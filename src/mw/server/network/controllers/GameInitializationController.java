@@ -95,7 +95,7 @@ public class GameInitializationController {
 			lGame = GameController.newGame(lNumPlayers); //throws exception if too many players
 
 			/* Map the clients to the given Game.
-			 * TODO this may be unnesecary as there will be a mapping between AccountIDs and Players as well
+			 * TODO this may be unnecessary as there will be a mapping between AccountIDs and Players as well
 			 */
 			GameMapper.getInstance().putGame(lAccountIDs, lGame); //add clients to Game Mapping
 
@@ -121,7 +121,8 @@ public class GameInitializationController {
 				Account lAccount = AccountManager.getInstance().getAccount(accountUUID);
 				AccountGameInfo lAccountGameInfo = lAccount.getaAccountGameInfo();
 				Color playerColor = PlayerMapper.getInstance().getPlayer(accountUUID).getPlayerColor();
-				lAccountGameInfo.setCurrentGame(new Tuple2<String, Color>(lGame.getName(), playerColor ));
+				//TODO: fix the following line for name 
+				lAccountGameInfo.setCurrentGame(new Tuple2<String, Color>("", playerColor ));
 				lAccountGameInfo.addToActiveGames(lAccountGameInfo.getCurrentGame());
 				AccountManager.getInstance().saveAccountData(lAccount);
 			}
