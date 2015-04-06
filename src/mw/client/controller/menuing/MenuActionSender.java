@@ -24,7 +24,7 @@ public final class MenuActionSender {
 		return authenticationResult.getValue();
 	}
 	
-	public static void setAuthenticationResult(boolean result) 
+	public static void setAuthenticationResult(boolean result)
 	{
 		authenticationResult.setValue(result);
 	}
@@ -88,7 +88,7 @@ public final class MenuActionSender {
 	public static boolean tryCreateGame(String gameName, int numberPlayers)
 	{
 		gameCreationResult = new BlockingFuture<Boolean>();
-		NetworkController.createGame(gameName, numberPlayers);
+		NetworkController.requestNewGame(gameName, numberPlayers);
 		return gameCreationResult.getValue();
 	}
 	
