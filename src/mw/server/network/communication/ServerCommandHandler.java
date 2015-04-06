@@ -8,6 +8,7 @@ package mw.server.network.communication;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
+import mw.server.network.controllers.GameStateCommandDistributor;
 import mw.server.network.mappers.ClientChannelMapper;
 import mw.shared.clientcommands.ErrorMessageCommand;
 import mw.shared.servercommands.AbstractServerCommand;
@@ -78,6 +79,7 @@ public class ServerCommandHandler {
 					
 					try {
 						lServerCommand.execute(lClientID);
+						GameStateCommandDistributor.flushBuffer();
 					} catch (Exception e) {
 						e.printStackTrace();
 						ClientChannelMapper.getInstance().getChannel(lClientID).sendCommand(

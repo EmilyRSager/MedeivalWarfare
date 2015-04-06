@@ -7,7 +7,7 @@ public class ClientTestDriver {
 	public static void main(String[] args) {
 		NetworkController.initialize();
 
-		int x = 1;
+		int x = 0;
 		if (x == 0)
 		{
 			MenuActionSender.tryLogin("Charlie", "Bloomfield");
