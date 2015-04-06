@@ -7,7 +7,7 @@ package mw.shared.servercommands;
 
 import java.util.UUID;
 
-import mw.server.network.controllers.GameLobbyController;
+import mw.server.network.controllers.GameInitializationController;
 import mw.server.network.mappers.AccountMapper;
 
 public class RequestNewGameCommand extends AbstractServerCommand {
@@ -30,7 +30,7 @@ public class RequestNewGameCommand extends AbstractServerCommand {
 	@Override
 	public void execute(Integer pClientID) throws Exception{
 		UUID lAccountID = AccountMapper.getInstance().getAccountID(pClientID);
-		GameLobbyController.getInstance().requestNewGame(lAccountID, aGameName, aNumPlayers);
+		GameInitializationController.getInstance().requestNewGame(lAccountID, aGameName, aNumPlayers);
 	}
 
 }

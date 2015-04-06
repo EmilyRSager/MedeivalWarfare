@@ -22,6 +22,7 @@ import mw.server.gamelogic.state.Player;
 import mw.server.gamelogic.state.Tile;
 import mw.server.network.communication.ClientCommunicationController;
 import mw.server.network.lobby.GameLobby;
+import mw.server.network.lobby.GameRoom;
 import mw.server.network.mappers.GameMapper;
 import mw.server.network.mappers.PlayerMapper;
 import mw.server.network.translators.SharedTileTranslator;
@@ -33,20 +34,21 @@ import mw.util.MultiArrayIterable;
 import mw.util.Tuple2;
 
 /**
+ * TODO refactor LobbyManager logic into it's own class. This class can delegate lobby requests to it.
+ * 
  * Manages game requests by maintaining a set of game lobbies and creating games when there
  * are sufficient clients available to create a Game. Handles assigning clients to GamePlayers
  * and informing the clients of their Colors.
  */
 public class GameInitializationController {
-	private GameLobby aGameLobby; //later on there will be a set of available of
 	private static GameInitializationController aGameInitializationController;
-	private HashMap<String, GameLobby> aLobbies;
+	private GameLobby aGameLobby;
 	
 	/**
 	 * Constructor
 	 */
 	private GameInitializationController(){
-		aLobbies = new HashMap<String, GameLobby>();
+		aGameLobby = new GameLobby();
 	}
 
 	/**
@@ -64,22 +66,8 @@ public class GameInitializationController {
 	/**
 	 * @return a set of game lobbies that are open and waiting for players to join
 	 */
-	public HashMap<String, Set<String>> getJoinableGames(){
-		HashMap<String, Set<String>> lJoinableLobbiesInfo = new HashMap<String, Set<String>>();
+	public void getJoinableGames(UUID pRequestingAccountID){
 		
-		//for each available game
-		for(String lGameName : aLobbies.keySet()){
-			Set<String> lParticipantUserNames = new HashSet<String>();
-			Set<UUID> lParticipantAccountIDs = aLobbies.get(lGameName).getClients();
-			
-			//for each account id in the game lobby
-			for(UUID lUUID : lParticipantAccountIDs){
-				Account lParticipantAccount = AccountManager.getInstance().getAccount(lUUID);
-				lParticipantUserNames.add(lParticipantAccount.getUsername());
-			}
-			lJoinableLobbiesInfo.put(lGameName, lParticipantUserNames);
-		}
-		return lJoinableLobbiesInfo;
 	}
 
 	/**
@@ -87,10 +75,9 @@ public class GameInitializationController {
 	 * acknowledgement is sent to the Account informing her to wait.
 	 * @param pAccountID
 	 */
-	public void requestNewGame(UUID pAccountID, String pGameName, int pNumPlayers){
-		//TODO check the parameter name is unused
-		aLobbies.put(pGameName, new GameLobby(pNumPlayers));
-		ClientCommunicationController.sendCommand(pAccountID, new AcknowledgementCommand("Game [" + pGameName + "] was created. Awaiting other players."));
+	public void requestNewGame(UUID pRequestingAccountID, String pGameName, int pNumRequestedPlayers){
+		aGameLobby.createNewGameRoom(pRequestingAccountID, pGameName, pNumRequestedPlayers);
+		ClientCommunicationController.sendCommand(pRequestingAccountID, new AcknowledgementCommand("Game [" + pGameName + "] was created. Awaiting other players."));
 	}
 	
 	/**
@@ -99,10 +86,10 @@ public class GameInitializationController {
 	 * @param pGameName
 	 */
 	public void joinGame(UUID pAccountID, String pGameName){
-		GameLobby lJoinedLobby = aLobbies.get(pGameName);
-		lJoinedLobby.addClient(pAccountID);
-		if(lJoinedLobby.containsSufficientClientsForGame()){
-			createNewGame(lJoinedLobby.getClients());
+		GameRoom lJoinedRoom = aGameLobby.getGameRoom(pGameName);
+		lJoinedRoom.addClient(pAccountID);
+		if(lJoinedRoom.containsSufficientClientsForGame()){
+			createNewGame(lJoinedRoom.getClients());
 		}
 		else{
 			ClientCommunicationController.sendCommand(pAccountID, new AcknowledgementCommand("Game [" + pGameName + "] successfully joined. Awaiting other players"));

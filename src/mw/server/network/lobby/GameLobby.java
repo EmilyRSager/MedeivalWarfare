@@ -1,55 +1,46 @@
-/**
- * @author Charlie Bloomfield
- * Mar 5, 2015
- */
-
 package mw.server.network.lobby;
 
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.Queue;
-import java.util.Set;
+import java.util.HashMap;
 import java.util.UUID;
 
 /**
- * @singleton
- * Maintains a set of users waiting to join a Game, and creates a game when there are enough users to play.
- * For simplicity, the game lobby supports creating games when there are enough available players. Later on,
- * this will be extended to provide functionality for specific GameRequests.
+ * @author cbloom7
+ * Aggregates and manages game rooms.
  */
 public class GameLobby {
-	private Set<UUID> aWaitingClients;
-	private int aRequestedNumClients;
+	private HashMap<String, GameRoom> aGameRooms;
 	
-	/*
+	/**
 	 * Constructor
 	 */
-	public GameLobby(int pRequestedNumClients){
-		aWaitingClients = new HashSet<UUID>();
-		aRequestedNumClients = pRequestedNumClients;
-	}
-
-	/**
-	 * adds client pClient to the waiting queue if she is not already waiting.
-	 * @param pClientID
-	 */
-	public void addClient(UUID pClientID){
-		if(!aWaitingClients.contains(pClientID)){
-			aWaitingClients.add(pClientID);
-		}
+	public GameLobby(){
+		aGameRooms = new HashMap<String, GameRoom>();
 	}
 	
 	/**
-	 * @return true if there are sufficient clients for a game
+	 * Creates a new game room with the parameter name and puts the requesting account in the room
+	 * @param pRequestingAccountID
+	 * @param pGameName
+	 * @param pNumRequestedClients
 	 */
-	public boolean containsSufficientClientsForGame(){
-		return aWaitingClients.size() >= aRequestedNumClients;
+	public void createNewGameRoom(UUID pRequestingAccountID, String pGameName, int pNumRequestedClients){
+		GameRoom lNewGameRoom = new GameRoom(pNumRequestedClients);
+		lNewGameRoom.addClient(pRequestingAccountID);
+		aGameRooms.put(pGameName, new GameRoom(pNumRequestedClients));
 	}
 	
 	/**
-	 * @return the a set of Clients at the head of the waiting queue
+	 * @param pGameName
+	 * @return the game room with the specified name
 	 */
-	public Set<UUID> getClients(){
-		return aWaitingClients;
+	public GameRoom getGameRoom(String pGameName){ 
+		return aGameRooms.get(pGameName);
+	}
+	
+	/**
+	 * @param pGameName
+	 */
+	public void removeGameRoom(String pGameName){
+		aGameRooms.remove(pGameName);
 	}
 }
