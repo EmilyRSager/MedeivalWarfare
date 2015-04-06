@@ -7,7 +7,7 @@ public class ClientTestDriver {
 	public static void main(String[] args) {
 		NetworkController.initialize();
 
-		int x = 0;
+		int x = 1;
 		if (x == 0)
 		{
 			MenuActionSender.tryLogin("Charlie", "Bloomfield");
@@ -16,6 +16,6 @@ public class ClientTestDriver {
 		{
 			MenuActionSender.tryLogin("Hugo", "Kapp");
 		}
-
+		NetworkController.requestNewGame();
 	}
 }

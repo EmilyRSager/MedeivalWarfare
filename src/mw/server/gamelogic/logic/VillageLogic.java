@@ -54,6 +54,7 @@ public class VillageLogic
 				{
 					lUnit.setActionType(ActionType.READY);
 					lTile.setMeadow(true); // put a meadow on the tile
+					lTile.notifyObservers();
 				}
 			}
 		}
@@ -74,7 +75,8 @@ public class VillageLogic
 				if(lActionType == ActionType.BUILDINGROAD)
 				{
 					lUnit.setActionType(ActionType.READY);
-					lTile.setStructureType(StructureType.TREE); 
+					lTile.setStructureType(StructureType.ROAD); 
+					lTile.notifyObservers();
 				}
 			}
 		}
@@ -163,6 +165,7 @@ public class VillageLogic
 			if(lStructureType == StructureType.TOMBSTONE)
 			{
 				lTile.setStructureType(StructureType.TREE);
+				lTile.notifyObservers();
 			}	
 		}
 	}
