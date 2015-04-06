@@ -48,6 +48,10 @@ public abstract class ScreenSwitcher {
 			createAccountScreen = new CreateAccountWindow();
 			break;
 			
+		case GAME_CREATION:
+			gameCreationScreen = new GameCreationWindow();
+			break;
+			
 		default:
 			throw new IllegalArgumentException("The ScreenKind "+newScreen+" needs parameters, you need to use another method for it");
 			break;

@@ -29,6 +29,8 @@ public final class MenuActionSender {
 	}
 	
 	
+	
+	
 	private static BlockingFuture<Boolean> accountCreationResult;
 	
 	public static boolean tryCreateAccount(String username, String password)
@@ -44,6 +46,8 @@ public final class MenuActionSender {
 	}
 	
 	
+	
+	
 	private static BlockingFuture<Collection<String>> gameNamesResults;
 	
 	public static Collection<String> getJoinableGames()
@@ -57,6 +61,8 @@ public final class MenuActionSender {
 	{
 		gameNamesResults.setValue(result);
 	}
+	
+	
 	
 	
 	private static BlockingFuture<Boolean> joinedGameResult;
@@ -75,6 +81,7 @@ public final class MenuActionSender {
 	
 
 	
+	
 	private static BlockingFuture<Boolean> gameCreationResult;
 	
 	public static boolean tryCreateGame(String gameName, int numberPlayers)
@@ -89,4 +96,10 @@ public final class MenuActionSender {
 		gameCreationResult.setValue(result);
 	}
 	
+	
+	
+	public static void leaveGameRoom()
+	{
+		NetworkController.leaveCurrentGameRoom();
+	}
 }

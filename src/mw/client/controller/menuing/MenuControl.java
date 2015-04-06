@@ -7,21 +7,14 @@ import mw.client.controller.menuing.ScreenSwitcher.ScreenKind;
 public abstract class MenuControl {
 
 
-	/* ==========================
-	 * 		Public methods
-	 * ==========================
-	 */
-
 	
 	public static void tryLogin(String username, String password)
 	{
 		boolean status = MenuActionSender.tryLogin(username, password);
 		if (status) 
 		{
-			Collection<String> gameNames = MenuActionSender.getJoinableGames();
-			ScreenSwitcher.openLobbyScreen(gameNames);
+			openGameLobby();
 		}
-		//return status;
 	}
 	
 
@@ -30,10 +23,8 @@ public abstract class MenuControl {
 		boolean status = MenuActionSender.tryCreateAccount(username, password);
 		if (status) 
 		{
-			Collection<String> gameNames = MenuActionSender.getJoinableGames();
-			ScreenSwitcher.openLobbyScreen(gameNames);
+			openGameLobby();
 		}
-		//return status;
 	}
 
 	public static void gameSelected(String gameName)
@@ -45,8 +36,7 @@ public abstract class MenuControl {
 		}
 		else
 		{
-			Collection<String> gameNames = MenuActionSender.getJoinableGames();
-			ScreenSwitcher.openLobbyScreen(gameNames);
+			openGameLobby();
 		}
 	}
 	
@@ -61,16 +51,17 @@ public abstract class MenuControl {
 	
 	
 	
-	/* ==========================
-	 * 		Private methods
-	 * ==========================
-	 */
+	public static void leaveGameRoom()
+	{
+		MenuActionSender.leaveGameRoom();
+		openGameLobby();
+	}
+	
 
-
-
-	/* ========================
-	 * 		Static methods
-	 * ========================
-	 */
-
+	
+	private static void openGameLobby()
+	{
+		Collection<String> gameNames = MenuActionSender.getJoinableGames();
+		ScreenSwitcher.openLobbyScreen(gameNames);
+	}
 }
