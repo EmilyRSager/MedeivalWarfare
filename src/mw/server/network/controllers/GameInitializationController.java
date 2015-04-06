@@ -69,10 +69,10 @@ public class GameInitializationController {
 	 * acknowledgement is sent to the Account informing her to wait.
 	 * @param pAccountID
 	 */
-	public void requestNewGame(UUID pAccountID, String pName){
+	public void requestNewGame(UUID pAccountID){
 		aGameLobby.addAccount(pAccountID);
 		if(aGameLobby.containsSufficientPlayersForGame()){
-			createNewGame(pName);
+			createNewGame();
 		}
 
 		else{
@@ -84,7 +84,7 @@ public class GameInitializationController {
 	 * Creates a new game, adds the necessary observers to the Game, and then sends the Game
 	 * to each client involved in the game.
 	 */
-	private void createNewGame(String pName){
+	private void createNewGame(){
 		System.out.println("[Server] Initializing new game.");
 		Set<UUID> lAccountIDs = aGameLobby.removeAvailableAccounts();
 		int lNumPlayers = lAccountIDs.size();
@@ -92,7 +92,7 @@ public class GameInitializationController {
 		//create a game
 		Game lGame;
 		try {
-			lGame = GameController.newGame(lNumPlayers, pName); //throws exception if too many players
+			lGame = GameController.newGame(lNumPlayers); //throws exception if too many players
 
 			/* Map the clients to the given Game.
 			 * TODO this may be unnecessary as there will be a mapping between AccountIDs and Players as well
@@ -121,7 +121,8 @@ public class GameInitializationController {
 				Account lAccount = AccountManager.getInstance().getAccount(accountUUID);
 				AccountGameInfo lAccountGameInfo = lAccount.getaAccountGameInfo();
 				Color playerColor = PlayerMapper.getInstance().getPlayer(accountUUID).getPlayerColor();
-				lAccountGameInfo.setCurrentGame(new Tuple2<String, Color>(lGame.getName(), playerColor ));
+				//TODO: fix the following line for name 
+				lAccountGameInfo.setCurrentGame(new Tuple2<String, Color>("", playerColor ));
 				lAccountGameInfo.addToActiveGames(lAccountGameInfo.getCurrentGame());
 				AccountManager.getInstance().saveAccountData(lAccount);
 			}

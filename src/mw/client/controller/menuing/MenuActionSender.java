@@ -48,7 +48,6 @@ public final class MenuActionSender {
 	
 	
 	
-	
 	/*private static BlockingFuture<GameLobby> joinableGamesResult;
 	
 	public static GameLobby getJoinableGames()

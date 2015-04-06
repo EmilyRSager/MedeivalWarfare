@@ -29,7 +29,7 @@ public class GameController {
 	 * @param the number of players to take part in the new game
 	 * @return a new Game 
 	 */
-	public static Game newGame(int numPlayers, String pName) throws TooManyPlayersException 
+	public static Game newGame(int numPlayers) throws TooManyPlayersException 
 	{
 		int i = 0; 
 		Collection<Player> gamePlayers = new ArrayList <Player> (); 
@@ -39,7 +39,7 @@ public class GameController {
 			gamePlayers.add(lPlayer);
 			i++; 
 		}
-		Game crtGame = new Game(gamePlayers, pName);
+		Game crtGame = new Game(gamePlayers);
 		return crtGame;
 	}
 	
