@@ -67,6 +67,11 @@ public class GameLobbyWindow {
 		window.setVisible(true);
 	}
 	
+	public void close()
+	{
+		this.window.dispose(); 
+	}
+	
 	public static void main(String[] Args)
 	{
 		String[] testArray = {"one", "two", "three", "four", "five", "six", "seven"};
