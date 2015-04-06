@@ -268,6 +268,55 @@ public class GameMap implements Serializable
 		aVillages.add(pVillage);
 	}
 
+	public void updateVillages(Collection<Player> aPlayers, Player pCurrentPlayer,  Village pInvadedVillage)
+	{
+		Player invadedPlayer = aPlayers.iterator().next(); 
+		for (Player lPlayer : aPlayers)
+		{
+			if (lPlayer.getPlayerColor() == pInvadedVillage.getColor())
+			{
+				invadedPlayer = lPlayer;
+			}
+		}
+		boolean deleteInvaded = false;
+		Iterator<Tile> lTileIterator = pInvadedVillage.getTiles().iterator();
+		while(lTileIterator.hasNext())
+		{
+			Tile lTile = lTileIterator.next();
+			Collection<Tile> toDelete = PathFinder.getVillage(aTileGraph, lTile); 
+			if(toDelete.size() < 3)
+			{
+				
+				Iterator<Tile> lNeutralTileIterator = toDelete.iterator();
+				while(lNeutralTileIterator.hasNext())
+				{
+					Tile lNeutralTile = lNeutralTileIterator.next(); 
+					lNeutralTile.setColor(Color.NEUTRAL);
+					if (lNeutralTile.hasUnit())
+					{
+						lNeutralTile.setUnit(null);
+						lNeutralTile.setStructureType(StructureType.TOMBSTONE);
+					}
+					if (toDelete.contains(pInvadedVillage.getCapital()));
+					{
+						deleteInvaded = true;
+						pInvadedVillage.getCapital().setStructureType(StructureType.NO_STRUCT);
+						pInvadedVillage.getCapital().setVillageType(VillageType.NO_VILLAGE);
+						pInvadedVillage.getCapital().notifyObservers();
+					}
+
+					lNeutralTile.notifyObservers();
+					lNeutralTileIterator.remove();
+				}
+			}
+		}
+		if (deleteInvaded)
+		{
+			invadedPlayer.removeVillage(pInvadedVillage);
+			aVillages.remove(pInvadedVillage);
+			pInvadedVillage.getReadyForGarbageCollection();
+		}
+	}
 	public void deleteVillages(Collection<Player> aPlayers, Player pCurrentPlayer) {
 
 		System.out.println("[Game] Checking for villages which need to be deleted.");

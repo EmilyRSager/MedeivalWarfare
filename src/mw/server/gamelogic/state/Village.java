@@ -230,5 +230,14 @@ public class Village extends Observable implements Serializable
 		}
 		return myString; 
 	}
+
+	public void getReadyForGarbageCollection() 
+	{	
+		aGold = 0;
+		aWood = 0;
+		aCapital = null;
+		aTiles = null;
+		aVillageType = null;	
+	}
 	
 }
