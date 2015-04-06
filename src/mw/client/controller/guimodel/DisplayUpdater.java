@@ -74,7 +74,7 @@ public final class DisplayUpdater {
 	public static void showGeneralMessage(String message)
 	{
 		GameWindow window = CurrentClientState.getCurrentGameWindow();
-		
+		window.showMessage(message);
 	}
 	
 }

@@ -1,5 +1,8 @@
 package mw.client.controller.menuing;
 
+import mw.client.gui.menuing.CreateAccountWindow;
+import mw.client.gui.menuing.LoginWindow;
+
 public abstract class ScreenSwitcher {
 
 
@@ -9,7 +12,7 @@ public abstract class ScreenSwitcher {
 	
 	private static LoginWindow loginScreen;
 	private static CreateAccountWindow createAccountScreen;
-	private static LobbyWindow lobbyWindow;
+	//private static LobbyWindow lobbyScreen;
 
 	/* ========================
 	 * 		Constructors
@@ -42,7 +45,7 @@ public abstract class ScreenSwitcher {
 			break;
 			
 		case LOBBY:
-			lobbyWindow = new LobbyWindow();
+			//lobbyScreen = new LobbyWindow();
 			break;
 		}
 		currentScreen = newScreen;
@@ -72,8 +75,8 @@ public abstract class ScreenSwitcher {
 			break;
 			
 		case LOBBY:
-			lobbyScreen.close();
-			lobbyScreen = null;
+			//lobbyScreen.close();
+			//lobbyScreen = null;
 			break;
 		}
 		
