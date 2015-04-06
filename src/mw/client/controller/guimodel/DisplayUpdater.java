@@ -8,7 +8,6 @@ import org.minueto.image.MinuetoImage;
 import mw.client.controller.CurrentClientState;
 import mw.client.controller.guimodel.ChoiceCenter.ChoiceType;
 import mw.client.gui.api.extminueto.ExtendedMinuetoColor;
-import mw.client.gui.api.layouts.VerticalLayout;
 import mw.client.gui.window.GameWindow;
 import mw.client.gui.window.ImageFileManager;
 import mw.client.gui.window.ImageTile;

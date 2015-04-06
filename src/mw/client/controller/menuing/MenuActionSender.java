@@ -1,6 +1,7 @@
 package mw.client.controller.menuing;
 
 import java.util.Collection;
+import java.util.Map;
 
 import mw.client.network.NetworkController;
 import mw.shared.servercommands.SetActionTypeCommand;
@@ -48,18 +49,18 @@ public final class MenuActionSender {
 	
 	
 	
-	private static BlockingFuture<Collection<String>> gameNamesResults;
+	private static BlockingFuture<GameLobby> joinableGamesResult;
 	
-	public static Collection<String> getJoinableGames()
+	public static GameLobby getJoinableGames()
 	{
-		gameNamesResults = new BlockingFuture<Collection<String>>();
+		joinableGamesResult = new BlockingFuture<GameLobby>();
 		NetworkController.askForJoinableGames();
-		return gameNamesResults.getValue();
+		return joinableGamesResult.getValue();
 	}
 	
-	public static void setJoinableGamesResult(Collection<String> result)
+	public static void setJoinableGamesResult(GameLobby result)
 	{
-		gameNamesResults.setValue(result);
+		joinableGamesResult.setValue(result);
 	}
 	
 	

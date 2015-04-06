@@ -12,6 +12,7 @@ import mw.client.gui.api.basics.ObservableWindowComponent;
 import mw.client.gui.api.basics.ObservableWindowComponent.ChangedState;
 import mw.client.gui.api.basics.WindowComponent;
 import mw.client.gui.api.components.AbstractButton;
+import mw.client.gui.api.components.BlockComponent;
 import mw.client.gui.api.components.ResizableWindow;
 import mw.client.gui.api.components.TextDisplay;
 import mw.client.gui.api.extminueto.ExtendedMinuetoColor;
@@ -36,10 +37,13 @@ public class GameWindow implements Observer {
 	
 	private final ResizableWindow window;
 	private final MinuetoEventQueue queue;
+	
 	private MapDisplay md;
 	private MapComponent mapComp;
+	
 	private VerticalLayout windowLayout;
 	private HorizontalLayout controlBarLayout;
+	
 	private AbstractButton endTurn;
 	private List<AbstractButton> choiceButtonsList;
 	
@@ -71,7 +75,7 @@ public class GameWindow implements Observer {
 		controlBarLayout = new HorizontalLayout(0, 0, CONTROL_LAYOUT_HEIGHT, 3);
 		
 		windowLayout.addComponent(mapComp, 0);
-		windowLayout.addComponent(controlBarLayout, 2);
+		windowLayout.addComponent(new BlockComponent(DEFAULT_MAP_WIDTH, CONTROL_LAYOUT_HEIGHT, controlBarLayout), 2);
 		window = new ResizableWindow(windowLayout.getWidth(), windowLayout.getHeight(), queue, "Medieval Warfare");
 		
 		mapComp.setWindow(this);
