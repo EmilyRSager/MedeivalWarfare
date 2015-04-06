@@ -19,11 +19,6 @@ public class UpdateTileCommand extends AbstractClientCommand {
 	public UpdateTileCommand(SharedTile pSharedTile) {
 		aSharedTile = pSharedTile;
 	}
-	
-	@Override
-	public boolean isValid() {
-		return true;
-	}
 
 	@Override
 	public void execute() {

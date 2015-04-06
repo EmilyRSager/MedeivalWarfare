@@ -18,43 +18,38 @@ import java.util.UUID;
  * this will be extended to provide functionality for specific GameRequests.
  */
 public class GameLobby {
-	private static final int GAME_SIZE = 2;
-	private Queue<UUID> aWaitingAccounts;
-
+	private Set<UUID> aWaitingClients;
+	private int aRequestedNumClients;
+	
 	/*
 	 * Constructor
 	 */
-	public GameLobby(){
-		aWaitingAccounts = new LinkedList<UUID>();
+	public GameLobby(int pRequestedNumClients){
+		aWaitingClients = new HashSet<UUID>();
+		aRequestedNumClients = pRequestedNumClients;
 	}
 
 	/**
-	 * adds client pAccount to the waiting queue if she is not already waiting.
-	 * @param pAccountID
+	 * adds client pClient to the waiting queue if she is not already waiting.
+	 * @param pClientID
 	 */
-	public void addAccount(UUID pAccountID){
-		if(!aWaitingAccounts.contains(pAccountID)){
-			aWaitingAccounts.add(pAccountID);
+	public void addClient(UUID pClientID){
+		if(!aWaitingClients.contains(pClientID)){
+			aWaitingClients.add(pClientID);
 		}
 	}
 	
 	/**
 	 * @return true if there are sufficient clients for a game
 	 */
-	public boolean containsSufficientPlayersForGame(){
-		return aWaitingAccounts.size() >= GAME_SIZE;
+	public boolean containsSufficientClientsForGame(){
+		return aWaitingClients.size() >= aRequestedNumClients;
 	}
 	
 	/**
-	 * @return the a set of Accounts at the head of the waiting queue
+	 * @return the a set of Clients at the head of the waiting queue
 	 */
-	public Set<UUID> removeAvailableAccounts(){
-		Set<UUID> lAvailableAccounts = new HashSet<UUID>();
-		
-		for(int i = 0; i < GAME_SIZE; i++){
-			lAvailableAccounts.add(aWaitingAccounts.remove());
-		}
-		
-		return lAvailableAccounts;
+	public Set<UUID> getClients(){
+		return aWaitingClients;
 	}
 }

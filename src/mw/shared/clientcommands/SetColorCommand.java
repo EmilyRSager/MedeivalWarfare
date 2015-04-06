@@ -24,14 +24,6 @@ public class SetColorCommand extends AbstractClientCommand {
 	}
 
 	/**
-	 * @see mw.shared.clientcommands.AbstractClientCommand#isValid()
-	 */
-	@Override
-	public boolean isValid() {
-		return true;
-	}
-
-	/**
 	 * @see mw.shared.clientcommands.AbstractClientCommand#execute()
 	 */
 	@Override

@@ -9,11 +9,6 @@ public class AccountCreatedCommand extends AbstractClientCommand {
 	public AccountCreatedCommand(boolean pAccountCreated) {
 		aAccountCreated = pAccountCreated;
 	}
-	
-	@Override
-	public boolean isValid() {
-		return true;
-	}
 
 	@Override
 	public void execute() {

@@ -21,12 +21,6 @@ public class MessageReceivedCommand extends AbstractClientCommand {
 	}
 
 	@Override
-	public boolean isValid() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
 	public void execute() {
 		// TODO Auto-generated method stub
 		System.out.println("[Client in MessageReceivedCommand] " + aMessage);

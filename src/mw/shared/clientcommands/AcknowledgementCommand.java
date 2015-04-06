@@ -14,15 +14,6 @@ public class AcknowledgementCommand extends AbstractClientCommand{
 	}
 	
 	/**
-	 * @see mw.shared.clientcommands.AbstractClientCommand#isValid()
-	 */
-	@Override
-	public boolean isValid() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	/**
 	 * @see mw.shared.clientcommands.AbstractClientCommand#execute()
 	 */
 	@Override
