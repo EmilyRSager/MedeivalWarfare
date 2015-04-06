@@ -248,11 +248,10 @@ public class GameWindow implements Observer {
 			int height = comp.getHeight();
 			if (changedState == ChangedState.SIZE 
 					&& comp == windowLayout 
-					&& width != window.getWidth() 
-					&& height != window.getHeight())
+					&& (width != window.getWidth() || height != window.getHeight()))
 			{
-				System.out.println("[GameWindow] The layout now has size "+comp.getWidth()+", "+comp.getHeight());
-				window.resize(comp.getWidth(), comp.getHeight());
+				System.out.println("[GameWindow] The layout now has size "+width+", "+height);
+				window.resize(width, height);
 				comp.drawOn(window);
 			}
 		}

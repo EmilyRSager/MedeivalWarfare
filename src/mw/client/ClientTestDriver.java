@@ -6,6 +6,7 @@ import mw.client.network.NetworkController;
 public class ClientTestDriver {
 	public static void main(String[] args) {
 		NetworkController.initialize();
+
 		int x = 1;
 		if (x == 0)
 		{
@@ -15,6 +16,6 @@ public class ClientTestDriver {
 		{
 			MenuActionSender.tryLogin("Hugo", "Kapp");
 		}
-		NetworkController.requestNewGame();
+
 	}
 }
