@@ -67,6 +67,7 @@ public class CreateAccountWindow
 		pane.add(create);
 		
 		window.pack();
+		window.setLocationRelativeTo(null);
 		window.setVisible(true);
 		/*class accountDocumentListener implements DocumentListener 
 		{
@@ -94,9 +95,9 @@ public class CreateAccountWindow
 		this.window.dispose(); 
 	}
 	
-	/*//for testing
+	//for testing
 	public static void main(String[] Args)
 	{
 		CreateAccountWindow test = new CreateAccountWindow();
-	}*/
+	}
 }

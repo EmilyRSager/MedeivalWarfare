@@ -76,6 +76,7 @@ public class LoginWindow
 		pane.add(create);
 		
 		window.pack();
+		window.setLocationRelativeTo(null);
 		window.setVisible(true);
 		
 	}
