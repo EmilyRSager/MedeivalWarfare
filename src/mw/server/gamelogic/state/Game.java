@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Stack;
+import java.util.UUID;
 
 import mw.server.gamelogic.PossibleGameActions;
 import mw.server.gamelogic.enums.ActionType;
@@ -34,6 +35,7 @@ public class Game extends RandomColorGenerator implements Serializable{
 	private Collection<Player> aPlayers;
 	private GameMap aMap;  
 	private Player aCurrentPlayer;
+	private UUID aUUID;
 	CircularIterator<Player> crtIterator;
 
 	/**
@@ -451,5 +453,9 @@ public class Game extends RandomColorGenerator implements Serializable{
 	public void combineVillagers(Coordinates p1, Coordinates p2) {
 		// TODO Auto-generated method stub
 		
+	}
+	
+	public UUID getUUID(){
+		return aUUID;
 	}
 }

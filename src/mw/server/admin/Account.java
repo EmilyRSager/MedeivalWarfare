@@ -23,7 +23,20 @@ public class Account {
 	private UUID aUUID;
 	private String aUsername;
 	private String aPassword;
-	private int aWins, aLosses;
+	private AccountGameInfo aAccountGameInfo;
+	
+	public AccountGameInfo getaAccountGameInfo() {
+		return aAccountGameInfo;
+	}
+
+	public void setaAccountGameInfo(AccountGameInfo aAccountGameInfo) {
+		this.aAccountGameInfo = aAccountGameInfo;
+	}
+	
+	public UUID getCurrentGameUUID(){
+		return aAccountGameInfo.getCurrentGame().getVal1();
+	}
+
 	private Game aCurrentGame;
 	
 	/**
@@ -31,13 +44,12 @@ public class Account {
 	 * @param pUsername
 	 * @param pPassword
 	 */
-	public Account(UUID pUUID, String pUsername, String pPassword){
+	public Account(UUID pUUID, String pUsername, String pPassword, AccountGameInfo pAccountGameInfo){
 		aUUID = pUUID;
 		aUsername = pUsername;
 		aPassword = pPassword;
-		aWins = 0;
-		aLosses = 0;
 		aCurrentGame = null;
+		aAccountGameInfo = pAccountGameInfo;
 	}
 	
 	/**
@@ -90,28 +102,30 @@ public class Account {
 	 * @return number of games this account has won
 	 */
 	public int getWins() {
-		return aWins;
+		return aAccountGameInfo.getaWins();
 	}
 
 	/**
 	 * @return number of games this account has lost
 	 */
 	public int getLosses() {
-		return aLosses;
+		return aAccountGameInfo.getaLosses();
 	}
 	
 	/**
 	 * increments number of wins
 	 */
 	public void incrementWins(){
-		aWins++;
+		int oldWins = getWins();
+		aAccountGameInfo.setaWins(oldWins++);
 	}
 	
 	/**
 	 * increment number of losses
 	 */
 	public void incrementLosses(){
-		aLosses++;
+		int oldLosses = getLosses();
+		aAccountGameInfo.setaLosses(oldLosses++);
 	}
 	
 	@Override public String toString(){
