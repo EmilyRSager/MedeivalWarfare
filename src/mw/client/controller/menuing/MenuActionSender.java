@@ -1,10 +1,8 @@
 package mw.client.controller.menuing;
 
-import java.util.Collection;
-import java.util.Map;
-
 import mw.client.network.NetworkController;
-import mw.shared.servercommands.SetActionTypeCommand;
+import mw.shared.SharedCreatedGame;
+import mw.shared.SharedGameLobby;
 import mw.util.BlockingFuture;
 
 public final class MenuActionSender {
@@ -48,16 +46,16 @@ public final class MenuActionSender {
 	
 	
 	
-	/*private static BlockingFuture<GameLobby> joinableGamesResult;
+	private static BlockingFuture<SharedGameLobby> joinableGamesResult;
 	
-	public static GameLobby getJoinableGames()
+	public static SharedGameLobby getJoinableGames()
 	{
-		joinableGamesResult = new BlockingFuture<GameLobby>();
+		joinableGamesResult = new BlockingFuture<SharedGameLobby>();
 		NetworkController.askForJoinableGames();
 		return joinableGamesResult.getValue();
 	}
 	
-	public static void setJoinableGamesResult(GameLobby result)
+	public static void setJoinableGamesResult(SharedGameLobby result)
 	{
 		joinableGamesResult.setValue(result);
 	}
@@ -82,16 +80,16 @@ public final class MenuActionSender {
 
 	
 	
-	private static BlockingFuture<Boolean> gameCreationResult;
+	private static BlockingFuture<SharedCreatedGame> gameCreationResult;
 	
-	public static boolean tryCreateGame(String gameName, int numberPlayers)
+	public static SharedCreatedGame tryCreateGame(String gameName, int numberPlayers)
 	{
-		gameCreationResult = new BlockingFuture<Boolean>();
+		gameCreationResult = new BlockingFuture<SharedCreatedGame>();
 		NetworkController.requestNewGame(gameName, numberPlayers);
 		return gameCreationResult.getValue();
 	}
 	
-	public static void setGameCreationResult(boolean result)
+	public static void setGameCreationResult(SharedCreatedGame result)
 	{
 		gameCreationResult.setValue(result);
 	}
@@ -100,6 +98,6 @@ public final class MenuActionSender {
 	
 	public static void leaveGameRoom()
 	{
-		NetworkController.leaveCurrentGameRoom();
-	}*/
+		//NetworkController.leaveCurrentGameRoom();
+	}
 }

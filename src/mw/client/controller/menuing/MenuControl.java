@@ -42,10 +42,10 @@ public abstract class MenuControl {
 	
 	public static void tryCreateGame(String gameName, int numberPlayers)
 	{
-		boolean status = MenuActionSender.tryCreateGame(gameName, numberPlayers);
-		if (status)
+		SharedCreatedGame result = MenuActionSender.tryCreateGame(gameName, numberPlayers);
+		if (result != null)
 		{
-			ScreenSwitcher.openGameRoomScreen(gameName);
+			ScreenSwitcher.openGameRoomScreen(result);
 		}
 	}
 	
