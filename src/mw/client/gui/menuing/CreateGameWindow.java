@@ -66,6 +66,11 @@ public class CreateGameWindow
 		window.setVisible(true);
 	}
 	
+	public void close()
+	{
+		this.window.dispose();
+	}
+	
 	public static void main(String[] Args)
 	{
 		CreateGameWindow test = new CreateGameWindow();
