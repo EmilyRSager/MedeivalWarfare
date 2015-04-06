@@ -258,6 +258,7 @@ public class Game extends RandomColorGenerator implements Serializable{
 	 */
 	public void moveUnit(Coordinates pStartCoordinates,Coordinates pDestinationCoordinates) 
 	{
+		//DON'T MAKE CHANGES TO THIS METHOD UNLESS YOU ARE EMILY 
 		Tile startTile =  aMap.getTile(pStartCoordinates); 
 		Tile pDestinationTile = aMap.getTile(pDestinationCoordinates);
 		Unit crtUnit = startTile.getUnit();
@@ -267,10 +268,9 @@ public class Game extends RandomColorGenerator implements Serializable{
 			System.out.println("[Game] The unit is moving to neutral land.");
 			Logic.checkFuse(startTile, pDestinationTile, this);
 		}
-		if (Logic.updateGameState(crtUnit, startTile, pDestinationTile, this, aMap)) 
-		{
-			crtUnit.setActionType(ActionType.MOVED);
-		}
+		
+		Logic.updateGameState(crtUnit, startTile, pDestinationTile, this, aMap);
+	
 		if (lColor == Color.NEUTRAL)
 		{
 			crtUnit.setActionType(ActionType.MOVED);	
@@ -285,15 +285,11 @@ public class Game extends RandomColorGenerator implements Serializable{
 	 * @param startTile
 	 * @param pDestinationTile
 	 */
-	public void takeoverNeutralTile(Tile startTile, Tile pDestinationTile) 
-	{
-		pDestinationTile.setColor(startTile.getColor());
-		Village lCapturingVillage = aMap.getVillage(startTile);
-		lCapturingVillage.addTile(pDestinationTile);
-	}
+
 
 	public void takeoverEnemyTile(Tile startTile, Tile pDestinationTile)
 	{
+		System.out.println("[Game] Unit is attempting to take over enemy territory.");
 		Village invadedVillage = getVillage(pDestinationTile);
 		Village invadingVillage = getVillage(startTile);
 		EnemyCaptureLogic.CaptureTile(invadingVillage, invadedVillage, pDestinationTile, this, aCurrentPlayer);  //capture the tile  and fuse the necessary villages

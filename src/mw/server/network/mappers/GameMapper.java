@@ -7,23 +7,24 @@ package mw.server.network.mappers;
 
 import java.util.HashMap;
 import java.util.Set;
+import java.util.UUID;
 
 import mw.server.gamelogic.state.Game;
 
 
 /**
  * @singleton
- * Maps ClientIDs to the games they're currently playing in. This may not be a good solution.
+ * Maps AccountIDs to the games they're currently playing in. This may not be a good solution.
  */
 public class GameMapper {
 	private static GameMapper aGameManager;
-	private HashMap<Integer, Game> aGameMap;
+	private HashMap<UUID, Game> aGameMap;
 	
 	/**
 	 * Constructor
 	 */
 	private GameMapper() {
-		aGameMap = new HashMap<Integer, Game>();
+		aGameMap = new HashMap<UUID, Game>();
 	}
 	
 	/**
@@ -39,30 +40,30 @@ public class GameMapper {
 	}
 	
 	/**
-	 * Puts a mapping between each ClientID in pClientIDs and pGame
-	 * @param pClientIDs
+	 * Puts a mapping between each AccountID in pAccountIDs and pGame
+	 * @param pAccountIDs
 	 * @param pGame
 	 */
-	public void putGame(Set<Integer> pClientIDs, Game pGame){
-		for(Integer pClientID : pClientIDs){
-			aGameMap.put(pClientID, pGame);
+	public void putGame(Set<UUID> pAccountIDs, Game pGame){
+		for(UUID pAccountID : pAccountIDs){
+			aGameMap.put(pAccountID, pGame);
 		}
 	}
 	
 	/**
-	 * Puts a mapping between pClientID and pGame in a HashMap
-	 * @param pClientID
+	 * Puts a mapping between pAccountID and pGame in a HashMap
+	 * @param pAccountID
 	 * @param pGame
 	 */
-	public void putGame(Integer pClientID, Game pGame){
-		aGameMap.put(pClientID, pGame);
+	public void putGame(UUID pAccountID, Game pGame){
+		aGameMap.put(pAccountID, pGame);
 	}
 	
 	/**
-	 * @param pClientID
-	 * @return Game the pClientID is currently playing
+	 * @param pAccountID
+	 * @return Game the pAccountID is currently playing
 	 */
-	public Game getGame(Integer pClientID){
-		return aGameMap.get(pClientID);
+	public Game getGame(UUID pAccountID){
+		return aGameMap.get(pAccountID);
 	}
 }

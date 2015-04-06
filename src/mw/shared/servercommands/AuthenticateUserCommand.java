@@ -5,15 +5,12 @@
 
 package mw.shared.servercommands;
 
-import mw.server.admin.Account;
-import mw.server.mappings.AccountManager;
-import mw.server.network.controllers.AdminCommandHandler;
+import mw.server.network.controllers.AdminCommandController;
 
 public class AuthenticateUserCommand extends AbstractServerCommand {
 	private final String aType = "AuthenticateUserCommand";
 	private String aUsername;
 	private String aPassword;
-	
 	
 	/**
 	 * Constructor
@@ -26,7 +23,7 @@ public class AuthenticateUserCommand extends AbstractServerCommand {
 
 	@Override
 	public void execute(Integer pClientID) throws Exception {
-		//TODO
+		AdminCommandController.getInstance().authenticateUser(pClientID, aUsername, aPassword);
 	}
 
 }

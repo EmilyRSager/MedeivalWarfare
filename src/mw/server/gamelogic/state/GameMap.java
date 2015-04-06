@@ -186,59 +186,99 @@ public class GameMap implements Serializable
 
 	public void fuseVillages(Collection<Village> pToFuse, Tile invadingCapital, Player pCurrentPlayer ) 
 	{
-		Collection<Tile> lVillageTiles = new HashSet<Tile>(); 
 		int lGold = 0; 
-		int lWood = 0; 
-		for (Village lVillage : pToFuse) 
-		{
-			lVillageTiles.addAll(lVillage.getTiles()); 	//aggregate all the tiles from the villages to fuse 
+		int lWood = 0;
 
-			if (aVillages.contains(lVillage))
-			{
-				lGold += lVillage.getGold(); 
-				lWood += lVillage.getWood(); 
-				aVillages.remove(lVillage); //delete the old villages
-			}		
-		}
-		//deal with the village capital, gold and wood
-		for (Tile lTile : lVillageTiles)
+		Collection<Tile> lVillageTiles = new HashSet<Tile>();
+
+		//aggregate all the tiles in the villages to be fused into a HashSet of Village Tiles
+		for(Village lVillage : pToFuse)
 		{
-			if (lTile.getStructureType() == StructureType.VILLAGE_CAPITAL)
+			lVillageTiles.addAll(lVillage.getTiles());
+			lGold += lVillage.getGold(); 
+			lWood += lVillage.getWood(); 
+		}
+
+		//add in the tiles, gold, and wood from the original village
+		Village toDelete = getVillage(invadingCapital);
+		lVillageTiles.addAll(toDelete.getTiles());
+		lGold += toDelete.getGold();
+		lWood += toDelete.getWood();
+
+		//delete the invading village from the set of villages  
+		aVillages.remove(toDelete);
+		pCurrentPlayer.removeVillage(toDelete);
+
+		System.out.println("[Game] The New Village will have " + lGold + " gold and " + lWood + " wood.  This village has domain over " + lVillageTiles.size() + " tiles.");
+		//delete all the villages with which the invading village is being fused 
+		Iterator<Village> lVillageIterator = pToFuse.iterator();
+		while(lVillageIterator.hasNext())
+		{
+			Village lVillage = lVillageIterator.next();
+			Tile crtCapital = lVillage.getCapital();
+			if (crtCapital == null)
 			{
-				if(!lTile.equals(invadingCapital))
+				continue;
+			}
+			if (crtCapital.equals(invadingCapital))
+			{
+				continue;
+			}
+			else 
+			{
+				crtCapital.setStructureType(StructureType.NO_STRUCT);
+				crtCapital.setVillageType(VillageType.NO_VILLAGE);
+				Collection<Tile> crtTiles = lVillage.getTiles();
+				Iterator<Tile> lTileIterator = crtTiles.iterator();
+
+				while(lTileIterator.hasNext())
 				{
-					lTile.setStructureType(StructureType.NO_STRUCT);
+					lTileIterator.next();
+					lTileIterator.remove();
 				}
+
+				pCurrentPlayer.removeVillage(lVillage);
+				lVillage.removeCapital();
+				lVillageIterator.remove();
+				lVillage = null;
 			}
 		}
-		Village lFusedVillage = new Village(lVillageTiles); 
-		lFusedVillage.setCapital(invadingCapital);
-		lFusedVillage.addOrSubtractGold(lGold);
-		lFusedVillage.addOrSubtractWood(lWood);
+		System.out.println("[Game] Creating the new village.");
+
+		//create the new village
+
+		Village lFusedVillage = new Village(lVillageTiles, lGold, lWood, invadingCapital, invadingCapital.getVillageType()); 
 		aVillages.add(lFusedVillage); 
 		pCurrentPlayer.addVillage(lFusedVillage);
 
 
+		//notify observers
+		for (Tile lTile : lFusedVillage.getTiles())
+		{
+			lTile.notifyObservers();
+		}
+		invadingCapital.notifyChanged();
 	}
-	
+
 	public void addVillages(Collection<Village> pVillages){
 		aVillages.addAll(pVillages);
 	}
-	
+
 	public void addVillage(Village pVillage){
 		aVillages.add(pVillage);
 	}
 
 	public void deleteVillages(Collection<Player> aPlayers, Player pCurrentPlayer) {
-		
+
+		System.out.println("[Game] Checking for villages which need to be deleted.");
 		Iterator<Village> lVillageIterator = aVillages.iterator();
-		
+
 		while (lVillageIterator.hasNext())
 		{
 			Village lVillage = lVillageIterator.next();
 			if (lVillage.getTiles().size() < 3)
 			{
-				Color crtColor = lVillage.getTiles().iterator().next().getColor(); 
+				Color crtColor = lVillage.getColor();
 				for (Player lPlayer : aPlayers)
 				{
 					if (lPlayer.getPlayerColor() == crtColor && lPlayer.getPlayerColor()!=pCurrentPlayer.getPlayerColor())
@@ -246,28 +286,27 @@ public class GameMap implements Serializable
 						lPlayer.removeVillage(lVillage);
 					}
 				}
-			}
-			//TODO tag villages as being deleted, then delete
-			lVillageIterator.remove();
-			for (Tile lTile : lVillage.getTiles())
-			{
-				lTile.setColor(Color.NEUTRAL); 
-				StructureType lStructureType = lTile.getStructureType();
-				switch (lStructureType)
+				for (Tile lTile : lVillage.getTiles())
 				{
-				case VILLAGE_CAPITAL: 
-					lTile.setStructureType(StructureType.NO_STRUCT);
-				case WATCHTOWER: 
-					lTile.setStructureType(lStructureType);
-				default:
-					break;
+					lTile.setColor(Color.NEUTRAL); 
+					StructureType lStructureType = lTile.getStructureType();
+					switch (lStructureType)
+					{
+					case VILLAGE_CAPITAL: 
+						lTile.setStructureType(StructureType.NO_STRUCT);
+					case WATCHTOWER: 
+						lTile.setStructureType(lStructureType);
+					default:
+						break;
+					}
+					if (lTile.hasUnit())
+					{
+						lTile.setStructureType(StructureType.TOMBSTONE);
+					}
 				}
-				if (lTile.hasUnit())
-				{
-					lTile.setStructureType(StructureType.TOMBSTONE);
-				}
-			}
+				lVillageIterator.remove();
 
+			}
 		}
 
 	}

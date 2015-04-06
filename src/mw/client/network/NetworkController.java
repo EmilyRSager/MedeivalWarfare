@@ -4,6 +4,7 @@ import mw.shared.SharedActionType;
 import mw.shared.Coordinates;
 import mw.shared.SharedTile;
 import mw.shared.servercommands.AuthenticateUserCommand;
+import mw.shared.servercommands.CreateAccountCommand;
 import mw.shared.servercommands.EndTurnCommand;
 import mw.shared.servercommands.GetPossibleGameActionsCommand;
 import mw.shared.servercommands.HireUnitCommand;
@@ -33,7 +34,16 @@ public class NetworkController {
 	 * @param pUsername
 	 * @param pPassword
 	 */
+	public static void createAccount(String pUsername, String pPassword){
+		aServerChannel.sendCommand(new CreateAccountCommand(pUsername, pPassword));
+	}
+	
+	/**
+	 * @param pUsername
+	 * @param pPassword
+	 */
 	public static void authenticateUser(String pUsername, String pPassword){
+		System.out.println("Authenticate.");
 		aServerChannel.sendCommand(new AuthenticateUserCommand(pUsername, pPassword));
 	}
 	

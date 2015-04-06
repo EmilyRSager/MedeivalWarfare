@@ -3,11 +3,13 @@ package mw.client.controller.menuing;
 public abstract class ScreenSwitcher {
 
 
-	public enum ScreenKind { NONE, LOGIN };
+	public enum ScreenKind { NONE, LOGIN, CREATE_ACCOUNT, LOBBY };
 	
-	private static final ScreenKind currentScreen = ScreenKind.NONE;
+	private static ScreenKind currentScreen = ScreenKind.NONE;
 	
-	private static LoginScreen loginScreen;
+	private static LoginWindow loginScreen;
+	private static CreateAccountWindow createAccountScreen;
+	private static LobbyWindow lobbyWindow;
 
 	/* ========================
 	 * 		Constructors
@@ -24,6 +26,7 @@ public abstract class ScreenSwitcher {
 	
 	public static void switchScreen(ScreenKind newScreen)
 	{
+		checkTransition(currentScreen, newScreen);
 		closeCurrentWindow();
 		switch (newScreen)
 		{
@@ -31,7 +34,15 @@ public abstract class ScreenSwitcher {
 			break;
 			
 		case LOGIN:
-			loginScreen = new LoginScreen();
+			loginScreen = new LoginWindow();
+			break;
+			
+		case CREATE_ACCOUNT:
+			createAccountScreen = new CreateAccountWindow();
+			break;
+			
+		case LOBBY:
+			lobbyWindow = new LobbyWindow();
 			break;
 		}
 		currentScreen = newScreen;
@@ -54,6 +65,16 @@ public abstract class ScreenSwitcher {
 			loginScreen.close();
 			loginScreen = null;
 			break;
+			
+		case CREATE_ACCOUNT:
+			createAccountScreen.close();
+			createAccountScreen = null;
+			break;
+			
+		case LOBBY:
+			lobbyScreen.close();
+			lobbyScreen = null;
+			break;
 		}
 		
 		currentScreen = ScreenKind.NONE;
@@ -70,6 +91,26 @@ public abstract class ScreenSwitcher {
 	 * ========================
 	 */
 	
-	
+	private static void checkTransition(ScreenKind current, ScreenKind next)
+	{
+		boolean valid = true;
+		switch (current)
+		{
+		case NONE:
+			valid = (next == ScreenKind.LOGIN);
+			break;
+			
+		case LOGIN:
+			valid = (next == ScreenKind.CREATE_ACCOUNT || next == ScreenKind.LOBBY);
+			break;
+			
+		case CREATE_ACCOUNT:
+			valid = (next == ScreenKind.LOBBY);
+			break;
+		}
+		
+		if (!valid)
+			throw new IllegalStateException("Can't switch from "+current+" screen to "+next+" screen");
+	}
 
 }

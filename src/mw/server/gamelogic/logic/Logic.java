@@ -2,6 +2,7 @@ package mw.server.gamelogic.logic;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 
 import mw.server.gamelogic.enums.ActionType;
 import mw.server.gamelogic.enums.Color;
@@ -62,13 +63,10 @@ public class Logic {
 	{
 		boolean tookOverTile = false; 
 		UnitType crtUnitType = crtUnit.getUnitType(); 
-		if (isNeutral(pDestinationTile))
-		{
-			pGame.takeoverNeutralTile(startTile, pDestinationTile);
-			tookOverTile = true;
-		} 
+	 
 		if (tilesAreSameColor(startTile, pDestinationTile))
 		{	
+			System.out.println("[Game] Moving unit within village. ");
 			switch (crtUnitType)
 			{
 			case PEASANT:
@@ -317,7 +315,7 @@ public class Logic {
 		startVillage.addTile(pDestTile);
 		Collection<Tile> pNeighbors = pGame.getNeighbors(pDestTile); 
 		Tile startCapital = startVillage.getCapital(); 
-		Collection<Village> toFuse = new ArrayList<Village>(); 
+		Collection<Village> toFuse = new HashSet<Village>(); 
 		boolean needToFuse = false; 
 		for (Tile lTile : pNeighbors)
 		{

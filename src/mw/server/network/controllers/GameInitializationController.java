@@ -8,6 +8,7 @@ package mw.server.network.controllers;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Set;
+import java.util.UUID;
 
 import mw.server.gamelogic.controllers.GameController;
 import mw.server.gamelogic.enums.Color;
@@ -16,7 +17,9 @@ import mw.server.gamelogic.state.Game;
 import mw.server.gamelogic.state.Player;
 import mw.server.gamelogic.state.Tile;
 import mw.server.network.communication.ClientChannel;
+import mw.server.network.communication.ClientCommunicationController;
 import mw.server.network.lobby.GameLobby;
+import mw.server.network.mappers.AccountMapper;
 import mw.server.network.mappers.ClientChannelMapper;
 import mw.server.network.mappers.GameMapper;
 import mw.server.network.mappers.PlayerMapper;
@@ -56,18 +59,18 @@ public class GameInitializationController {
 	}
 
 	/**
-	 * Creates a new game if there are sufficient Clients waiting to play. Otherwise, an 
-	 * acknowledgement is sent to the Client informing her to wait.
-	 * @param pClientID
+	 * Creates a new game if there are sufficient Accounts waiting to play. Otherwise, an 
+	 * acknowledgement is sent to the Account informing her to wait.
+	 * @param pAccountID
 	 */
-	public void requestNewGame(Integer pClientID){
-		aGameLobby.addClient(pClientID);
-		if(aGameLobby.containsSufficientClientsForGame()){
+	public void requestNewGame(UUID pAccountID){
+		aGameLobby.addAccount(pAccountID);
+		if(aGameLobby.containsSufficientPlayersForGame()){
 			createNewGame();
 		}
 
 		else{
-			acknowledgeGameRequest(pClientID);
+			acknowledgeGameRequest(pAccountID);
 		}
 	}
 
@@ -77,8 +80,8 @@ public class GameInitializationController {
 	 */
 	private void createNewGame(){
 		System.out.println("[Server] Initializing new game.");
-		Set<Integer> lClientIDs = aGameLobby.removeAvailableClients();
-		int lNumPlayers = lClientIDs.size();
+		Set<UUID> lAccountIDs = aGameLobby.removeAvailableAccounts();
+		int lNumPlayers = lAccountIDs.size();
 
 		//create a game
 		Game lGame;
@@ -86,16 +89,16 @@ public class GameInitializationController {
 			lGame = GameController.newGame(lNumPlayers); //throws exception if too many players
 
 			/* Map the clients to the given Game.
-			 * TODO this may be unnesecary as there will be a mapping between ClientIDs and Players as well
+			 * TODO this may be unnesecary as there will be a mapping between AccountIDs and Players as well
 			 */
-			GameMapper.getInstance().putGame(lClientIDs, lGame); //add clients to Game Mapping
+			GameMapper.getInstance().putGame(lAccountIDs, lGame); //add clients to Game Mapping
 
 			//map clients to players
 			Collection<Player> lPlayers = lGame.getPlayers();
 
 			//initialize game state observer
 			GameStateCommandDistributor lGameStateCommandDistributor = 
-					new GameStateCommandDistributor(lClientIDs, lGame);
+					new GameStateCommandDistributor(lAccountIDs, lGame);
 
 			//attach observer to each tile
 			Tile[][] lGameTiles = lGame.getGameTiles();
@@ -106,11 +109,12 @@ public class GameInitializationController {
 
 			//distribute the new Game to each client.
 			lGameStateCommandDistributor.newGame(lGameTiles);
-			assignClientsToPlayers(lClientIDs, lPlayers);
+			assignAccountsToPlayers(lAccountIDs, lPlayers);
 
+			
 			//Inform client that it is his turn
-			Integer lCurrentClientID = PlayerMapper.getInstance().getClient(GameController.getCurrentPlayer(lGame));
-			ClientChannelMapper.getInstance().getChannel(lCurrentClientID).sendCommand(new NotifyBeginTurnCommand());
+			UUID lCurrentAccountID = PlayerMapper.getInstance().getAccount(GameController.getCurrentPlayer(lGame));
+			ClientCommunicationController.sendCommand(lCurrentAccountID, new NotifyBeginTurnCommand());
 			
 		} catch (TooManyPlayersException e) {
 			System.out.println("[Server] Tried to create a Game with too many players.");
@@ -119,43 +123,37 @@ public class GameInitializationController {
 	}
 
 	/**
-	 * Assigns a ClientID to a given Player in the Game and informs each Client of its color.
+	 * Assigns a AccountID to a given Player in the Game and informs each Account of its color.
 	 * @param pPlayers
-	 * @param pClientIDs
+	 * @param pAccountIDs
 	 */
-	private void assignClientsToPlayers(Set<Integer> pClientIDs, Collection<Player> pPlayers){
-		Iterator<Integer> lClientIDIterator = pClientIDs.iterator();
+	private void assignAccountsToPlayers(Set<UUID> pAccountIDs, Collection<Player> pPlayers){
+		Iterator<UUID> lAccountIDIterator = pAccountIDs.iterator();
 		Iterator<Player> lPlayerIterator = pPlayers.iterator();
 
 		//TODO check they're the same size
-		while(lClientIDIterator.hasNext()){
-			Integer lClientID = lClientIDIterator.next();
+		while(lAccountIDIterator.hasNext()){
+			UUID lAccountID = lAccountIDIterator.next();
 			Player lPlayer = lPlayerIterator.next();
 
 			//store client to player mapping
-			PlayerMapper.getInstance().putPlayer(lClientID, lPlayer);
+			PlayerMapper.getInstance().putPlayer(lAccountID, lPlayer);
 
 			//get player color
 			Color lPlayerColor = lPlayer.getPlayerColor();
 
-			//get client channel associated with current player
-			ClientChannel lClientChannel = ClientChannelMapper.getInstance().getChannel(lClientID);
-
-			//send command to client informing it of its color
-			lClientChannel.sendCommand(
-					new SetColorCommand(SharedTileTranslator.translateColor(lPlayerColor)));
+			ClientCommunicationController.sendCommand(lAccountID, new SetColorCommand(SharedTileTranslator.translateColor(lPlayerColor)));
 		}
 	}
 
 	/**
-	 * Sends an acknowledgement to pClientID that the game request has been received.
-	 * @param pClientID
+	 * Sends an acknowledgement to pAccountID that the game request has been received.
+	 * @param pAccountID
 	 */
-	private void acknowledgeGameRequest(Integer pClientID){
+	private void acknowledgeGameRequest(UUID pAccountID){
 		AbstractClientCommand lClientCommand =
 				new AcknowledgementCommand("Game request received. Insufficient current users. Please wait for more clients to join lobby.");
 
-		//send acknowledgement to clients
-		ClientChannelMapper.getInstance().getChannel(pClientID).sendCommand(lClientCommand);
+		ClientCommunicationController.sendCommand(pAccountID, lClientCommand);
 	}
 }
