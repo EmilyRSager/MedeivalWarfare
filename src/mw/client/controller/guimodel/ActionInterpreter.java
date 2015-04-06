@@ -7,7 +7,6 @@ import mw.client.controller.model.ModelQuerier;
 import mw.client.controller.netmodel.UserActionSender;
 import mw.client.gui.window.ImageTile;
 import mw.client.model.*;
-import mw.client.network.NetworkController;
 import mw.shared.SharedPossibleGameActions;
 import mw.shared.SharedActionType;
 import mw.shared.SharedTile;
@@ -194,6 +193,7 @@ public final class ActionInterpreter {
 	{
 		hiringUnit = true;
 		hiredUnitType = ut;
+		DisplayUpdater.showGeneralMessage("Click on the tile you want to hire your "+ut+" on");
 	}
 	
 	public void notifyUnitActionChoiceResult(SharedActionType at)

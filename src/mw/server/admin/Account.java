@@ -23,39 +23,35 @@ public class Account {
 	private UUID aUUID;
 	private String aUsername;
 	private String aPassword;
-	private int aWins, aLosses;
-	private Game aCurrentGame;
+	private AccountGameInfo aAccountGameInfo;
+	
+	public AccountGameInfo getaAccountGameInfo() {
+		return aAccountGameInfo;
+	}
+
+	public void setaAccountGameInfo(AccountGameInfo aAccountGameInfo) {
+		this.aAccountGameInfo = aAccountGameInfo;
+	}
+	
+	public String getCurrentGameUUID(){
+		return aAccountGameInfo.getCurrentGame().getVal1();
+	}
+
+	
 	
 	/**
 	 * Constructor
 	 * @param pUsername
 	 * @param pPassword
 	 */
-	public Account(UUID pUUID, String pUsername, String pPassword){
+	public Account(UUID pUUID, String pUsername, String pPassword, AccountGameInfo pAccountGameInfo){
 		aUUID = pUUID;
 		aUsername = pUsername;
 		aPassword = pPassword;
-		aWins = 0;
-		aLosses = 0;
-		aCurrentGame = null;
+		aAccountGameInfo = pAccountGameInfo;
 	}
 	
-	/**
-	 * @return the Game that this account is currently playing in. In the future, this should support
-	 * multiple Game instances. Maybe this can be implemented with a Set<Game> class attribute.
-	 */
-	public Game getCurrentGame(){
-		return aCurrentGame;
-	}
-	
-	/**
-	 * Set Account's current game
-	 * @param pCurrentGame
-	 */
-	public void setCurrentGame(Game pCurrentGame){
-		aCurrentGame = pCurrentGame;
-	}
-	
+		
 	/**
 	 * @return this account's ID
 	 */
@@ -90,28 +86,30 @@ public class Account {
 	 * @return number of games this account has won
 	 */
 	public int getWins() {
-		return aWins;
+		return aAccountGameInfo.getaWins();
 	}
 
 	/**
 	 * @return number of games this account has lost
 	 */
 	public int getLosses() {
-		return aLosses;
+		return aAccountGameInfo.getaLosses();
 	}
 	
 	/**
 	 * increments number of wins
 	 */
 	public void incrementWins(){
-		aWins++;
+		int oldWins = getWins();
+		aAccountGameInfo.setaWins(oldWins++);
 	}
 	
 	/**
 	 * increment number of losses
 	 */
 	public void incrementLosses(){
-		aLosses++;
+		int oldLosses = getLosses();
+		aAccountGameInfo.setaLosses(oldLosses++);
 	}
 	
 	@Override public String toString(){

@@ -58,9 +58,14 @@ public abstract class ScreenSwitcher {
 		}
 	}
 
-	public static void openLobbyScreen(Collection<String> gameNames)
+	public static void openLobbyScreen(GameLobby lobby)
 	{
 		changeState(ScreenKind.LOBBY);
+		
+		List<String> gameNames = new ArrayList<String>();
+		for (GameRoom game : lobby)
+			gameNames.add(game.getName());
+		
 		lobbyScreen = new LobbyWindow((String[])gameNames.toArray());
 	}
 

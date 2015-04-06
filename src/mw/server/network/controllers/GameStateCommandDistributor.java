@@ -5,6 +5,8 @@
 
 package mw.server.network.controllers;
 
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.Set;
@@ -20,6 +22,7 @@ import mw.server.network.communication.ClientCommunicationController;
 import mw.server.network.mappers.AccountMapper;
 import mw.server.network.mappers.ClientChannelMapper;
 import mw.server.network.translators.SharedTileTranslator;
+import mw.shared.Coordinates;
 import mw.shared.SharedTile;
 import mw.shared.clientcommands.AbstractClientCommand;
 import mw.shared.clientcommands.NewGameCommand;
@@ -30,6 +33,7 @@ import mw.shared.clientcommands.UpdateTileCommand;
  * There will be one instance of this class observing each game that exists on the server.
  */
 public class GameStateCommandDistributor implements Observer {
+	
 	private Set<UUID> aAccountIDs; //the set of clients who are participating in a Game instance
 	
 	/**
@@ -38,6 +42,8 @@ public class GameStateCommandDistributor implements Observer {
 	 * bad work flow, but it's necessary as SharedTiles need Gold and Wood, 
 	 */
 	private Game aGame;
+	
+	private HashMap<Coordinates, SharedTile> modifiedTilesBuffer;
 
 	/**
 	 * Constructor.
@@ -46,6 +52,7 @@ public class GameStateCommandDistributor implements Observer {
 	public GameStateCommandDistributor(Set<UUID> pAccountIDs, Game pGame) {
 		aAccountIDs = pAccountIDs;
 		aGame = pGame;
+		modifiedTilesBuffer = new HashMap<Coordinates, SharedTile>();
 	}
 
 	/**
@@ -65,8 +72,11 @@ public class GameStateCommandDistributor implements Observer {
 		}
 		
 		Tile lTile = (Tile) pObservable;
-		AbstractClientCommand lClientCommand = new UpdateTileCommand(SharedTileTranslator.translateTile(lTile, aGame));
-		distributeCommand(lClientCommand);
+		currentlyActiveDistributor = this;
+		SharedTile tileTranslation = SharedTileTranslator.translateTile(lTile, aGame);
+		modifiedTilesBuffer.put(tileTranslation.getCoordinates(), tileTranslation);
+		//AbstractClientCommand lClientCommand = new UpdateTileCommand(SharedTileTranslator.translateTile(lTile, aGame));
+		//distributeCommand(lClientCommand);
 	}
 
 	/**
@@ -89,11 +99,33 @@ public class GameStateCommandDistributor implements Observer {
 		}
 	}
 	
+	private void distributeAllCommands()
+	{
+		Collection<SharedTile> newTileStates = modifiedTilesBuffer.values();
+		modifiedTilesBuffer.clear();
+		// new aggregate command
+	}
+	
 	/**
 	 * @param pAccountIDs
 	 * @return
 	 */
 	private UUID extractRandom(Set<UUID> pAccountIDs){
 		return pAccountIDs.iterator().next();
+	}
+	
+	
+	/*
+	 * Static 
+	 */
+	
+	private static GameStateCommandDistributor currentlyActiveDistributor;
+	
+	public static void flushBuffer()
+	{
+		if (currentlyActiveDistributor != null) {
+			currentlyActiveDistributor.distributeAllCommands();
+			currentlyActiveDistributor = null;
+		}
 	}
 }

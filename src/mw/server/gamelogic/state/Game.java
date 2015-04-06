@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Stack;
+import java.util.UUID;
 
 import mw.server.gamelogic.PossibleGameActions;
 import mw.server.gamelogic.enums.ActionType;
@@ -34,6 +35,7 @@ public class Game extends RandomColorGenerator implements Serializable{
 	private Collection<Player> aPlayers;
 	private GameMap aMap;  
 	private Player aCurrentPlayer;
+	private final String aName;
 	CircularIterator<Player> crtIterator;
 
 	/**
@@ -41,9 +43,9 @@ public class Game extends RandomColorGenerator implements Serializable{
 	 * @param pPlayers
 	 * @throws TooManyPlayersException
 	 */
-	public Game(Collection<Player> pPlayers) throws TooManyPlayersException 
+	public Game(Collection<Player> pPlayers, String pName) throws TooManyPlayersException 
 	{
-		this(pPlayers, DEFAULT_WIDTH, DEFAULT_HEIGHT);
+		this(pPlayers, DEFAULT_WIDTH, DEFAULT_HEIGHT, pName);
 	}
 
 	/**
@@ -52,9 +54,10 @@ public class Game extends RandomColorGenerator implements Serializable{
 	 * @param pHeight
 	 * @throws TooManyPlayersException 
 	 */
-	public Game (Collection<Player> pPlayers, int pWidth, int pHeight) throws TooManyPlayersException {
+	public Game (Collection<Player> pPlayers, int pWidth, int pHeight, String pName) throws TooManyPlayersException {
 
 		aPlayers  = pPlayers;
+		aName = pName;
 		Stack <Color> myColors = new Stack <Color>(); 
 		myColors.push(Color.BLUE); 
 		myColors.push(Color.GREEN);
@@ -451,5 +454,9 @@ public class Game extends RandomColorGenerator implements Serializable{
 	public void combineVillagers(Coordinates p1, Coordinates p2) {
 		// TODO Auto-generated method stub
 		
+	}
+	
+	public String getName(){
+		return aName;
 	}
 }
