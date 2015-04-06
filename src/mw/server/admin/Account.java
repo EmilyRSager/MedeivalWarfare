@@ -33,11 +33,11 @@ public class Account {
 		this.aAccountGameInfo = aAccountGameInfo;
 	}
 	
-	public UUID getCurrentGameUUID(){
+	public String getCurrentGameUUID(){
 		return aAccountGameInfo.getCurrentGame().getVal1();
 	}
 
-	private Game aCurrentGame;
+	
 	
 	/**
 	 * Constructor
@@ -48,7 +48,6 @@ public class Account {
 		aUUID = pUUID;
 		aUsername = pUsername;
 		aPassword = pPassword;
-		aCurrentGame = null;
 		aAccountGameInfo = pAccountGameInfo;
 	}
 	
@@ -56,17 +55,13 @@ public class Account {
 	 * @return the Game that this account is currently playing in. In the future, this should support
 	 * multiple Game instances. Maybe this can be implemented with a Set<Game> class attribute.
 	 */
-	public Game getCurrentGame(){
-		return aCurrentGame;
-	}
+	
 	
 	/**
 	 * Set Account's current game
 	 * @param pCurrentGame
 	 */
-	public void setCurrentGame(Game pCurrentGame){
-		aCurrentGame = pCurrentGame;
-	}
+	
 	
 	/**
 	 * @return this account's ID
