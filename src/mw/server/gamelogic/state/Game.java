@@ -203,6 +203,7 @@ public class Game extends RandomColorGenerator implements Serializable{
 	 */
 	public void endTurn() 
 	{
+		System.out.println("[Game] Player is ending their turn");
 		if (currentRoundIsOver())
 		{
 			beginRound();
@@ -231,6 +232,7 @@ public class Game extends RandomColorGenerator implements Serializable{
 		aCurrentPlayer = getNextPlayer();
 		for (Village lVillage :aCurrentPlayer.getVillages()) 
 		{
+			System.out.println("[Game] Updating state for the next player's turn.");
 			lVillage.beginTurnUpdate();
 		}
 	}

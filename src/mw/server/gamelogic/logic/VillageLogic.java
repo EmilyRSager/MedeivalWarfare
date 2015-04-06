@@ -88,6 +88,7 @@ public class VillageLogic
 	 */
 	public static void readyUnits(Collection<Tile> pTiles)
 	{
+		System.out.println("[Game] Readying units");
 		for (Tile lTile : pTiles)
 		{
 			if (lTile.hasUnit())
@@ -96,7 +97,7 @@ public class VillageLogic
 				ActionType lActionType = lUnit.getActionType();
 				if (lActionType == ActionType.MOVED)
 				{
-					lActionType = ActionType.READY;
+					lUnit.setActionType(ActionType.READY);
 				}
 			}
 		}
