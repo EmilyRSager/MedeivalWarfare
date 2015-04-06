@@ -31,9 +31,7 @@ public class GameLobby {
 	 * @param pGameName
 	 * @param pNumRequestedClients
 	 */
-	public void createNewGameRoom(UUID pRequestingAccountID, String pGameName, int pNumRequestedClients){
-		GameRoom lNewGameRoom = new GameRoom(pNumRequestedClients);
-		lNewGameRoom.addClient(pRequestingAccountID);
+	public void createNewGameRoom(String pGameName, int pNumRequestedClients){
 		aGameRooms.put(pGameName, new GameRoom(pNumRequestedClients));
 	}
 	

@@ -33,16 +33,20 @@ public class GameRoom {
 	 * adds client pClient to the waiting queue if she is not already waiting.
 	 * @param pClientID
 	 */
-	public void addClient(UUID pClientID){
-		if(!aWaitingClients.contains(pClientID)){
-			aWaitingClients.add(pClientID);
+	public void addClient(UUID pAccountID){
+		aWaitingClients.add(pAccountID);
+		if(!aWaitingClients.contains(pAccountID)){
+			aWaitingClients.add(pAccountID);
+			System.out.println("[server] this shouldsn't happen.");
 		}
+//		System.out.println("[GameRoom] Adding client to game. There are now [" + aWaitingClients.size() + "] players in the room.");
 	}
 	
 	/**
 	 * @return true if there are sufficient clients for a game
 	 */
 	public boolean containsSufficientClientsForGame(){
+		System.out.printf("[server] Game room now contains %d players, waiting for %d more.", aWaitingClients.size(), aNumRequestedClients);
 		return aWaitingClients.size() >= aNumRequestedClients;
 	}
 	

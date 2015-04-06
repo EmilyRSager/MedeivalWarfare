@@ -7,12 +7,14 @@ public class ClientTestDriver {
 	public static void main(String[] args) {
 		NetworkController.initialize();
 		
-		int name = 0;
-		if (name == 0)
+		int name = 1;
+		if (name == 0){
 			MenuActionSender.tryLogin("Charlie", "Bloomfield");
-		else
+			NetworkController.requestNewGame("Test game", 2);
+		}
+		else{
 			MenuActionSender.tryLogin("Hugo", "Kapp");
-		
-		NetworkController.requestNewGame();
+			NetworkController.joinGame("Test game");
+		}
 	}
 }

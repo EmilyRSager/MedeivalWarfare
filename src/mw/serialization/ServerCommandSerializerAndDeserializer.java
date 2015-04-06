@@ -14,6 +14,7 @@ import mw.shared.servercommands.EndTurnCommand;
 import mw.shared.servercommands.GetJoinableGamesCommand;
 import mw.shared.servercommands.GetPossibleGameActionsCommand;
 import mw.shared.servercommands.HireUnitCommand;
+import mw.shared.servercommands.JoinGameCommand;
 import mw.shared.servercommands.LogoutCommand;
 import mw.shared.servercommands.MoveUnitCommand;
 import mw.shared.servercommands.RequestNewGameCommand;
@@ -39,6 +40,7 @@ public class ServerCommandSerializerAndDeserializer{
 		aTypeMap.put("GetJoinableGamesCommand", new TypeToken<GetJoinableGamesCommand>(){}.getType());
 		aTypeMap.put("GetPossibleGameActionsCommand", new TypeToken<GetPossibleGameActionsCommand>(){}.getType());
 		aTypeMap.put("HireUnitCommand", new TypeToken<HireUnitCommand>(){}.getType());
+		aTypeMap.put("JoinGameCommand", new TypeToken<JoinGameCommand>(){}.getType());
 		aTypeMap.put("LogoutCommand", new TypeToken<LogoutCommand>(){}.getType());
 		aTypeMap.put("MoveUnitCommand", new TypeToken<MoveUnitCommand>(){}.getType());
 		aTypeMap.put("RequestNewGameCommand", new TypeToken<RequestNewGameCommand>(){}.getType());

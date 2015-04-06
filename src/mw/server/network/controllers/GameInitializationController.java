@@ -80,12 +80,12 @@ public class GameInitializationController {
 	 * @param pAccountID
 	 */
 	public void requestNewGame(UUID pRequestingAccountID, String pGameName, int pNumRequestedPlayers){
-		aGameLobby.createNewGameRoom(pRequestingAccountID, pGameName, pNumRequestedPlayers);
+		aGameLobby.createNewGameRoom(pGameName, pNumRequestedPlayers);
+		aGameLobby.addParticipantToGame(pRequestingAccountID, pGameName);
 		ClientCommunicationController.sendCommand(pRequestingAccountID, new AcknowledgementCommand("Game [" + pGameName + "] was created. Awaiting other players."));
 	}
 	
 	/**
-	 * 
 	 * @param pAccountID
 	 * @param pGameName
 	 */
