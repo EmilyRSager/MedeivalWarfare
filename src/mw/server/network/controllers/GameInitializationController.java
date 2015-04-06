@@ -19,6 +19,7 @@ import mw.server.gamelogic.controllers.GameController;
 import mw.server.gamelogic.enums.Color;
 import mw.server.gamelogic.exceptions.TooManyPlayersException;
 import mw.server.gamelogic.state.Game;
+import mw.server.gamelogic.state.GameID;
 import mw.server.gamelogic.state.Player;
 import mw.server.gamelogic.state.Tile;
 import mw.server.network.communication.ClientCommunicationController;
@@ -94,7 +95,7 @@ public class GameInitializationController {
 		if(aGameLobby.roomIsComplete(pGameName)){
 			Set<UUID> lLobbyClients = aGameLobby.getParticipantAccounts(pGameName);
 			aGameLobby.removeGameRoom(pGameName);
-			createNewGame(lLobbyClients);
+			createNewGame(lLobbyClients, pGameName);
 		}
 		else{
 			ClientCommunicationController.sendCommand(pJoiningAccountID, new AcknowledgementCommand("Game [" + pGameName + "] successfully joined. Awaiting other players"));
@@ -105,7 +106,7 @@ public class GameInitializationController {
 	 * Creates a new game, adds the necessary observers to the Game, and then sends the Game
 	 * to each client involved in the game.
 	 */
-	private void createNewGame(Set<UUID> pAccountIDs){
+	private void createNewGame(Set<UUID> pAccountIDs, String pGameName){
 		System.out.println("[Server] Initializing new game.");
 		int lNumPlayers = pAccountIDs.size();
 
@@ -137,18 +138,18 @@ public class GameInitializationController {
 			lGameStateCommandDistributor.newGame(lGameTiles);
 			assignAccountsToPlayers(pAccountIDs, lPlayers);
 			
-//			for (UUID accountUUID : pAccountIDs) {
-//				Account lAccount = AccountManager.getInstance().getAccount(accountUUID);
-//				AccountGameInfo lAccountGameInfo = lAccount.getaAccountGameInfo();
-//				Color playerColor = PlayerMapper.getInstance().getPlayer(accountUUID).getPlayerColor();
-//				//TODO: fix the following line for name 
-//				lAccountGameInfo.setCurrentGame(new Tuple2<String, Color>("", playerColor ));
-//				lAccountGameInfo.addToActiveGames(lAccountGameInfo.getCurrentGame());
-//				AccountManager.getInstance().saveAccountData(lAccount);
-//			}
-//			
+			for (UUID accountUUID : pAccountIDs) {
+				Account lAccount = AccountManager.getInstance().getAccount(accountUUID);
+				AccountGameInfo lAccountGameInfo = lAccount.getaAccountGameInfo();
+				Color playerColor = PlayerMapper.getInstance().getPlayer(accountUUID).getPlayerColor();
+				//TODO: fix the following line for name 
+				lAccountGameInfo.setCurrentGame(new Tuple2<String, Color>("", playerColor ));
+				lAccountGameInfo.addToActiveGames(lAccountGameInfo.getCurrentGame());
+				AccountManager.getInstance().saveAccountData(lAccount);
+			}
+			GameID lGameID = new GameID(lGame, pGameName);
 			try {
-				SaveGame.SaveMyGame(lGame);
+				SaveGame.SaveMyGame(lGameID);
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

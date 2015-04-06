@@ -19,16 +19,17 @@ import com.google.gson.Gson;
 
 import mw.filesystem.ProjectFolder;
 import mw.server.gamelogic.state.Game;
+import mw.server.gamelogic.state.GameID;
 
 public class SaveGame {
 	
 	
-	public static void SaveMyGame(Game pGame) throws IOException{
+	public static void SaveMyGame(GameID pGame) throws IOException{
 		//System.out.println("game being serialized");
 		
 		//System.out.println("writing to the savegame file");
 		//PrintWriter out = new PrintWriter(ProjectFolder.getPath()+"savegame.txt");
-		FileOutputStream out = new FileOutputStream(ProjectFolder.getPath()+"savegame.txt");
+		FileOutputStream out = new FileOutputStream(ProjectFolder.getPath()+"GameData"+pGame.getaName());
 		//System.out.println("got here 1");
 		ObjectOutputStream oos = new ObjectOutputStream(out);
 		//System.out.println("got here 2");
@@ -37,7 +38,7 @@ public class SaveGame {
 		out.close();
 	}
 	
-	public static Game returnSavedGame() throws IOException, ClassNotFoundException{
+	public static GameID returnSavedGame() throws IOException, ClassNotFoundException{
 		//later can be expanded to take in a player ID or something to return the game that is associated with them
 //		File file = new File(ProjectFolder.getPath()+"savegame.txt");
 //		FileReader fReader = new FileReader(file);
@@ -47,7 +48,7 @@ public class SaveGame {
 		
 		FileInputStream fis = new FileInputStream(ProjectFolder.getPath()+"savegame.txt");
 		ObjectInputStream ois = new ObjectInputStream(fis);
-		Game lGame = (Game)ois.readObject();
+		GameID lGame = (GameID)ois.readObject();
 		
 		return lGame;
 	}
