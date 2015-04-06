@@ -9,6 +9,7 @@ public abstract class ScreenSwitcher {
 	
 	private static LoginWindow loginScreen;
 	private static CreateAccountWindow createAccountScreen;
+	private static LobbyWindow lobbyWindow;
 
 	/* ========================
 	 * 		Constructors
@@ -39,6 +40,10 @@ public abstract class ScreenSwitcher {
 		case CREATE_ACCOUNT:
 			createAccountScreen = new CreateAccountWindow();
 			break;
+			
+		case LOBBY:
+			lobbyWindow = new LobbyWindow();
+			break;
 		}
 		currentScreen = newScreen;
 	}
@@ -59,6 +64,16 @@ public abstract class ScreenSwitcher {
 		case LOGIN:
 			loginScreen.close();
 			loginScreen = null;
+			break;
+			
+		case CREATE_ACCOUNT:
+			createAccountScreen.close();
+			createAccountScreen = null;
+			break;
+			
+		case LOBBY:
+			lobbyScreen.close();
+			lobbyScreen = null;
 			break;
 		}
 		
@@ -86,11 +101,11 @@ public abstract class ScreenSwitcher {
 			break;
 			
 		case LOGIN:
-			valid = (next == ScreenKind.CREATE_ACCOUNT);
+			valid = (next == ScreenKind.CREATE_ACCOUNT || next == ScreenKind.LOBBY);
 			break;
 			
 		case CREATE_ACCOUNT:
-			valid=false;
+			valid = (next == ScreenKind.LOBBY);
 			break;
 		}
 		
