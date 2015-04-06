@@ -51,18 +51,7 @@ public class Account {
 		aAccountGameInfo = pAccountGameInfo;
 	}
 	
-	/**
-	 * @return the Game that this account is currently playing in. In the future, this should support
-	 * multiple Game instances. Maybe this can be implemented with a Set<Game> class attribute.
-	 */
-	
-	
-	/**
-	 * Set Account's current game
-	 * @param pCurrentGame
-	 */
-	
-	
+		
 	/**
 	 * @return this account's ID
 	 */

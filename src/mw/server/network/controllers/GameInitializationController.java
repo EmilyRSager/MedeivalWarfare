@@ -5,11 +5,16 @@
 
 package mw.server.network.controllers;
 
+import java.io.IOException;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Set;
 import java.util.UUID;
 
+import test.mw.server.gamelogic.SaveGame;
+import mw.server.admin.Account;
+import mw.server.admin.AccountGameInfo;
+import mw.server.admin.AccountManager;
 import mw.server.gamelogic.controllers.GameController;
 import mw.server.gamelogic.enums.Color;
 import mw.server.gamelogic.exceptions.TooManyPlayersException;
@@ -29,6 +34,7 @@ import mw.shared.clientcommands.AcknowledgementCommand;
 import mw.shared.clientcommands.NotifyBeginTurnCommand;
 import mw.shared.clientcommands.SetColorCommand;
 import mw.util.MultiArrayIterable;
+import mw.util.Tuple2;
 
 /**
  * Manages game requests by maintaining a set of game lobbies and creating games when there
@@ -110,7 +116,22 @@ public class GameInitializationController {
 			//distribute the new Game to each client.
 			lGameStateCommandDistributor.newGame(lGameTiles);
 			assignAccountsToPlayers(lAccountIDs, lPlayers);
-
+			
+			for (UUID accountUUID: lAccountIDs) {
+				Account lAccount = AccountManager.getInstance().getAccount(accountUUID);
+				AccountGameInfo lAccountGameInfo = lAccount.getaAccountGameInfo();
+				Color playerColor = PlayerMapper.getInstance().getPlayer(accountUUID).getPlayerColor();
+				lAccountGameInfo.setCurrentGame(new Tuple2<String, Color>(lGame.getName(), playerColor ));
+				lAccountGameInfo.addToActiveGames(lAccountGameInfo.getCurrentGame());
+				AccountManager.getInstance().saveAccountData(lAccount);
+			}
+			
+			try {
+				SaveGame.SaveMyGame(lGame);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			
 			//Inform client that it is his turn
 			UUID lCurrentAccountID = PlayerMapper.getInstance().getAccount(GameController.getCurrentPlayer(lGame));
