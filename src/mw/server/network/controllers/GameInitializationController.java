@@ -69,10 +69,10 @@ public class GameInitializationController {
 	 * acknowledgement is sent to the Account informing her to wait.
 	 * @param pAccountID
 	 */
-	public void requestNewGame(UUID pAccountID){
+	public void requestNewGame(UUID pAccountID, String pName){
 		aGameLobby.addAccount(pAccountID);
 		if(aGameLobby.containsSufficientPlayersForGame()){
-			createNewGame();
+			createNewGame(pName);
 		}
 
 		else{
@@ -84,7 +84,7 @@ public class GameInitializationController {
 	 * Creates a new game, adds the necessary observers to the Game, and then sends the Game
 	 * to each client involved in the game.
 	 */
-	private void createNewGame(){
+	private void createNewGame(String pName){
 		System.out.println("[Server] Initializing new game.");
 		Set<UUID> lAccountIDs = aGameLobby.removeAvailableAccounts();
 		int lNumPlayers = lAccountIDs.size();
@@ -92,10 +92,10 @@ public class GameInitializationController {
 		//create a game
 		Game lGame;
 		try {
-			lGame = GameController.newGame(lNumPlayers); //throws exception if too many players
+			lGame = GameController.newGame(lNumPlayers, pName); //throws exception if too many players
 
 			/* Map the clients to the given Game.
-			 * TODO this may be unnesecary as there will be a mapping between AccountIDs and Players as well
+			 * TODO this may be unnecessary as there will be a mapping between AccountIDs and Players as well
 			 */
 			GameMapper.getInstance().putGame(lAccountIDs, lGame); //add clients to Game Mapping
 
