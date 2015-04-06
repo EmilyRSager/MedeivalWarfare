@@ -17,7 +17,6 @@ public class AccountGameInfo {
 	//the current game is also stored inside the active games 
 	private Tuple2<UUID, Color> aCurrentGame; //associating the account with the game and the player
 	//list of active games 
-	//what is the key that i should use here??
 	private ArrayList<Tuple2<UUID, Color>> aActiveGames;
 	//list of past games
 	private ArrayList<Tuple2<UUID, Color>> aPastGames;
@@ -40,6 +39,22 @@ public class AccountGameInfo {
 	}
 	public void setCurrentGame(Tuple2<UUID, Color> pCurrentGame) {
 		this.aCurrentGame = pCurrentGame;
+	}
+	
+	public void addToActiveGames(Tuple2<UUID, Color> aGame){
+		aActiveGames.add(aGame);
+	}
+	
+	public void removeFromActiveGames(Tuple2<UUID, Color> aGame){
+		aActiveGames.remove(aGame);
+	}
+	
+	public void addToPastGames(Tuple2<UUID, Color> aGame){
+		aPastGames.add(aGame);
+	}
+	
+	public void removeFromPastGames(Tuple2<UUID, Color> aGame){
+		aPastGames.remove(aGame);
 	}
 	
 	
