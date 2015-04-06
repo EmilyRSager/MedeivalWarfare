@@ -137,16 +137,16 @@ public class GameInitializationController {
 			lGameStateCommandDistributor.newGame(lGameTiles);
 			assignAccountsToPlayers(pAccountIDs, lPlayers);
 			
-			for (UUID accountUUID : pAccountIDs) {
-				Account lAccount = AccountManager.getInstance().getAccount(accountUUID);
-				AccountGameInfo lAccountGameInfo = lAccount.getaAccountGameInfo();
-				Color playerColor = PlayerMapper.getInstance().getPlayer(accountUUID).getPlayerColor();
-				//TODO: fix the following line for name 
-				lAccountGameInfo.setCurrentGame(new Tuple2<String, Color>("", playerColor ));
-				lAccountGameInfo.addToActiveGames(lAccountGameInfo.getCurrentGame());
-				AccountManager.getInstance().saveAccountData(lAccount);
-			}
-			
+//			for (UUID accountUUID : pAccountIDs) {
+//				Account lAccount = AccountManager.getInstance().getAccount(accountUUID);
+//				AccountGameInfo lAccountGameInfo = lAccount.getaAccountGameInfo();
+//				Color playerColor = PlayerMapper.getInstance().getPlayer(accountUUID).getPlayerColor();
+//				//TODO: fix the following line for name 
+//				lAccountGameInfo.setCurrentGame(new Tuple2<String, Color>("", playerColor ));
+//				lAccountGameInfo.addToActiveGames(lAccountGameInfo.getCurrentGame());
+//				AccountManager.getInstance().saveAccountData(lAccount);
+//			}
+//			
 			try {
 				SaveGame.SaveMyGame(lGame);
 			} catch (IOException e) {
