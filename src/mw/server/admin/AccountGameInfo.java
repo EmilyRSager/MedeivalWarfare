@@ -36,7 +36,8 @@ public class AccountGameInfo {
 		return aCurrentGame;
 	}
 	public void setCurrentGame(Tuple2<String, Color> pCurrentGame) {
-		this.aCurrentGame = pCurrentGame;
+		//TODO implement this
+		//this.aCurrentGame = pCurrentGame;
 	}
 	
 	public void addToActiveGames(Tuple2<String, Color> aGame){

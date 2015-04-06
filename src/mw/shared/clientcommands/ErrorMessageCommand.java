@@ -10,10 +10,6 @@ public class ErrorMessageCommand extends AbstractClientCommand {
 		aErrorMessage = pErrorMessage;
 	}
 	
-	@Override
-	public boolean isValid() {
-		return true;
-	}
 
 	@Override
 	public void execute() {

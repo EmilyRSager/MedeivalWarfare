@@ -9,11 +9,6 @@ public class UserAuthenticatedCommand extends AbstractClientCommand {
 	public UserAuthenticatedCommand(boolean pAuthenticated) {
 		aAuthenticated = pAuthenticated;
 	}
-	
-	@Override
-	public boolean isValid() {
-		return true;
-	}
 
 	@Override
 	public void execute() {

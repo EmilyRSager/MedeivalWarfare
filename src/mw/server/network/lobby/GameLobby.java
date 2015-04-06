@@ -1,60 +1,76 @@
-/**
- * @author Charlie Bloomfield
- * Mar 5, 2015
- */
-
 package mw.server.network.lobby;
 
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.Queue;
+import java.util.HashMap;
 import java.util.Set;
 import java.util.UUID;
 
 /**
- * @singleton
- * Maintains a set of users waiting to join a Game, and creates a game when there are enough users to play.
- * For simplicity, the game lobby supports creating games when there are enough available players. Later on,
- * this will be extended to provide functionality for specific GameRequests.
+ * @author cbloom7
+ * Aggregates and manages game rooms.
  */
 public class GameLobby {
-	private static final int GAME_SIZE = 2;
-	private Queue<UUID> aWaitingAccounts;
-
-	/*
+	private HashMap<String, GameRoom> aGameRooms;
+	
+	/**
 	 * Constructor
 	 */
 	public GameLobby(){
-		aWaitingAccounts = new LinkedList<UUID>();
-	}
-
-	/**
-	 * adds client pAccount to the waiting queue if she is not already waiting.
-	 * @param pAccountID
-	 */
-	public void addAccount(UUID pAccountID){
-		if(!aWaitingAccounts.contains(pAccountID)){
-			aWaitingAccounts.add(pAccountID);
-		}
+		aGameRooms = new HashMap<String, GameRoom>();
 	}
 	
 	/**
-	 * @return true if there are sufficient clients for a game
+	 * @return
 	 */
-	public boolean containsSufficientPlayersForGame(){
-		return aWaitingAccounts.size() >= GAME_SIZE;
+	public HashMap<String, GameRoom> getGameRooms(){
+		return aGameRooms;
 	}
 	
 	/**
-	 * @return the a set of Accounts at the head of the waiting queue
+	 * Creates a new game room with the parameter name and puts the requesting account in the room
+	 * @param pRequestingAccountID
+	 * @param pGameName
+	 * @param pNumRequestedClients
 	 */
-	public Set<UUID> removeAvailableAccounts(){
-		Set<UUID> lAvailableAccounts = new HashSet<UUID>();
-		
-		for(int i = 0; i < GAME_SIZE; i++){
-			lAvailableAccounts.add(aWaitingAccounts.remove());
-		}
-		
-		return lAvailableAccounts;
+	public void createNewGameRoom(String pGameName, int pNumRequestedClients){
+		aGameRooms.put(pGameName, new GameRoom(pNumRequestedClients));
+	}
+	
+	/**
+	 * @param pGameName
+	 * @return
+	 */
+	public boolean roomIsComplete(String pGameName){
+		return aGameRooms.get(pGameName).containsSufficientClientsForGame();
+	}
+	
+	/**
+	 * @param pGameName
+	 * @return
+	 */
+	public boolean roomIsEmpty(String pGameName){
+		return aGameRooms.get(pGameName).isEmpty();
+	}
+	
+	/**
+	 * @param pJoiningAccountID
+	 * @param pGameName
+	 */
+	public void addParticipantToGame(UUID pJoiningAccountID, String pGameName){
+		aGameRooms.get(pGameName).addClient(pJoiningAccountID);
+	}
+	
+	/**
+	 * @param pGameName
+	 * @return
+	 */
+	public Set<UUID> getParticipantAccounts(String pGameName){
+		return aGameRooms.get(pGameName).getClients();
+	}
+	
+	/**
+	 * @param pGameName
+	 */
+	public void removeGameRoom(String pGameName){
+		aGameRooms.remove(pGameName);
 	}
 }

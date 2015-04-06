@@ -32,11 +32,7 @@ public class EndTurnController {
 		ClientChannelMapper.getInstance().getChannel(lEndingClientID).sendCommand(new NotifyEndTurnCommand());
 		
 		GameController.endTurn(pGame);
-		
-		//TODO this call should pass through a GameQuerier, but for now we'll leave it as is
 		Player lNewCurrentPlayer = GameController.getCurrentPlayer(pGame);
-		
-		//get the client associated with the current player
 		UUID lAccountID = PlayerMapper.getInstance().getAccount(lNewCurrentPlayer);
 		ClientCommunicationController.sendCommand(lAccountID, new NotifyBeginTurnCommand());
 	}

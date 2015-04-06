@@ -20,10 +20,6 @@ public class DisplayPossibleGameActionsCommand extends AbstractClientCommand {
 
 	}
 	
-	@Override
-	public boolean isValid() {
-		return true;
-	}
 
 	@Override
 	public void execute() {

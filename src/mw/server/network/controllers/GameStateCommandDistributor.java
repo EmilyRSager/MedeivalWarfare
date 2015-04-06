@@ -26,6 +26,7 @@ import mw.shared.Coordinates;
 import mw.shared.SharedTile;
 import mw.shared.clientcommands.AbstractClientCommand;
 import mw.shared.clientcommands.NewGameCommand;
+import mw.shared.clientcommands.UpdateAggregateTilesCommand;
 import mw.shared.clientcommands.UpdateTileCommand;
 
 /**
@@ -88,7 +89,17 @@ public class GameStateCommandDistributor implements Observer {
 		AbstractClientCommand lClientCommand = new NewGameCommand(lSharedTiles);
 		distributeCommand(lClientCommand);
 	}
-
+	
+	/**
+	 * Distributes the changes to each tile in an aggregate update tile state command
+	 */
+	private void distributeAllCommands()
+	{
+		Collection<SharedTile> newTileStates = modifiedTilesBuffer.values();
+		distributeCommand(new UpdateAggregateTilesCommand(newTileStates));
+		modifiedTilesBuffer = new HashMap<Coordinates, SharedTile>();
+	}
+	
 	/**
 	 * Invokes sendCommand on each client in the set aAccountIDs. 
 	 * @param pClientMessage
@@ -99,12 +110,6 @@ public class GameStateCommandDistributor implements Observer {
 		}
 	}
 	
-	private void distributeAllCommands()
-	{
-		Collection<SharedTile> newTileStates = modifiedTilesBuffer.values();
-		modifiedTilesBuffer.clear();
-		// new aggregate command
-	}
 	
 	/**
 	 * @param pAccountIDs
