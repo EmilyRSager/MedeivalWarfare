@@ -17,7 +17,7 @@ public abstract class ScreenSwitcher {
 	private static CreateAccountWindow createAccountScreen;
 	private static LobbyWindow lobbyScreen;
 	private static GameRoomWindow gameRoomScreen;
-	private static GameCreationWindow gameCreationScreen;
+	private static CreateGameWindow gameCreationScreen;
 
 	/* ========================
 	 * 		Constructors
@@ -49,7 +49,7 @@ public abstract class ScreenSwitcher {
 			break;
 			
 		case GAME_CREATION:
-			gameCreationScreen = new GameCreationWindow();
+			gameCreationScreen = new CreateGameWindow();
 			break;
 			
 		default:

@@ -10,7 +10,13 @@ package mw.shared.clientcommands;
  */
 public abstract class AbstractClientCommand {
 	
-	public abstract boolean isValid();
+	/**
+	 * @return true by default. Override with more interesting condition with commands that are expected to be invalid.
+	 */
+	public boolean isValid(){
+		return true;
+	}
+	
 	public abstract void execute();
 
 }

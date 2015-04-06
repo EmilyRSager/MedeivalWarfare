@@ -21,30 +21,32 @@ import mw.server.gamelogic.exceptions.TooManyPlayersException;
 import mw.server.gamelogic.state.Game;
 import mw.server.gamelogic.state.Player;
 import mw.server.gamelogic.state.Tile;
-import mw.server.network.communication.ClientChannel;
 import mw.server.network.communication.ClientCommunicationController;
 import mw.server.network.lobby.GameLobby;
-import mw.server.network.mappers.AccountMapper;
-import mw.server.network.mappers.ClientChannelMapper;
 import mw.server.network.mappers.GameMapper;
 import mw.server.network.mappers.PlayerMapper;
+import mw.server.network.translators.LobbyTranslator;
 import mw.server.network.translators.SharedTileTranslator;
+import mw.shared.SharedGameLobby;
 import mw.shared.clientcommands.AbstractClientCommand;
 import mw.shared.clientcommands.AcknowledgementCommand;
+import mw.shared.clientcommands.DisplayGameLobbyCommand;
 import mw.shared.clientcommands.NotifyBeginTurnCommand;
 import mw.shared.clientcommands.SetColorCommand;
 import mw.util.MultiArrayIterable;
 import mw.util.Tuple2;
 
 /**
+ * TODO refactor LobbyManager logic into it's own class. This class can delegate lobby requests to it.
+ * 
  * Manages game requests by maintaining a set of game lobbies and creating games when there
  * are sufficient clients available to create a Game. Handles assigning clients to GamePlayers
  * and informing the clients of their Colors.
  */
 public class GameInitializationController {
-	private GameLobby aGameLobby; //later on there will be a set of available of
-	private static GameInitializationController aGameRequestController;
-
+	private static GameInitializationController aGameInitializationController;
+	private GameLobby aGameLobby;
+	
 	/**
 	 * Constructor
 	 */
@@ -54,14 +56,22 @@ public class GameInitializationController {
 
 	/**
 	 * Singleton implementation
-	 * @return static GameRequestController instance
+	 * @return static GameInitializationController instance
 	 */
 	public static GameInitializationController getInstance(){
-		if(aGameRequestController == null){
-			aGameRequestController = new GameInitializationController();
+		if(aGameInitializationController == null){
+			aGameInitializationController = new GameInitializationController();
 		}
 
-		return aGameRequestController;
+		return aGameInitializationController;
+	}
+	
+	/**
+	 * @return a set of game lobbies that are open and waiting for players to join
+	 */
+	public void getJoinableGames(UUID pRequestingAccountID){
+		SharedGameLobby lSharedGameLobby = LobbyTranslator.translateGameLobby(aGameLobby);
+		ClientCommunicationController.sendCommand(pRequestingAccountID, new DisplayGameLobbyCommand(lSharedGameLobby));
 	}
 
 	/**
@@ -69,14 +79,25 @@ public class GameInitializationController {
 	 * acknowledgement is sent to the Account informing her to wait.
 	 * @param pAccountID
 	 */
-	public void requestNewGame(UUID pAccountID){
-		aGameLobby.addAccount(pAccountID);
-		if(aGameLobby.containsSufficientPlayersForGame()){
-			createNewGame();
+	public void requestNewGame(UUID pRequestingAccountID, String pGameName, int pNumRequestedPlayers){
+		aGameLobby.createNewGameRoom(pGameName, pNumRequestedPlayers);
+		aGameLobby.addParticipantToGame(pRequestingAccountID, pGameName);
+		ClientCommunicationController.sendCommand(pRequestingAccountID, new AcknowledgementCommand("Game [" + pGameName + "] was created. Awaiting other players."));
+	}
+	
+	/**
+	 * @param pAccountID
+	 * @param pGameName
+	 */
+	public void joinGame(UUID pJoiningAccountID, String pGameName){
+		aGameLobby.addParticipantToGame(pJoiningAccountID, pGameName);
+		if(aGameLobby.roomIsComplete(pGameName)){
+			Set<UUID> lLobbyClients = aGameLobby.getParticipantAccounts(pGameName);
+			aGameLobby.removeGameRoom(pGameName);
+			createNewGame(lLobbyClients);
 		}
-
 		else{
-			acknowledgeGameRequest(pAccountID);
+			ClientCommunicationController.sendCommand(pJoiningAccountID, new AcknowledgementCommand("Game [" + pGameName + "] successfully joined. Awaiting other players"));
 		}
 	}
 
@@ -84,10 +105,9 @@ public class GameInitializationController {
 	 * Creates a new game, adds the necessary observers to the Game, and then sends the Game
 	 * to each client involved in the game.
 	 */
-	private void createNewGame(){
+	private void createNewGame(Set<UUID> pAccountIDs){
 		System.out.println("[Server] Initializing new game.");
-		Set<UUID> lAccountIDs = aGameLobby.removeAvailableAccounts();
-		int lNumPlayers = lAccountIDs.size();
+		int lNumPlayers = pAccountIDs.size();
 
 		//create a game
 		Game lGame;
@@ -95,16 +115,16 @@ public class GameInitializationController {
 			lGame = GameController.newGame(lNumPlayers); //throws exception if too many players
 
 			/* Map the clients to the given Game.
-			 * TODO this may be unnesecary as there will be a mapping between AccountIDs and Players as well
+			 * TODO this may be unnecessary as there will be a mapping between AccountIDs and Players as well
 			 */
-			GameMapper.getInstance().putGame(lAccountIDs, lGame); //add clients to Game Mapping
+			GameMapper.getInstance().putGame(pAccountIDs, lGame); //add clients to Game Mapping
 
 			//map clients to players
 			Collection<Player> lPlayers = lGame.getPlayers();
 
 			//initialize game state observer
 			GameStateCommandDistributor lGameStateCommandDistributor = 
-					new GameStateCommandDistributor(lAccountIDs, lGame);
+					new GameStateCommandDistributor(pAccountIDs, lGame);
 
 			//attach observer to each tile
 			Tile[][] lGameTiles = lGame.getGameTiles();
@@ -115,17 +135,18 @@ public class GameInitializationController {
 
 			//distribute the new Game to each client.
 			lGameStateCommandDistributor.newGame(lGameTiles);
-			assignAccountsToPlayers(lAccountIDs, lPlayers);
+			assignAccountsToPlayers(pAccountIDs, lPlayers);
 			
-			for (UUID accountUUID: lAccountIDs) {
-				Account lAccount = AccountManager.getInstance().getAccount(accountUUID);
-				AccountGameInfo lAccountGameInfo = lAccount.getaAccountGameInfo();
-				Color playerColor = PlayerMapper.getInstance().getPlayer(accountUUID).getPlayerColor();
-				lAccountGameInfo.setCurrentGame(new Tuple2<String, Color>(lGame.getName(), playerColor ));
-				lAccountGameInfo.addToActiveGames(lAccountGameInfo.getCurrentGame());
-				AccountManager.getInstance().saveAccountData(lAccount);
-			}
-			
+//			for (UUID accountUUID : pAccountIDs) {
+//				Account lAccount = AccountManager.getInstance().getAccount(accountUUID);
+//				AccountGameInfo lAccountGameInfo = lAccount.getaAccountGameInfo();
+//				Color playerColor = PlayerMapper.getInstance().getPlayer(accountUUID).getPlayerColor();
+//				//TODO: fix the following line for name 
+//				lAccountGameInfo.setCurrentGame(new Tuple2<String, Color>("", playerColor ));
+//				lAccountGameInfo.addToActiveGames(lAccountGameInfo.getCurrentGame());
+//				AccountManager.getInstance().saveAccountData(lAccount);
+//			}
+//			
 			try {
 				SaveGame.SaveMyGame(lGame);
 			} catch (IOException e) {

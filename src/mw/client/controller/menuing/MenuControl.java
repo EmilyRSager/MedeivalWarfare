@@ -59,7 +59,7 @@ public abstract class MenuControl {
 	
 
 	
-	private static void openGameLobby()
+	public static void openGameLobby()
 	{
 		GameLobby joinableGames = MenuActionSender.getJoinableGames();
 		ScreenSwitcher.openLobbyScreen(joinableGames);

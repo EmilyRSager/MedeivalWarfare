@@ -6,8 +6,10 @@ import mw.shared.SharedTile;
 import mw.shared.servercommands.AuthenticateUserCommand;
 import mw.shared.servercommands.CreateAccountCommand;
 import mw.shared.servercommands.EndTurnCommand;
+import mw.shared.servercommands.GetJoinableGamesCommand;
 import mw.shared.servercommands.GetPossibleGameActionsCommand;
 import mw.shared.servercommands.HireUnitCommand;
+import mw.shared.servercommands.JoinGameCommand;
 import mw.shared.servercommands.MoveUnitCommand;
 import mw.shared.servercommands.RequestNewGameCommand;
 import mw.shared.servercommands.SetActionTypeCommand;
@@ -51,8 +53,22 @@ public class NetworkController {
 	 * Requests of the server to create a new game. If there are insufficient users connected
 	 * to the server, this client must wait until more clients connect.
 	 */
-	public static void requestNewGame(){
-		aServerChannel.sendCommand(new RequestNewGameCommand());
+	public static void requestNewGame(String pGameName, int pNumRequestedPlayers){
+		aServerChannel.sendCommand(new RequestNewGameCommand(pGameName, pNumRequestedPlayers));
+	}
+	
+	/**
+	 * @param pGameName
+	 */
+	public static void joinGame(String pGameName){ 
+		aServerChannel.sendCommand(new JoinGameCommand(pGameName));
+	}
+	
+	/**
+	 * 
+	 */
+	public static void askForJoinableGames(){
+		aServerChannel.sendCommand(new GetJoinableGamesCommand());
 	}
 	
 	/**
