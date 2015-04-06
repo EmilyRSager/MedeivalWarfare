@@ -45,7 +45,6 @@ public class GameLogic
 					break;
 				}
 			}
-			System.out.println(pTile.hasUnit()); 
 			if (pTile.getUnit()==(null))
 			{
 				

@@ -3,6 +3,7 @@ package mw.server.gamelogic.state;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Observable;
 import java.util.Random;
 import java.util.Set;
@@ -88,6 +89,7 @@ public class Village extends Observable implements Serializable
 		aCapital = pCapital;
 		aCapital.setStructureType(StructureType.VILLAGE_CAPITAL);
 		aCapital.setVillageType(VillageType.HOVEL); 
+		aCapital.notifyChanged();
 	}
 	
 	public void removeCapital()
@@ -130,6 +132,19 @@ public class Village extends Observable implements Serializable
 		}
 	}
 
+	public void removeTiles(Collection<Tile> pToRemove) 
+	{
+		Iterator<Tile> lTileIterator = aTiles.iterator();
+		while (lTileIterator.hasNext())
+		{
+			Tile lDeletionCandidate = lTileIterator.next(); 
+			
+			if (pToRemove.contains(lDeletionCandidate))
+			{
+				lTileIterator.remove();
+			}
+		}
+	}
 	/**
 	 * Adds the specified amount of gold to the village, maybe used in the context of takeOver village
 	 * @param addGold
