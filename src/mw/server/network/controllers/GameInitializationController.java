@@ -25,9 +25,12 @@ import mw.server.network.lobby.GameLobby;
 import mw.server.network.lobby.GameRoom;
 import mw.server.network.mappers.GameMapper;
 import mw.server.network.mappers.PlayerMapper;
+import mw.server.network.translators.LobbyTranslator;
 import mw.server.network.translators.SharedTileTranslator;
+import mw.shared.SharedGameLobby;
 import mw.shared.clientcommands.AbstractClientCommand;
 import mw.shared.clientcommands.AcknowledgementCommand;
+import mw.shared.clientcommands.DisplayGameLobbyCommand;
 import mw.shared.clientcommands.NotifyBeginTurnCommand;
 import mw.shared.clientcommands.SetColorCommand;
 import mw.util.MultiArrayIterable;
@@ -67,7 +70,8 @@ public class GameInitializationController {
 	 * @return a set of game lobbies that are open and waiting for players to join
 	 */
 	public void getJoinableGames(UUID pRequestingAccountID){
-		
+		SharedGameLobby lSharedGameLobby = LobbyTranslator.translateGameLobby(aGameLobby);
+		ClientCommunicationController.sendCommand(pRequestingAccountID, new DisplayGameLobbyCommand(lSharedGameLobby));
 	}
 
 	/**
@@ -85,14 +89,15 @@ public class GameInitializationController {
 	 * @param pAccountID
 	 * @param pGameName
 	 */
-	public void joinGame(UUID pAccountID, String pGameName){
-		GameRoom lJoinedRoom = aGameLobby.getGameRoom(pGameName);
-		lJoinedRoom.addClient(pAccountID);
-		if(lJoinedRoom.containsSufficientClientsForGame()){
-			createNewGame(lJoinedRoom.getClients());
+	public void joinGame(UUID pJoiningAccountID, String pGameName){
+		aGameLobby.addParticipantToGame(pJoiningAccountID, pGameName);
+		if(aGameLobby.roomIsComplete(pGameName)){
+			Set<UUID> lLobbyClients = aGameLobby.getParticipantAccounts(pGameName);
+			aGameLobby.removeGameRoom(pGameName);
+			createNewGame(lLobbyClients);
 		}
 		else{
-			ClientCommunicationController.sendCommand(pAccountID, new AcknowledgementCommand("Game [" + pGameName + "] successfully joined. Awaiting other players"));
+			ClientCommunicationController.sendCommand(pJoiningAccountID, new AcknowledgementCommand("Game [" + pGameName + "] successfully joined. Awaiting other players"));
 		}
 	}
 

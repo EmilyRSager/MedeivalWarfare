@@ -1,6 +1,7 @@
 package mw.server.network.lobby;
 
 import java.util.HashMap;
+import java.util.Set;
 import java.util.UUID;
 
 /**
@@ -18,6 +19,13 @@ public class GameLobby {
 	}
 	
 	/**
+	 * @return
+	 */
+	public HashMap<String, GameRoom> getGameRooms(){
+		return aGameRooms;
+	}
+	
+	/**
 	 * Creates a new game room with the parameter name and puts the requesting account in the room
 	 * @param pRequestingAccountID
 	 * @param pGameName
@@ -31,10 +39,34 @@ public class GameLobby {
 	
 	/**
 	 * @param pGameName
-	 * @return the game room with the specified name
+	 * @return
 	 */
-	public GameRoom getGameRoom(String pGameName){ 
-		return aGameRooms.get(pGameName);
+	public boolean roomIsComplete(String pGameName){
+		return aGameRooms.get(pGameName).containsSufficientClientsForGame();
+	}
+	
+	/**
+	 * @param pGameName
+	 * @return
+	 */
+	public boolean roomIsEmpty(String pGameName){
+		return aGameRooms.get(pGameName).isEmpty();
+	}
+	
+	/**
+	 * @param pJoiningAccountID
+	 * @param pGameName
+	 */
+	public void addParticipantToGame(UUID pJoiningAccountID, String pGameName){
+		aGameRooms.get(pGameName).addClient(pJoiningAccountID);
+	}
+	
+	/**
+	 * @param pGameName
+	 * @return
+	 */
+	public Set<UUID> getParticipantAccounts(String pGameName){
+		return aGameRooms.get(pGameName).getClients();
 	}
 	
 	/**
