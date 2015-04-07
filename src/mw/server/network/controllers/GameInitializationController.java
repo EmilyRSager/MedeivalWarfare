@@ -106,7 +106,7 @@ public class GameInitializationController {
 	public void requestNewGame(UUID pRequestingAccountID, String pGameName, int pNumRequestedPlayers){
 		aGameLobby.createNewGameRoom(pGameName, pNumRequestedPlayers);
 		aGameLobby.addParticipantToGame(pRequestingAccountID, pGameName);
-		ClientCommunicationController.sendCommand(pRequestingAccountID, new AcknowledgementCommand("Game [" + pGameName + "] was created. Awaiting other players."));
+		ClientCommunicationController.sendCommand(pRequestingAccountID, new AcknowledgementCommand("Game \"" + pGameName + "\" was created. Awaiting other players."));
 	}
 	
 	/**
@@ -121,7 +121,7 @@ public class GameInitializationController {
 			createNewGame(lLobbyClients, pGameName);
 		}
 		else{
-			ClientCommunicationController.sendCommand(pJoiningAccountID, new AcknowledgementCommand("Game [" + pGameName + "] successfully joined. Awaiting other players"));
+			ClientCommunicationController.sendCommand(pJoiningAccountID, new AcknowledgementCommand("Game \"" + pGameName + "\" successfully joined. Awaiting other players"));
 		}
 	}
 

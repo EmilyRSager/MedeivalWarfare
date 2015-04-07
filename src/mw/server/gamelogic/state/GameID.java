@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.UUID;
 
+/**
+ * Provides a wrapping of game classes with information necessary to save and load games.
+ */
 public class GameID {
 	
 	private String aName;

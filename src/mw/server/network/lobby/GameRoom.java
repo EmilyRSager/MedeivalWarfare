@@ -37,16 +37,13 @@ public class GameRoom {
 		aWaitingClients.add(pAccountID);
 		if(!aWaitingClients.contains(pAccountID)){
 			aWaitingClients.add(pAccountID);
-			System.out.println("[server] this shouldsn't happen.");
 		}
-//		System.out.println("[GameRoom] Adding client to game. There are now [" + aWaitingClients.size() + "] players in the room.");
 	}
 	
 	/**
 	 * @return true if there are sufficient clients for a game
 	 */
 	public boolean containsSufficientClientsForGame(){
-		System.out.printf("[server] Game room now contains %d players, waiting for %d more.", aWaitingClients.size(), aNumRequestedClients);
 		return aWaitingClients.size() == aNumRequestedClients;
 	}
 	
