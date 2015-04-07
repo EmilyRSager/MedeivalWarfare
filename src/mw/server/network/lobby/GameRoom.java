@@ -18,8 +18,8 @@ import java.util.UUID;
  * this will be extended to provide functionality for specific GameRequests.
  */
 public class GameRoom {
-	private Set<UUID> aWaitingClients;
-	private int aNumRequestedClients;
+	protected Set<UUID> aWaitingClients;
+	protected int aNumRequestedClients;
 	
 	/*
 	 * Constructor
@@ -47,7 +47,7 @@ public class GameRoom {
 	 */
 	public boolean containsSufficientClientsForGame(){
 		System.out.printf("[server] Game room now contains %d players, waiting for %d more.", aWaitingClients.size(), aNumRequestedClients);
-		return aWaitingClients.size() >= aNumRequestedClients;
+		return aWaitingClients.size() == aNumRequestedClients;
 	}
 	
 	/**

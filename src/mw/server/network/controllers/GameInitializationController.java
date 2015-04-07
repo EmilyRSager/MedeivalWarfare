@@ -6,6 +6,7 @@
 package mw.server.network.controllers;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Set;
@@ -24,6 +25,7 @@ import mw.server.gamelogic.state.Player;
 import mw.server.gamelogic.state.Tile;
 import mw.server.network.communication.ClientCommunicationController;
 import mw.server.network.lobby.GameLobby;
+import mw.server.network.lobby.LoadableGameRoom;
 import mw.server.network.mappers.GameMapper;
 import mw.server.network.mappers.PlayerMapper;
 import mw.server.network.translators.LobbyTranslator;
@@ -68,9 +70,21 @@ public class GameInitializationController {
 	}
 	
 	/**
-	 * 
+	 * TODO
 	 */
 	public void loadSavedGame(UUID pAccountUUID, GameID pGameID){
+		Game lGame = pGameID.getaGame();
+		int lNumRequestedClients = lGame.getPlayers().size();
+		
+		ArrayList<Player> list = (ArrayList<Player>) lGame.getPlayers();
+		ArrayList<UUID> listOfAccountUUIDs = new ArrayList<UUID>();
+		for(Player p: list){
+			listOfAccountUUIDs.add(PlayerMapper.getInstance().getAccount(p));
+		}
+		
+		LoadableGameRoom lLoadableGameRoom = new LoadableGameRoom(lNumRequestedClients, listOfAccountUUIDs);
+		
+		ClientCommunicationController.sendCommand(pAccountUUID, new AcknowledgementCommand("Game [" + pGameID.getaName() + "] was loaded. Awaiting other players."));
 		
 	}
 	
@@ -154,7 +168,7 @@ public class GameInitializationController {
 				lAccountGameInfo.addToActiveGames(lAccountGameInfo.getCurrentGame());
 				AccountManager.getInstance().saveAccountData(lAccount);
 			}
-			GameID lGameID = new GameID(lGame, pGameName);
+			GameID lGameID = new GameID(lGame, pGameName, pAccountIDs);
 			try {
 				SaveGame.SaveMyGame(lGameID);
 			} catch (IOException e) {
