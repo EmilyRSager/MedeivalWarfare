@@ -4,10 +4,13 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 
+import mw.server.gamelogic.enums.ActionType;
 import mw.server.gamelogic.enums.StructureType;
+import mw.server.gamelogic.enums.UnitType;
 import mw.server.gamelogic.state.Game;
 import mw.server.gamelogic.state.Player;
 import mw.server.gamelogic.state.Tile;
+import mw.server.gamelogic.state.Unit;
 import mw.server.gamelogic.state.Village;
 
 public class EnemyCaptureLogic {
@@ -30,7 +33,7 @@ public class EnemyCaptureLogic {
 
 	private static void invadeCapital(Village invadingVillage, Village invadedVillage, Tile invadedTile, Game pGame, Player aCurrentPlayer) 
 	{
-		
+
 		int lGold = invadedVillage.getGold();
 		int lWood = invadedVillage.getWood();
 		invadingVillage.addOrSubtractGold(lGold);
@@ -40,8 +43,10 @@ public class EnemyCaptureLogic {
 		invadedVillage.setRandomCapital();
 		fuse(invadingVillage, invadedVillage, invadedTile, pGame, aCurrentPlayer);
 	}
-	
+
 	private static void fuse(Village invadingVillage, Village invadedVillage,  Tile invadedTile, Game pGame, Player aCurrentPlayer) {
+
+
 		
 		invadedVillage.removeTile(invadedTile);
 		invadingVillage.addTile(invadedTile);
@@ -60,12 +65,32 @@ public class EnemyCaptureLogic {
 					needToFuse = true; 
 				}
 			}
-			if(needToFuse)
-			{
-				System.out.println("[Game] Village fusing necessary.  Attempting to fusing villages. ");
-				pGame.fuseVillages(toFuse, invadingCapital, aCurrentPlayer);
-			}
+		}
+		
+		if(needToFuse)
+		{
+			System.out.println("[Game] Village fusing necessary.  Attempting to fusing villages. ");
+			pGame.fuseVillages(toFuse, invadingCapital, aCurrentPlayer);
 		}
 
+	}
+	
+	public static void move(Unit pUnit, Tile pDestinationTile, Village pInvadingVillage)
+	{
+		UnitType pUnitType = pUnit.getUnitType(); 
+		StructureType pStructureType = pDestinationTile.getStructureType();
+		switch (pStructureType)
+		{
+		case TREE:
+			pInvadingVillage.addOrSubtractWood(1);
+			pDestinationTile.setStructureType(StructureType.NO_STRUCT);
+		default:
+			pDestinationTile.setStructureType(StructureType.NO_STRUCT);
+		}
+		
+		pDestinationTile.setUnit(pUnit);
+		pUnit.setActionType(ActionType.MOVED);
+		pDestinationTile.notifyObservers();
+		
 	}
 }

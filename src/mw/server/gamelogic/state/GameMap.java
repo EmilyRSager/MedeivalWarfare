@@ -338,11 +338,15 @@ public class GameMap implements Serializable
 				if(!villageSegement.contains(pInvadedVillage.getCapital()))
 				{
 					System.out.println("[Game] Creating a new village.");
-					pInvadedVillage.removeTiles(villageSegement);
 					Village lVillage = new Village(villageSegement);
 					lVillage.setRandomCapital();
 					invadedPlayer.addVillage(lVillage);
 					aVillages.add(lVillage);
+					pInvadedVillage.removeTiles(villageSegement);
+					for (Tile lTile : lVillage.getTiles())
+					{
+						lTile.notifyObservers();
+					}
 				}
 			}
 		}
