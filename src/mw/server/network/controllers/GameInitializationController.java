@@ -40,8 +40,6 @@ import mw.util.MultiArrayIterable;
 import mw.util.Tuple2;
 
 /**
- * TODO refactor LobbyManager logic into it's own class. This class can delegate lobby requests to it.
- * 
  * Manages game requests by maintaining a set of game lobbies and creating games when there
  * are sufficient clients available to create a Game. Handles assigning clients to GamePlayers
  * and informing the clients of their Colors.
