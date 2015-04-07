@@ -1,5 +1,7 @@
 package mw.client.controller.menuing;
 
+import java.util.HashSet;
+
 import mw.client.network.NetworkController;
 import mw.shared.SharedCreatedGame;
 import mw.shared.SharedGameLobby;
@@ -50,6 +52,7 @@ public final class MenuActionSender {
 	
 	public static SharedGameLobby getJoinableGames()
 	{
+		//return new SharedGameLobby(new HashSet<SharedCreatedGame>());
 		joinableGamesResult = new BlockingFuture<SharedGameLobby>();
 		NetworkController.askForJoinableGames();
 		return joinableGamesResult.getValue();
