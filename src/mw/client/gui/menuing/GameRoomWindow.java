@@ -36,7 +36,7 @@ public class GameRoomWindow {
 		
 		gameLabel = new JLabel(createdGame.getGameName());
 		
-		playerList = new JList<String>((String[]) createdGame.getParticipatingPlayers().toArray());
+		playerList = new JList<String>(createdGame.getParticipatingPlayers().toArray(new String[0]));
 		sPane = new JScrollPane(playerList);
 		
 		lobby = new JButton("Return to Games Lobby");

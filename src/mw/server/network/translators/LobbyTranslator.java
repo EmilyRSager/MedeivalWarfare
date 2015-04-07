@@ -32,4 +32,12 @@ public class LobbyTranslator {
 		
 		return new SharedGameLobby(lCreatedGames);
 	}
+	
+	public static SharedCreatedGame translateGameRoom(String pGameName, GameRoom pGameRoom){
+		Set<String> lParticipantUsernames = new HashSet<String>();
+		for(UUID lAccountID : pGameRoom.getClients()){
+			lParticipantUsernames.add(AccountManager.getInstance().getAccount(lAccountID).getUsername());
+		}
+		return new SharedCreatedGame(pGameName, lParticipantUsernames);
+	}
 }
