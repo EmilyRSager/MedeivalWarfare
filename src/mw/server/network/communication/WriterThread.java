@@ -76,7 +76,7 @@ public class WriterThread extends Thread{
 	 */
 	private void sendString(String pMessage){
 		try {
-			//System.out.println("[Server] Writing string \"" + pMessage + "\" to client.");
+			System.out.println("[Server] Writing string \"" + pMessage + "\" to client.");
 			aDataOutputStream.writeUTF(pMessage);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block

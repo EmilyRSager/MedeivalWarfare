@@ -88,6 +88,7 @@ public class VillageLogic
 	 */
 	public static void readyUnits(Collection<Tile> pTiles)
 	{
+		System.out.println("[Game] Readying units");
 		for (Tile lTile : pTiles)
 		{
 			if (lTile.hasUnit())
@@ -96,7 +97,7 @@ public class VillageLogic
 				ActionType lActionType = lUnit.getActionType();
 				if (lActionType == ActionType.MOVED)
 				{
-					lActionType = ActionType.READY;
+					lUnit.setActionType(ActionType.READY);
 				}
 			}
 		}
@@ -173,8 +174,11 @@ public class VillageLogic
 	/**
 	 * Replaces all villagers in a village with tombstones
 	 */
-	public static void starveVillage(Collection<Tile> pTiles)
+	public static void starveVillage(Collection<Tile> pTiles, Village pVillage)
 	{
+	
+		pVillage.addOrSubtractGold(-pVillage.getGold());
+		pVillage.addOrSubtractWood(-pVillage.getWood());
 		for (Tile lTile : pTiles)
 		{
 			if (lTile.hasUnit())

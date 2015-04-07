@@ -51,6 +51,9 @@ public abstract class SharedPossibleActionsTranslator {
 				sharedUT.add(SharedTileTranslator.translateUnitType(ut));
 			}
 		}
+		if (serverPossibleActions.getCanBuildWatchtower()) {
+			sharedUT.add(SharedTile.UnitType.WATCHTOWER);
+		}
 		
 		Collection<SharedActionType> sharedAT = new ArrayList<SharedActionType>();
 		Collection<ActionType> serverAT = serverPossibleActions.getActions();

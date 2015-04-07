@@ -126,7 +126,7 @@ public class Game extends RandomColorGenerator implements Serializable{
 	{
 		Tile pTile = aMap.getTile(pCoordinates);
 		Unit pUnit = pTile.getUnit();
-		pUnit.setUnitType(pUnitType);
+		pTile.setUnit(new Unit(pUnitType));
 		pTile.notifyObservers();
 	}
 
@@ -139,8 +139,12 @@ public class Game extends RandomColorGenerator implements Serializable{
 	 */
 	public PossibleGameActions tileIsClicked(Coordinates pStartCoordinates)
 	{
+		VillageType VillageUpgradeType = null;
 		Tile startTile = aMap.getTile(pStartCoordinates);
-		VillageType VillageUpgradeType = GameLogic.getPossibleVillageUpgrades(startTile.getVillageType()); 
+		if (!getVillage(startTile).alreadyUpgraded())
+		{
+			VillageUpgradeType = GameLogic.getPossibleVillageUpgrades(startTile.getVillageType()); 
+		}
 		Collection<Tile> ReachableTiles = new HashSet<Tile>();
 		Collection<ActionType> UnitActions = new ArrayList<ActionType>();
 		boolean canBuildWatchTower = GameLogic.canBuildWatchtower(startTile, this); 
@@ -203,6 +207,7 @@ public class Game extends RandomColorGenerator implements Serializable{
 	 */
 	public void endTurn() 
 	{
+		System.out.println("[Game] Player is ending their turn");
 		if (currentRoundIsOver())
 		{
 			beginRound();
@@ -231,6 +236,7 @@ public class Game extends RandomColorGenerator implements Serializable{
 		aCurrentPlayer = getNextPlayer();
 		for (Village lVillage :aCurrentPlayer.getVillages()) 
 		{
+			System.out.println("[Game] Updating state for the next player's turn.");
 			lVillage.beginTurnUpdate();
 		}
 	}
@@ -259,19 +265,26 @@ public class Game extends RandomColorGenerator implements Serializable{
 	 */
 	public void moveUnit(Coordinates pStartCoordinates,Coordinates pDestinationCoordinates) 
 	{
+		
 		//DON'T MAKE CHANGES TO THIS METHOD UNLESS YOU ARE EMILY 
 		Tile startTile =  aMap.getTile(pStartCoordinates); 
 		Tile pDestinationTile = aMap.getTile(pDestinationCoordinates);
 		Unit crtUnit = startTile.getUnit();
+		Color startColor = pDestinationTile.getColor();
 		Color lColor = pDestinationTile.getColor();
 		if (lColor == Color.NEUTRAL)
 		{
 			System.out.println("[Game] The unit is moving to neutral land.");
 			Logic.checkFuse(startTile, pDestinationTile, this);
 		}
-		
-		Logic.updateGameState(crtUnit, startTile, pDestinationTile, this, aMap);
-	
+		if(lColor != startColor && lColor != Color.NEUTRAL)
+		{
+			takeoverEnemyTile(startTile, pDestinationTile);
+		}
+		else 
+		{
+			Logic.updateGameState(crtUnit, startTile, pDestinationTile, this, aMap);
+		}
 		if (lColor == Color.NEUTRAL)
 		{
 			crtUnit.setActionType(ActionType.MOVED);	
@@ -302,6 +315,9 @@ public class Game extends RandomColorGenerator implements Serializable{
 		System.out.println("[Game] The invaded village has final size " + invadedVillage.getTiles().size());
 		System.out.println("[Game] The invading village has final size " + invadingVillage.getTiles().size());
 		aMap.updateVillages(aPlayers, aCurrentPlayer, invadedVillage);
+		EnemyCaptureLogic.move(startTile.getUnit(), pDestinationTile, invadingVillage);
+		startTile.setUnit(null);
+		
 	}
 
 	/**

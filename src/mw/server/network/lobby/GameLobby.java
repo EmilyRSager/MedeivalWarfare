@@ -28,13 +28,24 @@ public class GameLobby {
 	}
 	
 	/**
+	 * 
+	 * @param pGameName
+	 * @return
+	 */
+	public GameRoom getGameRoom(String pGameName){
+		return aGameRooms.get(pGameName);
+	}
+	
+	/**
 	 * Creates a new game room with the parameter name and puts the requesting account in the room
 	 * @param pRequestingAccountID
 	 * @param pGameName
 	 * @param pNumRequestedClients
 	 */
-	public void createNewGameRoom(String pGameName, int pNumRequestedClients){
-		aGameRooms.put(pGameName, new GameRoom(pNumRequestedClients));
+	public GameRoom createNewGameRoom(String pGameName, int pNumRequestedClients){
+		GameRoom lCreatedGameRoom = new GameRoom(pNumRequestedClients);
+		aGameRooms.put(pGameName, lCreatedGameRoom);
+		return lCreatedGameRoom;
 	}
 	
 	/**

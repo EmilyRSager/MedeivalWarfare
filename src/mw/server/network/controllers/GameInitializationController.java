@@ -26,7 +26,10 @@ import mw.server.gamelogic.state.Tile;
 import mw.server.network.communication.ClientCommunicationController;
 import mw.server.network.lobby.GameLobby;
 import mw.server.network.lobby.GameRoom;
+<<<<<<< HEAD
 import mw.server.network.lobby.LoadableGameRoom;
+=======
+>>>>>>> master
 import mw.server.network.mappers.GameMapper;
 import mw.server.network.mappers.PlayerMapper;
 import mw.server.network.translators.LobbyTranslator;
@@ -35,6 +38,7 @@ import mw.shared.SharedGameLobby;
 import mw.shared.clientcommands.AbstractClientCommand;
 import mw.shared.clientcommands.AcknowledgementCommand;
 import mw.shared.clientcommands.DisplayGameLobbyCommand;
+import mw.shared.clientcommands.DisplayNewGameRoomCommand;
 import mw.shared.clientcommands.NotifyBeginTurnCommand;
 import mw.shared.clientcommands.SetColorCommand;
 import mw.util.MultiArrayIterable;
@@ -87,7 +91,8 @@ public class GameInitializationController {
 				ClientCommunicationController.sendCommand(account, new InviteToLoadedGameCommand());
 			}
 			else{
-				ClientCommunicationController.sendCommand(pAccountUUID, new DisplayNewGameRoomCommand());
+				ClientCommunicationController.sendCommand(pAccountUUID, 
+						new DisplayNewGameRoomCommand(LobbyTranslator.translateGameRoom(lLoadedGameName, lLoadableGameRoom)));
 			}
 		}
 	}
@@ -106,9 +111,9 @@ public class GameInitializationController {
 	 * @param pAccountID
 	 */
 	public void requestNewGame(UUID pRequestingAccountID, String pGameName, int pNumRequestedPlayers){
-		aGameLobby.createNewGameRoom(pGameName, pNumRequestedPlayers);
+		GameRoom lCreatedGameRoom = aGameLobby.createNewGameRoom(pGameName, pNumRequestedPlayers);
 		aGameLobby.addParticipantToGame(pRequestingAccountID, pGameName);
-		ClientCommunicationController.sendCommand(pRequestingAccountID, new AcknowledgementCommand("Game \"" + pGameName + "\" was created. Awaiting other players."));
+		ClientCommunicationController.sendCommand(pRequestingAccountID, new DisplayNewGameRoomCommand(LobbyTranslator.translateGameRoom(pGameName, lCreatedGameRoom)));
 	}
 	
 	/**
@@ -117,12 +122,102 @@ public class GameInitializationController {
 	 */
 	public void joinGame(UUID pJoiningAccountID, String pGameName){
 		aGameLobby.addParticipantToGame(pJoiningAccountID, pGameName);
+		GameRoom lGameRoom = aGameLobby.getGameRoom(pGameName);
+		ClientCommunicationController.sendCommand(pJoiningAccountID, new DisplayNewGameRoomCommand(LobbyTranslator.translateGameRoom(pGameName, lGameRoom)));
 		if(aGameLobby.roomIsComplete(pGameName)){
 			GameRoom lReadGameRoom = aGameLobby.removeGameRoom(pGameName);
 			lReadGameRoom.initializeGame(pGameName);
 		}
 		else{
-			ClientCommunicationController.sendCommand(pJoiningAccountID, new AcknowledgementCommand("Game \"" + pGameName + "\" successfully joined. Awaiting other players"));
+			ClientCommunicationController.sendCommand(pJoiningAccountID,
+					new AcknowledgementCommand("Game \"" + pGameName + "\" successfully joined. Awaiting other players"));
+		}
+	}
+
+	/**
+	 * Creates a new game, adds the necessary observers to the Game, and then sends the Game
+	 * to each client involved in the game.
+	 */
+	private void createNewGame(Set<UUID> pAccountIDs){
+		System.out.println("[Server] Initializing new game.");
+		int lNumPlayers = pAccountIDs.size();
+
+		//create a game
+		Game lGame;
+		try {
+			lGame = GameController.newGame(lNumPlayers); //throws exception if too many players
+
+			/* Map the clients to the given Game.
+			 * TODO this may be unnecessary as there will be a mapping between AccountIDs and Players as well
+			 */
+			GameMapper.getInstance().putGame(pAccountIDs, lGame); //add clients to Game Mapping
+
+			//map clients to players
+			Collection<Player> lPlayers = lGame.getPlayers();
+
+			//initialize game state observer
+			GameStateCommandDistributor lGameStateCommandDistributor = 
+					new GameStateCommandDistributor(pAccountIDs, lGame);
+
+			//attach observer to each tile
+			Tile[][] lGameTiles = lGame.getGameTiles();
+			for(Tile lTile : MultiArrayIterable.toIterable(lGameTiles)){
+				//add observer to each tile
+				lTile.addObserver(lGameStateCommandDistributor);
+			}
+
+			//distribute the new Game to each client.
+			lGameStateCommandDistributor.newGame(lGameTiles);
+			assignAccountsToPlayers(pAccountIDs, lPlayers);
+			
+//			for (UUID accountUUID : pAccountIDs) {
+//				Account lAccount = AccountManager.getInstance().getAccount(accountUUID);
+//				AccountGameInfo lAccountGameInfo = lAccount.getaAccountGameInfo();
+//				Color playerColor = PlayerMapper.getInstance().getPlayer(accountUUID).getPlayerColor();
+//				//TODO: fix the following line for name 
+//				lAccountGameInfo.setCurrentGame(new Tuple2<String, Color>("", playerColor ));
+//				lAccountGameInfo.addToActiveGames(lAccountGameInfo.getCurrentGame());
+//				AccountManager.getInstance().saveAccountData(lAccount);
+//			}
+//			
+			try {
+				SaveGame.SaveMyGame(lGame);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			//Inform client that it is his turn
+			UUID lCurrentAccountID = PlayerMapper.getInstance().getAccount(GameController.getCurrentPlayer(lGame));
+			ClientCommunicationController.sendCommand(lCurrentAccountID, new NotifyBeginTurnCommand());
+			
+		} catch (TooManyPlayersException e) {
+			System.out.println("[Server] Tried to create a Game with too many players.");
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * Assigns a AccountID to a given Player in the Game and informs each Account of its color.
+	 * @param pPlayers
+	 * @param pAccountIDs
+	 */
+	private void assignAccountsToPlayers(Set<UUID> pAccountIDs, Collection<Player> pPlayers){
+		Iterator<UUID> lAccountIDIterator = pAccountIDs.iterator();
+		Iterator<Player> lPlayerIterator = pPlayers.iterator();
+
+		//TODO check they're the same size
+		while(lAccountIDIterator.hasNext()){
+			UUID lAccountID = lAccountIDIterator.next();
+			Player lPlayer = lPlayerIterator.next();
+
+			//store client to player mapping
+			PlayerMapper.getInstance().putPlayer(lAccountID, lPlayer);
+
+			//get player color
+			Color lPlayerColor = lPlayer.getPlayerColor();
+
+			ClientCommunicationController.sendCommand(lAccountID, new SetColorCommand(SharedTileTranslator.translateColor(lPlayerColor)));
 		}
 	}
 

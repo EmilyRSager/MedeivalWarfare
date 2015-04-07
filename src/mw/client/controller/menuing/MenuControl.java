@@ -3,6 +3,8 @@ package mw.client.controller.menuing;
 import java.util.Collection;
 
 import mw.client.controller.menuing.ScreenSwitcher.ScreenKind;
+import mw.shared.SharedCreatedGame;
+import mw.shared.SharedGameLobby;
 
 public abstract class MenuControl {
 
@@ -29,10 +31,10 @@ public abstract class MenuControl {
 
 	public static void gameSelected(String gameName)
 	{
-		boolean status = MenuActionSender.tryJoiningGame(gameName);
-		if (status)
+		SharedCreatedGame gameRoom = MenuActionSender.tryJoiningGame(gameName);
+		if (gameRoom != null)
 		{
-			ScreenSwitcher.openGameRoomScreen(gameName);
+			ScreenSwitcher.openGameRoomScreen(gameRoom);
 		}
 		else
 		{
@@ -42,10 +44,10 @@ public abstract class MenuControl {
 	
 	public static void tryCreateGame(String gameName, int numberPlayers)
 	{
-		boolean status = MenuActionSender.tryCreateGame(gameName, numberPlayers);
-		if (status)
+		SharedCreatedGame result = MenuActionSender.tryCreateGame(gameName, numberPlayers);
+		if (result != null)
 		{
-			ScreenSwitcher.openGameRoomScreen(gameName);
+			ScreenSwitcher.openGameRoomScreen(result);
 		}
 	}
 	
@@ -59,9 +61,9 @@ public abstract class MenuControl {
 	
 
 	
-	private static void openGameLobby()
+	public static void openGameLobby()
 	{
-		GameLobby joinableGames = MenuActionSender.getJoinableGames();
+		SharedGameLobby joinableGames = MenuActionSender.getJoinableGames();
 		ScreenSwitcher.openLobbyScreen(joinableGames);
 	}
 }

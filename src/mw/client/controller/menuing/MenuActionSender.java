@@ -1,10 +1,10 @@
 package mw.client.controller.menuing;
 
-import java.util.Collection;
-import java.util.Map;
+import java.util.HashSet;
 
 import mw.client.network.NetworkController;
-import mw.shared.servercommands.SetActionTypeCommand;
+import mw.shared.SharedCreatedGame;
+import mw.shared.SharedGameLobby;
 import mw.util.BlockingFuture;
 
 public final class MenuActionSender {
@@ -48,16 +48,17 @@ public final class MenuActionSender {
 	
 	
 	
-	/*private static BlockingFuture<GameLobby> joinableGamesResult;
+	private static BlockingFuture<SharedGameLobby> joinableGamesResult;
 	
-	public static GameLobby getJoinableGames()
+	public static SharedGameLobby getJoinableGames()
 	{
-		joinableGamesResult = new BlockingFuture<GameLobby>();
+		//return new SharedGameLobby(new HashSet<SharedCreatedGame>());
+		joinableGamesResult = new BlockingFuture<SharedGameLobby>();
 		NetworkController.askForJoinableGames();
 		return joinableGamesResult.getValue();
 	}
 	
-	public static void setJoinableGamesResult(GameLobby result)
+	public static void setJoinableGamesResult(SharedGameLobby result)
 	{
 		joinableGamesResult.setValue(result);
 	}
@@ -65,41 +66,38 @@ public final class MenuActionSender {
 	
 	
 	
-	private static BlockingFuture<Boolean> joinedGameResult;
+	private static BlockingFuture<SharedCreatedGame> joinedGameResult;
 	
-	public static boolean tryJoiningGame(String gameName)
+	public static SharedCreatedGame tryJoiningGame(String gameName)
 	{
-		joinedGameResult = new BlockingFuture<Boolean>();
+		joinedGameResult = new BlockingFuture<SharedCreatedGame>();
 		NetworkController.joinGame(gameName);
 		return joinedGameResult.getValue();
 	}
 	
-	public static void setJoinedGameResult(boolean result)
+	public static void setJoinedGameResult(SharedCreatedGame result)
 	{
 		joinedGameResult.setValue(result);
 	}
 	
-
+	//private static BlockingFuture<SharedCreatedGame> gameCreationResult;
 	
-	
-	private static BlockingFuture<Boolean> gameCreationResult;
-	
-	public static boolean tryCreateGame(String gameName, int numberPlayers)
+	public static SharedCreatedGame tryCreateGame(String gameName, int numberPlayers)
 	{
-		gameCreationResult = new BlockingFuture<Boolean>();
+		joinedGameResult = new BlockingFuture<SharedCreatedGame>();
 		NetworkController.requestNewGame(gameName, numberPlayers);
-		return gameCreationResult.getValue();
+		return joinedGameResult.getValue();//gameCreationResult.getValue();
 	}
 	
-	public static void setGameCreationResult(boolean result)
+	/*public static void setGameCreationResult(SharedCreatedGame result)
 	{
 		gameCreationResult.setValue(result);
-	}
+	}*/
 	
 	
 	
 	public static void leaveGameRoom()
 	{
-		NetworkController.leaveCurrentGameRoom();
-	}*/
+		//NetworkController.leaveCurrentGameRoom();
+	}
 }

@@ -93,8 +93,7 @@ public class GameStateCommandDistributor implements Observer {
 	/**
 	 * Distributes the changes to each tile in an aggregate update tile state command
 	 */
-	private void distributeAllCommands()
-	{
+	private void distributeAllCommands() {
 		Collection<SharedTile> newTileStates = modifiedTilesBuffer.values();
 		distributeCommand(new UpdateAggregateTilesCommand(newTileStates));
 		modifiedTilesBuffer = new HashMap<Coordinates, SharedTile>();
@@ -126,8 +125,7 @@ public class GameStateCommandDistributor implements Observer {
 	
 	private static GameStateCommandDistributor currentlyActiveDistributor;
 	
-	public static void flushBuffer()
-	{
+	public static void flushBuffer() {
 		if (currentlyActiveDistributor != null) {
 			currentlyActiveDistributor.distributeAllCommands();
 			currentlyActiveDistributor = null;

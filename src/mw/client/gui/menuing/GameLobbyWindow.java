@@ -5,9 +5,16 @@ import java.awt.Container;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.*;
+
+import mw.client.controller.menuing.MenuControl;
+import mw.client.controller.menuing.ScreenSwitcher;
+import mw.client.controller.menuing.ScreenSwitcher.ScreenKind;
+import mw.shared.SharedCreatedGame;
+import mw.shared.SharedGameLobby;
 
 public class GameLobbyWindow {
 
@@ -15,13 +22,14 @@ public class GameLobbyWindow {
 	private final Container pane;
 	//private final BorderLayout bLayout;
 	private final JLabel gLabel;
-	private final JList<String> gameList;
+	private final List<String> games;
+	private final JList<String> gameJList;
 	private final JScrollPane sPane;
 	private final JPanel buttonContainer;
 	private final JButton create;
 	private final JButton join;
 	
-	public GameLobbyWindow(String[] games)
+	public GameLobbyWindow(SharedGameLobby lobby)
 	{
 		window = new JFrame("Medieval Warfare Game Lobby");
 		pane = window.getContentPane();
@@ -29,8 +37,13 @@ public class GameLobbyWindow {
 		//pane.setLayout(bLayout);
 		
 		gLabel = new JLabel("Available Games:");
-		gameList = new JList<String>(games);
-		sPane = new JScrollPane(gameList);
+		games = new ArrayList<String>();
+		for (SharedCreatedGame game: lobby.getCreatedGames())
+		{
+			games.add(game.getGameName());
+		}
+		gameJList = new JList<String>(games.toArray(new String[0]));
+		sPane = new JScrollPane(gameJList);
 		
 		create = new JButton("Create New Game");
 		
@@ -39,7 +52,7 @@ public class GameLobbyWindow {
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				//TO DO
+				ScreenSwitcher.switchScreen(ScreenKind.GAME_CREATION);
 			}
 		});
 		
@@ -50,7 +63,7 @@ public class GameLobbyWindow {
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				//TO DO
+				MenuControl.gameSelected(gameJList.getSelectedValuesList().get(0));
 			}
 		});
 		

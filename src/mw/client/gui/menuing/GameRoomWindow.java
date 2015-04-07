@@ -13,6 +13,10 @@ import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
+import mw.client.controller.menuing.ScreenSwitcher;
+import mw.client.controller.menuing.ScreenSwitcher.ScreenKind;
+import mw.shared.SharedCreatedGame;
+
 public class GameRoomWindow {
 
 	private final JFrame window;
@@ -24,14 +28,14 @@ public class GameRoomWindow {
 	private final JButton lobby;
 	private final JButton launch;
 	
-	public GameRoomWindow(String[] players, String gameName)
+	public GameRoomWindow(SharedCreatedGame createdGame)
 	{
-		window = new JFrame(gameName + " Lobby");
+		window = new JFrame(createdGame.getGameName() + " Lobby");
 		pane = window.getContentPane();
 		
-		gameLabel = new JLabel(gameName);
+		gameLabel = new JLabel(createdGame.getGameName());
 		
-		playerList = new JList<String>(players);
+		playerList = new JList<String>(createdGame.getParticipatingPlayers().toArray(new String[0]));
 		sPane = new JScrollPane(playerList);
 		
 		lobby = new JButton("Return to Games Lobby");
@@ -41,7 +45,7 @@ public class GameRoomWindow {
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				//TO DO
+				ScreenSwitcher.switchScreen(ScreenKind.LOBBY);
 			}
 		});
 		
@@ -52,7 +56,7 @@ public class GameRoomWindow {
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				//TO DO
+				//TO DO 
 			}
 		});
 		
@@ -69,6 +73,12 @@ public class GameRoomWindow {
 		window.setLocationRelativeTo(null);
 		window.setVisible(true);
 	}
+	
+	public void close()
+	{
+		this.window.dispose();
+	}
+	
 	public static void main(String[] Args)
 	{
 		String[] testArray = {"one", "two", "three", "four", "five", "six", "seven"};
