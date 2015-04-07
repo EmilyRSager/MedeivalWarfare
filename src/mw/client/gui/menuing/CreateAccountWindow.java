@@ -26,6 +26,7 @@ public class CreateAccountWindow
 	public CreateAccountWindow() 
 	{
 		window = new JFrame("Create a Medieval Warfare Account");
+		window.setResizable(false);
 		pane = window.getContentPane();
 		gLayout = new GridLayout(0,2);
 		pane.setLayout(gLayout);

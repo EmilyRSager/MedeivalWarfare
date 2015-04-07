@@ -25,6 +25,7 @@ public class CreateGameWindow
 	public CreateGameWindow()
 	{
 		window = new JFrame("Create a New Game");
+		window.setResizable(false);
 		pane = window.getContentPane();
 		gLayout = new GridLayout(0, 2);
 		pane.setLayout(gLayout);

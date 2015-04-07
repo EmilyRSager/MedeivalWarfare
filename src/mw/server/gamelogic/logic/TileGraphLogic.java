@@ -188,25 +188,32 @@ public final class TileGraphLogic {
 	 */
 	private static boolean moveUnitToEnemyTerritory(Unit pUnit, Tile destinationTile, Collection<Tile> destinationNeighbors)
 	{
-		if (isProtected(pUnit, destinationTile, destinationNeighbors))
+		if((pUnit.getUnitType() == UnitType.PEASANT) || (pUnit.getUnitType() == UnitType.CANNON))
 		{
-			return false; 
+			return false;
 		}
-		if (destinationTile.hasUnit())
+		else
 		{
-			return unitCanTakeOver(pUnit, destinationTile.getUnit()); 
-		}
-		if (isTreeOnTile(destinationTile))
-		{
-			return unitCanChopTree(pUnit); 
-		}
-		if (isTombstoneOnTile(destinationTile))
-		{
-			return unitCanClearTombstone(pUnit); 
-		}
-		if (isCapitalOnTile(destinationTile))
-		{
-			return canUnitInvadeCapital(pUnit, destinationTile); 
+			if (isProtected(pUnit, destinationTile, destinationNeighbors))
+			{
+				return false; 
+			}
+			if (destinationTile.hasUnit())
+			{
+				return unitCanTakeOver(pUnit, destinationTile.getUnit()); 
+			}
+			if (isTreeOnTile(destinationTile))
+			{
+				return unitCanChopTree(pUnit); 
+			}
+			if (isTombstoneOnTile(destinationTile))
+			{
+				return unitCanClearTombstone(pUnit); 
+			}
+			if (isCapitalOnTile(destinationTile))
+			{
+				return canUnitInvadeCapital(pUnit, destinationTile); 
+			}
 		}
 		return true;
 	}
