@@ -23,6 +23,7 @@ import mw.server.gamelogic.state.Player;
 import mw.server.gamelogic.state.Tile;
 import mw.server.network.communication.ClientCommunicationController;
 import mw.server.network.lobby.GameLobby;
+import mw.server.network.lobby.GameRoom;
 import mw.server.network.mappers.GameMapper;
 import mw.server.network.mappers.PlayerMapper;
 import mw.server.network.translators.LobbyTranslator;
@@ -31,6 +32,7 @@ import mw.shared.SharedGameLobby;
 import mw.shared.clientcommands.AbstractClientCommand;
 import mw.shared.clientcommands.AcknowledgementCommand;
 import mw.shared.clientcommands.DisplayGameLobbyCommand;
+import mw.shared.clientcommands.DisplayNewGameRoomCommand;
 import mw.shared.clientcommands.NotifyBeginTurnCommand;
 import mw.shared.clientcommands.SetColorCommand;
 import mw.util.MultiArrayIterable;
@@ -84,7 +86,9 @@ public class GameInitializationController {
 		aGameLobby.addParticipantToGame(pRequestingAccountID, pGameName);
 		
 		//after creating the new game, send a new command back to the client providing the available games
-		getJoinableGames(pRequestingAccountID);
+		//getJoinableGames(pRequestingAccountID);
+		GameRoom lGameRoom = aGameLobby.getGameRoom(pGameName);
+		ClientCommunicationController.sendCommand(pRequestingAccountID, new DisplayNewGameRoomCommand(LobbyTranslator.translateGameRoom(pGameName, lGameRoom)));
 	}
 	
 	/**
