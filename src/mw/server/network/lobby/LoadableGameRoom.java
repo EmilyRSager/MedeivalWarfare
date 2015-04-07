@@ -5,7 +5,6 @@
 package mw.server.network.lobby;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Set;
 import java.util.UUID;
@@ -16,18 +15,13 @@ import mw.server.admin.AccountGameInfo;
 import mw.server.admin.AccountManager;
 import mw.server.gamelogic.controllers.GameController;
 import mw.server.gamelogic.enums.Color;
-import mw.server.gamelogic.exceptions.TooManyPlayersException;
 import mw.server.gamelogic.state.Game;
 import mw.server.gamelogic.state.GameID;
 import mw.server.gamelogic.state.Player;
-import mw.server.gamelogic.state.Tile;
 import mw.server.network.communication.ClientCommunicationController;
-import mw.server.network.controllers.GameInitializationController;
-import mw.server.network.controllers.GameStateCommandDistributor;
 import mw.server.network.mappers.GameMapper;
 import mw.server.network.mappers.PlayerMapper;
 import mw.shared.clientcommands.NotifyBeginTurnCommand;
-import mw.util.MultiArrayIterable;
 import mw.util.Tuple2;
 
 public class LoadableGameRoom extends GameRoom{
@@ -35,6 +29,11 @@ public class LoadableGameRoom extends GameRoom{
 	//the attribute helps to ensure that only the correct accounts can join the game
 	private GameID aGameID;
 
+	/**
+	 * Constructor
+	 * @param pNumRequestedClients
+	 * @param pGameID
+	 */
 	public LoadableGameRoom(int pNumRequestedClients, GameID pGameID) {
 		super(pNumRequestedClients);
 		this.aGameID = pGameID;
@@ -67,7 +66,6 @@ public class LoadableGameRoom extends GameRoom{
 	 */
 	@Override
 	public void initializeGame(String pGameName){
-
 		System.out.println("[Server] Initializing loaded game.");
 
 		Game lGame = aGameID.getaGame();
@@ -79,7 +77,7 @@ public class LoadableGameRoom extends GameRoom{
 
 		for (UUID accountUUID : aWaitingClients) {
 			Account lAccount = AccountManager.getInstance().getAccount(accountUUID);
-			AccountGameInfo lAccountGameInfo = lAccount.getaAccountGameInfo();
+			AccountGameInfo lAccountGameInfo = lAccount.getAccountGameInfo();
 			Color playerColor = PlayerMapper.getInstance().getPlayer(accountUUID).getPlayerColor();
 			lAccountGameInfo.setCurrentGame(new Tuple2<String, Color>(aGameID.getaName(), playerColor ));
 			lAccountGameInfo.addToActiveGames(lAccountGameInfo.getCurrentGame());
@@ -88,7 +86,6 @@ public class LoadableGameRoom extends GameRoom{
 		try {
 			SaveGame.SaveMyGame(aGameID);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
@@ -103,11 +100,11 @@ public class LoadableGameRoom extends GameRoom{
 	@Override
 	protected void assignAccountsToPlayers(Set<UUID> pAccountIDs, Collection<Player> pPlayers){
 		for(UUID account: pAccountIDs){
-			Color lColor = AccountManager.getInstance().getAccount(account).getaAccountGameInfo().getCurrentGame().getVal2();
+			Color lColor = AccountManager.getInstance().getAccount(account).getAccountGameInfo().getCurrentGame().getVal2();
 			Player lPlayer = new Player(); 
-			for(Player p: pPlayers){
-				if (p.getPlayerColor()==lColor) {
-					lPlayer=p;
+			for(Player p : pPlayers){
+				if (p.getPlayerColor() == lColor) {
+					lPlayer = p;
 				}
 			}
 			PlayerMapper.getInstance().putPlayer(account, lPlayer);

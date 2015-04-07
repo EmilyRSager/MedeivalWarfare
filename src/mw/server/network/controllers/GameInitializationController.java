@@ -7,6 +7,7 @@ package mw.server.network.controllers;
 
 import java.util.UUID;
 
+import mw.server.gamelogic.exceptions.TooManyPlayersException;
 import mw.server.gamelogic.state.Game;
 import mw.server.gamelogic.state.GameID;
 import mw.server.network.communication.ClientCommunicationController;
@@ -96,13 +97,13 @@ public class GameInitializationController {
 	 * @param pAccountID
 	 * @param pGameName
 	 */
-	public void joinGame(UUID pJoiningAccountID, String pGameName){
+	public void joinGame(UUID pJoiningAccountID, String pGameName) throws TooManyPlayersException{
 		aGameLobby.addParticipantToGame(pJoiningAccountID, pGameName);
 		GameRoom lGameRoom = aGameLobby.getGameRoom(pGameName);
 		ClientCommunicationController.sendCommand(pJoiningAccountID, new DisplayNewGameRoomCommand(LobbyTranslator.translateGameRoom(pGameName, lGameRoom)));
 		if(aGameLobby.roomIsComplete(pGameName)){
-			GameRoom lReadGameRoom = aGameLobby.removeGameRoom(pGameName);
-			lReadGameRoom.initializeGame(pGameName);
+			GameRoom lReadyGameRoom = aGameLobby.getGameRoom(pGameName);
+			lReadyGameRoom.initializeGame(pGameName);
 		}
 		else{
 			ClientCommunicationController.sendCommand(pJoiningAccountID,

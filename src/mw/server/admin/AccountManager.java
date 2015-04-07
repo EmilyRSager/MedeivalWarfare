@@ -2,7 +2,6 @@ package mw.server.admin;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.HashMap;
@@ -10,11 +9,6 @@ import java.util.Scanner;
 import java.util.UUID;
 
 import com.google.gson.Gson;
-import com.sun.org.apache.xml.internal.security.signature.InvalidDigestValueException;
-
-import mw.shared.servercommands.CreateAccountCommand;
-import mw.util.Cache;
-import mw.util.CacheValueComputer;
 import mw.filesystem.ProjectFolder;
 
 /**
@@ -46,7 +40,6 @@ public class AccountManager {
 		if(aAccountManager == null){
 			aAccountManager = new AccountManager();
 		}
-
 		return aAccountManager;
 	}
 
@@ -63,7 +56,7 @@ public class AccountManager {
 		}
 		UUID lUUID = UUID.randomUUID();
 		//null param temporary for the gameaccount info
-		Account lNewAccount = new Account(lUUID, pUsername, pPassword, null);
+		Account lNewAccount = new Account(lUUID, pUsername, pPassword);
 
 		//save to disk for persistence
 		saveAccountData(lNewAccount);
@@ -158,10 +151,7 @@ public class AccountManager {
 
 			if(pUsername.equals(lUsername) && pPassword.equals(lPassword)){
 				lScanner.close();
-				
 				UUID lUUID = UUID.fromString(lAccountFields[UUID_INDEX]);
-				System.out.println("U = " + lUsername + ". P = " + lPassword + ". ID = " + lUUID);
-				
 				return lUUID;
 			}
 		}

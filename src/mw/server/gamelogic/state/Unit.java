@@ -1,5 +1,6 @@
 	package mw.server.gamelogic.state;
 
+import java.io.Serializable;
 import java.util.Observable;
 
 import mw.server.gamelogic.enums.ActionType;
@@ -12,7 +13,7 @@ import mw.server.gamelogic.enums.UnitType;
 /**
  * @author emilysager
  */
-public class Unit extends Observable {
+public class Unit extends Observable implements Serializable{
     
 	private UnitType aUnitType;
     private ActionType aActionType;

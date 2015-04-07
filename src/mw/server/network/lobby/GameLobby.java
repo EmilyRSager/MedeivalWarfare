@@ -10,13 +10,11 @@ import java.util.UUID;
  */
 public class GameLobby {
 	private HashMap<String, GameRoom> aGameRooms;
-	private HashMap<String, LoadableGameRoom> aLoadableGameRooms;
 	/**
 	 * Constructor
 	 */
 	public GameLobby(){
 		aGameRooms = new HashMap<String, GameRoom>();
-		aLoadableGameRooms = new HashMap<String, LoadableGameRoom>();
 	}
 	
 	

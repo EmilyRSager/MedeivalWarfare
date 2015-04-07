@@ -9,11 +9,11 @@ public class ClientTestDriver {
 		
 		int name = 1;
 		if (name == 0){
-			MenuActionSender.tryLogin("Charlie", "Bloomfield");
+			MenuActionSender.tryCreateAccount("Charlie", "Bloomfield");
 			NetworkController.requestNewGame("Test game", 2);
 		}
 		else{
-			MenuActionSender.tryLogin("Hugo", "Kapp");
+			MenuActionSender.tryCreateAccount("Hugo", "Kapp");
 			NetworkController.joinGame("Test game");
 		}
 	}
