@@ -154,8 +154,10 @@ public class Game extends RandomColorGenerator implements Serializable{
 		if (startTile.hasUnit())
 		{
 			Unit pUnit = startTile.getUnit();
-			ReachableTiles = aMap.getPossibleMoves(startTile);
-			UnitActions = Logic.getPossibleActions(pUnit, startTile);
+			if (pUnit.getActionType() == ActionType.READY) {
+				ReachableTiles = aMap.getPossibleMoves(startTile);
+				UnitActions = Logic.getPossibleActions(pUnit, startTile);
+			}
 		}
 		Collection<UnitType> UnitUpgrade = GameLogic.getVillagerHireOrUpgradeTypes(startTile, this);
 		Collection<Tile> hirableUnitTiles = wantToHireVillager(startTile);
