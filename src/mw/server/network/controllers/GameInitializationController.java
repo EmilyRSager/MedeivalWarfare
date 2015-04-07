@@ -23,6 +23,7 @@ import mw.server.gamelogic.state.Player;
 import mw.server.gamelogic.state.Tile;
 import mw.server.network.communication.ClientCommunicationController;
 import mw.server.network.lobby.GameLobby;
+import mw.server.network.lobby.GameRoom;
 import mw.server.network.mappers.GameMapper;
 import mw.server.network.mappers.PlayerMapper;
 import mw.server.network.translators.LobbyTranslator;
@@ -31,6 +32,7 @@ import mw.shared.SharedGameLobby;
 import mw.shared.clientcommands.AbstractClientCommand;
 import mw.shared.clientcommands.AcknowledgementCommand;
 import mw.shared.clientcommands.DisplayGameLobbyCommand;
+import mw.shared.clientcommands.DisplayNewGameRoomCommand;
 import mw.shared.clientcommands.NotifyBeginTurnCommand;
 import mw.shared.clientcommands.SetColorCommand;
 import mw.util.MultiArrayIterable;
@@ -82,7 +84,11 @@ public class GameInitializationController {
 	public void requestNewGame(UUID pRequestingAccountID, String pGameName, int pNumRequestedPlayers){
 		aGameLobby.createNewGameRoom(pGameName, pNumRequestedPlayers);
 		aGameLobby.addParticipantToGame(pRequestingAccountID, pGameName);
-		ClientCommunicationController.sendCommand(pRequestingAccountID, new AcknowledgementCommand("Game [" + pGameName + "] was created. Awaiting other players."));
+		
+		//after creating the new game, send a new command back to the client providing the available games
+		//getJoinableGames(pRequestingAccountID);
+		GameRoom lGameRoom = aGameLobby.getGameRoom(pGameName);
+		ClientCommunicationController.sendCommand(pRequestingAccountID, new DisplayNewGameRoomCommand(LobbyTranslator.translateGameRoom(pGameName, lGameRoom)));
 	}
 	
 	/**
@@ -91,13 +97,12 @@ public class GameInitializationController {
 	 */
 	public void joinGame(UUID pJoiningAccountID, String pGameName){
 		aGameLobby.addParticipantToGame(pJoiningAccountID, pGameName);
+		GameRoom lGameRoom = aGameLobby.getGameRoom(pGameName);
+		ClientCommunicationController.sendCommand(pJoiningAccountID, new DisplayNewGameRoomCommand(LobbyTranslator.translateGameRoom(pGameName, lGameRoom)));
 		if(aGameLobby.roomIsComplete(pGameName)){
 			Set<UUID> lLobbyClients = aGameLobby.getParticipantAccounts(pGameName);
 			aGameLobby.removeGameRoom(pGameName);
 			createNewGame(lLobbyClients);
-		}
-		else{
-			ClientCommunicationController.sendCommand(pJoiningAccountID, new AcknowledgementCommand("Game [" + pGameName + "] successfully joined. Awaiting other players"));
 		}
 	}
 

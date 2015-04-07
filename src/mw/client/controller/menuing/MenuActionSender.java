@@ -80,22 +80,19 @@ public final class MenuActionSender {
 		joinedGameResult.setValue(result);
 	}
 	
-
-	
-	
-	private static BlockingFuture<SharedCreatedGame> gameCreationResult;
+	//private static BlockingFuture<SharedCreatedGame> gameCreationResult;
 	
 	public static SharedCreatedGame tryCreateGame(String gameName, int numberPlayers)
 	{
-		gameCreationResult = new BlockingFuture<SharedCreatedGame>();
+		joinedGameResult = new BlockingFuture<SharedCreatedGame>();
 		NetworkController.requestNewGame(gameName, numberPlayers);
-		return gameCreationResult.getValue();
+		return joinedGameResult.getValue();//gameCreationResult.getValue();
 	}
 	
-	public static void setGameCreationResult(SharedCreatedGame result)
+	/*public static void setGameCreationResult(SharedCreatedGame result)
 	{
 		gameCreationResult.setValue(result);
-	}
+	}*/
 	
 	
 	

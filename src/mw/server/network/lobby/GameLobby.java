@@ -26,6 +26,15 @@ public class GameLobby {
 	}
 	
 	/**
+	 * 
+	 * @param pGameName
+	 * @return
+	 */
+	public GameRoom getGameRoom(String pGameName){
+		return aGameRooms.get(pGameName);
+	}
+	
+	/**
 	 * Creates a new game room with the parameter name and puts the requesting account in the room
 	 * @param pRequestingAccountID
 	 * @param pGameName
