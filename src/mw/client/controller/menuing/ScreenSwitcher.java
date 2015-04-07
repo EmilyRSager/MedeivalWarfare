@@ -60,7 +60,6 @@ public abstract class ScreenSwitcher {
 			
 		default:
 			throw new IllegalArgumentException("The ScreenKind "+newScreen+" needs parameters, you need to use another method for it");
-			break;
 		}
 	}
 
