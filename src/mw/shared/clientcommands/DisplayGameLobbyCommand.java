@@ -2,6 +2,7 @@ package mw.shared.clientcommands;
 
 import java.util.UUID;
 
+import mw.client.controller.menuing.MenuActionSender;
 import mw.shared.SharedGameLobby;
 
 public class DisplayGameLobbyCommand extends AbstractClientCommand{
@@ -21,7 +22,7 @@ public class DisplayGameLobbyCommand extends AbstractClientCommand{
 	 */
 	@Override
 	public void execute() {
-		//TODO
+		MenuActionSender.setJoinableGamesResult(aSharedGameLobby);
 	}
 
 }
