@@ -31,6 +31,7 @@ public class GameRoomWindow {
 	public GameRoomWindow(SharedCreatedGame createdGame)
 	{
 		window = new JFrame(createdGame.getGameName() + " Lobby");
+		window.setResizable(false);
 		pane = window.getContentPane();
 		
 		gameLabel = new JLabel(createdGame.getGameName());

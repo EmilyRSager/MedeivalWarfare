@@ -28,6 +28,7 @@ public class LoginWindow
 	public LoginWindow()
 	{
 		window = new JFrame("Medieval Warfare Login Window");
+		window.setResizable(false);
 		pane = window.getContentPane();
 		gLayout = new GridLayout(0,2);
 		pane.setLayout(gLayout);

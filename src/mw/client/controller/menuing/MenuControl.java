@@ -51,7 +51,14 @@ public abstract class MenuControl {
 		}
 	}
 	
-	
+	public static void inviteAccepted(String gameName)
+	{
+		SharedCreatedGame gameRoom = MenuActionSender.tryJoiningGame(gameName);
+		if (gameRoom != null)
+		{
+			ScreenSwitcher.openGameRoomScreen(gameRoom);
+		}
+	}
 	
 	public static void leaveGameRoom()
 	{
