@@ -11,6 +11,7 @@ import mw.shared.clientcommands.AbstractClientCommand;
 import mw.shared.clientcommands.AccountCreatedCommand;
 import mw.shared.clientcommands.AcknowledgementCommand;
 import mw.shared.clientcommands.DisplayGameLobbyCommand;
+import mw.shared.clientcommands.DisplayNewGameRoomCommand;
 import mw.shared.clientcommands.DisplayPossibleGameActionsCommand;
 import mw.shared.clientcommands.ErrorMessageCommand;
 import mw.shared.clientcommands.MessageReceivedCommand;
@@ -37,6 +38,7 @@ public class ClientCommandSerializerAndDeserializer {
 		aTypeMap.put("AccountCreatedCommand", new TypeToken<AccountCreatedCommand>(){}.getType());
 		aTypeMap.put("NotifyBeginTurnCommand", new TypeToken<NotifyBeginTurnCommand>(){}.getType());
 		aTypeMap.put("DisplayGameLobbyCommand", new TypeToken<DisplayGameLobbyCommand>(){}.getType());
+		aTypeMap.put("DisplayNewGameRoomCommand", new TypeToken<DisplayNewGameRoomCommand>(){}.getType());
 		aTypeMap.put("DisplayPossibleGameActionsCommand", new TypeToken<DisplayPossibleGameActionsCommand>(){}.getType());
 		aTypeMap.put("UpdateAggregateTilesCommand", new TypeToken<UpdateAggregateTilesCommand>(){}.getType());
 		aTypeMap.put("ErrorMessageCommand", new TypeToken<ErrorMessageCommand>(){}.getType());
