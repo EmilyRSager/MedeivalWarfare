@@ -269,8 +269,12 @@ public class Game extends RandomColorGenerator implements Serializable{
 		//DON'T MAKE CHANGES TO THIS METHOD UNLESS YOU ARE EMILY 
 		Tile startTile =  aMap.getTile(pStartCoordinates); 
 		Tile pDestinationTile = aMap.getTile(pDestinationCoordinates);
+		
+		//get the unit and color of the start tile
 		Unit crtUnit = startTile.getUnit();
 		Color startColor = pDestinationTile.getColor();
+		
+		//get the color of the invaded tile
 		Color lColor = pDestinationTile.getColor();
 		if (lColor == Color.NEUTRAL)
 		{
@@ -318,6 +322,8 @@ public class Game extends RandomColorGenerator implements Serializable{
 		EnemyCaptureLogic.move(startTile.getUnit(), pDestinationTile, invadingVillage);
 		startTile.setUnit(null);
 		
+		pDestinationTile.setStructureType(StructureType.NO_STRUCT);
+		pDestinationTile.setVillageType(VillageType.NO_VILLAGE);
 	}
 
 	/**

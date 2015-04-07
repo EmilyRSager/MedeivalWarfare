@@ -339,7 +339,9 @@ public class GameMap implements Serializable
 				{
 					System.out.println("[Game] Creating a new village.");
 					Village lVillage = new Village(villageSegement);
+					System.out.println("[Game] Village Created.");
 					lVillage.setRandomCapital();
+					System.out.println(lVillage.getColor());
 					invadedPlayer.addVillage(lVillage);
 					aVillages.add(lVillage);
 					pInvadedVillage.removeTiles(villageSegement);
