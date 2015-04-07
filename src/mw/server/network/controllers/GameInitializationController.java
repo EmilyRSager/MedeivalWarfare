@@ -82,7 +82,9 @@ public class GameInitializationController {
 	public void requestNewGame(UUID pRequestingAccountID, String pGameName, int pNumRequestedPlayers){
 		aGameLobby.createNewGameRoom(pGameName, pNumRequestedPlayers);
 		aGameLobby.addParticipantToGame(pRequestingAccountID, pGameName);
-		ClientCommunicationController.sendCommand(pRequestingAccountID, new AcknowledgementCommand("Game [" + pGameName + "] was created. Awaiting other players."));
+		
+		//after creating the new game, send a new command back to the client providing the available games
+		getJoinableGames(pRequestingAccountID);
 	}
 	
 	/**
