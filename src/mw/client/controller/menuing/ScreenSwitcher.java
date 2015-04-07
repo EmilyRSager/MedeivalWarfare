@@ -24,6 +24,8 @@ public abstract class ScreenSwitcher {
 	private static GameLobbyWindow lobbyScreen;
 	private static GameRoomWindow gameRoomScreen;
 	private static CreateGameWindow gameCreationScreen;
+	
+	private static List<InvitationWindow> openedInviteWindows = new ArrayList<InvitationWindow>();
 
 	/* ========================
 	 * 		Constructors
@@ -38,7 +40,7 @@ public abstract class ScreenSwitcher {
 	 */
 	
 	
-	public static void switchScreen(ScreenKind newScreen)
+	public static synchronized void switchScreen(ScreenKind newScreen)
 	{
 		changeState(newScreen);
 		switch (newScreen)
@@ -63,21 +65,25 @@ public abstract class ScreenSwitcher {
 		}
 	}
 
-	public static void openLobbyScreen(SharedGameLobby lobby)
+	public static synchronized void openLobbyScreen(SharedGameLobby lobby)
 	{
 		changeState(ScreenKind.LOBBY);
 		
-		//List<String> gameNames = new ArrayList<String>();
-		//for (SharedCreatedGame game : lobby.getCreatedGames())
-		//	gameNames.add(game.getGameName());
-		
-		lobbyScreen = new GameLobbyWindow(lobby);//(String[])gameNames.toArray());
+		lobbyScreen = new GameLobbyWindow(lobby);
 	}
 
-	public static void openGameRoomScreen(SharedCreatedGame game)
+	public static synchronized void openGameRoomScreen(SharedCreatedGame game)
 	{
 		changeState(ScreenKind.GAME_ROOM);
 		gameRoomScreen = new GameRoomWindow(game);
+	}
+	
+	public static synchronized void openInvite(SharedCreatedGame game)
+	{
+		if (currentScreen == ScreenKind.LOBBY)
+		{
+			openedInviteWindows.add(new InvitationWindow(game));
+		}
 	}
 	
 	/* ==========================
@@ -85,14 +91,14 @@ public abstract class ScreenSwitcher {
 	 * ==========================
 	 */
 
-	private static void changeState(ScreenKind newScreen)
+	private static synchronized void changeState(ScreenKind newScreen)
 	{
 		//checkTransition(currentScreen, newScreen);
 		closeCurrentWindow();
 		currentScreen = newScreen;
 	}
 	
-	private static void closeCurrentWindow()
+	private static synchronized void closeCurrentWindow()
 	{
 		switch (currentScreen)
 		{
@@ -112,6 +118,10 @@ public abstract class ScreenSwitcher {
 		case LOBBY:
 			lobbyScreen.close();
 			lobbyScreen = null;
+			for (int i=0; i < openedInviteWindows.size(); i++) {
+				openedInviteWindows.get(i).close();
+				openedInviteWindows.remove(i);
+			}
 			break;
 			
 		case GAME_CREATION:

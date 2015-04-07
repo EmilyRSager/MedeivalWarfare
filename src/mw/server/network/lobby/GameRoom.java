@@ -46,7 +46,6 @@ public class GameRoom {
 	 * @return true if there are sufficient clients for a game
 	 */
 	public boolean containsSufficientClientsForGame(){
-		System.out.printf("[server] Game room now contains %d players, waiting for %d more.", aWaitingClients.size(), aNumRequestedClients);
 		return aWaitingClients.size() >= aNumRequestedClients;
 	}
 	

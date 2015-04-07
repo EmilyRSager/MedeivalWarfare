@@ -75,13 +75,6 @@ public final class MenuActionSender {
 		return joinedGameResult.getValue();
 	}
 	
-	public static void setJoinedGameResult(SharedCreatedGame result)
-	{
-		joinedGameResult.setValue(result);
-	}
-	
-	//private static BlockingFuture<SharedCreatedGame> gameCreationResult;
-	
 	public static SharedCreatedGame tryCreateGame(String gameName, int numberPlayers)
 	{
 		joinedGameResult = new BlockingFuture<SharedCreatedGame>();
@@ -89,11 +82,16 @@ public final class MenuActionSender {
 		return joinedGameResult.getValue();//gameCreationResult.getValue();
 	}
 	
-	/*public static void setGameCreationResult(SharedCreatedGame result)
+	public static void setJoinedGameResult(SharedCreatedGame result)
 	{
-		gameCreationResult.setValue(result);
-	}*/
+		joinedGameResult.setValue(result);
+	}
 	
+	
+	public static void displayGameInvite(SharedCreatedGame game)
+	{
+		ScreenSwitcher.openInvite(game);
+	}
 	
 	
 	public static void leaveGameRoom()
