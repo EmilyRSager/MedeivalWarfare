@@ -139,8 +139,12 @@ public class Game extends RandomColorGenerator implements Serializable{
 	 */
 	public PossibleGameActions tileIsClicked(Coordinates pStartCoordinates)
 	{
+		VillageType VillageUpgradeType = null;
 		Tile startTile = aMap.getTile(pStartCoordinates);
-		VillageType VillageUpgradeType = GameLogic.getPossibleVillageUpgrades(startTile.getVillageType()); 
+		if (!getVillage(startTile).alreadyUpgraded())
+		{
+			VillageUpgradeType = GameLogic.getPossibleVillageUpgrades(startTile.getVillageType()); 
+		}
 		Collection<Tile> ReachableTiles = new HashSet<Tile>();
 		Collection<ActionType> UnitActions = new ArrayList<ActionType>();
 		boolean canBuildWatchTower = GameLogic.canBuildWatchtower(startTile, this); 

@@ -1,10 +1,16 @@
 package mw.client.controller.menuing;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
 import mw.client.gui.menuing.CreateAccountWindow;
+import mw.client.gui.menuing.CreateGameWindow;
+import mw.client.gui.menuing.GameLobbyWindow;
+import mw.client.gui.menuing.GameRoomWindow;
 import mw.client.gui.menuing.LoginWindow;
+import mw.shared.SharedCreatedGame;
+import mw.shared.SharedGameLobby;
 
 public abstract class ScreenSwitcher {
 
@@ -15,7 +21,7 @@ public abstract class ScreenSwitcher {
 	
 	private static LoginWindow loginScreen;
 	private static CreateAccountWindow createAccountScreen;
-	private static LobbyWindow lobbyScreen;
+	private static GameLobbyWindow lobbyScreen;
 	private static GameRoomWindow gameRoomScreen;
 	private static CreateGameWindow gameCreationScreen;
 
@@ -58,21 +64,21 @@ public abstract class ScreenSwitcher {
 		}
 	}
 
-	public static void openLobbyScreen(GameLobby lobby)
+	public static void openLobbyScreen(SharedGameLobby lobby)
 	{
 		changeState(ScreenKind.LOBBY);
 		
-		List<String> gameNames = new ArrayList<String>();
-		for (GameRoom game : lobby)
-			gameNames.add(game.getName());
+		//List<String> gameNames = new ArrayList<String>();
+		//for (SharedCreatedGame game : lobby.getCreatedGames())
+		//	gameNames.add(game.getGameName());
 		
-		lobbyScreen = new LobbyWindow((String[])gameNames.toArray());
+		lobbyScreen = new GameLobbyWindow(lobby);//(String[])gameNames.toArray());
 	}
 
-	public static void openGameRoomScreen(String gameName)
+	public static void openGameRoomScreen(SharedCreatedGame game)
 	{
 		changeState(ScreenKind.GAME_ROOM);
-		gameRoomScreen = new GameRoomWindow(gameName);
+		gameRoomScreen = new GameRoomWindow(game);
 	}
 	
 	/* ==========================

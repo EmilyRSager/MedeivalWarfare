@@ -252,7 +252,7 @@ public class GameWindow implements Observer {
 			int height = comp.getHeight();
 			if (changedState == ChangedState.SIZE 
 					&& comp == windowLayout 
-					&& (width != window.getWidth() || height != window.getHeight()))
+					&& (width != window.getWidth() || height > window.getHeight()))
 			{
 				System.out.println("[GameWindow] The layout now has size "+width+", "+height);
 				window.resize(width, height);
