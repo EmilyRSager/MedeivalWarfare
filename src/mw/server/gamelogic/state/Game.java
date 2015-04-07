@@ -139,8 +139,12 @@ public class Game extends RandomColorGenerator implements Serializable{
 	 */
 	public PossibleGameActions tileIsClicked(Coordinates pStartCoordinates)
 	{
+		VillageType VillageUpgradeType = null;
 		Tile startTile = aMap.getTile(pStartCoordinates);
-		VillageType VillageUpgradeType = GameLogic.getPossibleVillageUpgrades(startTile.getVillageType()); 
+		if (!getVillage(startTile).alreadyUpgraded())
+		{
+			VillageUpgradeType = GameLogic.getPossibleVillageUpgrades(startTile.getVillageType()); 
+		}
 		Collection<Tile> ReachableTiles = new HashSet<Tile>();
 		Collection<ActionType> UnitActions = new ArrayList<ActionType>();
 		boolean canBuildWatchTower = GameLogic.canBuildWatchtower(startTile, this); 
@@ -203,6 +207,7 @@ public class Game extends RandomColorGenerator implements Serializable{
 	 */
 	public void endTurn() 
 	{
+		System.out.println("[Game] Player is ending their turn");
 		if (currentRoundIsOver())
 		{
 			beginRound();
@@ -231,6 +236,7 @@ public class Game extends RandomColorGenerator implements Serializable{
 		aCurrentPlayer = getNextPlayer();
 		for (Village lVillage :aCurrentPlayer.getVillages()) 
 		{
+			System.out.println("[Game] Updating state for the next player's turn.");
 			lVillage.beginTurnUpdate();
 		}
 	}
