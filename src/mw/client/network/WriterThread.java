@@ -44,12 +44,10 @@ public class WriterThread extends Thread {
 			while(true){
 				AbstractServerCommand lServerCommand = aServerCommandQueue.take();
 				
-				//System.out.println("[Client] Enter message to send.");
-				//String lMessageToSend = reader.next();
+				String lCommandToServer = ServerCommandSerializerAndDeserializer.getInstance().serialize(lServerCommand);
+				System.out.println("[Client] Writing string \"" + lCommandToServer + "\" to server.");
 								
-				aDataOutputStream.writeUTF(
-						ServerCommandSerializerAndDeserializer.getInstance().serialize(lServerCommand));
-				//sleep(10000);
+				aDataOutputStream.writeUTF(lCommandToServer);
 			}
 		}
 		catch(Exception e){
