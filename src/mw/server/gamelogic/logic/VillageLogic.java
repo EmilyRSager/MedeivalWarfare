@@ -174,8 +174,11 @@ public class VillageLogic
 	/**
 	 * Replaces all villagers in a village with tombstones
 	 */
-	public static void starveVillage(Collection<Tile> pTiles)
+	public static void starveVillage(Collection<Tile> pTiles, Village pVillage)
 	{
+	
+		pVillage.addOrSubtractGold(-pVillage.getGold());
+		pVillage.addOrSubtractWood(-pVillage.getWood());
 		for (Tile lTile : pTiles)
 		{
 			if (lTile.hasUnit())
