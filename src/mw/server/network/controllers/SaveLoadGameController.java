@@ -41,7 +41,7 @@ public class SaveLoadGameController {
 	public static void loadGame(String pGameName, UUID pAccountUUID){
 		try {
 			GameID lGameID=SaveGame.returnSavedGame(pGameName);
-			GameInitializationController.getInstance().loadSavedGame(pAccountUUID, lGameID);
+			GameInitializationController.getInstance().createLoadableGame(pAccountUUID, lGameID);
 		} catch (ClassNotFoundException e) {
 			ClientCommunicationController.sendCommand(pAccountUUID, new ErrorMessageCommand("Failed to load the game, you lose all your shit goodbye mofo suck my dick and the boobs"));
 			

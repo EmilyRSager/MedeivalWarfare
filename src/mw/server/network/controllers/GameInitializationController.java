@@ -70,9 +70,9 @@ public class GameInitializationController {
 	}
 	
 	/**
-	 * TODO
+	 * gets the loaded game, finds out the allowable Account UUIDs and then creates a LoadableGameRoom
 	 */
-	public void loadSavedGame(UUID pAccountUUID, GameID pGameID){
+	public void createLoadableGame(UUID pAccountUUID, GameID pGameID){
 		Game lGame = pGameID.getaGame();
 		int lNumRequestedClients = lGame.getPlayers().size();
 		
@@ -84,8 +84,10 @@ public class GameInitializationController {
 		
 		LoadableGameRoom lLoadableGameRoom = new LoadableGameRoom(lNumRequestedClients, listOfAccountUUIDs);
 		
-		ClientCommunicationController.sendCommand(pAccountUUID, new AcknowledgementCommand("Game [" + pGameID.getaName() + "] was loaded. Awaiting other players."));
+		//TODO: inform all the clients that they need to join this game
+		//TODO: inform this client with a new LoadableGameRoom
 		
+//		ClientCommunicationController.sendCommand(pAccountUUID, new Displa);
 	}
 	
 	/**
