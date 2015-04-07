@@ -62,15 +62,15 @@ public class GameStateCommandDistributor implements Observer {
 	 */
 	@Override
 	public void update(Observable pObservable, Object pObject) {
-		if(pObservable instanceof Tile){
-			
-		}
-		else if(pObservable instanceof Village){
-			//TODO
-		}
-		else{
-			//TODO
-		}
+//		if(pObservable instanceof Tile){
+//			
+//		}
+//		else if(pObservable instanceof Village){
+//			//TODO
+//		}
+//		else{
+//			//TODO
+//		}
 		
 		Tile lTile = (Tile) pObservable;
 		currentlyActiveDistributor = this;

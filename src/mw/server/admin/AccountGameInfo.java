@@ -15,6 +15,7 @@ public class AccountGameInfo {
 	//the current game is also stored inside the active games 
 	private Tuple2<String, Color> aCurrentGame; //associating the account with the game and the player
 	//list of active games 
+	//String is the name of the game and color is the color of the player in that game
 	private ArrayList<Tuple2<String, Color>> aActiveGames;
 	//list of past games
 	private ArrayList<Tuple2<String, Color>> aPastGames;

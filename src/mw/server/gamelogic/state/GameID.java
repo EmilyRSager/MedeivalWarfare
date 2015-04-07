@@ -11,6 +11,7 @@ public class GameID {
 	
 	private String aName;
 	private Game aGame;
+	//list of accounts playing that game
 	private Collection<UUID> aListOfAccountUUIDs;
 	
 	public GameID(Game pGame, String pName, Collection<UUID> pListOfAccountUUIDs){

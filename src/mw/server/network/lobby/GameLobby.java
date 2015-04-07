@@ -19,6 +19,7 @@ public class GameLobby {
 		aLoadableGameRooms = new HashMap<String, LoadableGameRoom>();
 	}
 	
+	
 	/**
 	 * @return
 	 */
@@ -34,6 +35,14 @@ public class GameLobby {
 	 */
 	public void createNewGameRoom(String pGameName, int pNumRequestedClients){
 		aGameRooms.put(pGameName, new GameRoom(pNumRequestedClients));
+	}
+	
+	/**
+	 * @param pGameRoom
+	 * @param pGameName
+	 */
+	public void addGameRoom(String pGameName, GameRoom pGameRoom){
+		aGameRooms.put(pGameName ,pGameRoom);
 	}
 	
 	/**
@@ -56,7 +65,7 @@ public class GameLobby {
 	 * @param pJoiningAccountID
 	 * @param pGameName
 	 */
-	public void addParticipantToGame(UUID pJoiningAccountID, String pGameName){
+	public void addParticipantToGame(UUID pJoiningAccountID, String pGameName) throws IllegalArgumentException{
 		aGameRooms.get(pGameName).addClient(pJoiningAccountID);
 	}
 	
@@ -71,8 +80,7 @@ public class GameLobby {
 	/**
 	 * @param pGameName
 	 */
-	public void removeGameRoom(String pGameName){
-		aGameRooms.remove(pGameName);
+	public GameRoom removeGameRoom(String pGameName){
+		return aGameRooms.remove(pGameName);
 	}
-	
 }
