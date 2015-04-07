@@ -63,16 +63,16 @@ public final class MenuActionSender {
 	
 	
 	
-	private static BlockingFuture<Boolean> joinedGameResult;
+	private static BlockingFuture<SharedCreatedGame> joinedGameResult;
 	
-	public static boolean tryJoiningGame(String gameName)
+	public static SharedCreatedGame tryJoiningGame(String gameName)
 	{
-		joinedGameResult = new BlockingFuture<Boolean>();
+		joinedGameResult = new BlockingFuture<SharedCreatedGame>();
 		NetworkController.joinGame(gameName);
 		return joinedGameResult.getValue();
 	}
 	
-	public static void setJoinedGameResult(boolean result)
+	public static void setJoinedGameResult(SharedCreatedGame result)
 	{
 		joinedGameResult.setValue(result);
 	}
