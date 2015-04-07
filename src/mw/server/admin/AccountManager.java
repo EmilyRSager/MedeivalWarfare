@@ -22,8 +22,8 @@ import mw.filesystem.ProjectFolder;
  * Awful class that sucks a lot.
  */
 public class AccountManager {
-	private static final String ACCOUNTS_FOLDER_PATH = "accountdata/accounts/";
-	private static final String PASSWORDS_FILE_PATH = "accountdata/passwords";
+	private static final String ACCOUNTS_FOLDER_PATH = "data/accountdata/accounts/";
+	private static final String PASSWORDS_FILE_PATH = "data/accountdata/passwords";
 
 	private static int USERNAME_INDEX = 0;
 	private static int PASSWORD_INDEX = 1;

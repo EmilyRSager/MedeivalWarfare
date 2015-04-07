@@ -68,6 +68,13 @@ public class GameInitializationController {
 	}
 	
 	/**
+	 * 
+	 */
+	public void loadSavedGame(UUID pAccountUUID, GameID pGameID){
+		
+	}
+	
+	/**
 	 * @return a set of game lobbies that are open and waiting for players to join
 	 */
 	public void getJoinableGames(UUID pRequestingAccountID){
@@ -199,4 +206,5 @@ public class GameInitializationController {
 
 		ClientCommunicationController.sendCommand(pAccountID, lClientCommand);
 	}
+	
 }
