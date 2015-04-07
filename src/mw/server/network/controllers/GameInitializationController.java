@@ -97,13 +97,12 @@ public class GameInitializationController {
 	 */
 	public void joinGame(UUID pJoiningAccountID, String pGameName){
 		aGameLobby.addParticipantToGame(pJoiningAccountID, pGameName);
+		GameRoom lGameRoom = aGameLobby.getGameRoom(pGameName);
+		ClientCommunicationController.sendCommand(pJoiningAccountID, new DisplayNewGameRoomCommand(LobbyTranslator.translateGameRoom(pGameName, lGameRoom)));
 		if(aGameLobby.roomIsComplete(pGameName)){
 			Set<UUID> lLobbyClients = aGameLobby.getParticipantAccounts(pGameName);
 			aGameLobby.removeGameRoom(pGameName);
 			createNewGame(lLobbyClients);
-		}
-		else{
-			ClientCommunicationController.sendCommand(pJoiningAccountID, new AcknowledgementCommand("Game [" + pGameName + "] successfully joined. Awaiting other players"));
 		}
 	}
 
