@@ -42,7 +42,7 @@ public class GameLobbyWindow {
 		{
 			games.add(game.getGameName());
 		}
-		gameJList = new JList<String>((String[]) games.toArray());
+		gameJList = new JList<String>(games.toArray(new String[0]));
 		sPane = new JScrollPane(gameJList);
 		
 		create = new JButton("Create New Game");
