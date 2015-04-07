@@ -111,7 +111,8 @@ public class SharedTileTranslator {
 		}
 		
 		else {
-			return SharedTile.UnitType.WATCHTOWER;
+			throw new IllegalArgumentException("Value "+pUnitType+" is not a valid value to translate to SharedTile.UnitType");
+			//return SharedTile.UnitType.WATCHTOWER;
 		}
 	}
 	

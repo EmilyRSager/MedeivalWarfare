@@ -176,7 +176,7 @@ public class VillageLogic
 	 */
 	public static void starveVillage(Collection<Tile> pTiles, Village pVillage)
 	{
-		Tile pCapital = pVillage.getCapital();
+	
 		pVillage.addOrSubtractGold(-pVillage.getGold());
 		pVillage.addOrSubtractWood(-pVillage.getWood());
 		for (Tile lTile : pTiles)
