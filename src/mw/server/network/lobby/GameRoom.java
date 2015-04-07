@@ -5,11 +5,38 @@
 
 package mw.server.network.lobby;
 
+import java.io.IOException;
+import java.util.Collection;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.Observable;
+import java.util.Observer;
 import java.util.Queue;
 import java.util.Set;
 import java.util.UUID;
+
+import mw.server.admin.Account;
+import mw.server.admin.AccountGameInfo;
+import mw.server.admin.AccountManager;
+import mw.server.gamelogic.controllers.GameController;
+import mw.server.gamelogic.enums.Color;
+import mw.server.gamelogic.exceptions.TooManyPlayersException;
+import mw.server.gamelogic.state.Game;
+import mw.server.gamelogic.state.GameID;
+import mw.server.gamelogic.state.Player;
+import mw.server.gamelogic.state.Tile;
+import mw.server.network.communication.ClientCommunicationController;
+import mw.server.network.controllers.GameInitializationController;
+import mw.server.network.controllers.GameStateCommandDistributor;
+import mw.server.network.mappers.GameMapper;
+import mw.server.network.mappers.PlayerMapper;
+import mw.server.network.translators.SharedTileTranslator;
+import mw.shared.clientcommands.NotifyBeginTurnCommand;
+import mw.shared.clientcommands.SetColorCommand;
+import mw.util.MultiArrayIterable;
+import mw.util.Tuple2;
+import test.mw.server.gamelogic.SaveGame;
 
 /**
  * @singleton
@@ -62,5 +89,94 @@ public class GameRoom {
 	 */
 	public Set<UUID> getClients(){
 		return aWaitingClients;
+	}
+	
+	public void initializeGame(String pGameName){
+		
+			System.out.println("[Server] Initializing new game.");
+			int lNumPlayers = aNumRequestedClients;
+			Set<UUID> pAccountIDs = aWaitingClients;
+			//create a game
+			Game lGame;
+			try {
+				lGame = GameController.newGame(lNumPlayers); //throws exception if too many players
+
+				/* Map the clients to the given Game.
+				 * TODO this may be unnecessary as there will be a mapping between AccountIDs and Players as well
+				 */
+				GameMapper.getInstance().putGame(pAccountIDs, lGame); //add clients to Game Mapping
+
+				//map clients to players
+				Collection<Player> lPlayers = lGame.getPlayers();
+				GameStateCommandDistributor lGameStateCommandDistributor = 
+						new GameStateCommandDistributor(aWaitingClients, lGame);
+				
+				attachObservable(lGame, lGameStateCommandDistributor);
+				
+				lGameStateCommandDistributor.newGame(lGame.getGameTiles());
+				//distribute the new Game to each client.
+				assignAccountsToPlayers(pAccountIDs, lPlayers);
+				
+				for (UUID accountUUID : pAccountIDs) {
+					Account lAccount = AccountManager.getInstance().getAccount(accountUUID);
+					AccountGameInfo lAccountGameInfo = lAccount.getaAccountGameInfo();
+					Color playerColor = PlayerMapper.getInstance().getPlayer(accountUUID).getPlayerColor();
+					//TODO: fix the following line for name 
+					lAccountGameInfo.setCurrentGame(new Tuple2<String, Color>("", playerColor ));
+					lAccountGameInfo.addToActiveGames(lAccountGameInfo.getCurrentGame());
+					AccountManager.getInstance().saveAccountData(lAccount);
+				}
+				GameID lGameID = new GameID(lGame, pGameName, pAccountIDs);
+				try {
+					SaveGame.SaveMyGame(lGameID);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+				//Inform client that it is his turn
+				UUID lCurrentAccountID = PlayerMapper.getInstance().getAccount(GameController.getCurrentPlayer(lGame));
+				ClientCommunicationController.sendCommand(lCurrentAccountID, new NotifyBeginTurnCommand());
+				
+			} catch (TooManyPlayersException e) {
+				System.out.println("[Server] Tried to create a Game with too many players.");
+				e.printStackTrace();
+			}
+		}
+	
+	/**
+	 * Assigns a AccountID to a given Player in the Game and informs each Account of its color.
+	 * @param pPlayers
+	 * @param pAccountIDs
+	 */
+	protected void assignAccountsToPlayers(Set<UUID> pAccountIDs, Collection<Player> pPlayers){
+		Iterator<UUID> lAccountIDIterator = pAccountIDs.iterator();
+		Iterator<Player> lPlayerIterator = pPlayers.iterator();
+
+		//TODO check they're the same size
+		while(lAccountIDIterator.hasNext()){
+			UUID lAccountID = lAccountIDIterator.next();
+			Player lPlayer = lPlayerIterator.next();
+
+			//store client to player mapping
+			PlayerMapper.getInstance().putPlayer(lAccountID, lPlayer);
+
+			//get player color
+			Color lPlayerColor = lPlayer.getPlayerColor();
+
+			ClientCommunicationController.sendCommand(lAccountID, new SetColorCommand(SharedTileTranslator.translateColor(lPlayerColor)));
+		}
+	}
+	
+	protected void attachObservable(Game pGame, Observer pObserver){
+		//attach observer to each tile
+		Tile[][] lGameTiles = pGame.getGameTiles();
+		//initialize game state observer
+		for(Tile lTile : MultiArrayIterable.toIterable(lGameTiles)){
+			//add observer to each tile
+			lTile.addObserver(pObserver);
+		}
+		//sends the game to the clients
+		
 	}
 }

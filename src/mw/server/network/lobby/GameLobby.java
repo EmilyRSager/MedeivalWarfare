@@ -19,6 +19,15 @@ public class GameLobby {
 		aLoadableGameRooms = new HashMap<String, LoadableGameRoom>();
 	}
 	
+	public void addGameRoom(GameRoom pGameRoom, String pGameName){
+		aGameRooms.put(pGameName ,pGameRoom);
+
+	}
+	
+	public void addLoadableGameRoom(LoadableGameRoom pLoadableGameRoom){
+		aLoadableGameRooms.put(pLoadableGameRoom.returnGameID().getaName() ,pLoadableGameRoom);
+	}
+	
 	/**
 	 * @return
 	 */
@@ -71,8 +80,9 @@ public class GameLobby {
 	/**
 	 * @param pGameName
 	 */
-	public void removeGameRoom(String pGameName){
-		aGameRooms.remove(pGameName);
+	public GameRoom removeGameRoom(String pGameName){
+		return aGameRooms.remove(pGameName);
+		
 	}
 	
 }
