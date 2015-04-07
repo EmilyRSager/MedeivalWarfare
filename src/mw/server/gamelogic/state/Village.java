@@ -30,7 +30,7 @@ public class Village extends Observable implements Serializable
 	private Tile aCapital; 
 	private VillageType aVillageType; 
 	private Collection<Tile> aTiles;
-
+	private boolean villageAlreadyUpgraded;
 	/**
 	 * Village Constructor
 	 * @param lVillageTiles
@@ -39,9 +39,10 @@ public class Village extends Observable implements Serializable
 	{
 		aTiles= lVillageTiles; 
 		aGold = 100; 
-		aWood = 100; 
+		aWood = 100;
+		villageAlreadyUpgraded = false; 
 	}
-	
+
 	public Village (Collection<Tile> pVillageTiles, int pGold, int pWood, Tile pCapital, VillageType pVillageType)
 	{
 		aTiles = pVillageTiles;
@@ -49,8 +50,9 @@ public class Village extends Observable implements Serializable
 		aWood = pWood;
 		aCapital = pCapital;
 		aVillageType = pVillageType;
+		villageAlreadyUpgraded = true;
 	}
-	
+
 	/**
 	 * Sets the type of a village to hovel, town or fort. 
 	 * @param pVillageType
@@ -60,7 +62,7 @@ public class Village extends Observable implements Serializable
 		aVillageType = pVillageType;
 		aCapital.setVillageType(pVillageType);
 	}
-	
+
 	public void setRandomCapital()
 	{
 		Random r = new Random(); 
@@ -91,7 +93,7 @@ public class Village extends Observable implements Serializable
 		aCapital.setVillageType(VillageType.HOVEL); 
 		aCapital.notifyChanged();
 	}
-	
+
 	public void removeCapital()
 	{
 		aCapital = null;
@@ -108,7 +110,11 @@ public class Village extends Observable implements Serializable
 
 	public void upgrade(VillageType pVillageType) throws NotEnoughIncomeException, CantUpgradeException 
 	{
+		if(!villageAlreadyUpgraded)
+		{
 			VillageLogic.upgradeVillage(this, aVillageType);
+			villageAlreadyUpgraded = true;
+		}
 	}
 
 	/**
@@ -130,6 +136,7 @@ public class Village extends Observable implements Serializable
 		{
 			VillageLogic.starveVillage(aTiles); 
 		}
+		villageAlreadyUpgraded = false;
 	}
 
 	public void removeTiles(Collection<Tile> pToRemove) 
@@ -138,7 +145,7 @@ public class Village extends Observable implements Serializable
 		while (lTileIterator.hasNext())
 		{
 			Tile lDeletionCandidate = lTileIterator.next(); 
-			
+
 			if (pToRemove.contains(lDeletionCandidate))
 			{
 				lTileIterator.remove();
@@ -177,9 +184,9 @@ public class Village extends Observable implements Serializable
 	{
 		pTile.setColor(getColor());
 		aTiles.add(pTile);  
-		
+
 	}
-	
+
 	/**
 	 * Removes a tile from a village
 	 * @param pTile
@@ -198,7 +205,7 @@ public class Village extends Observable implements Serializable
 	{
 		return aVillageType; 
 	}
-	
+
 	/**
 	 * getter for Village Gold
 	 * @return
@@ -216,7 +223,7 @@ public class Village extends Observable implements Serializable
 	{
 		return aWood;
 	}
-	
+
 	/**
 	 * Returns the color of the village
 	 * @return
@@ -225,7 +232,7 @@ public class Village extends Observable implements Serializable
 	{
 		return aCapital.getColor();
 	}
-	
+
 	public boolean contains(Tile pTile)
 	{
 		return aTiles.contains(pTile);
@@ -254,5 +261,10 @@ public class Village extends Observable implements Serializable
 		aTiles = null;
 		aVillageType = null;	
 	}
-	
+
+	public boolean alreadyUpgraded() {
+		// TODO Auto-generated method stub
+		return villageAlreadyUpgraded;
+	}
+
 }

@@ -77,7 +77,6 @@ public class EnemyCaptureLogic {
 	
 	public static void move(Unit pUnit, Tile pDestinationTile, Village pInvadingVillage)
 	{
-		UnitType pUnitType = pUnit.getUnitType(); 
 		StructureType pStructureType = pDestinationTile.getStructureType();
 		switch (pStructureType)
 		{
