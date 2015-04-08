@@ -10,6 +10,7 @@ public enum VillageType implements Serializable{
 	NO_VILLAGE,
     HOVEL,
     TOWN,
-    FORT
+    FORT,
+    CASTLE;
 
 }
