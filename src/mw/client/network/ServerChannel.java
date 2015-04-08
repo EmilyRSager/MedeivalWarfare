@@ -53,9 +53,7 @@ public class ServerChannel extends Thread{
 		
 		//TODO split up class construction and socket initialization
 		try
-		{	
-			System.out.println("inside tru");
-			
+		{
 			aSocket = new Socket(SERVER_IP_ADDRESS, PORT_NUMBER);
 			
 			System.out.println("[Client] Connecting to " + SERVER_IP_ADDRESS + " on PORT_NUMBER " + PORT_NUMBER + ".");

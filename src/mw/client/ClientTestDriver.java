@@ -6,7 +6,6 @@ import mw.client.network.NetworkController;
 public class ClientTestDriver {
 	public static void main(String[] args) {
 		NetworkController.initialize();
-		System.out.println("dalwkj");
 		//createAccountAndGame();
 		//loginAndLoad();
 		loginAndCreate();	
@@ -39,7 +38,7 @@ public class ClientTestDriver {
 	}
 	
 	public static void loginAndLoad(){
-		int name = 1;
+		int name = 0;
 		if (name == 0){
 			MenuActionSender.tryLogin("Charlie", "Bloomfield");
 			NetworkController.loadGame("Test game");
