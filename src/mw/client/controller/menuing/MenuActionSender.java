@@ -80,6 +80,13 @@ public final class MenuActionSender {
 		return joinedGameResult.getValue();//gameCreationResult.getValue();
 	}
 	
+	public static SharedCreatedGame tryLoadGame(String gameName)
+	{
+		joinableGamesResult = new BlockingFuture<SharedGameLobby>();
+		NetworkController.loadGame(gameName);
+		return joinedGameResult.getValue();
+	}
+	
 	public static void setJoinedGameResult(SharedCreatedGame result)
 	{
 		if (joinableGamesResult != null)

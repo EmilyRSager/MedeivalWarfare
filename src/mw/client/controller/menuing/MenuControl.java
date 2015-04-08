@@ -44,6 +44,17 @@ public abstract class MenuControl {
 		}
 	}
 	
+	public static void tryLoadGame(String gameName)
+	{
+		SharedCreatedGame gameRoom = MenuActionSender.tryLoadGame(gameName);
+		if (gameRoom != null) {
+			ScreenSwitcher.openGameRoomScreen(gameRoom);
+		}
+		else {
+			openGameLobby();
+		}
+	}
+	
 	public static void tryCreateGame(String gameName, int numberPlayers)
 	{
 		SharedCreatedGame result = MenuActionSender.tryCreateGame(gameName, numberPlayers);
