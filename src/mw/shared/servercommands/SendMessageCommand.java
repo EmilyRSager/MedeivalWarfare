@@ -5,6 +5,7 @@
 package mw.shared.servercommands;
 
 import java.util.Set;
+import java.util.UUID;
 
 import mw.server.network.controllers.AdminCommandController;
 import mw.server.network.mappers.ClientChannelMapper;
@@ -12,7 +13,7 @@ import mw.server.network.mappers.ClientChannelMapper;
 /**
  * Initiates sending a message to several recipients by calling the proper server controllers.
  */
-public class SendMessageCommand extends AbstractServerCommand {
+public class SendMessageCommand extends AbstractAuthenticatedServerCommand {
 	
 	private final String aType = "SendMessageCommand";
 	private String aMessage;
@@ -37,14 +38,9 @@ public class SendMessageCommand extends AbstractServerCommand {
 	 * actually be completely useless in the future as well.
 	 * 
 	 * @param int pClientID, the identification number the client who sent this message to the server.
-	 * @see mw.shared.servercommands.AbstractNetworkMessage#execute(int)
 	 */
 	@Override
-	public void execute(Integer pClientID) throws Exception {
-		//if not all recipients are available, the message is invalid. 
-		if(!ClientChannelMapper.getInstance().containsAll(aRecipientClientIDs)){
-			throw new Exception();
-		}
+	protected void doExecution(UUID pAccountID) throws Exception {
 		AdminCommandController.getInstance().distributeChatMessage(aMessage, aRecipientClientIDs);
 	}
 }

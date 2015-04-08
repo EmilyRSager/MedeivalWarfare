@@ -7,7 +7,7 @@ import mw.server.network.mappers.AccountMapper;
 import mw.server.network.mappers.GameMapper;
 import mw.shared.Coordinates;
 
-public class CombineUnitsCommand extends AbstractServerCommand{
+public class CombineUnitsCommand extends AbstractAuthenticatedServerCommand{
 	private final String aType = "CombineUnitsCommand";
 	private Coordinates aSourceCoordinates, aTargetCoordinates;
 	
@@ -15,10 +15,9 @@ public class CombineUnitsCommand extends AbstractServerCommand{
 		aSourceCoordinates = pSourceCoordinates;
 		aTargetCoordinates = pTargetCoordinates;
 	}
-	
+
 	@Override
-	public void execute(Integer pClientID) throws Exception {
-		UUID lAccountID = AccountMapper.getInstance().getAccountID(pClientID);
-		GameController.combineVillagers(GameMapper.getInstance().getGame(lAccountID), aSourceCoordinates, aTargetCoordinates);
+	protected void doExecution(UUID pAccountID) {
+		GameController.combineVillagers(GameMapper.getInstance().getGame(pAccountID), aSourceCoordinates, aTargetCoordinates);
 	}
 }

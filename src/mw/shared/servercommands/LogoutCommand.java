@@ -1,12 +1,14 @@
 package mw.shared.servercommands;
 
+import java.util.UUID;
+
 import mw.server.network.mappers.AccountMapper;
 
-public class LogoutCommand extends AbstractServerCommand{
+public class LogoutCommand extends AbstractAuthenticatedServerCommand{
 	private final String aType = "LogoutCommand";
+
 	@Override
-	public void execute(Integer pClientID) throws Exception {
-		AccountMapper.getInstance().remove(pClientID);
+	protected void doExecution(UUID pAccountID) throws Exception {
+		AccountMapper.getInstance().remove(pAccountID);
 	}
-	
 }

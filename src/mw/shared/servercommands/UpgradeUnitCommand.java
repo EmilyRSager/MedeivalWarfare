@@ -17,7 +17,7 @@ import mw.shared.SharedTile;
 /**
  * 
  */
-public class UpgradeUnitCommand extends AbstractServerCommand {
+public class UpgradeUnitCommand extends AbstractAuthenticatedServerCommand {
 	private final String aType = "UpgradeUnitCommand";
 	private Coordinates aUnitCoordinates;
 	private SharedTile.UnitType aUnitType;
@@ -32,19 +32,13 @@ public class UpgradeUnitCommand extends AbstractServerCommand {
 		aUnitType = pUnitType;
 	}
 
-	/**
-	 * @see mw.shared.servercommands.AbstractServerCommand#execute(java.lang.Integer)
-	 * @param pClientID
-	 */
 	@Override
-	public void execute(Integer pClientID) throws Exception {
-		UUID lAccountID = AccountMapper.getInstance().getAccountID(pClientID);
+	protected void doExecution(UUID pAccountID) throws Exception {
 		GameController.upgradeUnit(
-				GameMapper.getInstance().getGame(lAccountID),
+				GameMapper.getInstance().getGame(pAccountID),
 				aUnitCoordinates,
 				NetworkToModelTranslator.translateUnitType(aUnitType)
 				);
-
 	}
 
 }

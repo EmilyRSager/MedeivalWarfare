@@ -17,7 +17,7 @@ import mw.shared.SharedTile;
 /**
  * 
  */
-public class UpgradeVillageCommand extends AbstractServerCommand {
+public class UpgradeVillageCommand extends AbstractAuthenticatedServerCommand {
 	private final String aType = "UpgradeVillageCommand";
 	private Coordinates aVillageCoordinates;
 	private SharedTile.VillageType aVillageType;
@@ -29,18 +29,15 @@ public class UpgradeVillageCommand extends AbstractServerCommand {
 		aVillageCoordinates = pVillageCoordinates;
 		aVillageType = pVillageType;
 	}
-	/**
-	 * @see mw.shared.servercommands.AbstractServerCommand#execute(java.lang.Integer)
-	 */
+
 	@Override
-	public void execute(Integer pClientID) throws Exception {
-		UUID lAccountID = AccountMapper.getInstance().getAccountID(pClientID);
+	protected void doExecution(UUID pAccountID) throws Exception {
 		GameController.upgradeVillage(
-				GameMapper.getInstance().getGame(lAccountID),
+				GameMapper.getInstance().getGame(pAccountID),
 				aVillageCoordinates,
 				NetworkToModelTranslator.translateVillageType(aVillageType)
 				);
-
 	}
+
 
 }

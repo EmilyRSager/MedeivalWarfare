@@ -15,7 +15,7 @@ import mw.shared.Coordinates;
 /**
  * 
  */
-public class MoveUnitCommand extends AbstractServerCommand {
+public class MoveUnitCommand extends AbstractAuthenticatedServerCommand {
 	private final String aType = "MoveUnitCommand";
 	private Coordinates aSourceCoordinates;
 	private Coordinates aDestinationCoordinates;
@@ -30,17 +30,12 @@ public class MoveUnitCommand extends AbstractServerCommand {
 		aDestinationCoordinates = pDestinationCoordinates;
 	}
 
-	/**
-	 * @see mw.shared.servercommands.AbstractServerCommand#execute(java.lang.Integer)
-	 */
 	@Override
-	public void execute(Integer pClientID) throws Exception {
-		UUID lAccountID = AccountMapper.getInstance().getAccountID(pClientID);
+	protected void doExecution(UUID pAccountID) throws Exception {
 		GameController.moveUnit(
-				GameMapper.getInstance().getGame(lAccountID),
+				GameMapper.getInstance().getGame(pAccountID),
 				aSourceCoordinates,
 				aDestinationCoordinates
 				);
-
 	}
 }

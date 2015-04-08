@@ -18,7 +18,7 @@ import mw.shared.SharedTile;
 /**
  * 
  */
-public class HireUnitCommand extends AbstractServerCommand {
+public class HireUnitCommand extends AbstractAuthenticatedServerCommand {
 	private final String aType = "HireUnitCommand";
 
 	Coordinates aUnitCoordinates;
@@ -32,18 +32,12 @@ public class HireUnitCommand extends AbstractServerCommand {
 		aUnitType = pUnitType;
 	}
 
-	/**
-	 * @see mw.shared.servercommands.AbstractServerCommand#execute(java.lang.Integer)
-	 */
 	@Override
-	public void execute(Integer pClientID) throws Exception {
-		UUID lAccountID = AccountMapper.getInstance().getAccountID(pClientID);
+	protected void doExecution(UUID pAccountID) throws NotEnoughIncomeException {
 		GameController.hireUnit(
-				GameMapper.getInstance().getGame(lAccountID),
+				GameMapper.getInstance().getGame(pAccountID),
 				aUnitCoordinates,
 				NetworkToModelTranslator.translateUnitType(aUnitType)
 				);
-
 	}
-
 }

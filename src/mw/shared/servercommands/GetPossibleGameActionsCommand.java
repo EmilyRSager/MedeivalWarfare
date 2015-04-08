@@ -7,7 +7,7 @@ import mw.server.network.mappers.AccountMapper;
 import mw.server.network.mappers.GameMapper;
 import mw.shared.Coordinates;
 
-public class GetPossibleGameActionsCommand extends AbstractServerCommand {
+public class GetPossibleGameActionsCommand extends AbstractAuthenticatedServerCommand {
 	private final String aType = "GetPossibleGameActionsCommand";
 	private Coordinates aSharedCoordinates;
 	
@@ -20,14 +20,12 @@ public class GetPossibleGameActionsCommand extends AbstractServerCommand {
 	}
 
 	@Override
-	public void execute(Integer pClientID) throws Exception {
-		UUID lAccountID = AccountMapper.getInstance().getAccountID(pClientID);
+	protected void doExecution(UUID pAccountID) {
 		GetPossibleActionsController.getPossibleActions(
-				pClientID,
-				GameMapper.getInstance().getGame(lAccountID),
+				pAccountID,
+				GameMapper.getInstance().getGame(pAccountID),
 				aSharedCoordinates
 				);
-		
 	}
 
 }

@@ -17,7 +17,7 @@ import mw.shared.SharedActionType;
 /**
  * 
  */
-public class SetActionTypeCommand extends AbstractServerCommand {
+public class SetActionTypeCommand extends AbstractAuthenticatedServerCommand {
 	private final String aType = "SetActionTypeCommand";
 	private Coordinates aUnitCoordinates;
 	private SharedActionType aActionType;
@@ -32,18 +32,13 @@ public class SetActionTypeCommand extends AbstractServerCommand {
 		aActionType = pActionType;
 	}
 
-	/**
-	 * @see mw.shared.servercommands.AbstractServerCommand#execute(java.lang.Integer)
-	 */
 	@Override
-	public void execute(Integer pClientID) throws Exception {
-		UUID lAccountID = AccountMapper.getInstance().getAccountID(pClientID);
+	protected void doExecution(UUID pAccountID) throws Exception {
 		GameController.setActionType(
-				GameMapper.getInstance().getGame(lAccountID),
+				GameMapper.getInstance().getGame(pAccountID),
 				aUnitCoordinates,
 				NetworkToModelTranslator.translateActionType(aActionType)
 				);
-
 	}
 
 }
