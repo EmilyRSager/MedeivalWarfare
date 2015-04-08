@@ -126,7 +126,6 @@ public class Game extends RandomColorGenerator implements Serializable{
 	public void upgradeUnit(Coordinates pCoordinates, UnitType pUnitType) 
 	{
 		Tile pTile = aMap.getTile(pCoordinates);
-		Unit pUnit = pTile.getUnit();
 		pTile.setUnit(new Unit(pUnitType));
 		pTile.notifyObservers();
 	}

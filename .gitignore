@@ -6,3 +6,4 @@ config.properties
 *.db
 *~
 .metadata
+savegame.txt

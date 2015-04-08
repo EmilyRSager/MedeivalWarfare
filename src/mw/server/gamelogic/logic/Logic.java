@@ -278,10 +278,10 @@ public class Logic {
 			pDestinationTile.setUnit(crtUnit);
 			startTile.setUnit(null);
 			crtUnit.setActionType(ActionType.READY);
-			if (pDestinationTile.isMeadowOnTile())
+			/*if (pDestinationTile.isMeadowOnTile())
 			{
 				pDestinationTile.setMeadow(false);
-			}
+			}*/
 			break;
 		}
 	}
