@@ -3,6 +3,7 @@ package mw.client.gui.menuing;
 import javax.swing.*;
 
 import mw.client.controller.menuing.MenuControl;
+import mw.client.controller.netmodel.UserActionSender;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -32,7 +33,7 @@ public class InGameMenu
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				//TO DO
+				UserActionSender.singleton().sendLeaveGame();
 			}
 		});
 		
@@ -42,7 +43,7 @@ public class InGameMenu
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				//TO DO
+				UserActionSender.singleton().sendSaveGame();
 			}
 		});
 		

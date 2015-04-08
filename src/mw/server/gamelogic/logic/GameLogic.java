@@ -39,7 +39,7 @@ public class GameLogic
 		{
 			for (Tile lTile : pGame.getNeighbors(pTile))
 			{
-				if (lTile.getStructureType() == StructureType.VILLAGE_CAPITAL && lVillageType == VillageType.FORT)
+				if (lTile.getStructureType() == StructureType.VILLAGE_CAPITAL && lVillageType == VillageType.FORT && !pTile.hasUnit())
 				{
 					rArray.add(UnitType.CANNON); 
 					break;
@@ -125,7 +125,7 @@ public class GameLogic
 			possVillageUpgradeType = VillageType.FORT;
 			break; 
 		case FORT: 
-			possVillageUpgradeType = null;  
+			possVillageUpgradeType = VillageType.CASTLE;  
 			break;
 		default:
 			possVillageUpgradeType = VillageType.NO_VILLAGE; 

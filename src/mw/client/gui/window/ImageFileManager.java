@@ -18,7 +18,7 @@ public class ImageFileManager
 	private static final int TERRAIN_ICON_SIZE = ImageTile.DEFAULT_TILE_WIDTH - 10;
 	private static final int ROAD_ICON_SIZE = ImageTile.DEFAULT_TILE_WIDTH;
 	
-	private static final String FOLDER = ProjectFolder.getPath() + "images/used/";//initializeFolder();
+	private static final String FOLDER = ProjectFolder.getPath() + "images/used/";
 	private static final String STRUCT_FOLDER = getImageSizeFolder(STRUCT_ICON_SIZE);
 	private static final String UNIT_FOLDER = getImageSizeFolder(UNIT_ICON_SIZE);
 	private static final String TERRAIN_FOLDER = getImageSizeFolder(TERRAIN_ICON_SIZE);
@@ -76,8 +76,6 @@ public class ImageFileManager
 		{
 		case GRASS:
 			return null;
-			/*fileName = FOLDER;
-			break;*/
 		case TREE:
 			fileName = TERRAIN_FOLDER + "tree.png" ;
 			break;
@@ -89,14 +87,12 @@ public class ImageFileManager
 			break;
 		case SEA:
 			throw new IllegalArgumentException("Sea terrain can not be used to get directly the sea image. Use builSeaTile() instead");
-			//fileName = TERRAIN_FOLDER;
-			//break;
 			
 			default:
 				throw new IllegalArgumentException("Terrain value "+t+" has no image associated with it");
 		}
 
-		MinuetoImage image = cachedImages.getValue(fileName);//loadImageFile(fileName);
+		MinuetoImage image = cachedImages.getValue(fileName);
 		return image;
 	}
 	
@@ -111,7 +107,7 @@ public class ImageFileManager
 			fileName = UNIT_FOLDER + "peasant.png";
 			break;
 		case INFANTRY:
-			fileName = UNIT_FOLDER + "infantry.png";//getImageSizeFolder(60)+"cannon1.png";
+			fileName = UNIT_FOLDER + "infantry.png";
 			break;
 		case SOLDIER:
 			fileName = UNIT_FOLDER + "soldier.png";
@@ -120,14 +116,17 @@ public class ImageFileManager
 			fileName = UNIT_FOLDER + "knight.png";
 			break;
 		case WATCHTOWER:
-			fileName = UNIT_FOLDER + "watchtower.png";//getImageSizeFolder(60)+"castle.png";
+			fileName = UNIT_FOLDER + "watchtower.png";
+			break;
+		case CANNON:
+			fileName = getImageSizeFolder(60) + "cannon1.png";
 			break;
 			
-			default:
-				throw new IllegalArgumentException("UnitType value "+u+" has no image associated with it");
+		default:
+			throw new IllegalArgumentException("UnitType value "+u+" has no image associated with it");
 		}
 		
-		MinuetoImage image = cachedImages.getValue(fileName);//loadImageFile(fileName);
+		MinuetoImage image = cachedImages.getValue(fileName);
 		return image;
 	}
 	
@@ -147,12 +146,15 @@ public class ImageFileManager
 		case FORT:
 			fileName = STRUCT_FOLDER + "fort.png";
 			break;
+		case CASTLE:
+			fileName = getImageSizeFolder(60) + "castle.png";
+			break;
 			
 			default:
 				throw new IllegalArgumentException("StructureType value "+s+" has no image associated with it");
 		}
 		
-		MinuetoImage image = cachedImages.getValue(fileName);//loadImageFile(fileName);
+		MinuetoImage image = cachedImages.getValue(fileName);
 		return image;
 	}
 	

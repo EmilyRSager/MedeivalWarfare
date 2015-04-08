@@ -8,8 +8,8 @@ package mw.shared;
  */
 public final class SharedTile {
 
-	public enum UnitType { NONE, PEASANT, INFANTRY, SOLDIER, KNIGHT, WATCHTOWER };
-	public enum VillageType { NONE, HOVEL, TOWN, FORT };
+	public enum UnitType { NONE, PEASANT, INFANTRY, SOLDIER, KNIGHT, WATCHTOWER, CANNON };
+	public enum VillageType { NONE, HOVEL, TOWN, FORT, CASTLE };
 	public enum Terrain { GRASS, TREE, MEADOW, TOMBSTONE, SEA };
 	
 	private final SharedColor color;

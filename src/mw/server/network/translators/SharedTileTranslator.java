@@ -52,7 +52,7 @@ public class SharedTileTranslator {
 						),
 						
 				TileController.hasRoad(pTile),
-				translateUnitType(TileController.getUnitType(pTile)),
+				translateUnitType(TileController.getUnitType(pTile), TileController.getStructureType(pTile)),
 				translateVillageType(TileController.getVillageType(pTile)),
 				TileController.getGold(pTile, pGame),
 				TileController.getWood(pTile, pGame)
@@ -66,21 +66,25 @@ public class SharedTileTranslator {
 	 */
 
 	public static VillageType translateVillageType(mw.server.gamelogic.enums.VillageType pVillageType){
-		if(pVillageType == mw.server.gamelogic.enums.VillageType.HOVEL){
-			return VillageType.HOVEL;
-		}
-		
-		else if(pVillageType == mw.server.gamelogic.enums.VillageType.TOWN){
-			return VillageType.TOWN;
-		}
-		
-		else if(pVillageType == mw.server.gamelogic.enums.VillageType.FORT){
-
-			return VillageType.FORT;
-		}
-		
-		else{
+		switch(pVillageType)
+		{
+		case NO_VILLAGE:
 			return VillageType.NONE;
+			
+		case HOVEL:
+			return VillageType.HOVEL;
+			
+		case TOWN:
+			return VillageType.TOWN;
+			
+		case FORT:
+			return VillageType.FORT;
+			
+		case CASTLE:
+			return VillageType.CASTLE;
+			
+		default:
+			throw new IllegalArgumentException("The value "+pVillageType+" is not a valid value to translate to shared VillageType");
 		}
 	}
 	
@@ -88,32 +92,32 @@ public class SharedTileTranslator {
 	 * @param pUnitType
 	 * @return SharedTile representation of the tile's occupying Unit
 	 */
-	public static SharedTile.UnitType translateUnitType(UnitType pUnitType){
-		
-		if(pUnitType == mw.server.gamelogic.enums.UnitType.NO_UNIT){
-			return SharedTile.UnitType.NONE;
-		}
-		
-		else if(pUnitType == mw.server.gamelogic.enums.UnitType.PEASANT){
-			return SharedTile.UnitType.PEASANT;
-		}
-		
-		else if (pUnitType == mw.server.gamelogic.enums.UnitType.INFANTRY){
-			return SharedTile.UnitType.INFANTRY;
-		}
-		
-		else if(pUnitType == mw.server.gamelogic.enums.UnitType.SOLDIER){
-			return SharedTile.UnitType.SOLDIER;
-		}
-		
-		else if(pUnitType == mw.server.gamelogic.enums.UnitType.KNIGHT){
+	public static SharedTile.UnitType translateUnitType(UnitType pUnitType, StructureType structType){
+		if (structType == StructureType.WATCHTOWER)
+			return SharedTile.UnitType.WATCHTOWER;
 			
+		switch(pUnitType)
+		{
+		case NO_UNIT:
+			return SharedTile.UnitType.NONE;
+			
+		case PEASANT:
+			return SharedTile.UnitType.PEASANT;
+			
+		case INFANTRY:
+			return SharedTile.UnitType.INFANTRY;
+			
+		case SOLDIER:
+			return SharedTile.UnitType.SOLDIER;
+			
+		case KNIGHT:
 			return SharedTile.UnitType.KNIGHT;
-		}
-		
-		else {
+			
+		case CANNON:
+			return SharedTile.UnitType.CANNON;
+			
+		default:
 			throw new IllegalArgumentException("Value "+pUnitType+" is not a valid value to translate to SharedTile.UnitType");
-			//return SharedTile.UnitType.WATCHTOWER;
 		}
 	}
 	
