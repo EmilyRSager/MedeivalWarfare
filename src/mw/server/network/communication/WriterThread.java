@@ -62,15 +62,6 @@ public class WriterThread extends Thread{
 	}
 	
 	/**
-	 * Informs this thread to begin shutting down.
-	 * @param none
-	 * @return void
-	 */
-	public void shutDown(){
-		aIsRunning = false;
-	}
-
-	/**
 	 * Writes pMessage to aDataOutputStream.
 	 * @param Serialized string to send.
 	 */
@@ -83,6 +74,16 @@ public class WriterThread extends Thread{
 			e.printStackTrace();
 		}
 	}
+	
+	/**
+	 * Informs this thread to begin shutting down.
+	 * @param none
+	 * @return void
+	 */
+	public void shutDown(){
+		aIsRunning = false;
+	}
+
 
 	/**
 	 * Closes the DataOutputStream and Terminates this WriterThread

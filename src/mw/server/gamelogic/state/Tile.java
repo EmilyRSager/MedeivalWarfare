@@ -100,6 +100,8 @@ public class Tile extends Observable implements Serializable
      */
     public void setStructureType(StructureType pStructureType) 
     {
+       	System.out.println("[Game] The tile with coordinates (" + aX + ", " + aY + ") is getting structure type set to " + pStructureType );
+    	System.out.println("[Game] This change was made by " + (Thread.currentThread().getStackTrace())[2]);
         aStructureType = pStructureType; 
         setChanged();  
     }

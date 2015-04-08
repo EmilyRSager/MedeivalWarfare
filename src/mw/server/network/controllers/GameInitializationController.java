@@ -5,42 +5,23 @@
 
 package mw.server.network.controllers;
 
-import java.io.IOException;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.Set;
 import java.util.UUID;
 
-import test.mw.server.gamelogic.SaveGame;
-import mw.server.admin.Account;
-import mw.server.admin.AccountGameInfo;
-import mw.server.admin.AccountManager;
-import mw.server.gamelogic.controllers.GameController;
-import mw.server.gamelogic.enums.Color;
 import mw.server.gamelogic.exceptions.TooManyPlayersException;
 import mw.server.gamelogic.state.Game;
-import mw.server.gamelogic.state.Player;
-import mw.server.gamelogic.state.Tile;
+import mw.server.gamelogic.state.GameID;
 import mw.server.network.communication.ClientCommunicationController;
 import mw.server.network.lobby.GameLobby;
 import mw.server.network.lobby.GameRoom;
-import mw.server.network.mappers.GameMapper;
-import mw.server.network.mappers.PlayerMapper;
+import mw.server.network.lobby.LoadableGameRoom;
 import mw.server.network.translators.LobbyTranslator;
-import mw.server.network.translators.SharedTileTranslator;
 import mw.shared.SharedGameLobby;
-import mw.shared.clientcommands.AbstractClientCommand;
 import mw.shared.clientcommands.AcknowledgementCommand;
 import mw.shared.clientcommands.DisplayGameLobbyCommand;
 import mw.shared.clientcommands.DisplayNewGameRoomCommand;
-import mw.shared.clientcommands.NotifyBeginTurnCommand;
-import mw.shared.clientcommands.SetColorCommand;
-import mw.util.MultiArrayIterable;
-import mw.util.Tuple2;
+import mw.shared.clientcommands.InviteToLoadedGameCommnad;
 
 /**
- * TODO refactor LobbyManager logic into it's own class. This class can delegate lobby requests to it.
- * 
  * Manages game requests by maintaining a set of game lobbies and creating games when there
  * are sufficient clients available to create a Game. Handles assigning clients to GamePlayers
  * and informing the clients of their Colors.
@@ -69,6 +50,32 @@ public class GameInitializationController {
 	}
 	
 	/**
+	 * Gets the loaded game, finds out the allowable Account UUIDs and then creates a LoadableGameRoom
+	 * @param pAccountID
+	 * @param pGameID
+	 */
+	public void createLoadableGame(UUID pRequestingAccountID, GameID pGameID){
+		Game lGame = pGameID.getaGame();
+		int lNumRequestedClients = lGame.getPlayers().size();
+		String lLoadedGameName = pGameID.getaName();
+				
+		LoadableGameRoom lLoadableGameRoom = new LoadableGameRoom(lNumRequestedClients, pGameID);
+		lLoadableGameRoom.addClient(pRequestingAccountID);
+		aGameLobby.addGameRoom(pGameID.getaName(), lLoadableGameRoom);
+			
+		for(UUID lParticpantAccountID : pGameID.getaListOfAccountUUIDs()){
+			if (lParticpantAccountID != pRequestingAccountID) {
+				ClientCommunicationController.sendCommand(lParticpantAccountID, 
+						new InviteToLoadedGameCommnad(LobbyTranslator.translateGameRoom(lLoadedGameName, lLoadableGameRoom)));
+			}
+			else{
+				ClientCommunicationController.sendCommand(pRequestingAccountID, 
+						new DisplayNewGameRoomCommand(LobbyTranslator.translateGameRoom(lLoadedGameName, lLoadableGameRoom)));
+			}
+		}
+	}
+	
+	/**
 	 * @return a set of game lobbies that are open and waiting for players to join
 	 */
 	public void getJoinableGames(UUID pRequestingAccountID){
@@ -82,125 +89,26 @@ public class GameInitializationController {
 	 * @param pAccountID
 	 */
 	public void requestNewGame(UUID pRequestingAccountID, String pGameName, int pNumRequestedPlayers){
-		aGameLobby.createNewGameRoom(pGameName, pNumRequestedPlayers);
+		GameRoom lCreatedGameRoom = aGameLobby.createNewGameRoom(pGameName, pNumRequestedPlayers);
 		aGameLobby.addParticipantToGame(pRequestingAccountID, pGameName);
-		
-		//after creating the new game, send a new command back to the client providing the available games
-		//getJoinableGames(pRequestingAccountID);
-		GameRoom lGameRoom = aGameLobby.getGameRoom(pGameName);
-		ClientCommunicationController.sendCommand(pRequestingAccountID, new DisplayNewGameRoomCommand(LobbyTranslator.translateGameRoom(pGameName, lGameRoom)));
+		ClientCommunicationController.sendCommand(pRequestingAccountID, new DisplayNewGameRoomCommand(LobbyTranslator.translateGameRoom(pGameName, lCreatedGameRoom)));
 	}
 	
 	/**
 	 * @param pAccountID
 	 * @param pGameName
 	 */
-	public void joinGame(UUID pJoiningAccountID, String pGameName){
+	public void joinGame(UUID pJoiningAccountID, String pGameName) throws TooManyPlayersException{
 		aGameLobby.addParticipantToGame(pJoiningAccountID, pGameName);
 		GameRoom lGameRoom = aGameLobby.getGameRoom(pGameName);
 		ClientCommunicationController.sendCommand(pJoiningAccountID, new DisplayNewGameRoomCommand(LobbyTranslator.translateGameRoom(pGameName, lGameRoom)));
 		if(aGameLobby.roomIsComplete(pGameName)){
-			Set<UUID> lLobbyClients = aGameLobby.getParticipantAccounts(pGameName);
-			aGameLobby.removeGameRoom(pGameName);
-			createNewGame(lLobbyClients);
+			GameRoom lReadyGameRoom = aGameLobby.getGameRoom(pGameName);
+			lReadyGameRoom.initializeGame(pGameName);
 		}
-	}
-
-	/**
-	 * Creates a new game, adds the necessary observers to the Game, and then sends the Game
-	 * to each client involved in the game.
-	 */
-	private void createNewGame(Set<UUID> pAccountIDs){
-		System.out.println("[Server] Initializing new game.");
-		int lNumPlayers = pAccountIDs.size();
-
-		//create a game
-		Game lGame;
-		try {
-			lGame = GameController.newGame(lNumPlayers); //throws exception if too many players
-
-			/* Map the clients to the given Game.
-			 * TODO this may be unnecessary as there will be a mapping between AccountIDs and Players as well
-			 */
-			GameMapper.getInstance().putGame(pAccountIDs, lGame); //add clients to Game Mapping
-
-			//map clients to players
-			Collection<Player> lPlayers = lGame.getPlayers();
-
-			//initialize game state observer
-			GameStateCommandDistributor lGameStateCommandDistributor = 
-					new GameStateCommandDistributor(pAccountIDs, lGame);
-
-			//attach observer to each tile
-			Tile[][] lGameTiles = lGame.getGameTiles();
-			for(Tile lTile : MultiArrayIterable.toIterable(lGameTiles)){
-				//add observer to each tile
-				lTile.addObserver(lGameStateCommandDistributor);
-			}
-
-			//distribute the new Game to each client.
-			lGameStateCommandDistributor.newGame(lGameTiles);
-			assignAccountsToPlayers(pAccountIDs, lPlayers);
-			
-//			for (UUID accountUUID : pAccountIDs) {
-//				Account lAccount = AccountManager.getInstance().getAccount(accountUUID);
-//				AccountGameInfo lAccountGameInfo = lAccount.getaAccountGameInfo();
-//				Color playerColor = PlayerMapper.getInstance().getPlayer(accountUUID).getPlayerColor();
-//				//TODO: fix the following line for name 
-//				lAccountGameInfo.setCurrentGame(new Tuple2<String, Color>("", playerColor ));
-//				lAccountGameInfo.addToActiveGames(lAccountGameInfo.getCurrentGame());
-//				AccountManager.getInstance().saveAccountData(lAccount);
-//			}
-//			
-			try {
-				SaveGame.SaveMyGame(lGame);
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			
-			//Inform client that it is his turn
-			UUID lCurrentAccountID = PlayerMapper.getInstance().getAccount(GameController.getCurrentPlayer(lGame));
-			ClientCommunicationController.sendCommand(lCurrentAccountID, new NotifyBeginTurnCommand());
-			
-		} catch (TooManyPlayersException e) {
-			System.out.println("[Server] Tried to create a Game with too many players.");
-			e.printStackTrace();
+		else{
+			ClientCommunicationController.sendCommand(pJoiningAccountID,
+					new AcknowledgementCommand("Game \"" + pGameName + "\" successfully joined. Awaiting other players"));
 		}
-	}
-
-	/**
-	 * Assigns a AccountID to a given Player in the Game and informs each Account of its color.
-	 * @param pPlayers
-	 * @param pAccountIDs
-	 */
-	private void assignAccountsToPlayers(Set<UUID> pAccountIDs, Collection<Player> pPlayers){
-		Iterator<UUID> lAccountIDIterator = pAccountIDs.iterator();
-		Iterator<Player> lPlayerIterator = pPlayers.iterator();
-
-		//TODO check they're the same size
-		while(lAccountIDIterator.hasNext()){
-			UUID lAccountID = lAccountIDIterator.next();
-			Player lPlayer = lPlayerIterator.next();
-
-			//store client to player mapping
-			PlayerMapper.getInstance().putPlayer(lAccountID, lPlayer);
-
-			//get player color
-			Color lPlayerColor = lPlayer.getPlayerColor();
-
-			ClientCommunicationController.sendCommand(lAccountID, new SetColorCommand(SharedTileTranslator.translateColor(lPlayerColor)));
-		}
-	}
-
-	/**
-	 * Sends an acknowledgement to pAccountID that the game request has been received.
-	 * @param pAccountID
-	 */
-	private void acknowledgeGameRequest(UUID pAccountID){
-		AbstractClientCommand lClientCommand =
-				new AcknowledgementCommand("Game request received. Insufficient current users. Please wait for more clients to join lobby.");
-
-		ClientCommunicationController.sendCommand(pAccountID, lClientCommand);
 	}
 }

@@ -16,8 +16,6 @@ import mw.client.model.Game;
 /**
  * Represents a user account in the MedeivalWarfare game system. Keeps track of relevant information,
  * such as wins, losses, friends, etc.
- * 
- * TODO This class could be an observer of current game and be updated of necessary information.
  */
 public class Account {
 	private UUID aUUID;
@@ -25,19 +23,15 @@ public class Account {
 	private String aPassword;
 	private AccountGameInfo aAccountGameInfo;
 	
-	public AccountGameInfo getaAccountGameInfo() {
-		return aAccountGameInfo;
+	/**
+	 * Overloaded constructor
+	 * @param pUUID
+	 * @param pUsername
+	 * @param pPassword
+	 */
+	public Account(UUID pUUID, String pUsername, String pPassword){
+		this(pUUID, pUsername, pPassword, new AccountGameInfo());
 	}
-
-	public void setaAccountGameInfo(AccountGameInfo aAccountGameInfo) {
-		this.aAccountGameInfo = aAccountGameInfo;
-	}
-	
-	public String getCurrentGameUUID(){
-		return aAccountGameInfo.getCurrentGame().getVal1();
-	}
-
-	
 	
 	/**
 	 * Constructor
@@ -51,6 +45,30 @@ public class Account {
 		aAccountGameInfo = pAccountGameInfo;
 	}
 	
+	/**
+	 * @param pUsername
+	 * @param pPassword
+	 * @return true if this account has credentials equal to pUsername and pPassword
+	 */
+	public boolean hasCredentials(String pPassword){
+		return aPassword.equals(pPassword);
+	}
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public AccountGameInfo getAccountGameInfo() {
+		return aAccountGameInfo;
+	}
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public String getCurrentGameUUID(){
+		return aAccountGameInfo.getCurrentGame().getVal1();
+	}
 		
 	/**
 	 * @return this account's ID
@@ -73,45 +91,6 @@ public class Account {
 		return aUsername;
 	}
 	
-	/**
-	 * @param pUsername
-	 * @param pPassword
-	 * @return true if this account has credentials equal to pUsername and pPassword
-	 */
-	public boolean hasCredentials(String pPassword){
-		return aPassword.equals(pPassword);
-	}
-	
-	/**
-	 * @return number of games this account has won
-	 */
-	public int getWins() {
-		return aAccountGameInfo.getaWins();
-	}
-
-	/**
-	 * @return number of games this account has lost
-	 */
-	public int getLosses() {
-		return aAccountGameInfo.getaLosses();
-	}
-	
-	/**
-	 * increments number of wins
-	 */
-	public void incrementWins(){
-		int oldWins = getWins();
-		aAccountGameInfo.setaWins(oldWins++);
-	}
-	
-	/**
-	 * increment number of losses
-	 */
-	public void incrementLosses(){
-		int oldLosses = getLosses();
-		aAccountGameInfo.setaLosses(oldLosses++);
-	}
-	
 	@Override public String toString(){
 		return new Gson().toJson(this);
 	}
@@ -122,5 +101,9 @@ public class Account {
 		}
 		Account lTargetAccount = (Account)pObject;
 		return aUUID == lTargetAccount.getID();
+	}
+
+	@Override public int hashCode() {
+		return aUUID.hashCode();
 	}
 }

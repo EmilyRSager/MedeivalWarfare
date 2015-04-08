@@ -1,5 +1,6 @@
 package mw.shared.clientcommands;
 
+import mw.client.controller.CurrentClientState;
 import mw.client.controller.netmodel.GameCommandHandler;
 
 public class ErrorMessageCommand extends AbstractClientCommand {
@@ -13,6 +14,7 @@ public class ErrorMessageCommand extends AbstractClientCommand {
 
 	@Override
 	public void execute() {
-		GameCommandHandler.displayMessage(aErrorMessage);
+		if (CurrentClientState.getCurrentGame() != null)
+			GameCommandHandler.displayMessage(aErrorMessage);
 	}
 }
