@@ -4,7 +4,6 @@ import java.util.UUID;
 
 import mw.server.network.controllers.EndTurnController;
 import mw.server.network.exceptions.IllegalCommandException;
-import mw.server.network.mappers.AccountMapper;
 import mw.server.network.mappers.GameMapper;
 
 public class EndTurnCommand extends AbstractAuthenticatedServerCommand{

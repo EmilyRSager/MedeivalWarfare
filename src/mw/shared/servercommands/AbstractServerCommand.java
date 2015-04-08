@@ -5,8 +5,6 @@
 
 package mw.shared.servercommands;
 
-import java.util.UUID;
-
 import mw.server.network.exceptions.IllegalCommandException;
 
 /**
