@@ -4,8 +4,8 @@
 
 package mw.server.admin;
 
-import java.util.ArrayList;
-import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 import mw.server.gamelogic.enums.Color;
 import mw.util.Tuple2;
@@ -17,17 +17,17 @@ public class AccountGameInfo {
 	private Tuple2<String, Color> aCurrentGame; //associating the account with the game and the player
 	//list of active games 
 	//String is the name of the game and color is the color of the player in that game
-	private Collection<Tuple2<String, Color>> aActiveGames;
+	private Set<Tuple2<String, Color>> aActiveGames;
 	//list of past games
-	private Collection<Tuple2<String, Color>> aPastGames;
+	private Set<Tuple2<String, Color>> aPastGames;
 	
 	/**
 	 * Constructor
 	 */
 	public AccountGameInfo() {
 		aCurrentGame = null;
-		aActiveGames = new ArrayList<Tuple2<String,Color>>();
-		aPastGames = new ArrayList<Tuple2<String,Color>>();
+		aActiveGames = new HashSet<Tuple2<String,Color>>();
+		aPastGames = new HashSet<Tuple2<String,Color>>();
 	}
 	
 	/**
@@ -92,6 +92,18 @@ public class AccountGameInfo {
 	 */
 	public void removeFromActiveGames(Tuple2<String, Color> aGame){
 		aActiveGames.remove(aGame);
+	}
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public Set<String> getActiveGamesNames(){
+		Set<String> aLoadableGameNames = new HashSet<String>();
+		for(Tuple2<String, Color> lActiveGame : aActiveGames){ 
+			aLoadableGameNames.add(lActiveGame.getVal1());
+		}
+		return aLoadableGameNames;
 	}
 	
 	/**

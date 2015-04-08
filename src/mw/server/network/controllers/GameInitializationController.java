@@ -5,8 +5,10 @@
 
 package mw.server.network.controllers;
 
+import java.util.Set;
 import java.util.UUID;
 
+import mw.server.admin.AccountManager;
 import mw.server.gamelogic.exceptions.TooManyPlayersException;
 import mw.server.gamelogic.state.Game;
 import mw.server.network.communication.ClientCommunicationController;
@@ -15,6 +17,7 @@ import mw.server.network.lobby.GameLobby;
 import mw.server.network.lobby.GameRoom;
 import mw.server.network.lobby.LoadableGameRoom;
 import mw.server.network.translators.LobbyTranslator;
+import mw.shared.SharedCreatedGame;
 import mw.shared.SharedGameLobby;
 import mw.shared.clientcommands.AcknowledgementCommand;
 import mw.shared.clientcommands.DisplayGameLobbyCommand;
@@ -58,7 +61,9 @@ public class GameInitializationController {
 	 * @return a set of game lobbies that are open and waiting for players to join
 	 */
 	public static void getJoinableGames(UUID pRequestingAccountID){
-		SharedGameLobby lSharedGameLobby = LobbyTranslator.translateGameLobby(GameLobby.getInstance());
+		Set<SharedCreatedGame> lCreatedGames = LobbyTranslator.translateGameLobby(GameLobby.getInstance());
+		Set<String> lLoadableGameNames = AccountManager.getInstance().getAccount(pRequestingAccountID).getAccountGameInfo().getActiveGamesNames();
+		SharedGameLobby lSharedGameLobby = new SharedGameLobby(lCreatedGames, lLoadableGameNames);
 		ClientCommunicationController.sendCommand(pRequestingAccountID, new DisplayGameLobbyCommand(lSharedGameLobby));
 	}
 

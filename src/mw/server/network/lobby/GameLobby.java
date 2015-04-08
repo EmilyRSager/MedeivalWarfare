@@ -91,6 +91,15 @@ public class GameLobby {
 	}
 	
 	/**
+	 * 
+	 * @param pLeavingAccountID
+	 * @param pGameName
+	 */
+	public void removeParticipantFromGame(UUID pLeavingAccountID, String pGameName){
+		aGameRooms.get(pGameName).removeClient(pLeavingAccountID);
+	}
+	
+	/**
 	 * @param pGameName
 	 * @return
 	 */

@@ -40,7 +40,7 @@ public class TestMap {
 //				String inputString = br.readLine();
 //				br.close();
 				//System.out.println("saved game being loaded because one was already created");
-				aTestGame = SaveGame.returnSavedGame();
+				aTestGame = GameMarshaller.returnSavedGame();
 			} catch (Exception e) {
 					
 						//System.out.println("Game being created now");
@@ -49,7 +49,7 @@ public class TestMap {
 						lPlayers.add(new Player());
 						aTestGame = new Game(lPlayers, "testgame");
 						//System.out.println("saving this game that got created");
-						SaveGame.SaveMyGame(aTestGame);
+						GameMarshaller.saveGame(aTestGame);
 						//System.out.println("after the savemygame");
 				
 				

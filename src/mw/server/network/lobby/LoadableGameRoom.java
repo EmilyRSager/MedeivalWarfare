@@ -9,7 +9,7 @@ import java.util.Collection;
 import java.util.Set;
 import java.util.UUID;
 
-import test.mw.server.gamelogic.SaveGame;
+import test.mw.server.gamelogic.GameMarshaller;
 import mw.server.admin.Account;
 import mw.server.admin.AccountGameInfo;
 import mw.server.admin.AccountManager;
@@ -84,7 +84,7 @@ public class LoadableGameRoom extends GameRoom{
 			AccountManager.getInstance().saveAccountData(lAccount);
 		}
 		try {
-			SaveGame.SaveMyGame(aGameID);
+			GameMarshaller.saveGame(aGameID);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

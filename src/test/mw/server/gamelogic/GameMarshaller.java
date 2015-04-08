@@ -12,9 +12,9 @@ import java.io.ObjectOutputStream;
 import mw.filesystem.ProjectFolder;
 import mw.server.network.lobby.GameID;
 
-public class SaveGame {
+public class GameMarshaller {
 	private static String GAME_DATA_PATH = "data/savedgames/";
-	public static void SaveMyGame(GameID pGame) throws IOException{
+	public static void saveGame(GameID pGame) throws IOException{
 		//System.out.println("game being serialized");
 		
 		//System.out.println("writing to the savegame file");
@@ -28,7 +28,7 @@ public class SaveGame {
 		out.close();
 	}
 	
-	public static GameID returnSavedGame(String pGameName) throws IOException, ClassNotFoundException{
+	public static GameID loadSavedGame(String pGameName) throws IOException, ClassNotFoundException{
 		//later can be expanded to take in a player ID or something to return the game that is associated with them
 //		File file = new File(ProjectFolder.getPath()+"savegame.txt");
 //		FileReader fReader = new FileReader(file);

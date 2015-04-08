@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.UUID;
 
-import test.mw.server.gamelogic.SaveGame;
+import test.mw.server.gamelogic.GameMarshaller;
 import mw.server.admin.Account;
 import mw.server.admin.AccountManager;
 import mw.server.gamelogic.state.Game;
@@ -25,7 +25,7 @@ public class SaveLoadGameController {
 		try {
 			for(UUID lAccountID : pGameID.getParticipantAccountIDs()){
 				AccountManager.getInstance().saveAccountData(AccountManager.getInstance().getAccount(lAccountID));
-				SaveGame.SaveMyGame(pGameID);
+				GameMarshaller.saveGame(pGameID);
 			}
 			
 		} catch (IOException e) {
@@ -37,7 +37,7 @@ public class SaveLoadGameController {
 	
 	public static void loadGame(String pGameName, UUID pAccountUUID){
 		try {
-			GameID lGameID = SaveGame.returnSavedGame(pGameName);
+			GameID lGameID = GameMarshaller.loadSavedGame(pGameName);
 			GameInitializationController.createLoadableGame(pAccountUUID, lGameID);
 		} catch (ClassNotFoundException e) {
 			ClientCommunicationController.sendCommand(pAccountUUID, 
