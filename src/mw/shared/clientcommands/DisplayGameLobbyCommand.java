@@ -1,7 +1,5 @@
 package mw.shared.clientcommands;
 
-import java.util.UUID;
-
 import mw.client.controller.menuing.MenuActionSender;
 import mw.shared.SharedGameLobby;
 

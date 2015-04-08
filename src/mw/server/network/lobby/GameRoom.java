@@ -83,6 +83,14 @@ public class GameRoom {
 	public Set<UUID> getClients(){
 		return aWaitingClients;
 	}
+	
+	/**
+	 * 
+	 * @param pAccountID
+	 */
+	public void removeClient(UUID pAccountID){
+		aWaitingClients.remove(pAccountID);
+	}
 
 	/**
 	 * Initializes a game and maps the participant accounts to the Game instance and their respective Player instances

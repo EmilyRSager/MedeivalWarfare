@@ -1,20 +1,21 @@
 package mw.shared;
 
-import java.util.Collection;
 import java.util.Set;
 
 public class SharedGameLobby {
 	private Set<SharedCreatedGame> aCreatedGames;
+	private Set<String> aLoadableGameNames;
 	
-	public SharedGameLobby(Set<SharedCreatedGame> pCreatedGames) {
+	public SharedGameLobby(Set<SharedCreatedGame> pCreatedGames, Set<String> pLoadableGameNames) {
 		aCreatedGames = pCreatedGames;
-	}
-	
-	public void addCreatedGame(SharedCreatedGame pSharedCreatedGame){
-		aCreatedGames.add(pSharedCreatedGame);
+		aLoadableGameNames = pLoadableGameNames;
 	}
 	
 	public Set<SharedCreatedGame> getCreatedGames(){
 		return aCreatedGames;
+	}
+	
+	public Set<String> getLoadableGameNames(){
+		return aLoadableGameNames;
 	}
 }
