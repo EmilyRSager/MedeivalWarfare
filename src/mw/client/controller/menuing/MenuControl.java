@@ -1,6 +1,7 @@
 package mw.client.controller.menuing;
 
 import mw.client.controller.CurrentClientState;
+import mw.client.controller.netmodel.UserActionSender;
 import mw.shared.SharedCreatedGame;
 import mw.shared.SharedGameLobby;
 
@@ -72,5 +73,10 @@ public abstract class MenuControl {
 	{
 		SharedGameLobby joinableGames = MenuActionSender.getJoinableGames();
 		ScreenSwitcher.openLobbyScreen(joinableGames);
+	}
+	
+	public static void leaveGame() {
+		MessageWindow popup = new MessageWindow("Another player left the game");
+		UserActionSender.singleton().sendLeaveGame();
 	}
 }
