@@ -7,6 +7,7 @@ package mw.serialization;
 import java.lang.reflect.Type;
 import java.util.HashMap;
 
+import mw.client.network.LeaveGameCommand;
 import mw.shared.servercommands.AbstractServerCommand;
 import mw.shared.servercommands.AuthenticateUserCommand;
 import mw.shared.servercommands.BuildWatchtowerCommand;
@@ -48,6 +49,7 @@ public class ServerCommandSerializerAndDeserializer{
 		aTypeMap.put("GetPossibleGameActionsCommand", new TypeToken<GetPossibleGameActionsCommand>(){}.getType());
 		aTypeMap.put("HireUnitCommand", new TypeToken<HireUnitCommand>(){}.getType());
 		aTypeMap.put("JoinGameCommand", new TypeToken<JoinGameCommand>(){}.getType());
+		aTypeMap.put("LeaveGameCommand", new TypeToken<LeaveGameCommand>(){}.getType());
 		aTypeMap.put("LoadGameCommand", new TypeToken<LoadGameCommand>(){}.getType());
 		aTypeMap.put("LogoutCommand", new TypeToken<LogoutCommand>(){}.getType());
 		aTypeMap.put("MoveUnitCommand", new TypeToken<MoveUnitCommand>(){}.getType());

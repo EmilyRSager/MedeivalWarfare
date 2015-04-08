@@ -3,9 +3,13 @@ package mw.client.controller.netmodel;
 import mw.client.controller.CurrentClientState;
 import mw.client.controller.guimodel.DisplayUpdater;
 import mw.client.controller.guimodel.GameInitializer;
+import mw.client.controller.menuing.MenuControl;
+import mw.client.controller.menuing.ScreenSwitcher;
+import mw.client.controller.menuing.ScreenSwitcher.ScreenKind;
 import mw.client.controller.model.NewStateApplier;
 import mw.client.controller.translator.NetworkModelTranslator;
 import mw.client.model.ModelTile;
+import mw.shared.SharedGameLobby;
 import mw.shared.SharedTile;
 
 
@@ -33,8 +37,10 @@ public final class GameCommandHandler {
 				gameTiles[i][j] = NetworkModelTranslator.translateSharedTile(newTiles[i][j]);
 			}
 		}
+		
 		GameInitializer.newGame(gameTiles);
-		//ClientApplication.concurrentlyDisplay();
+		
+		ScreenSwitcher.switchScreen(ScreenKind.NONE);
 	}
 	
 	/**
@@ -61,6 +67,18 @@ public final class GameCommandHandler {
 			message = "";
 		ClientSynchronization.gameLock.lock();
 		DisplayUpdater.showGeneralMessage(message);
+		ClientSynchronization.gameLock.unlock();
+	}
+	
+	public static void leaveGame(SharedGameLobby lobby) {
+		ClientSynchronization.gameLock.lock();
+		
+		CurrentClientState.setCurrentGame(null);
+		CurrentClientState.getCurrentGameWindow().close();
+		CurrentClientState.setCurrentGameWindow(null);
+		
+		ScreenSwitcher.openLobbyScreen(lobby);
+		
 		ClientSynchronization.gameLock.unlock();
 	}
 	

@@ -9,8 +9,8 @@ import java.util.UUID;
 
 import mw.server.gamelogic.exceptions.TooManyPlayersException;
 import mw.server.gamelogic.state.Game;
-import mw.server.gamelogic.state.GameID;
 import mw.server.network.communication.ClientCommunicationController;
+import mw.server.network.lobby.GameID;
 import mw.server.network.lobby.GameLobby;
 import mw.server.network.lobby.GameRoom;
 import mw.server.network.lobby.LoadableGameRoom;
@@ -27,43 +27,22 @@ import mw.shared.clientcommands.InviteToLoadedGameCommnad;
  * and informing the clients of their Colors.
  */
 public class GameInitializationController {
-	private static GameInitializationController aGameInitializationController;
-	private GameLobby aGameLobby;
-	
-	/**
-	 * Constructor
-	 */
-	private GameInitializationController(){
-		aGameLobby = new GameLobby();
-	}
-
-	/**
-	 * Singleton implementation
-	 * @return static GameInitializationController instance
-	 */
-	public static GameInitializationController getInstance(){
-		if(aGameInitializationController == null){
-			aGameInitializationController = new GameInitializationController();
-		}
-
-		return aGameInitializationController;
-	}
 	
 	/**
 	 * Gets the loaded game, finds out the allowable Account UUIDs and then creates a LoadableGameRoom
 	 * @param pAccountID
 	 * @param pGameID
 	 */
-	public void createLoadableGame(UUID pRequestingAccountID, GameID pGameID){
-		Game lGame = pGameID.getaGame();
+	public static void createLoadableGame(UUID pRequestingAccountID, GameID pGameID){
+		Game lGame = pGameID.getGame();
 		int lNumRequestedClients = lGame.getPlayers().size();
-		String lLoadedGameName = pGameID.getaName();
+		String lLoadedGameName = pGameID.getName();
 				
 		LoadableGameRoom lLoadableGameRoom = new LoadableGameRoom(lNumRequestedClients, pGameID);
 		lLoadableGameRoom.addClient(pRequestingAccountID);
-		aGameLobby.addGameRoom(pGameID.getaName(), lLoadableGameRoom);
+		GameLobby.getInstance().addGameRoom(pGameID.getName(), lLoadableGameRoom);
 			
-		for(UUID lParticpantAccountID : pGameID.getaListOfAccountUUIDs()){
+		for(UUID lParticpantAccountID : pGameID.getParticipantAccountIDs()){
 			if (lParticpantAccountID != pRequestingAccountID) {
 				ClientCommunicationController.sendCommand(lParticpantAccountID, 
 						new InviteToLoadedGameCommnad(LobbyTranslator.translateGameRoom(lLoadedGameName, lLoadableGameRoom)));
@@ -78,8 +57,8 @@ public class GameInitializationController {
 	/**
 	 * @return a set of game lobbies that are open and waiting for players to join
 	 */
-	public void getJoinableGames(UUID pRequestingAccountID){
-		SharedGameLobby lSharedGameLobby = LobbyTranslator.translateGameLobby(aGameLobby);
+	public static void getJoinableGames(UUID pRequestingAccountID){
+		SharedGameLobby lSharedGameLobby = LobbyTranslator.translateGameLobby(GameLobby.getInstance());
 		ClientCommunicationController.sendCommand(pRequestingAccountID, new DisplayGameLobbyCommand(lSharedGameLobby));
 	}
 
@@ -88,9 +67,9 @@ public class GameInitializationController {
 	 * acknowledgement is sent to the Account informing her to wait.
 	 * @param pAccountID
 	 */
-	public void requestNewGame(UUID pRequestingAccountID, String pGameName, int pNumRequestedPlayers){
-		GameRoom lCreatedGameRoom = aGameLobby.createNewGameRoom(pGameName, pNumRequestedPlayers);
-		aGameLobby.addParticipantToGame(pRequestingAccountID, pGameName);
+	public static void requestNewGame(UUID pRequestingAccountID, String pGameName, int pNumRequestedPlayers){
+		GameRoom lCreatedGameRoom = GameLobby.getInstance().createNewGameRoom(pGameName, pNumRequestedPlayers);
+		GameLobby.getInstance().addParticipantToGame(pRequestingAccountID, pGameName);
 		ClientCommunicationController.sendCommand(pRequestingAccountID, new DisplayNewGameRoomCommand(LobbyTranslator.translateGameRoom(pGameName, lCreatedGameRoom)));
 	}
 	
@@ -98,12 +77,12 @@ public class GameInitializationController {
 	 * @param pAccountID
 	 * @param pGameName
 	 */
-	public void joinGame(UUID pJoiningAccountID, String pGameName) throws TooManyPlayersException{
-		aGameLobby.addParticipantToGame(pJoiningAccountID, pGameName);
-		GameRoom lGameRoom = aGameLobby.getGameRoom(pGameName);
+	public static void joinGame(UUID pJoiningAccountID, String pGameName) throws TooManyPlayersException{
+		GameLobby.getInstance().addParticipantToGame(pJoiningAccountID, pGameName);
+		GameRoom lGameRoom = GameLobby.getInstance().getGameRoom(pGameName);
 		ClientCommunicationController.sendCommand(pJoiningAccountID, new DisplayNewGameRoomCommand(LobbyTranslator.translateGameRoom(pGameName, lGameRoom)));
-		if(aGameLobby.roomIsComplete(pGameName)){
-			GameRoom lReadyGameRoom = aGameLobby.getGameRoom(pGameName);
+		if(GameLobby.getInstance().roomIsComplete(pGameName)){
+			GameRoom lReadyGameRoom = GameLobby.getInstance().getGameRoom(pGameName);
 			lReadyGameRoom.initializeGame(pGameName);
 		}
 		else{

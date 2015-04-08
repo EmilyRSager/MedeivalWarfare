@@ -15,7 +15,6 @@ public class JoinGameCommand extends AbstractAuthenticatedServerCommand {
 
 	@Override
 	protected void doExecution(UUID pAccountID) throws IllegalCommandException {
-		GameInitializationController.getInstance().joinGame(pAccountID, aGameName);
+		GameInitializationController.joinGame(pAccountID, aGameName);
 	}
-	
 }

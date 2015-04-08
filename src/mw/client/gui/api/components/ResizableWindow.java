@@ -65,6 +65,11 @@ public class ResizableWindow implements MinuetoWindow {
 	public void resize(int newWidth, int newHeight)
 	{
 		MinuetoFrame newWindow = new MinuetoFrame(newWidth, newHeight, true);
+		if (newWindow.getWidth() != newWidth || newWindow.getHeight() != newHeight)
+		{
+			System.out.println("[ResizableWindow] need to re-recreate the window ?!?");
+			newWindow = new MinuetoFrame(newWidth, newHeight, true);
+		}
 		
 		for (MinuetoFocusHandler handler : focusHandlers) {
 			window.unregisterFocusHandler(handler, eventQueue);

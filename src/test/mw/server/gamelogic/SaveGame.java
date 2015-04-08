@@ -10,7 +10,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
 import mw.filesystem.ProjectFolder;
-import mw.server.gamelogic.state.GameID;
+import mw.server.network.lobby.GameID;
 
 public class SaveGame {
 	private static String GAME_DATA_PATH = "data/savedgames/";
@@ -19,7 +19,7 @@ public class SaveGame {
 		
 		//System.out.println("writing to the savegame file");
 		//PrintWriter out = new PrintWriter(ProjectFolder.getPath()+"savegame.txt");
-		FileOutputStream out = new FileOutputStream(ProjectFolder.getPath() + GAME_DATA_PATH + pGame.getaName());
+		FileOutputStream out = new FileOutputStream(ProjectFolder.getPath() + GAME_DATA_PATH + pGame.getName());
 		//System.out.println("got here 1");
 		ObjectOutputStream oos = new ObjectOutputStream(out);
 		//System.out.println("got here 2");

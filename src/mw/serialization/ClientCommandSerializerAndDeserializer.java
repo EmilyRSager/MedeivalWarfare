@@ -7,6 +7,8 @@ package mw.serialization;
 import java.lang.reflect.Type;
 import java.util.HashMap;
 
+import sun.reflect.generics.tree.TypeTree;
+import sun.reflect.generics.visitor.TypeTreeVisitor;
 import mw.shared.clientcommands.AbstractClientCommand;
 import mw.shared.clientcommands.AccountCreatedCommand;
 import mw.shared.clientcommands.AcknowledgementCommand;
@@ -19,6 +21,7 @@ import mw.shared.clientcommands.MessageReceivedCommand;
 import mw.shared.clientcommands.NewGameCommand;
 import mw.shared.clientcommands.NotifyBeginTurnCommand;
 import mw.shared.clientcommands.NotifyEndTurnCommand;
+import mw.shared.clientcommands.RelaunchLobbyCommand;
 import mw.shared.clientcommands.SetColorCommand;
 import mw.shared.clientcommands.UpdateAggregateTilesCommand;
 import mw.shared.clientcommands.UpdateTileCommand;
@@ -48,6 +51,7 @@ public class ClientCommandSerializerAndDeserializer {
 		aTypeMap.put("NewGameCommand", new TypeToken<NewGameCommand>(){}.getType());
 		aTypeMap.put("NotifyBeginTurnComand", new TypeToken<NotifyBeginTurnCommand>(){}.getType());
 		aTypeMap.put("NotifyEndTurnCommand", new TypeToken<NotifyEndTurnCommand>(){}.getType());
+		aTypeMap.put("RelaunchLobbyCommand", new TypeToken<RelaunchLobbyCommand>(){}.getType());
 		aTypeMap.put("SetColorCommand", new TypeToken<SetColorCommand>(){}.getType());
 		aTypeMap.put("UpdateTileCommand", new TypeToken<UpdateTileCommand>(){}.getType());
 		aTypeMap.put("UserAuthenticatedCommand", new TypeToken<UserAuthenticatedCommand>(){}.getType());

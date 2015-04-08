@@ -82,7 +82,10 @@ public final class MenuActionSender {
 	
 	public static void setJoinedGameResult(SharedCreatedGame result)
 	{
-		joinedGameResult.setValue(result);
+		if (joinableGamesResult != null)
+			joinedGameResult.setValue(result);
+		else
+			System.out.println("[MenuActionSender] trying to test the game huh ?");
 	}
 	
 	
@@ -90,7 +93,6 @@ public final class MenuActionSender {
 	{
 		ScreenSwitcher.openInvite(game);
 	}
-	
 	
 	public static void leaveGameRoom()
 	{

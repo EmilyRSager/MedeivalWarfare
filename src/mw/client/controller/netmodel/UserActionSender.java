@@ -181,6 +181,14 @@ public class UserActionSender {
 		NetworkController.endTurn();
 	}
 	
+	public void sendLeaveGame() {
+		NetworkController.leaveGame();
+	}
+	
+	public void sendSaveGame() {
+		NetworkController.saveGame();
+	}
+	
 	/* ==========================
 	 * 		Private methods
 	 * ==========================

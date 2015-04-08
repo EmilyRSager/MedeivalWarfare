@@ -10,6 +10,6 @@ public class GetJoinableGamesCommand extends AbstractAuthenticatedServerCommand 
 
 	@Override
 	protected void doExecution(UUID pAccountID) throws IllegalCommandException {
-		GameInitializationController.getInstance().getJoinableGames(pAccountID);
+		GameInitializationController.getJoinableGames(pAccountID);
 	}
 }

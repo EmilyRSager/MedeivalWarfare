@@ -1,6 +1,9 @@
 package mw.client.controller;
 
+import org.minueto.MinuetoColor;
+
 import mw.client.controller.model.ModelQuerier;
+import mw.client.controller.translator.ModelGUITranslator;
 import mw.client.gui.window.GameWindow;
 import mw.client.model.Game;
 import mw.shared.SharedColor;
@@ -16,6 +19,7 @@ public final class CurrentClientState {
 
 	private static Game currentGame = null;
 	private static GameWindow currentGameWindow = null;
+	private static String username;
 	
 	/**
 	 * Changes the current game
@@ -37,8 +41,12 @@ public final class CurrentClientState {
 	public static void setCurrentPlayerColor(SharedColor color)
 	{
 		ModelQuerier.setCurrentPlayerColor(currentGame,color);
+		currentGameWindow.addUserDisplay(username, ModelGUITranslator.translateToMinuetoColor(currentGame.getCurrentPlayer().getColor()));
 	}
 	
+	public static boolean isInGame() {
+		return currentGame != null;
+	}
 	
 	public static void setCurrentGameWindow(GameWindow window) {
 		currentGameWindow = window;
@@ -46,6 +54,14 @@ public final class CurrentClientState {
 	
 	public static GameWindow getCurrentGameWindow() {
 		return currentGameWindow;
+	}
+	
+	public static void setUsername(String name) {
+		username = name;
+	}
+	
+	public static String getUsername() {
+		return username;
 	}
 	
 }

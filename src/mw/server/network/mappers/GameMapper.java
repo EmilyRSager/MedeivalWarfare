@@ -10,6 +10,7 @@ import java.util.Set;
 import java.util.UUID;
 
 import mw.server.gamelogic.state.Game;
+import mw.server.network.lobby.GameID;
 
 
 /**
@@ -17,53 +18,69 @@ import mw.server.gamelogic.state.Game;
  * Maps AccountIDs to the games they're currently playing in. This may not be a good solution.
  */
 public class GameMapper {
-	private static GameMapper aGameManager;
-	private HashMap<UUID, Game> aGameMap;
+	private static GameMapper aGameMapper;
+	private HashMap<UUID, GameID> aGameMap;
 	
 	/**
 	 * Constructor
 	 */
 	private GameMapper() {
-		aGameMap = new HashMap<UUID, Game>();
+		aGameMap = new HashMap<UUID, GameID>();
 	}
 	
 	/**
 	 * Singleton implementation
-	 * @return static GameMangager instance
+	 * @return static GameIDMangager instance
 	 */
 	public static GameMapper getInstance(){
-		if(aGameManager == null){
-			aGameManager = new GameMapper();
+		if(aGameMapper == null){
+			aGameMapper = new GameMapper();
 		}
 		
-		return aGameManager;
+		return aGameMapper;
 	}
 	
 	/**
-	 * Puts a mapping between each AccountID in pAccountIDs and pGame
+	 * Puts a mapping between each AccountID in pAccountIDs and pGameID
 	 * @param pAccountIDs
-	 * @param pGame
+	 * @param pGameID
 	 */
-	public void putGame(Set<UUID> pAccountIDs, Game pGame){
+	public void putGameID(Set<UUID> pAccountIDs, GameID pGameID){
 		for(UUID pAccountID : pAccountIDs){
-			aGameMap.put(pAccountID, pGame);
+			aGameMap.put(pAccountID, pGameID);
 		}
 	}
 	
 	/**
-	 * Puts a mapping between pAccountID and pGame in a HashMap
+	 * Puts a mapping between pAccountID and pGameID in a HashMap
 	 * @param pAccountID
-	 * @param pGame
+	 * @param pGameID
 	 */
-	public void putGame(UUID pAccountID, Game pGame){
-		aGameMap.put(pAccountID, pGame);
+	public void putGameID(UUID pAccountID, GameID pGameID){
+		aGameMap.put(pAccountID, pGameID);
 	}
 	
 	/**
 	 * @param pAccountID
-	 * @return Game the pAccountID is currently playing
+	 * @return GameID the pAccountID is currently playing
+	 */
+	public GameID getGameID(UUID pAccountID){
+		return aGameMap.get(pAccountID);
+	}
+	
+	/**
+	 * @param pAccountID
+	 * @return returns the Game instance wrapped by the GameID associated with pAccountID
 	 */
 	public Game getGame(UUID pAccountID){
-		return aGameMap.get(pAccountID);
+		return aGameMap.get(pAccountID).getGame();
+	}
+	
+	/**
+	 * 
+	 * @param pAccountID
+	 */
+	public void removeGameID(UUID pAccountID){
+		aGameMap.remove(pAccountID);
 	}
 }

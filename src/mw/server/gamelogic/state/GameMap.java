@@ -25,6 +25,8 @@ import com.google.gson.GsonBuilder;
  */
 public class GameMap implements Serializable
 { 
+	private static final double TREE_GROWTH_PROBABILITY = 0.5;
+	
 	private Graph<Tile> aTileGraph; 
 	private Tile[][] aTiles; 
 	private Collection<Village> aVillages; 
@@ -60,12 +62,13 @@ public class GameMap implements Serializable
 	 */
 	public void generateTrees(){
 
-		Random rand1 = new Random();
-		Random rand2 = new Random();
+		Random rand = new Random();
 
-		for(Tile lTile : MultiArrayIterable.toIterable(aTiles)){
+		for(Tile lTile : MultiArrayIterable.toIterable(aTiles))
+		{
 
-			if (lTile.getStructureType() == StructureType.TREE) {
+			if (lTile.getStructureType() == StructureType.TREE) 
+			{
 				//we are only picking those tiles from the map that have a tree on them 
 
 				Collection<Tile> lNeighbors = aTileGraph.getNeighbors(lTile);
@@ -73,27 +76,21 @@ public class GameMap implements Serializable
 				ArrayList<Tile> lNeighboringEmptyOrMeadowTiles = new ArrayList<Tile>();
 				for(Tile lNeighbor : lNeighbors){
 					StructureType lStructureType = lNeighbor.getStructureType();
-					if ((lStructureType == StructureType.NO_STRUCT 
-							|| lStructureType == StructureType.TREE 
-							|| lTile.getVillageType() == VillageType.NO_VILLAGE)) {
-
-						if (!lNeighbor.hasUnit() ) {
+					if (lStructureType == StructureType.NO_STRUCT 
+							//|| lStructureType == StructureType.TREE 
+							&& lTile.getVillageType() == VillageType.NO_VILLAGE
+							&& !lNeighbor.hasUnit())
+					{
 							lNeighboringEmptyOrMeadowTiles.add(lTile);
-						}
 					}
 				}
 
 				//above gives us all the neigboring tiles which are empty or have a tree on them 
-				int max=lNeighboringEmptyOrMeadowTiles.size();
+				int max = lNeighboringEmptyOrMeadowTiles.size();
 
-				int randomNum1 = rand1.nextInt(max) ; //a random number from here will give
-				//an equal likelihood of picking a required tile
-
-				int randomNum2 = rand2.nextInt(2); //gives 50 % chance of actually putting a tree on that tile
-
-				Tile randomlyPickedTile = lNeighboringEmptyOrMeadowTiles.get(randomNum1);
-
-				if(randomNum2==1){
+				if (rand.nextDouble() < TREE_GROWTH_PROBABILITY)
+				{
+					Tile randomlyPickedTile = lNeighboringEmptyOrMeadowTiles.get(rand.nextInt(max));
 					randomlyPickedTile.setStructureType(StructureType.TREE);
 					randomlyPickedTile.notifyObservers();
 				}

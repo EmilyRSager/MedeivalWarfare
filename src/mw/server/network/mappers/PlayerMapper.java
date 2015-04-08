@@ -105,7 +105,7 @@ public class PlayerMapper {
 	 * @param pAccountID
 	 * @return none
 	 */
-	public void removePlayer(int pAccountID){
+	public void removePlayer(UUID pAccountID){
 		Player lPlayer = aPlayerMap.get(pAccountID);
 		aPlayerMap.remove(pAccountID);
 		aAccountMap.remove(lPlayer);
