@@ -264,6 +264,7 @@ public class Village extends Observable implements Serializable
 	{
 		cannonHits++;
 	}
+	
 	public boolean isDestroyedByCannon()
 	{
 		switch (aVillageType)
