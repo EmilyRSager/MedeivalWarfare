@@ -80,7 +80,9 @@ public class GameLobbyWindow {
 				@Override
 				public void actionPerformed(ActionEvent e)
 				{
-					MenuControl.gameSelected(gameJList.getSelectedValuesList().get(0));
+					List<String> selection = gameJList.getSelectedValuesList();
+					if (!selection.isEmpty())
+						MenuControl.gameSelected(selection.get(0));
 				}
 			});
 			buttonContainer.add(join);
