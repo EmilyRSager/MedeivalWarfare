@@ -22,7 +22,7 @@ public final class TextDisplay extends AbstractWindowComponent {
 	public static final MinuetoColor DEFAULT_TEXT_COLOR = MinuetoColor.BLACK;
 	
 	private static final MinuetoColor BORDER_COLOR = ExtendedMinuetoColor.LIGHT_GREY;
-	private static final MinuetoColor BACKGROUND_COLOR = MinuetoColor.WHITE;
+	private static final MinuetoColor DEFAULT_BACKGROUND_COLOR = MinuetoColor.WHITE;
 	
 	private static final int X_BORDER_MARGIN = 8;
 	private static final int Y_BORDER_MARGIN = 2;
@@ -30,11 +30,23 @@ public final class TextDisplay extends AbstractWindowComponent {
 	private MinuetoText label;
 	private MinuetoImage image;
 	
+	private final MinuetoColor backgroundColor;
+	
 	/* ========================
 	 * 		Constructors
 	 * ========================
 	 */
 
+	public TextDisplay(int x, int y, String text, MinuetoColor backgroundColor)
+	{
+		super(x, y, 0, 0);
+		label = new MinuetoText(text, DEFAULT_FONT, DEFAULT_TEXT_COLOR);
+		area.setHeight(label.getHeight()+2*Y_BORDER_MARGIN);
+		area.setWidth(label.getWidth()+2*X_BORDER_MARGIN);
+		image = buildImage(label);
+		this.backgroundColor = backgroundColor;
+	}
+	
 	/**
 	 * Creates a new TextDisplay with a position and a text.
 	 * @param x the x coordinate of the new TextDisplay
@@ -43,11 +55,7 @@ public final class TextDisplay extends AbstractWindowComponent {
 	 */
 	public TextDisplay(int x, int y, String text)
 	{
-		super(x, y, 0, 0);
-		label = new MinuetoText(text, DEFAULT_FONT, DEFAULT_TEXT_COLOR);
-		area.setHeight(label.getHeight()+2*Y_BORDER_MARGIN);
-		area.setWidth(label.getWidth()+2*X_BORDER_MARGIN);
-		image = buildImage(label);
+		this(x,y,text,DEFAULT_BACKGROUND_COLOR);
 	}
 	
 	/**
@@ -58,6 +66,11 @@ public final class TextDisplay extends AbstractWindowComponent {
 	public TextDisplay(String text)
 	{
 		this(0,0,text);
+	}
+	
+	public TextDisplay(String text, MinuetoColor backgroundColor)
+	{
+		this(0,0,text,backgroundColor);
 	}
 	
 	/* ==========================
@@ -76,7 +89,7 @@ public final class TextDisplay extends AbstractWindowComponent {
 	
 	private MinuetoImage buildImage(MinuetoText label)
 	{
-		MinuetoImage img = ExtendedMinuetoImage.coloredSquare(getWidth(), getHeight(), BACKGROUND_COLOR);//new MinuetoImage(area.getWidth(),area.getHeight());
+		MinuetoImage img = ExtendedMinuetoImage.coloredSquare(getWidth(), getHeight(), backgroundColor);//new MinuetoImage(area.getWidth(),area.getHeight());
 		img.draw(label, X_BORDER_MARGIN, Y_BORDER_MARGIN);
 		img = ExtendedMinuetoImage.drawBorder(img, BORDER_COLOR);
 		return img;

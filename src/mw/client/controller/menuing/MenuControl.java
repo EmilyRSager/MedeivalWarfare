@@ -1,5 +1,6 @@
 package mw.client.controller.menuing;
 
+import mw.client.controller.CurrentClientState;
 import mw.shared.SharedCreatedGame;
 import mw.shared.SharedGameLobby;
 
@@ -12,6 +13,7 @@ public abstract class MenuControl {
 		boolean status = MenuActionSender.tryLogin(username, password);
 		if (status) 
 		{
+			CurrentClientState.setUsername(username);
 			openGameLobby();
 		}
 	}
@@ -22,6 +24,7 @@ public abstract class MenuControl {
 		boolean status = MenuActionSender.tryCreateAccount(username, password);
 		if (status) 
 		{
+			CurrentClientState.setUsername(username);
 			openGameLobby();
 		}
 	}

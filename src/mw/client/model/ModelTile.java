@@ -15,8 +15,8 @@ import mw.shared.SharedColor;
 public final class ModelTile extends Observable {
 	
 	public enum Terrain {GRASS, TREE, MEADOW, TOMBSTONE, SEA};
-	public enum UnitType {NONE, PEASANT, INFANTRY, SOLDIER, KNIGHT, WATCHTOWER};
-	public enum StructureType {NONE, HOVEL, TOWN, FORT};
+	public enum UnitType {NONE, PEASANT, INFANTRY, SOLDIER, KNIGHT, WATCHTOWER, CANNON };
+	public enum StructureType {NONE, HOVEL, TOWN, FORT, CASTLE };
 	
 	
 	private final Coordinates coord;
