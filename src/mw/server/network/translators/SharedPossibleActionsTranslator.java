@@ -42,6 +42,12 @@ public abstract class SharedPossibleActionsTranslator {
 		{
 			sharedHirable.add(SharedTileTranslator.translateCoordinates(TileController.getCoordinates(t)));
 		}
+		Collection<Coordinates> sharedFirable = new ArrayList<Coordinates>();
+		Collection<Tile> serverFirable = serverPossibleActions.getFirableTiles();
+		for (Tile t: serverFirable)
+		{
+			sharedFirable.add(SharedTileTranslator.translateCoordinates(TileController.getCoordinates(t)));
+		}
 		 		
 		Collection<SharedTile.UnitType> sharedUT = new ArrayList<SharedTile.UnitType>();
 		Collection<UnitType> serverUT = serverPossibleActions.getUnitUpgrade();
@@ -66,7 +72,9 @@ public abstract class SharedPossibleActionsTranslator {
 		
 		SharedTile.VillageType sharedVT = SharedTileTranslator.translateVillageType(serverPossibleActions.getVillageUpgrade());
 		
-		return new SharedPossibleGameActions(sharedMoves, sharedUT, sharedAT, sharedVT, sharedCombinable, sharedHirable);
+		boolean sharedCanBuildWatchtower = serverPossibleActions.getCanBuildWatchtower();
+		
+		return new SharedPossibleGameActions(sharedMoves, sharedUT, sharedAT, sharedVT, sharedCombinable, sharedHirable, sharedFirable, sharedCanBuildWatchtower);
 
 	}
 	
