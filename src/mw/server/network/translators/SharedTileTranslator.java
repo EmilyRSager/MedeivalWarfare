@@ -130,7 +130,9 @@ public class SharedTileTranslator {
 			return Terrain.MEADOW;
 		}
 		
-		else if(pStructureType == StructureType.NO_STRUCT){
+		else if(pStructureType == StructureType.NO_STRUCT 
+				|| pStructureType == StructureType.ROAD)
+		{
 			return Terrain.GRASS;
 		}
 		
