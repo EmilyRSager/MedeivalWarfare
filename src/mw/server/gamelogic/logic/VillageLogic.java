@@ -114,7 +114,7 @@ public class VillageLogic
 	public static void upgradeVillage(Village pVillage, VillageType pVillageType) throws CantUpgradeException, NotEnoughIncomeException
 	{
 		int upgradeCost = PriceCalculator.getVillageUpgradeCost(pVillageType); 
-		if (pVillage.getWood() > upgradeCost)
+		if (pVillage.getWood() >= upgradeCost)
 		{
 			switch (pVillageType) {
 			case HOVEL:
