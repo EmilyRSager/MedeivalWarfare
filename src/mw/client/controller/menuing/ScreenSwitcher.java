@@ -1,6 +1,7 @@
 package mw.client.controller.menuing;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 import mw.client.gui.menuing.CreateAccountWindow;
@@ -69,7 +70,7 @@ public abstract class ScreenSwitcher {
 	{
 		changeState(ScreenKind.LOBBY);
 		
-		lobbyScreen = new GameLobbyWindow(lobby);
+		lobbyScreen = new GameLobbyWindow(lobby, new SharedGameLobby(new HashSet<SharedCreatedGame>()));
 	}
 
 	public static synchronized void openGameRoomScreen(SharedCreatedGame game)
