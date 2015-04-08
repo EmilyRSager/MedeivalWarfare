@@ -66,21 +66,25 @@ public class SharedTileTranslator {
 	 */
 
 	public static VillageType translateVillageType(mw.server.gamelogic.enums.VillageType pVillageType){
-		if(pVillageType == mw.server.gamelogic.enums.VillageType.HOVEL){
-			return VillageType.HOVEL;
-		}
-		
-		else if(pVillageType == mw.server.gamelogic.enums.VillageType.TOWN){
-			return VillageType.TOWN;
-		}
-		
-		else if(pVillageType == mw.server.gamelogic.enums.VillageType.FORT){
-
-			return VillageType.FORT;
-		}
-		
-		else{
+		switch(pVillageType)
+		{
+		case NO_VILLAGE:
 			return VillageType.NONE;
+			
+		case HOVEL:
+			return VillageType.HOVEL;
+			
+		case TOWN:
+			return VillageType.TOWN;
+			
+		case FORT:
+			return VillageType.FORT;
+			
+		case CASTLE:
+			return VillageType.CASTLE;
+			
+		default:
+			throw new IllegalArgumentException("The value "+pVillageType+" is not a valid value to translate to shared VillageType");
 		}
 	}
 	
