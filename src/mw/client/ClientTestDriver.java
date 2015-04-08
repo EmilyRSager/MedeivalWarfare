@@ -8,12 +8,24 @@ public class ClientTestDriver {
 		NetworkController.initialize();
 		
 		//createAccountAndGame();
-		loginAndLoad();
-		
+		//loginAndLoad();
+		loginAndCreate();	
+	}
+	
+	public static void loginAndCreate(){
+		int name = 0;
+		if (name == 0){
+			MenuActionSender.tryLogin("Charlie", "Bloomfield");
+			NetworkController.requestNewGame("TestGame3", 2);
+		}
+		else{
+			MenuActionSender.tryLogin("Hugo", "Kapp");
+			NetworkController.joinGame("TestGame3");
+		}
 	}
 	
 	public static void createAccountAndGame(){
-		int name = 1;
+		int name = 0;
 		if (name == 0){
 			MenuActionSender.tryCreateAccount("Charlie", "Bloomfield");
 			NetworkController.requestNewGame("Test game", 2);
