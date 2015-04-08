@@ -26,7 +26,6 @@ import mw.util.Tuple2;
  * is invalid.
  */
 public class ServerCommandHandler {
-	
 	private static ServerCommandHandler aServerCommandHandler;
 	private BlockingQueue<Tuple2<AbstractServerCommand, Integer>> aServerCommandQueue;
 	
