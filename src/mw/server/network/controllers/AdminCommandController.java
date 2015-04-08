@@ -60,6 +60,8 @@ public class AdminCommandController {
 	 */
 	public void reportErrorMessage(String pErrorMessage, UUID pAccountID){
 		AbstractClientCommand lClientCommand = null;
+		//TODO
+		
 		Integer lClientID = AccountMapper.getInstance().getClientID(pAccountID);
 		ClientChannelMapper.getInstance().getChannel(lClientID).sendCommand(lClientCommand);
 	}

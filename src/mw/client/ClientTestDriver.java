@@ -7,10 +7,28 @@ public class ClientTestDriver {
 	public static void main(String[] args) {
 		NetworkController.initialize();
 		
-		int name = 1; 
+		//createAccountAndGame();
+		loginAndLoad();
+		
+	}
+	
+	public static void createAccountAndGame(){
+		int name = 1;
+		if (name == 0){
+			MenuActionSender.tryCreateAccount("Charlie", "Bloomfield");
+			NetworkController.requestNewGame("Test game", 2);
+		}
+		else{
+			MenuActionSender.tryCreateAccount("Hugo", "Kapp");
+			NetworkController.joinGame("Test game");
+		}
+	}
+	
+	public static void loginAndLoad(){
+		int name = 1;
 		if (name == 0){
 			MenuActionSender.tryLogin("Charlie", "Bloomfield");
-			NetworkController.requestNewGame("Test game", 2);
+			NetworkController.loadGame("Test game");
 		}
 		else{
 			MenuActionSender.tryLogin("Hugo", "Kapp");
