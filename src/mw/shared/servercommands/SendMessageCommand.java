@@ -8,6 +8,7 @@ import java.util.Set;
 import java.util.UUID;
 
 import mw.server.network.controllers.AdminCommandController;
+import mw.server.network.exceptions.IllegalCommandException;
 import mw.server.network.mappers.ClientChannelMapper;
 
 /**
@@ -40,7 +41,7 @@ public class SendMessageCommand extends AbstractAuthenticatedServerCommand {
 	 * @param int pClientID, the identification number the client who sent this message to the server.
 	 */
 	@Override
-	protected void doExecution(UUID pAccountID) throws Exception {
+	protected void doExecution(UUID pAccountID) throws IllegalCommandException {
 		AdminCommandController.getInstance().distributeChatMessage(aMessage, aRecipientClientIDs);
 	}
 }

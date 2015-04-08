@@ -8,6 +8,7 @@ package mw.shared.servercommands;
 import java.util.UUID;
 
 import mw.server.network.controllers.GameInitializationController;
+import mw.server.network.exceptions.IllegalCommandException;
 
 public class RequestNewGameCommand extends AbstractAuthenticatedServerCommand {
 	private final String aType = "RequestNewGameCommand";
@@ -20,7 +21,7 @@ public class RequestNewGameCommand extends AbstractAuthenticatedServerCommand {
 	}
 	
 	@Override
-	protected void doExecution(UUID pAccountID) throws Exception {
+	protected void doExecution(UUID pAccountID) throws IllegalCommandException {
 		GameInitializationController.getInstance().requestNewGame(pAccountID, aGameName, aNumPlayers);
 	}
 }

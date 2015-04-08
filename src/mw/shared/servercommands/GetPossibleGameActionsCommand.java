@@ -3,6 +3,7 @@ package mw.shared.servercommands;
 import java.util.UUID;
 
 import mw.server.network.controllers.GetPossibleActionsController;
+import mw.server.network.exceptions.IllegalCommandException;
 import mw.server.network.mappers.AccountMapper;
 import mw.server.network.mappers.GameMapper;
 import mw.shared.Coordinates;
@@ -20,7 +21,7 @@ public class GetPossibleGameActionsCommand extends AbstractAuthenticatedServerCo
 	}
 
 	@Override
-	protected void doExecution(UUID pAccountID) {
+	protected void doExecution(UUID pAccountID) throws IllegalCommandException {
 		GetPossibleActionsController.getPossibleActions(
 				pAccountID,
 				GameMapper.getInstance().getGame(pAccountID),

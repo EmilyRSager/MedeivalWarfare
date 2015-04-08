@@ -3,6 +3,7 @@ package mw.shared.servercommands;
 import java.util.UUID;
 
 import mw.server.network.controllers.GameInitializationController;
+import mw.server.network.exceptions.IllegalCommandException;
 
 public class JoinGameCommand extends AbstractAuthenticatedServerCommand {
 	private final String aType = "JoinGameCommand";
@@ -13,7 +14,7 @@ public class JoinGameCommand extends AbstractAuthenticatedServerCommand {
 	}
 
 	@Override
-	protected void doExecution(UUID pAccountID) throws Exception {
+	protected void doExecution(UUID pAccountID) throws IllegalCommandException {
 		GameInitializationController.getInstance().joinGame(pAccountID, aGameName);
 	}
 	

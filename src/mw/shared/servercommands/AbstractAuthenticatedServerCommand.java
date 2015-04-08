@@ -2,6 +2,7 @@ package mw.shared.servercommands;
 
 import java.util.UUID;
 
+import mw.server.network.exceptions.IllegalCommandException;
 import mw.server.network.mappers.AccountMapper;
 
 /**
@@ -12,10 +13,10 @@ import mw.server.network.mappers.AccountMapper;
 public abstract class AbstractAuthenticatedServerCommand extends AbstractServerCommand {
 
 	@Override
-	public final void execute(Integer pClientID) throws Exception {
+	public final void execute(Integer pClientID) throws IllegalCommandException {
 		doExecution(AccountMapper.getInstance().getAccountID(pClientID));
 	}
 	
-	protected abstract void doExecution(UUID pAccountID) throws Exception;
+	protected abstract void doExecution(UUID pAccountID) throws IllegalCommandException;
 
 }

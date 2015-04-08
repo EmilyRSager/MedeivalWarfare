@@ -8,6 +8,7 @@ package mw.shared.servercommands;
 import java.util.UUID;
 
 import mw.server.gamelogic.controllers.GameController;
+import mw.server.network.exceptions.IllegalCommandException;
 import mw.server.network.mappers.AccountMapper;
 import mw.server.network.mappers.GameMapper;
 import mw.shared.Coordinates;
@@ -31,7 +32,7 @@ public class MoveUnitCommand extends AbstractAuthenticatedServerCommand {
 	}
 
 	@Override
-	protected void doExecution(UUID pAccountID) throws Exception {
+	protected void doExecution(UUID pAccountID) throws IllegalCommandException {
 		GameController.moveUnit(
 				GameMapper.getInstance().getGame(pAccountID),
 				aSourceCoordinates,

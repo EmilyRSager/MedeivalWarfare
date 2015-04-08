@@ -3,6 +3,7 @@ package mw.shared.servercommands;
 import java.util.UUID;
 
 import mw.server.gamelogic.controllers.GameController;
+import mw.server.network.exceptions.IllegalCommandException;
 import mw.server.network.mappers.AccountMapper;
 import mw.server.network.mappers.GameMapper;
 import mw.shared.Coordinates;
@@ -17,7 +18,7 @@ public class CombineUnitsCommand extends AbstractAuthenticatedServerCommand{
 	}
 
 	@Override
-	protected void doExecution(UUID pAccountID) {
+	protected void doExecution(UUID pAccountID) throws IllegalCommandException {
 		GameController.combineVillagers(GameMapper.getInstance().getGame(pAccountID), aSourceCoordinates, aTargetCoordinates);
 	}
 }

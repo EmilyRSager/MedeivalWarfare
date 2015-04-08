@@ -9,6 +9,7 @@ import java.util.UUID;
 
 import mw.server.gamelogic.controllers.GameController;
 import mw.server.gamelogic.exceptions.NotEnoughIncomeException;
+import mw.server.network.exceptions.IllegalCommandException;
 import mw.server.network.mappers.AccountMapper;
 import mw.server.network.mappers.GameMapper;
 import mw.server.network.translators.NetworkToModelTranslator;
@@ -33,7 +34,7 @@ public class HireUnitCommand extends AbstractAuthenticatedServerCommand {
 	}
 
 	@Override
-	protected void doExecution(UUID pAccountID) throws NotEnoughIncomeException {
+	protected void doExecution(UUID pAccountID) throws NotEnoughIncomeException, IllegalCommandException {
 		GameController.hireUnit(
 				GameMapper.getInstance().getGame(pAccountID),
 				aUnitCoordinates,

@@ -10,6 +10,7 @@ import java.util.UUID;
 import mw.server.gamelogic.controllers.GameController;
 import mw.server.gamelogic.exceptions.CantUpgradeException;
 import mw.server.gamelogic.exceptions.NotEnoughIncomeException;
+import mw.server.network.exceptions.IllegalCommandException;
 import mw.server.network.mappers.AccountMapper;
 import mw.server.network.mappers.GameMapper;
 import mw.server.network.translators.NetworkToModelTranslator;
@@ -33,7 +34,7 @@ public class UpgradeVillageCommand extends AbstractAuthenticatedServerCommand {
 	}
 
 	@Override
-	protected void doExecution(UUID pAccountID) throws CantUpgradeException, NotEnoughIncomeException {
+	protected void doExecution(UUID pAccountID) throws CantUpgradeException, NotEnoughIncomeException, IllegalCommandException {
 		GameController.upgradeVillage(
 				GameMapper.getInstance().getGame(pAccountID),
 				aVillageCoordinates,
