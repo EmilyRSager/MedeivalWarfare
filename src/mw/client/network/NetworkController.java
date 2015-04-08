@@ -46,7 +46,6 @@ public class NetworkController {
 	 * @param pPassword
 	 */
 	public static void authenticateUser(String pUsername, String pPassword){
-		System.out.println("Authenticate.");
 		aServerChannel.sendCommand(new AuthenticateUserCommand(pUsername, pPassword));
 	}
 	
