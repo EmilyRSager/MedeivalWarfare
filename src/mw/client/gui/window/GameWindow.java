@@ -20,10 +20,12 @@ import mw.client.gui.api.extminueto.ExtendedMinuetoColor;
 import mw.client.gui.api.interactive.TextField;
 import mw.client.gui.api.layouts.HorizontalLayout;
 import mw.client.gui.api.layouts.VerticalLayout;
+import mw.client.gui.menuing.InGameMenu;
 
 import org.minueto.MinuetoColor;
 import org.minueto.MinuetoEventQueue;
 import org.minueto.handlers.MinuetoFocusHandler;
+import org.minueto.handlers.MinuetoKeyboard;
 import org.minueto.handlers.MinuetoKeyboardHandler;
 import org.minueto.handlers.MinuetoMouse;
 import org.minueto.handlers.MinuetoMouseHandler;
@@ -33,7 +35,7 @@ public class GameWindow implements Observer {
 	
 	public static final MinuetoColor BACKGROUND_COLOR = ExtendedMinuetoColor.mixColors(MinuetoColor.BLACK, MinuetoColor.WHITE, 0.05);
 	public static final int DEFAULT_MAP_WIDTH = 1000;
-	public static final int DEFAULT_MAP_HEIGHT = 600;
+	public static final int DEFAULT_MAP_HEIGHT = 800;
 	public static final int CONTROL_LAYOUT_HEIGHT = 150;
 	
 	private final ResizableWindow window;
@@ -99,6 +101,29 @@ public class GameWindow implements Observer {
 				dumbRef.render();
 			}
 		}, queue);
+		
+		window.registerKeyboardHandler(new MinuetoKeyboardHandler() {
+			
+			@Override
+			public void handleKeyType(char arg0)
+			{
+				
+			}
+			
+			@Override
+			public void handleKeyRelease(int arg0)
+			{
+				if (arg0 == MinuetoKeyboard.KEY_ESC) {
+					InGameMenu escMenu = new InGameMenu();
+				}
+			}
+			
+			@Override
+			public void handleKeyPress(int arg0)
+			{
+				
+			}
+		});
 	}
 	
 	/* ==========================

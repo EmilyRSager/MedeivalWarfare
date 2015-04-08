@@ -91,7 +91,6 @@ public final class MenuActionSender {
 		ScreenSwitcher.openInvite(game);
 	}
 	
-	
 	public static void leaveGameRoom()
 	{
 		//NetworkController.leaveCurrentGameRoom();
