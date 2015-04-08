@@ -97,6 +97,9 @@ public final class NetworkModelTranslator {
 		case KNIGHT:
 			return ModelTile.UnitType.KNIGHT;
 			
+		case CANNON:
+			return ModelTile.UnitType.CANNON;
+			
 		case WATCHTOWER:
 			return ModelTile.UnitType.WATCHTOWER;
 			
@@ -125,6 +128,9 @@ public final class NetworkModelTranslator {
 			
 		case FORT:
 			return StructureType.FORT;
+			
+		case CASTLE:
+			return StructureType.CASTLE;
 			
 			default:
 				throw new IllegalArgumentException("Undefined SharedTile.VillageType value "+sharedVT);
