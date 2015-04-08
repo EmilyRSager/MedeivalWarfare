@@ -4,12 +4,14 @@ import mw.shared.SharedActionType;
 import mw.shared.Coordinates;
 import mw.shared.SharedTile;
 import mw.shared.servercommands.AuthenticateUserCommand;
+import mw.shared.servercommands.CombineUnitsCommand;
 import mw.shared.servercommands.CreateAccountCommand;
 import mw.shared.servercommands.EndTurnCommand;
 import mw.shared.servercommands.GetJoinableGamesCommand;
 import mw.shared.servercommands.GetPossibleGameActionsCommand;
 import mw.shared.servercommands.HireUnitCommand;
 import mw.shared.servercommands.JoinGameCommand;
+import mw.shared.servercommands.LoadGameCommand;
 import mw.shared.servercommands.MoveUnitCommand;
 import mw.shared.servercommands.RequestNewGameCommand;
 import mw.shared.servercommands.SetActionTypeCommand;
@@ -45,7 +47,6 @@ public class NetworkController {
 	 * @param pPassword
 	 */
 	public static void authenticateUser(String pUsername, String pPassword){
-		System.out.println("Authenticate.");
 		aServerChannel.sendCommand(new AuthenticateUserCommand(pUsername, pPassword));
 	}
 	
@@ -62,6 +63,13 @@ public class NetworkController {
 	 */
 	public static void joinGame(String pGameName){ 
 		aServerChannel.sendCommand(new JoinGameCommand(pGameName));
+	}
+	/**
+	 * 
+	 * @param pGameName
+	 */
+	public static void loadGame(String pGameName){
+		aServerChannel.sendCommand(new LoadGameCommand(pGameName));
 	}
 	
 	/**
@@ -118,6 +126,10 @@ public class NetworkController {
 	 */
 	public static void upgradeVillage(Coordinates pVillageCoordinates, SharedTile.VillageType pVillageType){
 		aServerChannel.sendCommand(new UpgradeVillageCommand(pVillageCoordinates, pVillageType));
+	}
+	
+	public static void combineUnits(Coordinates srcCoord, Coordinates destCoord) {
+		aServerChannel.sendCommand(new CombineUnitsCommand(srcCoord, destCoord));
 	}
 	
 	/**
