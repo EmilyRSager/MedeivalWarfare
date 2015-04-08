@@ -12,7 +12,7 @@ public class ClientTestDriver {
 	}
 	
 	public static void loginAndCreate(){
-		int name = 0;
+		int name = 1;
 		if (name == 0){
 			MenuActionSender.tryLogin("Charlie", "Bloomfield");
 			NetworkController.requestNewGame("TestGame3", 2);
@@ -36,7 +36,7 @@ public class ClientTestDriver {
 	}
 	
 	public static void loginAndLoad(){
-		int name = 0;
+		int name = 1;
 		if (name == 0){
 			MenuActionSender.tryLogin("Charlie", "Bloomfield");
 			NetworkController.loadGame("Test game");
