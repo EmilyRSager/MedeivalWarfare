@@ -157,6 +157,7 @@ public class GameWindow implements Observer {
 		}
 		catch (MinuetoWindowInvalidStateException e) {
 			System.out.println("[GameWindow] Minueto is so sick, it's not letting me draw");
+			System.out.println("--> error message : "+e.getMessage());
 		}
 	}
 
