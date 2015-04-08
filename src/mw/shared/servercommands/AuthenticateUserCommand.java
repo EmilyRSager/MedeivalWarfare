@@ -6,6 +6,7 @@
 package mw.shared.servercommands;
 
 import mw.server.network.controllers.AdminCommandController;
+import mw.server.network.exceptions.IllegalCommandException;
 
 public class AuthenticateUserCommand extends AbstractServerCommand {
 	private final String aType = "AuthenticateUserCommand";
@@ -22,7 +23,7 @@ public class AuthenticateUserCommand extends AbstractServerCommand {
 	}
 
 	@Override
-	public void execute(Integer pClientID) throws Exception {
+	public void execute(Integer pClientID) throws IllegalCommandException {
 		AdminCommandController.getInstance().authenticateUser(pClientID, aUsername, aPassword);
 	}
 

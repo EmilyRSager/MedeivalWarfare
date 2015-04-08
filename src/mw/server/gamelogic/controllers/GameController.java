@@ -110,19 +110,11 @@ public class GameController {
 	 * @param pUnitCoordinatess
 	 * @param upgradeType
 	 */
-	public static void upgradeUnit(Game pGame, Coordinates pUnitCoordinates, UnitType upgradeType)
+	public static void upgradeUnit(Game pGame, Coordinates pUnitCoordinates, UnitType upgradeType) throws NotEnoughIncomeException
 	{
 		pGame.upgradeUnit(pUnitCoordinates, upgradeType);
 	}
 	
-	public static void combineVillagers(Game pGame, Coordinates p1, Coordinates p2)
-	{
-		pGame.combineVillagers(p1, p2);
-	}
-	public static void buildWatchtower(Game pGame, Coordinates pCoordinates)
-	{
-		pGame.buildWatchtower(pCoordinates);
-	}
 
 	/**
 	 * @param pGame
@@ -134,5 +126,36 @@ public class GameController {
 	public static void upgradeVillage(Game pGame, Coordinates pVillageCoordinates, VillageType pVillageType) throws CantUpgradeException, NotEnoughIncomeException
 	{
 		pGame.upgradeVillage(pVillageCoordinates, pVillageType);
+	}
+	
+	/**
+	 * NEEDS COMMAND -- thanks Charlie :) 
+	 * @param pGame
+	 * @param p1
+	 * @param p2
+	 */
+	public static void combineVillagers(Game pGame, Coordinates p1, Coordinates p2)
+	{
+		pGame.combineVillagers(p1, p2);
+	}
+	
+	/**
+	 * Needs Command -- thanks Charlie :) 
+	 * @param pGame
+	 * @param pCoordinates
+	 */
+	public static void fireCannon(Game pGame, Coordinates pCannonCoordinates, Coordinates pFirableCoordinates)
+	{
+		pGame.fireCannon(pCannonCoordinates, pFirableCoordinates);
+	}
+	
+	/**
+	 * Needs command thanks Charlie :) 
+	 * @param pGame
+	 * @param pCoordinates
+	 */
+	public static void buildWatchtower(Game pGame, Coordinates pCoordinates)
+	{
+		pGame.buildWatchtower(pCoordinates);
 	}
 }

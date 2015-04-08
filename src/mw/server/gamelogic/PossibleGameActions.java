@@ -16,8 +16,9 @@ public class PossibleGameActions
 	private boolean aCanBuildWatchtower; 
 	private Collection<Tile> aCombinableUnitTiles; 
 	private Collection<Tile> aHirableUnitTiles; 
+	private Collection<Tile> aFirableTiles;
 
-	public PossibleGameActions (Collection<Tile> pMovable, Collection<UnitType> pUnitTypes, Collection<ActionType> pActionTypes, VillageType pVillageType, boolean pWatchtower, Collection<Tile> pCombinable, Collection<Tile> pHirable)
+	public PossibleGameActions (Collection<Tile> pMovable, Collection<UnitType> pUnitTypes, Collection<ActionType> pActionTypes, VillageType pVillageType, boolean pWatchtower, Collection<Tile> pCombinable, Collection<Tile> pHirable, Collection<Tile> pFirable)
 	{
 		aCanBuildWatchtower = pWatchtower; 
 		aMovable = pMovable; 
@@ -26,6 +27,7 @@ public class PossibleGameActions
 		aUpgradableVillage = pVillageType; 
 		aCombinableUnitTiles = pCombinable; 
 		aHirableUnitTiles = pHirable; 
+		aFirableTiles = pFirable;
 	}
 
 	public Collection<Tile> getHirableUnitTiles() 
@@ -60,6 +62,11 @@ public class PossibleGameActions
 	public VillageType getVillageUpgrade()
 	{
 		return aUpgradableVillage; 
+	}
+	
+	public Collection<Tile> getFirableTiles()
+	{
+		return aFirableTiles;
 	}
 }
 

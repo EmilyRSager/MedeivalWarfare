@@ -4,7 +4,7 @@
 package mw.server.gamelogic.exceptions;
 
 @SuppressWarnings("serial")
-public class CantUpgradeException extends Exception {
+public class CantUpgradeException extends GameLogicException {
 
 	@SuppressWarnings("unused")
 	private String aMessage; 

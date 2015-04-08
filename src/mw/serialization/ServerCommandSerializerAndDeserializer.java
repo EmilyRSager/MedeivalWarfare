@@ -9,9 +9,11 @@ import java.util.HashMap;
 
 import mw.shared.servercommands.AbstractServerCommand;
 import mw.shared.servercommands.AuthenticateUserCommand;
+import mw.shared.servercommands.BuildWatchtowerCommand;
 import mw.shared.servercommands.CombineUnitsCommand;
 import mw.shared.servercommands.CreateAccountCommand;
 import mw.shared.servercommands.EndTurnCommand;
+import mw.shared.servercommands.FireCannonCommand;
 import mw.shared.servercommands.GetJoinableGamesCommand;
 import mw.shared.servercommands.GetPossibleGameActionsCommand;
 import mw.shared.servercommands.HireUnitCommand;
@@ -37,9 +39,11 @@ public class ServerCommandSerializerAndDeserializer{
 	
 	private ServerCommandSerializerAndDeserializer() {
 		aTypeMap.put("AuthenticateUserCommand", new TypeToken<AuthenticateUserCommand>(){}.getType());
+		aTypeMap.put("BuildWatchtowerCommand", new TypeToken<BuildWatchtowerCommand>(){}.getType());
 		aTypeMap.put("CombineUnitsCommand", new TypeToken<CombineUnitsCommand>(){}.getType());
 		aTypeMap.put("CreateAccountCommand", new TypeToken<CreateAccountCommand>(){}.getType());
 		aTypeMap.put("EndTurnCommand", new TypeToken<EndTurnCommand>(){}.getType());
+		aTypeMap.put("FireCannonCommand", new TypeToken<FireCannonCommand>(){}.getType());
 		aTypeMap.put("GetJoinableGamesCommand", new TypeToken<GetJoinableGamesCommand>(){}.getType());
 		aTypeMap.put("GetPossibleGameActionsCommand", new TypeToken<GetPossibleGameActionsCommand>(){}.getType());
 		aTypeMap.put("HireUnitCommand", new TypeToken<HireUnitCommand>(){}.getType());
