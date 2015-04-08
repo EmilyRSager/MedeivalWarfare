@@ -144,9 +144,9 @@ public class GameController {
 	 * @param pGame
 	 * @param pCoordinates
 	 */
-	public static void fireCannon(Game pGame, Coordinates pCoordinates)
+	public static void fireCannon(Game pGame, Coordinates pCannonCoordinates, Coordinates pFirableCoordinates)
 	{
-		pGame.fireCannon(pCoordinates);
+		pGame.fireCannon(pCannonCoordinates, pFirableCoordinates);
 	}
 	
 	/**

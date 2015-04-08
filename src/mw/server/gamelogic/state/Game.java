@@ -478,9 +478,9 @@ public class Game extends RandomColorGenerator implements Serializable{
 			destTile.notifyObservers();
 		}
 
-		public void fireCannon(Coordinates pCoordinates) {
-			// TODO Auto-generated method stub
-			
+		public void fireCannon(Coordinates pCoordinates, Coordinates pFirableCoord) 
+		{
+			Tile pTile;
 		}
 
 
