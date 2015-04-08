@@ -6,19 +6,21 @@ import mw.client.network.NetworkController;
 public class ClientTestDriver {
 	public static void main(String[] args) {
 		NetworkController.initialize();
-		
+		System.out.println("dalwkj");
 		//createAccountAndGame();
 		//loginAndLoad();
 		loginAndCreate();	
 	}
 	
 	public static void loginAndCreate(){
-		int name = 0;
+		int name = 1;
 		if (name == 0){
+			System.out.println("welcon");
 			MenuActionSender.tryLogin("Charlie", "Bloomfield");
 			NetworkController.requestNewGame("TestGame3", 2);
 		}
 		else{
+			System.out.println("glleo");
 			MenuActionSender.tryLogin("Hugo", "Kapp");
 			NetworkController.joinGame("TestGame3");
 		}

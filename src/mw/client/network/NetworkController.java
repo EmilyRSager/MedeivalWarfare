@@ -29,7 +29,9 @@ public class NetworkController {
 	 */
 	public static void initialize(){
 		if(aServerChannel == null){
+			System.out.println("iniside initialize");
 			aServerChannel = new ServerChannel();
+			System.out.println("after sever channer");
 		}
 	}
 	
