@@ -106,6 +106,11 @@ public class GameWindow implements Observer {
 	 * ==========================
 	 */
 	
+	public void closeGameWindow()
+	{
+		this.window.close();
+	}
+	
 	public void addUserDisplay(String user, MinuetoColor c)
 	{
 		TextDisplay userDisplay = new TextDisplay(user, c);
