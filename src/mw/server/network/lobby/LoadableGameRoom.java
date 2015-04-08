@@ -19,9 +19,12 @@ import mw.server.gamelogic.state.Game;
 import mw.server.gamelogic.state.GameID;
 import mw.server.gamelogic.state.Player;
 import mw.server.network.communication.ClientCommunicationController;
+import mw.server.network.controllers.GameStateCommandDistributor;
 import mw.server.network.mappers.GameMapper;
 import mw.server.network.mappers.PlayerMapper;
+import mw.server.network.translators.SharedTileTranslator;
 import mw.shared.clientcommands.NotifyBeginTurnCommand;
+import mw.shared.clientcommands.SetColorCommand;
 import mw.util.Tuple2;
 
 public class LoadableGameRoom extends GameRoom{
@@ -71,6 +74,11 @@ public class LoadableGameRoom extends GameRoom{
 		Game lGame = aGameID.getaGame();
 		GameMapper.getInstance().putGame(aWaitingClients, lGame); //add clients to Game Mapping
 
+		GameStateCommandDistributor lGameStateCommandDistributor = 
+				new GameStateCommandDistributor(aWaitingClients, lGame);
+		attachObservable(lGame, lGameStateCommandDistributor);
+		lGameStateCommandDistributor.newGame(lGame.getGameTiles());
+		
 		//map clients to players
 		Collection<Player> lPlayers = lGame.getPlayers();
 		assignAccountsToPlayers(aWaitingClients, lPlayers);
@@ -99,7 +107,7 @@ public class LoadableGameRoom extends GameRoom{
 	 */
 	@Override
 	protected void assignAccountsToPlayers(Set<UUID> pAccountIDs, Collection<Player> pPlayers){
-		for(UUID account: pAccountIDs){
+		for(UUID account : pAccountIDs){
 			Color lColor = AccountManager.getInstance().getAccount(account).getAccountGameInfo().getCurrentGame().getVal2();
 			Player lPlayer = new Player(); 
 			for(Player p : pPlayers){
@@ -108,6 +116,7 @@ public class LoadableGameRoom extends GameRoom{
 				}
 			}
 			PlayerMapper.getInstance().putPlayer(account, lPlayer);
+			ClientCommunicationController.sendCommand(account, new SetColorCommand(SharedTileTranslator.translateColor(lColor)));
 		}
 	}
 }

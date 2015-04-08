@@ -112,7 +112,6 @@ public class GameRoom {
 			Account lAccount = AccountManager.getInstance().getAccount(accountUUID);
 			AccountGameInfo lAccountGameInfo = lAccount.getAccountGameInfo();
 			Color playerColor = PlayerMapper.getInstance().getPlayer(accountUUID).getPlayerColor();
-			//TODO: fix the following line for name 
 			lAccountGameInfo.setCurrentGame(new Tuple2<String, Color>(pGameName, playerColor));
 			lAccountGameInfo.addToActiveGames(lAccountGameInfo.getCurrentGame());
 			AccountManager.getInstance().saveAccountData(lAccount);
