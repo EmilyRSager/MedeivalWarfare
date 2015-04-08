@@ -1,13 +1,13 @@
 package mw.client.controller.menuing;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 import mw.client.gui.menuing.CreateAccountWindow;
 import mw.client.gui.menuing.CreateGameWindow;
 import mw.client.gui.menuing.GameLobbyWindow;
 import mw.client.gui.menuing.GameRoomWindow;
+import mw.client.gui.menuing.InvitationWindow;
 import mw.client.gui.menuing.LoginWindow;
 import mw.shared.SharedCreatedGame;
 import mw.shared.SharedGameLobby;

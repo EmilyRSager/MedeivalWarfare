@@ -42,7 +42,7 @@ public class GameMap implements Serializable
 			for(int lCol = 0; lCol < pWidth; lCol++){
 				Tile lTile = new Tile(lRow, lCol);
 				aTiles[lRow][lCol] = lTile;
-				randomlyGenerateTreesAndMeadows(lTile);
+				//randomlyGenerateTreesAndMeadows(lTile);
 			}
 		}
 
@@ -109,20 +109,30 @@ public class GameMap implements Serializable
 	private void randomlyGenerateTreesAndMeadows(Tile lTile) {
 		Random rTreesAndMeadows = new Random();
 
-		if (lTile.getStructureType().equals(StructureType.NO_STRUCT) && lTile.getVillageType().equals(VillageType.NO_VILLAGE)) {
-			int k = rTreesAndMeadows.nextInt(9);
+		if (lTile.getStructureType().equals(StructureType.NO_STRUCT) && lTile.getVillageType().equals(VillageType.NO_VILLAGE)) 
+		{
+			double d = rTreesAndMeadows.nextDouble();
 
-			//2 numbers have been randomly picked to assign 20% prob of getting a tree
-			if (k == 4 || k == 7) {
+			// 20% prob of getting a tree
+			if (d < 0.2) {
 				lTile.setStructureType(StructureType.TREE);
-
-				//10% prob of getting a meadow on the tile 
-			} else if (k == 2) {
+			}
+			// 10% prob of getting a meadow on the tile 
+			else if (d < 0.3) {
+				System.out.println("[GameMap] Yoho meadow");
 				lTile.setMeadow(true);
 			}
 		}
 	}
 
+	public void randomlyGenerateTreesAndMeadows()
+	{
+		for (Tile tile : MultiArrayIterable.toIterable(aTiles))
+		{
+			randomlyGenerateTreesAndMeadows(tile);
+		}
+	}
+	
 	/**
 	 * Returns the set of tiles a unit can move to
 	 * May return an empty set 

@@ -126,16 +126,16 @@ public class SharedTileTranslator {
 			return Terrain.SEA;
 		}
 		
+		else if(pHasMeadow){
+			return Terrain.MEADOW;
+		}
+		
 		else if(pStructureType == StructureType.NO_STRUCT){
 			return Terrain.GRASS;
 		}
 		
 		else if(pStructureType == StructureType.TREE){
 			return Terrain.TREE;
-		}
-		
-		else if(pHasMeadow){
-			return Terrain.MEADOW;
 		}
 		
 		else if(pStructureType == StructureType.TOMBSTONE){
@@ -147,7 +147,7 @@ public class SharedTileTranslator {
 		}
 		
 		else{
-			return Terrain.SEA;
+			throw new IllegalArgumentException("The tuple "+pStructureType+","+pHasMeadow+","+pColor+" is not a valid tuple to be translated to SharedTile.Terrain");
 		}
 	}
 	
