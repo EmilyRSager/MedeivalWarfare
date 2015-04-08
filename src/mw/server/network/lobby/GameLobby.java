@@ -9,12 +9,24 @@ import java.util.UUID;
  * Aggregates and manages game rooms.
  */
 public class GameLobby {
+	private static GameLobby aGameLobbyInstance;
 	private HashMap<String, GameRoom> aGameRooms;
+	
 	/**
 	 * Constructor
 	 */
-	public GameLobby(){
+	private GameLobby(){
 		aGameRooms = new HashMap<String, GameRoom>();
+	}
+	
+	/**
+	 * @return static singleton instance
+	 */
+	public static GameLobby getInstance(){
+		if(aGameLobbyInstance == null){
+			aGameLobbyInstance = new GameLobby();
+		}
+		return aGameLobbyInstance;
 	}
 	
 	

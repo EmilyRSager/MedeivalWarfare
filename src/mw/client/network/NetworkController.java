@@ -85,8 +85,12 @@ public class NetworkController {
 		aServerChannel.sendCommand(new GetJoinableGamesCommand());
 	}
 	
-	/************************** GAME COMMANDS ******************************/
+	/************************** IN GAME COMMANDS ******************************/
 	
+	/**
+	 * 
+	 * @param pWatchtowerCoordinates
+	 */
 	public static void buildWatchtower(Coordinates pWatchtowerCoordinates){
 		aServerChannel.sendCommand(new BuildWatchtowerCommand(pWatchtowerCoordinates));
 	}
@@ -133,6 +137,13 @@ public class NetworkController {
 	}
 	
 	/**
+	 * 
+	 */
+	public static void leaveGame(){
+		aServerChannel.sendCommand(new LeaveGameCommand());
+	}
+	
+	/**
 	 * @param pSourceCoordinates
 	 * @param pDestinationCoordinates
 	 */
@@ -140,6 +151,12 @@ public class NetworkController {
 		aServerChannel.sendCommand(new MoveUnitCommand(pSourceCoordinates, pDestinationCoordinates));
 	}
 	
+	/**
+	 * 
+	 */
+	public static void saveGame(){
+		aServerChannel.sendCommand(new SaveGameCommand());
+	}
 	
 	/**
 	 * @param pUnitCoordinates
