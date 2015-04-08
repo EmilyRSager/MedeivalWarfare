@@ -16,6 +16,7 @@ import mw.shared.SharedColor;
 import mw.shared.SharedTile;
 import mw.client.gui.window.GameWindow;
 
+import org.minueto.MinuetoColor;
 import org.minueto.MinuetoEventQueue;
 import org.minueto.MinuetoEventQueueEmptyException;
 
@@ -39,6 +40,7 @@ public final class GUITest {
 		testUpdate(SharedColor.BLUE);
 		waitABit();
 		testUpdate(SharedColor.YELLOW);
+		gameWindow.addUserDisplay("poop", MinuetoColor.YELLOW);
 		//waitABit();
 		DisplayUpdater.showVillageResources(200, 200);
 		List<String> crap = new ArrayList<String>();
