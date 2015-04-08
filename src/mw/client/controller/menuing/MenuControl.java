@@ -1,8 +1,5 @@
 package mw.client.controller.menuing;
 
-import java.util.Collection;
-
-import mw.client.controller.menuing.ScreenSwitcher.ScreenKind;
 import mw.shared.SharedCreatedGame;
 import mw.shared.SharedGameLobby;
 

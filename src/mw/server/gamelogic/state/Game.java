@@ -77,6 +77,7 @@ public class Game extends RandomColorGenerator implements Serializable{
 
 		aMap = new GameMap(pWidth, pHeight);
 		new RandomMapPartitioner(aMap).partition(availableColors); 
+		aMap.randomlyGenerateTreesAndMeadows();
 		assignVillageToPlayers();
 		crtIterator = new CircularIterator<Player>(pPlayers);
 		aCurrentPlayer = crtIterator.next(); 

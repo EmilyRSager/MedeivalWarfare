@@ -1,7 +1,5 @@
 package mw.client.controller.menuing;
 
-import java.util.HashSet;
-
 import mw.client.network.NetworkController;
 import mw.shared.SharedCreatedGame;
 import mw.shared.SharedGameLobby;
