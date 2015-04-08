@@ -13,10 +13,6 @@ public class DisplayNewGameRoomCommand extends AbstractClientCommand {
 	
 	@Override
 	public void execute() {
-		MenuActionSender.setJoinedGameResult(aNewGame);
-<<<<<<< HEAD
-
-=======
->>>>>>> d31b5d18e8d5d5f6775a806d8212fd41dfd20e6b
+		//MenuActionSender.setJoinedGameResult(aNewGame);
 	}
 }

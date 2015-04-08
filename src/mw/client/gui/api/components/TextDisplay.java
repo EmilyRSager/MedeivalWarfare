@@ -43,8 +43,8 @@ public final class TextDisplay extends AbstractWindowComponent {
 		label = new MinuetoText(text, DEFAULT_FONT, DEFAULT_TEXT_COLOR);
 		area.setHeight(label.getHeight()+2*Y_BORDER_MARGIN);
 		area.setWidth(label.getWidth()+2*X_BORDER_MARGIN);
-		image = buildImage(label);
 		this.backgroundColor = backgroundColor;
+		image = buildImage(label);
 	}
 	
 	/**

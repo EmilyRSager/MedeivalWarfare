@@ -35,7 +35,7 @@ public class GameWindow implements Observer {
 	
 	public static final MinuetoColor BACKGROUND_COLOR = ExtendedMinuetoColor.mixColors(MinuetoColor.BLACK, MinuetoColor.WHITE, 0.05);
 	public static final int DEFAULT_MAP_WIDTH = 1000;
-	public static final int DEFAULT_MAP_HEIGHT = 800;
+	public static final int DEFAULT_MAP_HEIGHT = 700;
 	public static final int CONTROL_LAYOUT_HEIGHT = 150;
 	
 	private final ResizableWindow window;

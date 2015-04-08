@@ -33,7 +33,7 @@ public class InGameMenu
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				UserActionSender.singleton().sendLeaveGame();
+				MenuControl.leaveGame();
 			}
 		});
 		
