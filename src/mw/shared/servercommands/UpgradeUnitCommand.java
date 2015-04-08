@@ -8,6 +8,7 @@ package mw.shared.servercommands;
 import java.util.UUID;
 
 import mw.server.gamelogic.controllers.GameController;
+import mw.server.gamelogic.exceptions.NotEnoughIncomeException;
 import mw.server.network.mappers.AccountMapper;
 import mw.server.network.mappers.GameMapper;
 import mw.server.network.translators.NetworkToModelTranslator;
@@ -33,7 +34,7 @@ public class UpgradeUnitCommand extends AbstractAuthenticatedServerCommand {
 	}
 
 	@Override
-	protected void doExecution(UUID pAccountID) throws Exception {
+	protected void doExecution(UUID pAccountID) throws NotEnoughIncomeException  {
 		GameController.upgradeUnit(
 				GameMapper.getInstance().getGame(pAccountID),
 				aUnitCoordinates,
