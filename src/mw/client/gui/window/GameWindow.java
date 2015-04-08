@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
+import mw.client.controller.CurrentClientState;
 import mw.client.controller.guimodel.ActionInterpreter;
 import mw.client.controller.guimodel.ChoiceCenter;
 import mw.client.controller.guimodel.ChoiceCenter.ChoiceType;
@@ -70,12 +71,13 @@ public class GameWindow implements Observer {
 				}
 			}
 		};
+	
 		
-		windowLayout = new VerticalLayout(0, 0, 4);
+		windowLayout = new VerticalLayout(0, 0, 5);
 		controlBarLayout = new HorizontalLayout(0, 0, CONTROL_LAYOUT_HEIGHT, 3);
 		
-		windowLayout.addComponent(mapComp, 0);
-		windowLayout.addComponent(new BlockComponent(0, CONTROL_LAYOUT_HEIGHT, controlBarLayout), 2);
+		windowLayout.addComponent(mapComp, 1);
+		windowLayout.addComponent(new BlockComponent(0, CONTROL_LAYOUT_HEIGHT, controlBarLayout), 3);
 		window = new ResizableWindow(windowLayout.getWidth(), 813/*windowLayout.getHeight()*/, queue, "Medieval Warfare");
 		
 		mapComp.setWindow(this);
@@ -103,6 +105,12 @@ public class GameWindow implements Observer {
 	 * 		Public methods
 	 * ==========================
 	 */
+	
+	public void addUserDisplay(String user, MinuetoColor c)
+	{
+		TextDisplay userDisplay = new TextDisplay(user, c);
+		this.windowLayout.addComponent(userDisplay, 0);
+	}
 	
 	public MinuetoEventQueue getEventQueue()
 	{
@@ -191,7 +199,7 @@ public class GameWindow implements Observer {
 		this.registerMouseHandler(endTurn);
 		HorizontalLayout hlayout = new HorizontalLayout(1);
 		hlayout.addComponent(endTurn);
-		windowLayout.addComponent(hlayout, 1);
+		windowLayout.addComponent(hlayout, 2);
 		//windowLayout.addComponent(endTurn, 1);
 		//this.render();
 	}
@@ -199,7 +207,7 @@ public class GameWindow implements Observer {
 	public void removeEndTurnButton()
 	{
 		window.unregisterMouseHandler(endTurn);
-		windowLayout.removeComponent(1);
+		windowLayout.removeComponent(2);
 		//this.render();
 	}
 	
@@ -229,7 +237,7 @@ public class GameWindow implements Observer {
 	
 	public void showMessage(String message) 
 	{
-		windowLayout.addComponent(new TextDisplay(message), 3);
+		windowLayout.addComponent(new TextDisplay(message), 4);
 	}
 	
 	/* ==========================
