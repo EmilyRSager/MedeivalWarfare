@@ -145,6 +145,7 @@ public class Game extends RandomColorGenerator implements Serializable{
 		{
 			VillageUpgradeType = GameLogic.getPossibleVillageUpgrades(startTile.getVillageType()); 
 		}
+		Collection<Tile> firableTiles = new HashSet<Tile>();
 		Collection<Tile> ReachableTiles = new HashSet<Tile>();
 		Collection<ActionType> UnitActions = new ArrayList<ActionType>();
 		boolean canBuildWatchTower = GameLogic.canBuildWatchtower(startTile, this); 
@@ -155,13 +156,21 @@ public class Game extends RandomColorGenerator implements Serializable{
 		{
 			Unit pUnit = startTile.getUnit();
 			if (pUnit.getActionType() == ActionType.READY) {
+				if(pUnit.getUnitType()!=UnitType.CANNON)
+				{
 				ReachableTiles = aMap.getPossibleMoves(startTile);
+				}
+				else 
+				{
+					ReachableTiles = CannonLogic.getReachableTiles(startTile, this);
+					firableTiles = CannonLogic.getFirableTiles(startTile, this);
+				}
 				UnitActions = Logic.getPossibleActions(pUnit, startTile);
 			}
 		}
 		Collection<UnitType> UnitUpgrade = GameLogic.getVillagerHireOrUpgradeTypes(startTile, this);
 		Collection<Tile> hirableUnitTiles = wantToHireVillager(startTile);
-		PossibleGameActions possible = new PossibleGameActions(ReachableTiles, UnitUpgrade, UnitActions, VillageUpgradeType, canBuildWatchTower, combinableUnitTiles, hirableUnitTiles);
+		PossibleGameActions possible = new PossibleGameActions(ReachableTiles, UnitUpgrade, UnitActions, VillageUpgradeType, canBuildWatchTower, combinableUnitTiles, hirableUnitTiles, firableTiles);
 		return possible; 
 	}
 	
