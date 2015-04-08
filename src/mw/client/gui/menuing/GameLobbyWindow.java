@@ -92,14 +92,16 @@ public class GameLobbyWindow {
 		}
 		else if(tab == 1)
 		{
-			JButton launch = new JButton("Launch Selected Game");
+			JButton launch = new JButton("Load Selected Game");
 			
 			launch.addActionListener(new ActionListener() {
 				
 				@Override
 				public void actionPerformed(ActionEvent e)
 				{
-					MenuControl.gameSelected(gameJList.getSelectedValuesList().get(0));
+					List<String> selection = gameJList.getSelectedValuesList();
+					if (!selection.isEmpty())
+						MenuControl.tryLoadGame(selection.get(0));
 				}
 			});
 			buttonContainer.add(launch);
@@ -123,6 +125,6 @@ public class GameLobbyWindow {
 	{
 		Set<SharedCreatedGame> empty = new HashSet<SharedCreatedGame>();
 		SharedGameLobby test = new SharedGameLobby(empty);
-		GameLobbyWindow t = new GameLobbyWindow(test, test);
+		GameLobbyWindow t = new GameLobbyWindow(test);
 	}
 }
