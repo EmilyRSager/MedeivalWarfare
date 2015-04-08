@@ -12,7 +12,7 @@ public class ClientTestDriver {
 	}
 	
 	public static void loginAndCreate(){
-		int name = 1;
+		int name = 0;
 		if (name == 0){
 			System.out.println("welcon");
 			MenuActionSender.tryLogin("Charlie", "Bloomfield");

@@ -3,14 +3,11 @@ package mw.server.gamelogic.exceptions;
 @SuppressWarnings("serial")
 public class NotEnoughIncomeException extends GameLogicException {
 
-	String pMessage; 
-	
-	public NotEnoughIncomeException (String lString)
-	{
-		pMessage = lString; 
+	public NotEnoughIncomeException(){
+		super("You do not have enough income to support that operation.");
 	}
-	public NotEnoughIncomeException()
-	{
-		
+	
+	public NotEnoughIncomeException (String pMessage){
+		super(pMessage);
 	}
 }
