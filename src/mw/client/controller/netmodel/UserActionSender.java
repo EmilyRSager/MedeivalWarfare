@@ -135,6 +135,11 @@ public class UserActionSender {
 			NetworkController.moveUnit(coordSrc, coordDest);
 			return true;
 		}
+		else if (possibleActions.getCombinableUnitTiles().contains(coordDest))
+		{
+			NetworkController.combineUnits(coordSrc, coordDest);
+			return true;
+		}
 		else
 			return false;
 	}

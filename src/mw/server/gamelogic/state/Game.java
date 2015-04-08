@@ -426,56 +426,30 @@ public class Game extends RandomColorGenerator implements Serializable{
 			UnitType lUnitType1  = lTile1.getUnit().getUnitType(); 
 			UnitType lUnitType2 = lTile2.getUnit().getUnitType(); 
 
-			switch (lUnitType1)
-			{
-			case PEASANT: 
-				switch (lUnitType2) 
-				{
-				case PEASANT:
-					combinedVillager = UnitType.INFANTRY;
-					break;
-				case INFANTRY: 
-					combinedVillager = UnitType.SOLDIER; 
-					break;
-				case SOLDIER: 
-					combinedVillager = UnitType.KNIGHT;
-					break;
-				default:
-					break;
-				}
-				break; 
-			case INFANTRY: 
-				switch (lUnitType2) 
-				{
-				case PEASANT:
-					combinedVillager = UnitType.SOLDIER;
-					break;
-				case INFANTRY: 
-					combinedVillager = UnitType.KNIGHT; 
-					break;
-				default:
-					break;
-				}
-				break; 
-			case SOLDIER: 
-				switch (lUnitType2) 
-				{
-				case PEASANT:
-					combinedVillager = UnitType.KNIGHT;
-					break;
-				default:
-					break;
-				}
-			default:
-				break;
+			try {
+				combinedVillager = UnitHireLogic.unitCombinationResult(lUnitType1, lUnitType2);
+			}
+			catch (IllegalArgumentException e) {
+				combinedVillager = UnitType.NO_UNIT;
 			}
 		}
 		return combinedVillager; 
 	}
 
 	public void combineVillagers(Coordinates p1, Coordinates p2) {
-		// TODO Auto-generated method stub
+		Tile srcTile = aMap.getTile(p1);
+		Tile destTile = aMap.getTile(p2);
 		
+		Unit srcUnit = srcTile.getUnit();
+		Unit destUnit = destTile.getUnit();
+		
+		UnitType resultingType = UnitHireLogic.unitCombinationResult(srcUnit.getUnitType(), destUnit.getUnitType());
+		srcTile.setUnit(null);
+		destUnit.setUnitType(resultingType);
+		destUnit.setActionType(ActionType.MOVED);
+		
+		srcTile.notifyObservers();
+		destTile.notifyObservers();
 	}
 	
 	
