@@ -6,10 +6,21 @@ import mw.client.network.NetworkController;
 public class ClientTestDriver {
 	public static void main(String[] args) {
 		NetworkController.initialize();
-		
-		createAccountAndGame();
+		//createAccountAndGame();
 		//loginAndLoad();
-		
+		loginAndCreate();	
+	}
+	
+	public static void loginAndCreate(){
+		int name = 0;
+		if (name == 0){
+			MenuActionSender.tryLogin("Charlie", "Bloomfield");
+			NetworkController.requestNewGame("TestGame3", 2);
+		}
+		else{
+			MenuActionSender.tryLogin("Hugo", "Kapp");
+			NetworkController.joinGame("TestGame3");
+		}
 	}
 	
 	public static void createAccountAndGame(){
