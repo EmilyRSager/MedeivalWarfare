@@ -10,6 +10,7 @@ import mw.shared.servercommands.GetJoinableGamesCommand;
 import mw.shared.servercommands.GetPossibleGameActionsCommand;
 import mw.shared.servercommands.HireUnitCommand;
 import mw.shared.servercommands.JoinGameCommand;
+import mw.shared.servercommands.LoadGameCommand;
 import mw.shared.servercommands.MoveUnitCommand;
 import mw.shared.servercommands.RequestNewGameCommand;
 import mw.shared.servercommands.SetActionTypeCommand;
@@ -62,6 +63,13 @@ public class NetworkController {
 	 */
 	public static void joinGame(String pGameName){ 
 		aServerChannel.sendCommand(new JoinGameCommand(pGameName));
+	}
+	/**
+	 * 
+	 * @param pGameName
+	 */
+	public static void loadGame(String pGameName){
+		aServerChannel.sendCommand(new LoadGameCommand(pGameName));
 	}
 	
 	/**
