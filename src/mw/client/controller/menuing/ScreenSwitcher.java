@@ -70,7 +70,7 @@ public abstract class ScreenSwitcher {
 	{
 		changeState(ScreenKind.LOBBY);
 		
-		lobbyScreen = new GameLobbyWindow(lobby, new SharedGameLobby(new HashSet<SharedCreatedGame>()));
+		lobbyScreen = new GameLobbyWindow(lobby);
 	}
 
 	public static synchronized void openGameRoomScreen(SharedCreatedGame game)
