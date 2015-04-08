@@ -118,9 +118,12 @@ public class Village extends Observable implements Serializable
 	 * Updates the village state at the beginning of a turn
 	 * 
 	 */
-	public void beginTurnUpdate()  
+	public void beginTurnUpdate(boolean isFirstTurn)  
 	{
-		addOrSubtractGold(VillageLogic.generateGold(aTiles));
+		if(!isFirstTurn)
+		{
+			addOrSubtractGold(VillageLogic.generateGold(aTiles));
+		}
 		VillageLogic.clearTombstone(aTiles);
 		VillageLogic.generateMeadows(aTiles);
 		VillageLogic.buildRoads(aTiles);
@@ -264,7 +267,7 @@ public class Village extends Observable implements Serializable
 	{
 		cannonHits++;
 	}
-	
+
 	public boolean isDestroyedByCannon()
 	{
 		switch (aVillageType)
@@ -282,14 +285,14 @@ public class Village extends Observable implements Serializable
 		}
 		return false;
 	}
-	
+
 	public void resetCannonHits()
 	{
 		cannonHits = 0;
 	}
 
 	public boolean alreadyUpgraded() {
-		
+
 		return villageAlreadyUpgraded;
 	}
 

@@ -1,1 +1,1 @@
-{"aUUID":"37af448d-0674-4181-bfaf-5c994af9af9f","aUsername":"Joe","aPassword":"Steele","aAccountGameInfo":{"aWins":0,"aLosses":0,"aCurrentGame":{"valE":"Brendan","valF":"GREEN"},"aActiveGames":[{"valE":"Brendan","valF":"GREEN"}],"aPastGames":[]}}
+{"aUUID":"37af448d-0674-4181-bfaf-5c994af9af9f","aUsername":"Joe","aPassword":"Steele","aAccountGameInfo":{"aWins":0,"aLosses":0,"aCurrentGame":{"valE":"Em vs. Joe","valF":"RED"},"aActiveGames":[{"valE":"Brendan","valF":"GREEN"},{"valE":"Test","valF":"RED"},{"valE":"Em vs. Joe","valF":"RED"}],"aPastGames":[]}}
