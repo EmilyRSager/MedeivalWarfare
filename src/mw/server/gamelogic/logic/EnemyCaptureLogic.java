@@ -61,6 +61,11 @@ public class EnemyCaptureLogic {
 				if (!pGame.getVillage(lTile).equals(invadingVillage)) // make sure we aren't just looking at the invading village over and over
 				{ 
 					toFuse.add(pGame.getVillage(lTile)); 
+					Tile tmpCapital = pGame.getVillage(lTile).getCapital();
+					if(tmpCapital.getVillageType().ordinal()>invadingCapital.getVillageType().ordinal())
+					{
+						invadingCapital = tmpCapital;
+					}
 					aCurrentPlayer.removeVillage(pGame.getVillage(lTile));
 					needToFuse = true; 
 				}

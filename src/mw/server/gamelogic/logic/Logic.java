@@ -324,6 +324,11 @@ public class Logic {
 				if (!pGame.getVillage(lTile).equals(startVillage))
 				{
 					toFuse.add(pGame.getVillage(lTile)); 
+					Tile tmpCapital = pGame.getVillage(lTile).getCapital();
+					if(tmpCapital.getVillageType().ordinal()> startCapital.getVillageType().ordinal())
+					{
+						startCapital = tmpCapital;
+					}
 					pCurrentPlayer.removeVillage(pGame.getVillage(lTile));
 					needToFuse = true;
 				}
