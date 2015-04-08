@@ -26,7 +26,7 @@ public class ClientTestDriver {
 	}
 	
 	public static void createAccountAndGame(){
-		int name = 0;
+		int name = 1;
 		if (name == 0){
 			MenuActionSender.tryCreateAccount("Charlie", "Bloomfield");
 			NetworkController.requestNewGame("Testgame", 2);

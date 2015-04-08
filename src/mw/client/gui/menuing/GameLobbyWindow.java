@@ -6,6 +6,7 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -25,14 +26,20 @@ public class GameLobbyWindow {
 	private final JPanel availTab;
 	private final JPanel loadTab;
 	
-	public GameLobbyWindow(SharedGameLobby avail, SharedGameLobby load)
+	public GameLobbyWindow(SharedGameLobby lobby)
 	{
 		window = new JFrame("Medieval Warfare Game Lobby");
 		window.setResizable(false);
 		jtp = new JTabbedPane();
 		
-		availTab = createTab(avail, 0);
-		loadTab = createTab(load, 1);
+		ArrayList<String> joinableGameNames = new ArrayList<String>();
+		for (SharedCreatedGame game: lobby.getCreatedGames())
+		{
+			joinableGameNames.add(game.getGameName());
+		}
+		
+		availTab = createTab(joinableGameNames, 0);
+		loadTab = createTab(lobby.getLoadableGameNames(), 1);
 		
 		jtp.addTab("Active Games", availTab);
 		jtp.addTab("Loadable Games", loadTab);
@@ -44,17 +51,13 @@ public class GameLobbyWindow {
 		window.setVisible(true);
 	}
 	
-	private JPanel createTab(SharedGameLobby avail, int tab)
+	private JPanel createTab(Collection<String> avail, int tab)
 	{
 		JPanel aTab = new JPanel();
 		
 		JLabel gLabel = new JLabel("Available Games:");
-		ArrayList<String> games = new ArrayList<String>();
-		for (SharedCreatedGame game: avail.getCreatedGames())
-		{
-			games.add(game.getGameName());
-		}
-		JList<String> gameJList = new JList<String>(games.toArray(new String[0]));
+		
+		JList<String> gameJList = new JList<String>(avail.toArray(new String[0]));
 		JScrollPane sPane = new JScrollPane(gameJList);
 		
 		JButton create = new JButton("Create New Game");

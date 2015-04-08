@@ -157,7 +157,7 @@ public class Game extends RandomColorGenerator implements Serializable{
 	 */
 	public PossibleGameActions tileIsClicked(Coordinates pStartCoordinates)
 	{
-		VillageType VillageUpgradeType = null;
+		VillageType VillageUpgradeType = VillageType.NO_VILLAGE;
 		Tile startTile = aMap.getTile(pStartCoordinates);
 		if (!getVillage(startTile).alreadyUpgraded())
 		{
