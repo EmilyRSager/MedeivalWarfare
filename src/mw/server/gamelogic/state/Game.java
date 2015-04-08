@@ -36,7 +36,7 @@ public class Game extends RandomColorGenerator implements Serializable{
 	private GameMap aMap;  
 	private Player aCurrentPlayer;
 	CircularIterator<Player> crtIterator;
-
+	boolean isFirstTurn;
 	/**
 	 * Overloaded constructor passes default dimensions to main constructor
 	 * @param pPlayers
@@ -81,6 +81,7 @@ public class Game extends RandomColorGenerator implements Serializable{
 		assignVillageToPlayers();
 		crtIterator = new CircularIterator<Player>(pPlayers);
 		aCurrentPlayer = crtIterator.next(); 
+		isFirstTurn = true;
 	}
 
 	/**
@@ -241,6 +242,7 @@ public class Game extends RandomColorGenerator implements Serializable{
 			beginRound();
 		}
 		beginTurn();
+		
 	}
 
 	/**
@@ -265,7 +267,7 @@ public class Game extends RandomColorGenerator implements Serializable{
 		for (Village lVillage :aCurrentPlayer.getVillages()) 
 		{
 			System.out.println("[Game] Updating state for the next player's turn.");
-			lVillage.beginTurnUpdate();
+			lVillage.beginTurnUpdate(isFirstTurn);
 		}
 	}
 
@@ -282,6 +284,7 @@ public class Game extends RandomColorGenerator implements Serializable{
 	 */
 	public void beginRound()
 	{
+		isFirstTurn = false;
 		aMap.generateTrees();
 	}
 
@@ -363,15 +366,6 @@ public class Game extends RandomColorGenerator implements Serializable{
 		lTile.setStructureType(StructureType.WATCHTOWER); 
 	}
 
-	/**
-	 * Puts a cannon on the tile with the parameter coordinates
-	 * @param pCoordinates
-	 */
-	public void buyCannon(Coordinates pCoordinates)
-	{
-		Tile lTile = aMap.getTile(pCoordinates);
-		lTile.setUnit(new Unit(UnitType.CANNON));
-	}
 
 	/**
 	 * updates the action type of a unit on a given tile

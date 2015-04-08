@@ -1,6 +1,6 @@
 1) creating a peasant and then placing it on a tile that already has a knight ends up replacing the knight with the peasant
 
-2) a peasant can keep moving more than one time and then can continue collecting wood all over the map
+2) a peasant can keep moving more than one time and then can continue collecting wood all Jover the map
 	2a) in such a case though the pile of wood doesn't increase for the village beyond the first cutting operation
 
 3) moving a knight onto a tile with a tree should not be allowed, right now it doesn't move there but it does change the color of the tile to be that players color
