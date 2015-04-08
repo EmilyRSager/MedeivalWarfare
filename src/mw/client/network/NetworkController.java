@@ -4,9 +4,11 @@ import mw.shared.SharedActionType;
 import mw.shared.Coordinates;
 import mw.shared.SharedTile;
 import mw.shared.servercommands.AuthenticateUserCommand;
+import mw.shared.servercommands.BuildWatchtowerCommand;
 import mw.shared.servercommands.CombineUnitsCommand;
 import mw.shared.servercommands.CreateAccountCommand;
 import mw.shared.servercommands.EndTurnCommand;
+import mw.shared.servercommands.FireCannonCommand;
 import mw.shared.servercommands.GetJoinableGamesCommand;
 import mw.shared.servercommands.GetPossibleGameActionsCommand;
 import mw.shared.servercommands.HireUnitCommand;
@@ -34,6 +36,8 @@ public class NetworkController {
 		}
 	}
 	
+	/********************** AUTHENTICATION COMMANDS **************************/
+	
 	/**
 	 * @param pUsername
 	 * @param pPassword
@@ -49,6 +53,8 @@ public class NetworkController {
 	public static void authenticateUser(String pUsername, String pPassword){
 		aServerChannel.sendCommand(new AuthenticateUserCommand(pUsername, pPassword));
 	}
+	
+	/******************** GAME INITIALIZATION COMMANDS ************************/
 	
 	/**
 	 * Requests of the server to create a new game. If there are insufficient users connected
@@ -77,6 +83,37 @@ public class NetworkController {
 	 */
 	public static void askForJoinableGames(){
 		aServerChannel.sendCommand(new GetJoinableGamesCommand());
+	}
+	
+	/************************** GAME COMMANDS ******************************/
+	
+	public static void buildWatchtower(Coordinates pWatchtowerCoordinates){
+		aServerChannel.sendCommand(new BuildWatchtowerCommand(pWatchtowerCoordinates));
+	}
+	
+	/**
+	 * 
+	 * @param srcCoord
+	 * @param destCoord
+	 */
+	public static void combineUnits(Coordinates srcCoord, Coordinates destCoord) {
+		aServerChannel.sendCommand(new CombineUnitsCommand(srcCoord, destCoord));
+	}
+	
+	/**
+	 * Inform the server that the client will end her turn.
+	 */
+	public static void endTurn(){
+		aServerChannel.sendCommand(new EndTurnCommand());
+	}
+	
+	/**
+	 * 
+	 * @param pCannonCoordinates
+	 * @param pTargetCoordinates
+	 */
+	public static void fireCannon(Coordinates pCannonCoordinates, Coordinates pTargetCoordinates){
+		aServerChannel.sendCommand(new FireCannonCommand(pCannonCoordinates, pTargetCoordinates));
 	}
 	
 	/**
@@ -127,16 +164,4 @@ public class NetworkController {
 	public static void upgradeVillage(Coordinates pVillageCoordinates, SharedTile.VillageType pVillageType){
 		aServerChannel.sendCommand(new UpgradeVillageCommand(pVillageCoordinates, pVillageType));
 	}
-	
-	public static void combineUnits(Coordinates srcCoord, Coordinates destCoord) {
-		aServerChannel.sendCommand(new CombineUnitsCommand(srcCoord, destCoord));
-	}
-	
-	/**
-	 * Inform the server that the client will end her turn.
-	 */
-	public static void endTurn(){
-		aServerChannel.sendCommand(new EndTurnCommand());
-	}
-	
 }

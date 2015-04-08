@@ -8,7 +8,9 @@ package mw.shared.servercommands;
 import java.util.UUID;
 
 import mw.server.gamelogic.controllers.GameController;
-import mw.server.network.mappers.AccountMapper;
+import mw.server.gamelogic.exceptions.CantUpgradeException;
+import mw.server.gamelogic.exceptions.NotEnoughIncomeException;
+import mw.server.network.exceptions.IllegalCommandException;
 import mw.server.network.mappers.GameMapper;
 import mw.server.network.translators.NetworkToModelTranslator;
 import mw.shared.Coordinates;
@@ -17,7 +19,7 @@ import mw.shared.SharedTile;
 /**
  * 
  */
-public class UpgradeVillageCommand extends AbstractServerCommand {
+public class UpgradeVillageCommand extends AbstractAuthenticatedServerCommand {
 	private final String aType = "UpgradeVillageCommand";
 	private Coordinates aVillageCoordinates;
 	private SharedTile.VillageType aVillageType;
@@ -29,18 +31,15 @@ public class UpgradeVillageCommand extends AbstractServerCommand {
 		aVillageCoordinates = pVillageCoordinates;
 		aVillageType = pVillageType;
 	}
-	/**
-	 * @see mw.shared.servercommands.AbstractServerCommand#execute(java.lang.Integer)
-	 */
+
 	@Override
-	public void execute(Integer pClientID) throws Exception {
-		UUID lAccountID = AccountMapper.getInstance().getAccountID(pClientID);
+	protected void doExecution(UUID pAccountID) throws CantUpgradeException, NotEnoughIncomeException, IllegalCommandException {
 		GameController.upgradeVillage(
-				GameMapper.getInstance().getGame(lAccountID),
+				GameMapper.getInstance().getGame(pAccountID),
 				aVillageCoordinates,
 				NetworkToModelTranslator.translateVillageType(aVillageType)
 				);
-
 	}
+
 
 }

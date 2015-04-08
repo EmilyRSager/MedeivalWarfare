@@ -8,7 +8,7 @@ package mw.shared.servercommands;
 import java.util.UUID;
 
 import mw.server.gamelogic.controllers.GameController;
-import mw.server.network.mappers.AccountMapper;
+import mw.server.network.exceptions.IllegalCommandException;
 import mw.server.network.mappers.GameMapper;
 import mw.server.network.translators.NetworkToModelTranslator;
 import mw.shared.Coordinates;
@@ -17,7 +17,7 @@ import mw.shared.SharedActionType;
 /**
  * 
  */
-public class SetActionTypeCommand extends AbstractServerCommand {
+public class SetActionTypeCommand extends AbstractAuthenticatedServerCommand {
 	private final String aType = "SetActionTypeCommand";
 	private Coordinates aUnitCoordinates;
 	private SharedActionType aActionType;
@@ -32,18 +32,13 @@ public class SetActionTypeCommand extends AbstractServerCommand {
 		aActionType = pActionType;
 	}
 
-	/**
-	 * @see mw.shared.servercommands.AbstractServerCommand#execute(java.lang.Integer)
-	 */
 	@Override
-	public void execute(Integer pClientID) throws Exception {
-		UUID lAccountID = AccountMapper.getInstance().getAccountID(pClientID);
+	protected void doExecution(UUID pAccountID) throws IllegalCommandException {
 		GameController.setActionType(
-				GameMapper.getInstance().getGame(lAccountID),
+				GameMapper.getInstance().getGame(pAccountID),
 				aUnitCoordinates,
 				NetworkToModelTranslator.translateActionType(aActionType)
 				);
-
 	}
 
 }

@@ -1,7 +1,7 @@
 package mw.server.gamelogic.exceptions;
 
 @SuppressWarnings("serial")
-public class NotEnoughIncomeException extends Exception {
+public class NotEnoughIncomeException extends GameLogicException {
 
 	String pMessage; 
 	
