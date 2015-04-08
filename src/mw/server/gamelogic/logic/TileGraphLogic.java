@@ -12,6 +12,7 @@ import mw.server.gamelogic.enums.StructureType;
 import mw.server.gamelogic.enums.UnitType;
 import mw.server.gamelogic.enums.VillageType;
 import mw.server.gamelogic.graph.Graph;
+import mw.server.gamelogic.state.Game;
 import mw.server.gamelogic.state.Tile;
 import mw.server.gamelogic.state.Unit;
 
@@ -23,7 +24,7 @@ public final class TileGraphLogic {
 	public static boolean isReachableNode(Graph<Tile> pGraph, Tile crtTile, Tile startTile)
 	{
 
-		Collection<Tile> pCrtNeighbors = pGraph. getNeighbors(crtTile); 
+		Collection<Tile> pCrtNeighbors = pGraph.getNeighbors(crtTile); 
 		if (startTile.hasUnit())
 		{
 			Unit pUnit = startTile.getUnit();
@@ -194,9 +195,10 @@ public final class TileGraphLogic {
 		}
 		else
 		{
+			//Collection<Tile> destinationNeighbors = game.getNeighbors(destinationTile);
 			for (Tile lTile: destinationNeighbors)
 			{
-				if(lTile.hasUnit())
+				if(lTile.getColor().equals(destinationTile.getColor()) && lTile.hasUnit())
 				{
 					System.out.println("Destination Tile  neighbors has unit");
 					return unitCanTakeOver(pUnit, lTile.getUnit());
