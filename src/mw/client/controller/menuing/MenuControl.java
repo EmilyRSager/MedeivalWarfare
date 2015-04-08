@@ -2,6 +2,7 @@ package mw.client.controller.menuing;
 
 import mw.client.controller.CurrentClientState;
 import mw.client.controller.netmodel.UserActionSender;
+import mw.client.gui.menuing.MessageWindow;
 import mw.shared.SharedCreatedGame;
 import mw.shared.SharedGameLobby;
 

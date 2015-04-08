@@ -30,6 +30,7 @@ import org.minueto.handlers.MinuetoKeyboardHandler;
 import org.minueto.handlers.MinuetoMouse;
 import org.minueto.handlers.MinuetoMouseHandler;
 import org.minueto.window.MinuetoFrame;
+import org.minueto.window.MinuetoWindowInvalidStateException;
 
 public class GameWindow implements Observer {
 	
@@ -80,7 +81,7 @@ public class GameWindow implements Observer {
 		
 		windowLayout.addComponent(mapComp, 1);
 		windowLayout.addComponent(new BlockComponent(0, CONTROL_LAYOUT_HEIGHT, controlBarLayout), 3);
-		window = new ResizableWindow(windowLayout.getWidth(), 813/*windowLayout.getHeight()*/, queue, "Medieval Warfare");
+		window = new ResizableWindow(windowLayout.getWidth(), /*941*/windowLayout.getHeight(), queue, "Medieval Warfare");
 		
 		mapComp.setWindow(this);
 		windowLayout.setWindow(this);
@@ -149,9 +150,15 @@ public class GameWindow implements Observer {
 	
 	public void render()
 	{
-		window.clear(BACKGROUND_COLOR);
-		windowLayout.drawOn(window);
-		window.render();
+		try {
+			window.clear(BACKGROUND_COLOR);
+			windowLayout.drawOn(window);
+			window.render();
+		}
+		catch (MinuetoWindowInvalidStateException e) {
+			System.out.println("[GameWindow] Minueto is so sick, it's not letting me draw");
+			System.out.println("--> error message : "+e.getMessage());
+		}
 	}
 
 	public void registerMouseHandler(MinuetoMouseHandler h)
