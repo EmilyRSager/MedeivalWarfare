@@ -9,16 +9,16 @@ public class PriceCalculator
 {
 	public static int getUnitHireCost(UnitType pUnitType) {
 		switch(pUnitType){
-			case PEASANT:
-				return 10;
-			case INFANTRY:
-				return 20;
-			case SOLDIER:
-				return 30;
-			case CANNON: 
-				return 35; 
-			default:
-				return 40;
+		case PEASANT:
+			return 10;
+		case INFANTRY:
+			return 20;
+		case SOLDIER:
+			return 30;
+		case CANNON: 
+			return 35; 
+		default:
+			return 40;
 		}
 	}
 
@@ -30,17 +30,49 @@ public class PriceCalculator
 	 */
 	public static int getUnitUpgradeCost(UnitType pOldUnitType, UnitType pNewUnitType)
 	{
-		switch (pNewUnitType) {
+		if (pOldUnitType == UnitType.PEASANT)
+		{
+			switch (pNewUnitType) {
 			case PEASANT:
-				return 10;
+				return 0;
 			case INFANTRY: 
-				return 20; 
+				return 10; 
 			case SOLDIER:
-				return 30; 
+				return 20; 
 			case KNIGHT:
+				return 30;  
 			default:
-				return 40;  
+			}
 		}
+		if (pOldUnitType == UnitType.INFANTRY)
+		{
+			switch (pNewUnitType) {
+			case PEASANT:
+				return 0;
+			case INFANTRY: 
+				return 0; 
+			case SOLDIER:
+				return 10; 
+			case KNIGHT:
+				return 20;  
+			default:
+			}
+		}
+		if (pOldUnitType == UnitType.SOLDIER)
+		{
+			switch (pNewUnitType) {
+			case PEASANT:
+				return 0;
+			case INFANTRY: 
+				return 0; 
+			case SOLDIER:
+				return 0; 
+			case KNIGHT:
+				return 30; 
+			default:
+			}
+		}
+		return 0;
 	}
 
 	/**
@@ -52,14 +84,16 @@ public class PriceCalculator
 	public static int getVillageUpgradeCost(VillageType pVillageType){
 		switch (pVillageType) 
 		{
-			case HOVEL:
-				return 8;
-			case TOWN:
-				return 10;
-			case FORT:
-				return 10;
-			default:
-				return 8; 
+		case HOVEL:
+			return 8;
+		case TOWN:
+			return 10;
+		case FORT:
+			return 10;
+		case CASTLE: 
+			return 12;
+		default:
+			return 8; 
 		}
 	}
 
@@ -72,20 +106,20 @@ public class PriceCalculator
 
 	public static int getUpkeepCost(Unit pUnit)
 	{
-				switch (pUnit.getUnitType()) 
-				{
-					case PEASANT:
-						return 2;
-					case INFANTRY:
-						return  6;
-					case SOLDIER:
-						return 18;
-					case CANNON: 
-						return 5; 
-					case KNIGHT:
-						return 54;
-					default:
-						return 0; 
-				}
+		switch (pUnit.getUnitType()) 
+		{
+		case PEASANT:
+			return 2;
+		case INFANTRY:
+			return  6;
+		case SOLDIER:
+			return 18;
+		case CANNON: 
+			return 5; 
+		case KNIGHT:
+			return 54;
+		default:
+			return 0; 
+		}
 	}
 }
