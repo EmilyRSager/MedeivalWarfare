@@ -338,7 +338,7 @@ public class GameMap implements Serializable
 				if(!villageSegement.contains(pInvadedVillage.getCapital()))
 				{
 					System.out.println("[Game] Creating a new village.");
-					Village lVillage = new Village(villageSegement);
+					Village lVillage = new Village(villageSegement, 0, 0, null, VillageType.HOVEL);
 					System.out.println("[Game] Village Created.");
 					lVillage.setRandomCapital();
 					System.out.println(lVillage.getColor());
