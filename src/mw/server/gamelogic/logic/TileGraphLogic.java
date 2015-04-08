@@ -22,19 +22,14 @@ public final class TileGraphLogic {
 
 	public static boolean isReachableNode(Graph<Tile> pGraph, Tile crtTile, Tile startTile)
 	{
-		
+
 		Collection<Tile> pCrtNeighbors = pGraph. getNeighbors(crtTile); 
 		if (startTile.hasUnit())
 		{
 			Unit pUnit = startTile.getUnit();
 			if (pUnit.getActionType() == ActionType.MOVED)
 			{
-				System.out.println("[Game] The unit has previously been moved this turn, and cannot move again.");
 				return false;
-			}
-			if (pUnit.getUnitType() == UnitType.CANNON)
-			{
-				return CannonLogic.isReachableNode(crtTile, startTile, pCrtNeighbors); 
 			}
 			if (isSeaTile(crtTile))
 			{
@@ -59,7 +54,7 @@ public final class TileGraphLogic {
 
 
 	}
-	
+
 	public static boolean isPathOver(Graph<Tile> pGraph, Tile startTile, Tile destinationTile)
 	{
 		if (isNeutralLand(destinationTile)) 
@@ -92,12 +87,12 @@ public final class TileGraphLogic {
 			{
 				return true; 
 			}
-			
+
 			return false; 
 
 		}
 	}
-	
+
 	private static boolean isSeaTile(Tile crtTile) {
 		if (crtTile.getColor()== Color.SEATILE)
 		{
@@ -140,6 +135,10 @@ public final class TileGraphLogic {
 		if (isTreeOnTile(destinationTile))
 		{
 			return unitCanChopTree(pUnit); 
+		}
+		if (isTombstoneOnTile(destinationTile))
+		{
+			return unitCanClearTombstone(pUnit);
 		}
 		return true; 
 
@@ -196,6 +195,7 @@ public final class TileGraphLogic {
 		{
 			if (isProtected(pUnit, destinationTile, destinationNeighbors))
 			{
+				//handles watchtower cases and if any of the neighbors are guarding the desired invaded tile
 				return false; 
 			}
 			if (destinationTile.hasUnit())
@@ -236,7 +236,6 @@ public final class TileGraphLogic {
 			{
 				return true; 
 			}
-
 		}
 		if (dVillageType == VillageType.FORT)
 		{
@@ -244,40 +243,49 @@ public final class TileGraphLogic {
 			{
 				return true; 
 			}
-
 		}
+		//castles can't be taken over, so they get the default of false
 		return false; 
 
 	}
-	
+
 	private static boolean isProtected(Unit pUnit, Tile destinationTile, Collection<Tile> destinationNeighbors)
 	{
+		//Unit trying to invade
 		UnitType pUnitType = pUnit.getUnitType(); 
 		for (Tile lTile : destinationNeighbors)
 		{
-			Unit lUnit = lTile.getUnit();
-			if (lUnit != null)
+			if (lTile.getColor() == destinationTile.getColor())
 			{
-				if(lUnit.getUnitType().ordinal() >= pUnitType.ordinal()) 
+				//Unit being invaded
+				Unit lUnit = lTile.getUnit();
+				if (lUnit != null)
 				{
-					return false;
+					//if the invaded unit is of lower rank than than the unit being invaded the tile is not protected
+					// e.g. peasant <= infantry implies the tile is not protected 
+					if(lUnit.getUnitType().ordinal() <= pUnitType.ordinal()) 
+					{
+						return false;
+					}
 				}
 			}
 		}
-		if (isWatchtowerGuardingTile(destinationTile, destinationNeighbors))
+		if (isWatchtowerGuardingTile(destinationTile, destinationNeighbors) || isWatchtowerOnTile(destinationTile))
 		{
 			switch (pUnitType)
 			{
-			case SOLDIER: 
+			case PEASANT: 
 				return false; 
-			case KNIGHT: 
-				return false; 
+			case INFANTRY: 
+				return false;
+			case CANNON: 
 			default: 
 				break; 
 			} 
 		}
 		return true; 
 	}
+	
 	private static boolean unitCanTakeOver(Unit crtUnit, Unit enemyUnit)
 	{
 		UnitType crtType = crtUnit.getUnitType();
@@ -292,7 +300,7 @@ public final class TileGraphLogic {
 	private static boolean unitCanChopTree(Unit pUnit)
 	{
 		UnitType pUnitType = pUnit.getUnitType(); 
-		if (pUnitType == UnitType.KNIGHT) 
+		if (pUnitType == UnitType.KNIGHT || pUnitType == UnitType.CANNON) 
 		{
 			return false; 
 		}
@@ -302,7 +310,7 @@ public final class TileGraphLogic {
 	private static boolean unitCanClearTombstone(Unit pUnit)
 	{
 		UnitType pUnitType = pUnit.getUnitType(); 
-		if (pUnitType != UnitType.KNIGHT) 
+		if (pUnitType == UnitType.KNIGHT || pUnitType == UnitType.CANNON) 
 		{
 			return false; 
 		}
@@ -325,6 +333,7 @@ public final class TileGraphLogic {
 		}
 		return false; 
 	}
+	
 	private static boolean isWatchtowerGuardingTile(Tile pTile, Collection<Tile> pNeighbors)
 	{
 		if (pTile.getStructureType() == StructureType.WATCHTOWER)
@@ -343,6 +352,7 @@ public final class TileGraphLogic {
 		}
 		return false; 
 	}
+	
 	private static boolean isTombstoneOnTile(Tile pTile)
 	{
 		if (pTile.getStructureType() == StructureType.TOMBSTONE)
@@ -351,6 +361,7 @@ public final class TileGraphLogic {
 		}
 		return false;
 	}
+	
 	private static boolean isTreeOnTile(Tile pTile)
 	{
 		if (pTile.getStructureType() == StructureType.TREE)

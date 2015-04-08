@@ -9,6 +9,7 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
 import mw.server.network.controllers.GameStateCommandDistributor;
+import mw.server.network.exceptions.IllegalCommandException;
 import mw.server.network.mappers.ClientChannelMapper;
 import mw.shared.clientcommands.ErrorMessageCommand;
 import mw.shared.servercommands.AbstractServerCommand;
@@ -25,7 +26,6 @@ import mw.util.Tuple2;
  * is invalid.
  */
 public class ServerCommandHandler {
-	
 	private static ServerCommandHandler aServerCommandHandler;
 	private BlockingQueue<Tuple2<AbstractServerCommand, Integer>> aServerCommandQueue;
 	
@@ -47,7 +47,6 @@ public class ServerCommandHandler {
 		if(aServerCommandHandler == null){
 			aServerCommandHandler = new ServerCommandHandler();
 		}
-		
 		return aServerCommandHandler;
 	}
 	
@@ -61,7 +60,6 @@ public class ServerCommandHandler {
 		try {
 			aServerCommandQueue.put(new Tuple2<AbstractServerCommand, Integer>(pServerCommand, pClientID));
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -70,6 +68,7 @@ public class ServerCommandHandler {
 	 * Nested Thread class ServerCommandHandlerThread handles all ServerCommands, for all games.
 	 */
 	class ServerCommandHandlerThread extends Thread {
+		@Override
 		public void run(){
 			while(true){
 				try {
@@ -80,10 +79,12 @@ public class ServerCommandHandler {
 					try {
 						lServerCommand.execute(lClientID);
 						GameStateCommandDistributor.flushBuffer();
-					} catch (Exception e) {
+					} catch (IllegalCommandException e) {
 						e.printStackTrace();
 						ClientChannelMapper.getInstance().getChannel(lClientID).sendCommand(
 								new ErrorMessageCommand(e.getMessage()));
+					} catch (Exception e) {
+						
 					}
 					
 				} catch (InterruptedException e) {

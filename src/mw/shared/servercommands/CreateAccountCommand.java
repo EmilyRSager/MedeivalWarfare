@@ -1,12 +1,7 @@
 package mw.shared.servercommands;
 
-import java.util.UUID;
-
-import mw.server.admin.AccountManager;
 import mw.server.network.controllers.AdminCommandController;
-import mw.server.network.mappers.AccountMapper;
-import mw.server.network.mappers.ClientChannelMapper;
-import mw.shared.clientcommands.AccountCreatedCommand;
+import mw.server.network.exceptions.IllegalCommandException;
 
 public class CreateAccountCommand extends AbstractServerCommand {
 	private final String aType = "CreateAccountCommand";
@@ -19,7 +14,7 @@ public class CreateAccountCommand extends AbstractServerCommand {
 	}
 	
 	@Override
-	public void execute(Integer pClientID) throws Exception {
+	public void execute(Integer pClientID) throws IllegalCommandException {
 		AdminCommandController.getInstance().createUser(pClientID, aUsername, aPassword);
 	}
 

@@ -123,11 +123,28 @@ public class Game extends RandomColorGenerator implements Serializable{
 	 * @param pTile
 	 * @param pUnitType
 	 */
-	public void upgradeUnit(Coordinates pCoordinates, UnitType pUnitType) 
+	public void upgradeUnit(Coordinates pCoordinates, UnitType pUnitType) throws NotEnoughIncomeException
 	{
+
 		Tile pTile = aMap.getTile(pCoordinates);
-		pTile.setUnit(new Unit(pUnitType));
-		pTile.notifyObservers();
+		UnitType pOldUnitType = UnitType.NO_UNIT;
+		int upgradeCost = 0;
+		if (pTile.hasUnit())
+		{
+			pOldUnitType = pTile.getUnit().getUnitType();
+			upgradeCost = PriceCalculator.getUnitUpgradeCost(pOldUnitType, pUnitType);
+			if (upgradeCost <=  getVillage(pTile).getGold())
+			{
+				pTile.setUnit(new Unit(pUnitType));
+				pTile.notifyObservers();
+			}
+			else 
+			{
+				throw new NotEnoughIncomeException("To upgrade a " + pOldUnitType.toString().toLowerCase() + " to a " + pUnitType.toString().toLowerCase() 
+						+ " costs " + upgradeCost + " This village only has " + getVillage(pTile).getGold());
+			}
+
+		}
 	}
 
 
@@ -145,6 +162,7 @@ public class Game extends RandomColorGenerator implements Serializable{
 		{
 			VillageUpgradeType = GameLogic.getPossibleVillageUpgrades(startTile.getVillageType()); 
 		}
+		Collection<Tile> firableTiles = new HashSet<Tile>();
 		Collection<Tile> ReachableTiles = new HashSet<Tile>();
 		Collection<ActionType> UnitActions = new ArrayList<ActionType>();
 		boolean canBuildWatchTower = GameLogic.canBuildWatchtower(startTile, this); 
@@ -155,21 +173,29 @@ public class Game extends RandomColorGenerator implements Serializable{
 		{
 			Unit pUnit = startTile.getUnit();
 			if (pUnit.getActionType() == ActionType.READY) {
-				ReachableTiles = aMap.getPossibleMoves(startTile);
+				if(pUnit.getUnitType()!=UnitType.CANNON)
+				{
+					ReachableTiles = aMap.getPossibleMoves(startTile);
+				}
+				else 
+				{
+					ReachableTiles = CannonLogic.getReachableTiles(startTile, this);
+					firableTiles = CannonLogic.getFirableTiles(startTile, this);
+				}
 				UnitActions = Logic.getPossibleActions(pUnit, startTile);
 			}
 		}
 		Collection<UnitType> UnitUpgrade = GameLogic.getVillagerHireOrUpgradeTypes(startTile, this);
 		Collection<Tile> hirableUnitTiles = wantToHireVillager(startTile);
-		PossibleGameActions possible = new PossibleGameActions(ReachableTiles, UnitUpgrade, UnitActions, VillageUpgradeType, canBuildWatchTower, combinableUnitTiles, hirableUnitTiles);
+		PossibleGameActions possible = new PossibleGameActions(ReachableTiles, UnitUpgrade, UnitActions, VillageUpgradeType, canBuildWatchTower, combinableUnitTiles, hirableUnitTiles, firableTiles);
 		return possible; 
 	}
-	
+
 	public Collection<Tile> wantToHireVillager(Tile pTile)
 	{
 		return UnitHireLogic.wantToHireUnit(pTile, this);
 	}
- 
+
 
 	/**
 	 * @param pTile
@@ -195,7 +221,7 @@ public class Game extends RandomColorGenerator implements Serializable{
 			pTile.setUnit(pUnit);
 			pTile.notifyObservers();
 			aMap.getVillage(pTile).getCapital().notifyObservers();
-			
+
 		}
 		else 
 		{
@@ -267,15 +293,15 @@ public class Game extends RandomColorGenerator implements Serializable{
 	 */
 	public void moveUnit(Coordinates pStartCoordinates,Coordinates pDestinationCoordinates) 
 	{
-		
+
 		//DON'T MAKE CHANGES TO THIS METHOD UNLESS YOU ARE EMILY 
 		Tile startTile =  aMap.getTile(pStartCoordinates); 
 		Tile pDestinationTile = aMap.getTile(pDestinationCoordinates);
-		
+
 		//get the unit and color of the start tile
 		Unit crtUnit = startTile.getUnit();
 		Color startColor = pDestinationTile.getColor();
-		
+
 		//get the color of the invaded tile
 		Color lColor = pDestinationTile.getColor();
 		if (lColor == Color.NEUTRAL)
@@ -314,16 +340,16 @@ public class Game extends RandomColorGenerator implements Serializable{
 		Village invadingVillage = getVillage(startTile);
 		System.out.println("[Game] The invaded village has initial size " + invadedVillage.getTiles().size());
 		System.out.println("[Game] The invading village has initial size " + invadingVillage.getTiles().size());
-		
+
 		//capture the tile  and fuse the necessary villages
 		EnemyCaptureLogic.CaptureTile(invadingVillage, invadedVillage, pDestinationTile, this, aCurrentPlayer); 
-		
+
 		System.out.println("[Game] The invaded village has final size " + invadedVillage.getTiles().size());
 		System.out.println("[Game] The invading village has final size " + invadingVillage.getTiles().size());
 		aMap.updateVillages(aPlayers, aCurrentPlayer, invadedVillage);
 		EnemyCaptureLogic.move(startTile.getUnit(), pDestinationTile, invadingVillage);
 		startTile.setUnit(null);
-		
+
 		pDestinationTile.setStructureType(StructureType.NO_STRUCT);
 		pDestinationTile.setVillageType(VillageType.NO_VILLAGE);
 	}
@@ -439,18 +465,48 @@ public class Game extends RandomColorGenerator implements Serializable{
 	public void combineVillagers(Coordinates p1, Coordinates p2) {
 		Tile srcTile = aMap.getTile(p1);
 		Tile destTile = aMap.getTile(p2);
-		
+
 		Unit srcUnit = srcTile.getUnit();
 		Unit destUnit = destTile.getUnit();
-		
+
 		UnitType resultingType = UnitHireLogic.unitCombinationResult(srcUnit.getUnitType(), destUnit.getUnitType());
 		srcTile.setUnit(null);
 		destUnit.setUnitType(resultingType);
 		destUnit.setActionType(ActionType.MOVED);
-		
+
 		srcTile.notifyObservers();
 		destTile.notifyObservers();
 	}
-	
-	
+
+	public void fireCannon(Coordinates pCannonCoordinates, Coordinates pFirableCoord) 
+	{
+		Tile pCannonTile = getTile(pCannonCoordinates);
+		Tile pFirableTile = getTile(pFirableCoord);
+		StructureType firableStructureType = pFirableTile.getStructureType();
+		switch (firableStructureType)
+		{
+		case VILLAGE_CAPITAL: 
+			Village destroyedVillage = getVillage(pFirableTile);
+			destroyedVillage.incrementCannonHits();
+			if (destroyedVillage.isDestroyedByCannon())
+			{
+				destroyedVillage.addOrSubtractGold(-destroyedVillage.getGold());
+				destroyedVillage.addOrSubtractWood(-destroyedVillage.getWood());
+				destroyedVillage.setRandomCapital();
+				destroyedVillage.resetCannonHits();
+			}
+		default: 
+			pFirableTile.setStructureType(StructureType.NO_STRUCT);
+		}
+		pFirableTile.setMeadow(false);
+		pFirableTile.setUnit(null);
+		pFirableTile.notifyObservers();
+		
+		if (pCannonTile.hasUnit())
+		{
+		pCannonTile.getUnit().setActionType(ActionType.MOVED);
+		}
+	}
+
+
 }

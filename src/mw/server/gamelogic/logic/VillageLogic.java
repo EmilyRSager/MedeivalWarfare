@@ -29,7 +29,10 @@ public class VillageLogic
 		int goldGenerated = 0; 
 		for (Tile lTile : pTiles)
 		{
-			goldGenerated += lTile.isMeadowOnTile() ? 2 : 1;
+			if(lTile.getStructureType()!=StructureType.TREE)
+			{
+				goldGenerated += lTile.isMeadowOnTile() ? 2 : 1;
+			}
 		}
 		return goldGenerated; 
 	}
@@ -59,7 +62,7 @@ public class VillageLogic
 			}
 		}
 	}
-	
+
 	/**
 	 * Builds roads if a unit has been building roads for a turn
 	 * @param pTiles
@@ -121,6 +124,7 @@ public class VillageLogic
 				pVillage.setVillageType(VillageType.FORT);
 				break;
 			case FORT: 
+				pVillage.setVillageType(VillageType.CASTLE);
 			case NO_VILLAGE:
 			default:
 				throw new CantUpgradeException("[Village] Can not upgrade Village due to requested VillageType.");
@@ -146,6 +150,13 @@ public class VillageLogic
 			{
 				Unit lUnit = lTile.getUnit(); 
 				totalUpkeepCost += PriceCalculator.getUpkeepCost(lUnit); 
+			}
+			if (lTile.getStructureType() == StructureType.VILLAGE_CAPITAL)
+			{
+				if (lTile.getVillageType() == VillageType.CASTLE)
+				{
+					totalUpkeepCost += 80;
+				}
 			}
 		}
 		if (totalUpkeepCost > pVillage.getGold())
@@ -176,7 +187,7 @@ public class VillageLogic
 	 */
 	public static void starveVillage(Collection<Tile> pTiles, Village pVillage)
 	{
-	
+
 		int x = -pVillage.getGold();
 		pVillage.addOrSubtractGold(x);
 		for (Tile lTile : pTiles)

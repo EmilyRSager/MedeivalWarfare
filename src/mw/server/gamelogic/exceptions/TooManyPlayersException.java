@@ -4,7 +4,7 @@
 package mw.server.gamelogic.exceptions;
 
 @SuppressWarnings("serial")
-public class TooManyPlayersException extends Exception {
+public class TooManyPlayersException extends GameLogicException {
 	
 	String pMessage; 
 	public TooManyPlayersException()
