@@ -28,12 +28,12 @@ public class ClientTestDriver {
 	public static void createAccountAndGame(){
 		int name = 0;
 		if (name == 0){
-			MenuActionSender.tryCreateAccount("Blu", "Ha");
-			NetworkController.requestNewGame("Test game", 2);
+			MenuActionSender.tryCreateAccount("Charlie", "Bloomfield");
+			NetworkController.requestNewGame("Testgame", 2);
 		}
 		else{
-			MenuActionSender.tryCreateAccount("hatethis", "ho");
-			NetworkController.joinGame("Test game");
+			MenuActionSender.tryCreateAccount("Hugo", "Kapp");
+			NetworkController.joinGame("Testgame");
 		}
 	}
 	
