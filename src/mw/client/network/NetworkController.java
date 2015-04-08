@@ -4,6 +4,7 @@ import mw.shared.SharedActionType;
 import mw.shared.Coordinates;
 import mw.shared.SharedTile;
 import mw.shared.servercommands.AuthenticateUserCommand;
+import mw.shared.servercommands.CombineUnitsCommand;
 import mw.shared.servercommands.CreateAccountCommand;
 import mw.shared.servercommands.EndTurnCommand;
 import mw.shared.servercommands.GetJoinableGamesCommand;
@@ -46,7 +47,6 @@ public class NetworkController {
 	 * @param pPassword
 	 */
 	public static void authenticateUser(String pUsername, String pPassword){
-		System.out.println("Authenticate.");
 		aServerChannel.sendCommand(new AuthenticateUserCommand(pUsername, pPassword));
 	}
 	
@@ -126,6 +126,10 @@ public class NetworkController {
 	 */
 	public static void upgradeVillage(Coordinates pVillageCoordinates, SharedTile.VillageType pVillageType){
 		aServerChannel.sendCommand(new UpgradeVillageCommand(pVillageCoordinates, pVillageType));
+	}
+	
+	public static void combineUnits(Coordinates srcCoord, Coordinates destCoord) {
+		aServerChannel.sendCommand(new CombineUnitsCommand(srcCoord, destCoord));
 	}
 	
 	/**

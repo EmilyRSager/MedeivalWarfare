@@ -6,7 +6,9 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.swing.*;
 
@@ -19,34 +21,43 @@ import mw.shared.SharedGameLobby;
 public class GameLobbyWindow {
 
 	private final JFrame window;
-	private final Container pane;
-	//private final BorderLayout bLayout;
-	private final JLabel gLabel;
-	private final List<String> games;
-	private final JList<String> gameJList;
-	private final JScrollPane sPane;
-	private final JPanel buttonContainer;
-	private final JButton create;
-	private final JButton join;
+	private final JTabbedPane jtp;
+	private final JPanel availTab;
+	private final JPanel loadTab;
 	
-	public GameLobbyWindow(SharedGameLobby lobby)
+	public GameLobbyWindow(SharedGameLobby avail, SharedGameLobby load)
 	{
 		window = new JFrame("Medieval Warfare Game Lobby");
 		window.setResizable(false);
-		pane = window.getContentPane();
-		//bLayout = new BorderLayout(0,2);
-		//pane.setLayout(bLayout);
+		jtp = new JTabbedPane();
 		
-		gLabel = new JLabel("Available Games:");
-		games = new ArrayList<String>();
-		for (SharedCreatedGame game: lobby.getCreatedGames())
+		availTab = createTab(avail, 0);
+		loadTab = createTab(load, 1);
+		
+		jtp.addTab("Active Games", availTab);
+		jtp.addTab("Loadable Games", loadTab);
+		
+		window.getContentPane().add(jtp, BorderLayout.CENTER);
+		
+		window.pack();
+		window.setLocationRelativeTo(null);
+		window.setVisible(true);
+	}
+	
+	private JPanel createTab(SharedGameLobby avail, int tab)
+	{
+		JPanel aTab = new JPanel();
+		
+		JLabel gLabel = new JLabel("Available Games:");
+		ArrayList<String> games = new ArrayList<String>();
+		for (SharedCreatedGame game: avail.getCreatedGames())
 		{
 			games.add(game.getGameName());
 		}
-		gameJList = new JList<String>(games.toArray(new String[0]));
-		sPane = new JScrollPane(gameJList);
+		JList<String> gameJList = new JList<String>(games.toArray(new String[0]));
+		JScrollPane sPane = new JScrollPane(gameJList);
 		
-		create = new JButton("Create New Game");
+		JButton create = new JButton("Create New Game");
 		
 		create.addActionListener(new ActionListener() {
 			
@@ -56,29 +67,46 @@ public class GameLobbyWindow {
 				ScreenSwitcher.switchScreen(ScreenKind.GAME_CREATION);
 			}
 		});
-		
-		join = new JButton("Join Selected Game");
-		
-		join.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e)
-			{
-				MenuControl.gameSelected(gameJList.getSelectedValuesList().get(0));
-			}
-		});
-		
-		buttonContainer = new JPanel();
+
+		JPanel buttonContainer = new JPanel();
 		buttonContainer.add(create);
-		buttonContainer.add(join);
 		
-		pane.add(gLabel, BorderLayout.PAGE_START);
-		pane.add(sPane, BorderLayout.CENTER);
-		pane.add(buttonContainer, BorderLayout.PAGE_END);
+		if(tab == 0)
+		{
+			JButton join = new JButton("Join Selected Game");
+			
+			join.addActionListener(new ActionListener() {
+				
+				@Override
+				public void actionPerformed(ActionEvent e)
+				{
+					MenuControl.gameSelected(gameJList.getSelectedValuesList().get(0));
+				}
+			});
+			buttonContainer.add(join);
+		}
+		else if(tab == 1)
+		{
+			JButton launch = new JButton("Launch Selected Game");
+			
+			launch.addActionListener(new ActionListener() {
+				
+				@Override
+				public void actionPerformed(ActionEvent e)
+				{
+					MenuControl.gameSelected(gameJList.getSelectedValuesList().get(0));
+				}
+			});
+			buttonContainer.add(launch);
+		}
 		
-		window.pack();
-		window.setLocationRelativeTo(null);
-		window.setVisible(true);
+		BorderLayout bL = new BorderLayout();
+		aTab.setLayout(bL);
+		aTab.add(gLabel, BorderLayout.PAGE_START);
+		aTab.add(sPane, BorderLayout.CENTER);
+		aTab.add(buttonContainer, BorderLayout.PAGE_END);
+		
+		return aTab;
 	}
 	
 	public void close()
@@ -88,7 +116,8 @@ public class GameLobbyWindow {
 	
 	public static void main(String[] Args)
 	{
-		String[] testArray = {"one", "two", "three", "four", "five", "six", "seven"};
-		GameLobbyWindow t = new GameLobbyWindow(testArray);
+		Set<SharedCreatedGame> empty = new HashSet<SharedCreatedGame>();
+		SharedGameLobby test = new SharedGameLobby(empty);
+		GameLobbyWindow t = new GameLobbyWindow(test, test);
 	}
 }
