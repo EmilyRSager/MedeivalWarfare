@@ -41,6 +41,7 @@ public final class CurrentClientState {
 	public static void setCurrentPlayerColor(SharedColor color)
 	{
 		ModelQuerier.setCurrentPlayerColor(currentGame,color);
+		currentGameWindow.addUserDisplay(username, ModelGUITranslator.translateToMinuetoColor(currentGame.getCurrentPlayer().getColor()));
 	}
 	
 	public static boolean isInGame() {
@@ -61,10 +62,6 @@ public final class CurrentClientState {
 	
 	public static String getUsername() {
 		return username;
-	}
-	
-	public static MinuetoColor getDisplayableGamePlayerColor() {
-		return ModelGUITranslator.translateToMinuetoColor(currentGame.getCurrentPlayer().getColor());
 	}
 	
 }
