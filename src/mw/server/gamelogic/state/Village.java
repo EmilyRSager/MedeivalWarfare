@@ -8,8 +8,6 @@ import java.util.Observable;
 import java.util.Random;
 import java.util.Set;
 
-import com.sun.glass.ui.View.Capability;
-
 import mw.server.gamelogic.enums.Color;
 import mw.server.gamelogic.enums.StructureType;
 import mw.server.gamelogic.enums.VillageType;
@@ -38,8 +36,8 @@ public class Village extends Observable implements Serializable
 	public Village(Collection<Tile> lVillageTiles) 
 	{
 		aTiles= lVillageTiles; 
-		aGold = 100; 
-		aWood = 100;
+		aGold = 10; 
+		aWood = 10;
 		villageAlreadyUpgraded = false; 
 	}
 
@@ -50,7 +48,7 @@ public class Village extends Observable implements Serializable
 		aWood = pWood;
 		aCapital = pCapital;
 		aVillageType = pVillageType;
-		villageAlreadyUpgraded = true;
+		villageAlreadyUpgraded = false;
 	}
 
 	/**
@@ -65,20 +63,16 @@ public class Village extends Observable implements Serializable
 
 	public void setRandomCapital()
 	{
-		Random r = new Random(); 
-		int i = r.nextInt(150); 
-		for (Tile lTile : aTiles)
-		{
-			if (i%10 == 0)
-			{
-				setCapital(lTile);
-				break; 
-			}
-			else 
-			{
-				i++; 
-			}
+		
+		int i = new Random().nextInt(aTiles.size());
+		Iterator<Tile> iterator = aTiles.iterator();
+		while(i > 0) {
+			iterator.next();
+			i--;
 		}
+		setCapital(iterator.next());
+		aCapital.setUnit(null);
+		aCapital.notifyChanged();
 	}
 
 	/**
@@ -158,6 +152,7 @@ public class Village extends Observable implements Serializable
 	 */
 	public void addOrSubtractGold(int addGold) 
 	{
+		
 		aGold = aGold + addGold;
 		aCapital.notifyChanged();
 	}

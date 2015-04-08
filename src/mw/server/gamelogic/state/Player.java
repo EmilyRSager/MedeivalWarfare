@@ -43,8 +43,9 @@ public class Player implements Serializable{
 		return aVillages; 
 	}
 
-	public void addVillage(Village lVillage) {
-		aVillages.add(lVillage);
+	public void addVillage(Village pVillage) {
+		System.out.println("[Game] Adding a village with color " + pVillage.getColor() + " to the player with color " + getPlayerColor()  );
+		aVillages.add(pVillage);
 
 	}
 

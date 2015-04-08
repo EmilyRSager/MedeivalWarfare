@@ -41,12 +41,13 @@ public class SharedTileTranslator {
 	 * @return SharedTile encoding of pTile
 	 */
 	public static SharedTile translateTile(Tile pTile, Game pGame){
+		System.out.println("[SharedTileTranslator] tile has a road = "+TileController.hasRoad(pTile)+", has a meadow = "+TileController.hasMeadow(pTile));
 		SharedTile lSharedTile = new SharedTile(
 				translateColor(TileController.getColor(pTile)),
 				translateCoordinates(TileController.getCoordinates(pTile)),
 				translateTerrain(
 						TileController.getStructureType(pTile),
-						TileController.hasRoad(pTile),
+						TileController.hasMeadow(pTile),
 						TileController.getColor(pTile)
 						),
 						
@@ -125,16 +126,16 @@ public class SharedTileTranslator {
 			return Terrain.SEA;
 		}
 		
+		else if(pHasMeadow){
+			return Terrain.MEADOW;
+		}
+		
 		else if(pStructureType == StructureType.NO_STRUCT){
 			return Terrain.GRASS;
 		}
 		
 		else if(pStructureType == StructureType.TREE){
 			return Terrain.TREE;
-		}
-		
-		else if(pHasMeadow){
-			return Terrain.MEADOW;
 		}
 		
 		else if(pStructureType == StructureType.TOMBSTONE){
@@ -146,7 +147,7 @@ public class SharedTileTranslator {
 		}
 		
 		else{
-			return Terrain.SEA;
+			throw new IllegalArgumentException("The tuple "+pStructureType+","+pHasMeadow+","+pColor+" is not a valid tuple to be translated to SharedTile.Terrain");
 		}
 	}
 	

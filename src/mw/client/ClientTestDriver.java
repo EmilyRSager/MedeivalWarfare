@@ -7,7 +7,7 @@ public class ClientTestDriver {
 	public static void main(String[] args) {
 		NetworkController.initialize();
 		
-		int name = 10;
+		int name = 1;
 		if (name == 0){
 			MenuActionSender.tryCreateAccount("Charlie", "Bloomfield");
 			NetworkController.requestNewGame("Test game", 2);

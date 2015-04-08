@@ -1,8 +1,5 @@
 package mw.client.controller.menuing;
 
-import java.util.Collection;
-
-import mw.client.controller.menuing.ScreenSwitcher.ScreenKind;
 import mw.shared.SharedCreatedGame;
 import mw.shared.SharedGameLobby;
 
@@ -51,7 +48,14 @@ public abstract class MenuControl {
 		}
 	}
 	
-	
+	public static void inviteAccepted(String gameName)
+	{
+		SharedCreatedGame gameRoom = MenuActionSender.tryJoiningGame(gameName);
+		if (gameRoom != null)
+		{
+			ScreenSwitcher.openGameRoomScreen(gameRoom);
+		}
+	}
 	
 	public static void leaveGameRoom()
 	{

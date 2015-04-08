@@ -116,4 +116,8 @@ public class TileController {
 	public static boolean hasRoad(Tile pTile){
 		return pTile.getStructureType() == StructureType.ROAD;
 	}
+	
+	public static boolean hasMeadow(Tile tile) {
+		return tile.isMeadowOnTile();
+	}
 }
