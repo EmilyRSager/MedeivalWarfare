@@ -130,11 +130,7 @@ public class Tile extends Observable implements Serializable
      */
     public boolean hasUnit()
     {
-    	if (aUnit != null)
-    	{
-    	return aUnit.getUnitType() != UnitType.NO_UNIT;
-    	}
-    	return false;
+    	return aUnit != null && aUnit.getUnitType() != UnitType.NO_UNIT;
     }
     
     /**
