@@ -177,14 +177,15 @@ public class VillageLogic
 	public static void starveVillage(Collection<Tile> pTiles, Village pVillage)
 	{
 	
-		pVillage.addOrSubtractGold(-pVillage.getGold());
-		pVillage.addOrSubtractWood(-pVillage.getWood());
+		int x = -pVillage.getGold();
+		pVillage.addOrSubtractGold(x);
 		for (Tile lTile : pTiles)
 		{
 			if (lTile.hasUnit())
 			{
 				lTile.setUnit(null);
 				lTile.setStructureType(StructureType.TOMBSTONE);
+				lTile.notifyObservers();
 			}
 		}
 	}

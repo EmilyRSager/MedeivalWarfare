@@ -32,6 +32,7 @@ public class GameLobbyWindow {
 	public GameLobbyWindow(SharedGameLobby lobby)
 	{
 		window = new JFrame("Medieval Warfare Game Lobby");
+		window.setResizable(false);
 		pane = window.getContentPane();
 		//bLayout = new BorderLayout(0,2);
 		//pane.setLayout(bLayout);

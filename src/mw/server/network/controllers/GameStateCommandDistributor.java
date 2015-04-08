@@ -12,8 +12,6 @@ import java.util.Observer;
 import java.util.Set;
 import java.util.UUID;
 
-import com.sun.org.apache.xerces.internal.parsers.IntegratedParserConfiguration;
-
 import mw.server.gamelogic.state.Game;
 import mw.server.gamelogic.state.Tile;
 import mw.server.gamelogic.state.Village;

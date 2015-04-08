@@ -77,6 +77,7 @@ public class Game extends RandomColorGenerator implements Serializable{
 
 		aMap = new GameMap(pWidth, pHeight);
 		new RandomMapPartitioner(aMap).partition(availableColors); 
+		aMap.randomlyGenerateTreesAndMeadows();
 		assignVillageToPlayers();
 		crtIterator = new CircularIterator<Player>(pPlayers);
 		aCurrentPlayer = crtIterator.next(); 
@@ -125,7 +126,6 @@ public class Game extends RandomColorGenerator implements Serializable{
 	public void upgradeUnit(Coordinates pCoordinates, UnitType pUnitType) 
 	{
 		Tile pTile = aMap.getTile(pCoordinates);
-		Unit pUnit = pTile.getUnit();
 		pTile.setUnit(new Unit(pUnitType));
 		pTile.notifyObservers();
 	}
@@ -154,8 +154,10 @@ public class Game extends RandomColorGenerator implements Serializable{
 		if (startTile.hasUnit())
 		{
 			Unit pUnit = startTile.getUnit();
-			ReachableTiles = aMap.getPossibleMoves(startTile);
-			UnitActions = Logic.getPossibleActions(pUnit, startTile);
+			if (pUnit.getActionType() == ActionType.READY) {
+				ReachableTiles = aMap.getPossibleMoves(startTile);
+				UnitActions = Logic.getPossibleActions(pUnit, startTile);
+			}
 		}
 		Collection<UnitType> UnitUpgrade = GameLogic.getVillagerHireOrUpgradeTypes(startTile, this);
 		Collection<Tile> hirableUnitTiles = wantToHireVillager(startTile);
@@ -269,8 +271,12 @@ public class Game extends RandomColorGenerator implements Serializable{
 		//DON'T MAKE CHANGES TO THIS METHOD UNLESS YOU ARE EMILY 
 		Tile startTile =  aMap.getTile(pStartCoordinates); 
 		Tile pDestinationTile = aMap.getTile(pDestinationCoordinates);
+		
+		//get the unit and color of the start tile
 		Unit crtUnit = startTile.getUnit();
 		Color startColor = pDestinationTile.getColor();
+		
+		//get the color of the invaded tile
 		Color lColor = pDestinationTile.getColor();
 		if (lColor == Color.NEUTRAL)
 		{
@@ -318,6 +324,8 @@ public class Game extends RandomColorGenerator implements Serializable{
 		EnemyCaptureLogic.move(startTile.getUnit(), pDestinationTile, invadingVillage);
 		startTile.setUnit(null);
 		
+		pDestinationTile.setStructureType(StructureType.NO_STRUCT);
+		pDestinationTile.setVillageType(VillageType.NO_VILLAGE);
 	}
 
 	/**

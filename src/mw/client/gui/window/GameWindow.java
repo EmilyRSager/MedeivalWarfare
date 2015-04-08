@@ -76,7 +76,7 @@ public class GameWindow implements Observer {
 		
 		windowLayout.addComponent(mapComp, 0);
 		windowLayout.addComponent(new BlockComponent(0, CONTROL_LAYOUT_HEIGHT, controlBarLayout), 2);
-		window = new ResizableWindow(windowLayout.getWidth(), windowLayout.getHeight(), queue, "Medieval Warfare");
+		window = new ResizableWindow(windowLayout.getWidth(), 813/*windowLayout.getHeight()*/, queue, "Medieval Warfare");
 		
 		mapComp.setWindow(this);
 		windowLayout.setWindow(this);
