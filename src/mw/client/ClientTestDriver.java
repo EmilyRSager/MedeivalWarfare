@@ -7,6 +7,12 @@ public class ClientTestDriver {
 	public static void main(String[] args) {
 		NetworkController.initialize();
 		
+		//createAccountAndGame();
+		loginAndLoad();
+		
+	}
+	
+	public static void createAccountAndGame(){
 		int name = 1;
 		if (name == 0){
 			MenuActionSender.tryCreateAccount("Charlie", "Bloomfield");
@@ -14,6 +20,18 @@ public class ClientTestDriver {
 		}
 		else{
 			MenuActionSender.tryCreateAccount("Hugo", "Kapp");
+			NetworkController.joinGame("Test game");
+		}
+	}
+	
+	public static void loginAndLoad(){
+		int name = 1;
+		if (name == 0){
+			MenuActionSender.tryLogin("Charlie", "Bloomfield");
+			NetworkController.loadGame("Test game");
+		}
+		else{
+			MenuActionSender.tryLogin("Hugo", "Kapp");
 			NetworkController.joinGame("Test game");
 		}
 	}
