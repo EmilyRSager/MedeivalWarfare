@@ -60,9 +60,10 @@ public class GameInitializationController {
 		String lLoadedGameName = pGameID.getaName();
 				
 		LoadableGameRoom lLoadableGameRoom = new LoadableGameRoom(lNumRequestedClients, pGameID);
+		lLoadableGameRoom.addClient(pRequestingAccountID);
 		aGameLobby.addGameRoom(pGameID.getaName(), lLoadableGameRoom);
 			
-		for(UUID lParticpantAccountID :lLoadableGameRoom.getClients()){
+		for(UUID lParticpantAccountID : pGameID.getaListOfAccountUUIDs()){
 			if (lParticpantAccountID != pRequestingAccountID) {
 				ClientCommunicationController.sendCommand(lParticpantAccountID, 
 						new InviteToLoadedGameCommnad(LobbyTranslator.translateGameRoom(lLoadedGameName, lLoadableGameRoom)));
