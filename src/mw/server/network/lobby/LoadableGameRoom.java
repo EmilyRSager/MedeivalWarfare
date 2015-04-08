@@ -16,7 +16,6 @@ import mw.server.admin.AccountManager;
 import mw.server.gamelogic.controllers.GameController;
 import mw.server.gamelogic.enums.Color;
 import mw.server.gamelogic.state.Game;
-import mw.server.gamelogic.state.GameID;
 import mw.server.gamelogic.state.Player;
 import mw.server.network.communication.ClientCommunicationController;
 import mw.server.network.controllers.GameStateCommandDistributor;
@@ -41,13 +40,6 @@ public class LoadableGameRoom extends GameRoom{
 		super(pNumRequestedClients);
 		this.aGameID = pGameID;
 	}
-	
-	/**
-	 * @return
-	 */
-	public GameID returnGameID(){
-		return aGameID;
-	}
 
 	/**
 	 * 
@@ -55,7 +47,7 @@ public class LoadableGameRoom extends GameRoom{
 	 */
 	@Override
 	public void addClient(UUID pAccountUUID) throws IllegalArgumentException{
-		if (aGameID.getaListOfAccountUUIDs().contains(pAccountUUID)) {
+		if (aGameID.getParticipantAccountIDs().contains(pAccountUUID)) {
 			this.aWaitingClients.add(pAccountUUID);
 		}
 		else {
@@ -71,8 +63,8 @@ public class LoadableGameRoom extends GameRoom{
 	public void initializeGame(String pGameName){
 		System.out.println("[Server] Initializing loaded game.");
 
-		Game lGame = aGameID.getaGame();
-		GameMapper.getInstance().putGame(aWaitingClients, lGame); //add clients to Game Mapping
+		GameMapper.getInstance().putGameID(aWaitingClients, aGameID); //add clients to Game Mapping
+		Game lGame = aGameID.getGame();
 
 		GameStateCommandDistributor lGameStateCommandDistributor = 
 				new GameStateCommandDistributor(aWaitingClients, lGame);
@@ -87,7 +79,7 @@ public class LoadableGameRoom extends GameRoom{
 			Account lAccount = AccountManager.getInstance().getAccount(accountUUID);
 			AccountGameInfo lAccountGameInfo = lAccount.getAccountGameInfo();
 			Color playerColor = PlayerMapper.getInstance().getPlayer(accountUUID).getPlayerColor();
-			lAccountGameInfo.setCurrentGame(new Tuple2<String, Color>(aGameID.getaName(), playerColor ));
+			lAccountGameInfo.setCurrentGame(new Tuple2<String, Color>(aGameID.getName(), playerColor ));
 			lAccountGameInfo.addToActiveGames(lAccountGameInfo.getCurrentGame());
 			AccountManager.getInstance().saveAccountData(lAccount);
 		}

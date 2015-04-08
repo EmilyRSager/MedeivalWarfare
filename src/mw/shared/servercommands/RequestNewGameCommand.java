@@ -22,6 +22,6 @@ public class RequestNewGameCommand extends AbstractAuthenticatedServerCommand {
 	
 	@Override
 	protected void doExecution(UUID pAccountID) throws IllegalCommandException {
-		GameInitializationController.getInstance().requestNewGame(pAccountID, aGameName, aNumPlayers);
+		GameInitializationController.requestNewGame(pAccountID, aGameName, aNumPlayers);
 	}
 }

@@ -20,7 +20,6 @@ import mw.server.gamelogic.controllers.GameController;
 import mw.server.gamelogic.enums.Color;
 import mw.server.gamelogic.exceptions.TooManyPlayersException;
 import mw.server.gamelogic.state.Game;
-import mw.server.gamelogic.state.GameID;
 import mw.server.gamelogic.state.Player;
 import mw.server.gamelogic.state.Tile;
 import mw.server.network.communication.ClientCommunicationController;
@@ -96,7 +95,8 @@ public class GameRoom {
 		Set<UUID> pAccountIDs = aWaitingClients;
 		//create a game
 		Game lGame = GameController.newGame(lNumPlayers); //throws exception if too many players
-		GameMapper.getInstance().putGame(pAccountIDs, lGame); //add clients to Game Mapping
+		GameID lGameID = new GameID(lGame, pGameName, pAccountIDs);
+		GameMapper.getInstance().putGameID(pAccountIDs, lGameID); //add clients to Game Mapping
 
 		//map clients to players
 		GameStateCommandDistributor lGameStateCommandDistributor = 
@@ -117,11 +117,10 @@ public class GameRoom {
 			AccountManager.getInstance().saveAccountData(lAccount);
 		}
 		
-		GameID lGameID = new GameID(lGame, pGameName, pAccountIDs);
 		try {
 			SaveGame.SaveMyGame(lGameID);
 		} catch (IOException e) {
-			System.out.println("[server] Failed to save game \"" + lGameID.getaName() + "\".");
+			System.out.println("[server] Failed to save game \"" + lGameID.getName() + "\".");
 			e.printStackTrace();
 		}
 
@@ -162,7 +161,5 @@ public class GameRoom {
 			//add observer to each tile
 			lTile.addObserver(pObserver);
 		}
-		//sends the game to the clients
-
 	}
 }
