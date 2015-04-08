@@ -69,7 +69,7 @@ public class GameLogic
 					break; 
 				}
 			}
-			else 
+			else if (pTile.getUnit().getActionType() == ActionType.READY)
 			{
 
 				if (pTile.getUnit().getUnitType() == UnitType.PEASANT)
@@ -87,7 +87,6 @@ public class GameLogic
 				}
 				if (pTile.getUnit().getUnitType().equals(UnitType.INFANTRY))
 				{
-					System.out.println("[GAME] Upgrade Infantry");
 					if (lVillageType == VillageType.TOWN ||lVillageType == VillageType.FORT)
 					{
 						rArray.add(UnitType.SOLDIER); 

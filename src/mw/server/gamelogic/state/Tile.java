@@ -5,6 +5,7 @@ import java.util.Observable;
 
 import mw.server.gamelogic.enums.Color;
 import mw.server.gamelogic.enums.StructureType;
+import mw.server.gamelogic.enums.UnitType;
 import mw.server.gamelogic.enums.VillageType;
 import mw.shared.Coordinates;
 
@@ -129,7 +130,7 @@ public class Tile extends Observable implements Serializable
      */
     public boolean hasUnit()
     {
-    	return aUnit != null;
+    	return aUnit != null && aUnit.getUnitType() != UnitType.NO_UNIT;
     }
     
     /**

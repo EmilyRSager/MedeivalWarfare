@@ -12,6 +12,7 @@ import mw.server.gamelogic.enums.StructureType;
 import mw.server.gamelogic.enums.UnitType;
 import mw.server.gamelogic.enums.VillageType;
 import mw.server.gamelogic.graph.Graph;
+import mw.server.gamelogic.state.Game;
 import mw.server.gamelogic.state.Tile;
 import mw.server.gamelogic.state.Unit;
 
@@ -23,7 +24,7 @@ public final class TileGraphLogic {
 	public static boolean isReachableNode(Graph<Tile> pGraph, Tile crtTile, Tile startTile)
 	{
 
-		Collection<Tile> pCrtNeighbors = pGraph. getNeighbors(crtTile); 
+		Collection<Tile> pCrtNeighbors = pGraph.getNeighbors(crtTile); 
 		if (startTile.hasUnit())
 		{
 			Unit pUnit = startTile.getUnit();
@@ -187,23 +188,30 @@ public final class TileGraphLogic {
 	 */
 	private static boolean moveUnitToEnemyTerritory(Unit pUnit, Tile destinationTile, Collection<Tile> destinationNeighbors)
 	{
+		System.out.println("[Game] MoveUnit to enemy territory");
 		if((pUnit.getUnitType() == UnitType.PEASANT) || (pUnit.getUnitType() == UnitType.CANNON))
 		{
 			return false;
 		}
 		else
 		{
-			if (isProtected(pUnit, destinationTile, destinationNeighbors))
+			//Collection<Tile> destinationNeighbors = game.getNeighbors(destinationTile);
+			for (Tile lTile: destinationNeighbors)
 			{
-				//handles watchtower cases and if any of the neighbors are guarding the desired invaded tile
-				return false; 
+				if(lTile.getColor().equals(destinationTile.getColor()) && lTile.hasUnit())
+				{
+					System.out.println("Destination Tile  neighbors has unit");
+					return unitCanTakeOver(pUnit, lTile.getUnit());
+				}
 			}
 			if (destinationTile.hasUnit())
 			{
+				System.out.println("Destination Tile has unit");
 				return unitCanTakeOver(pUnit, destinationTile.getUnit()); 
 			}
 			if (isTreeOnTile(destinationTile))
 			{
+				System.out.println("Destination Tile has tree");
 				return unitCanChopTree(pUnit); 
 			}
 			if (isTombstoneOnTile(destinationTile))
@@ -249,8 +257,17 @@ public final class TileGraphLogic {
 
 	}
 
+	/**
+	 * @deprecated
+	 * @param pUnit
+	 * @param destinationTile
+	 * @param destinationNeighbors
+	 * @return
+	 */
 	private static boolean isProtected(Unit pUnit, Tile destinationTile, Collection<Tile> destinationNeighbors)
 	{
+		
+		System.out.println("[Game] Checking whether the tile is at coordinates (" +  destinationTile.getCoordinates().X + ", " +  destinationTile.getCoordinates().Y + ") is protected");
 		//Unit trying to invade
 		UnitType pUnitType = pUnit.getUnitType(); 
 		for (Tile lTile : destinationNeighbors)
@@ -265,6 +282,7 @@ public final class TileGraphLogic {
 					// e.g. peasant <= infantry implies the tile is not protected 
 					if(lUnit.getUnitType().ordinal() <= pUnitType.ordinal()) 
 					{
+						System.out.println("[Game]Not Protected");
 						return false;
 					}
 				}
@@ -275,14 +293,17 @@ public final class TileGraphLogic {
 			switch (pUnitType)
 			{
 			case PEASANT: 
+				System.out.println("[Game] Not Protected");
 				return false; 
 			case INFANTRY: 
+				System.out.println("[Game] Not protected");
 				return false;
 			case CANNON: 
 			default: 
 				break; 
 			} 
 		}
+		System.out.println("[Game] Protected");
 		return true; 
 	}
 	

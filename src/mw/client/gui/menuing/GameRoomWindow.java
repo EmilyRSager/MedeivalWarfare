@@ -13,6 +13,7 @@ import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
+import mw.client.controller.menuing.MenuControl;
 import mw.client.controller.menuing.ScreenSwitcher;
 import mw.client.controller.menuing.ScreenSwitcher.ScreenKind;
 import mw.shared.SharedCreatedGame;
@@ -46,7 +47,7 @@ public class GameRoomWindow {
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				ScreenSwitcher.switchScreen(ScreenKind.LOBBY);
+				MenuControl.openGameLobby();
 			}
 		});
 		
@@ -83,6 +84,6 @@ public class GameRoomWindow {
 	public static void main(String[] Args)
 	{
 		String[] testArray = {"one", "two", "three", "four", "five", "six", "seven"};
-		GameRoomWindow t = new GameRoomWindow(testArray, "Poop game");
+	//	GameRoomWindow t = new GameRoomWindow(testArray, "Poop game");
 	}
 }
