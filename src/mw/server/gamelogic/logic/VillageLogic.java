@@ -29,7 +29,10 @@ public class VillageLogic
 		int goldGenerated = 0; 
 		for (Tile lTile : pTiles)
 		{
-			goldGenerated += lTile.isMeadowOnTile() ? 2 : 1;
+			if(lTile.getStructureType()!=StructureType.TREE)
+			{
+				goldGenerated += lTile.isMeadowOnTile() ? 2 : 1;
+			}
 		}
 		return goldGenerated; 
 	}
@@ -59,7 +62,7 @@ public class VillageLogic
 			}
 		}
 	}
-	
+
 	/**
 	 * Builds roads if a unit has been building roads for a turn
 	 * @param pTiles
@@ -176,7 +179,7 @@ public class VillageLogic
 	 */
 	public static void starveVillage(Collection<Tile> pTiles, Village pVillage)
 	{
-	
+
 		int x = -pVillage.getGold();
 		pVillage.addOrSubtractGold(x);
 		for (Tile lTile : pTiles)
