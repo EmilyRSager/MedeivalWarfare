@@ -31,7 +31,7 @@ import mw.shared.clientcommands.NotifyBeginTurnCommand;
 import mw.shared.clientcommands.SetColorCommand;
 import mw.util.MultiArrayIterable;
 import mw.util.Tuple2;
-import test.mw.server.gamelogic.SaveGame;
+import test.mw.server.gamelogic.GameMarshaller;
 
 /**
  * @singleton
@@ -118,7 +118,7 @@ public class GameRoom {
 		}
 		
 		try {
-			SaveGame.SaveMyGame(lGameID);
+			GameMarshaller.saveGame(lGameID);
 		} catch (IOException e) {
 			System.out.println("[server] Failed to save game \"" + lGameID.getName() + "\".");
 			e.printStackTrace();
