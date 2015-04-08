@@ -68,6 +68,7 @@ public class ResizableWindow implements MinuetoWindow {
 		if (newWindow.getWidth() != newWidth || newWindow.getHeight() != newHeight)
 		{
 			System.out.println("[ResizableWindow] need to re-recreate the window ?!?");
+			newWindow.close();
 			newWindow = new MinuetoFrame(newWidth, newHeight, true);
 		}
 		
