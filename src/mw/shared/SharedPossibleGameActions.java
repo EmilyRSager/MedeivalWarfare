@@ -8,7 +8,9 @@ public class SharedPossibleGameActions {
 	private Collection<SharedTile.UnitType> possibleUnitHireUpgrade;
 	private Collection <SharedActionType>  possibleUnitActions;	// not required for the demo
 	private Collection<Coordinates> aCombinableUnitTiles;
-	private Collection<Coordinates> aHirableUnitTiles; 
+	private Collection<Coordinates> aHirableUnitTiles;
+	private Collection<Coordinates> aFirableTiles;
+	private boolean canBuildWatchtower; 
 	SharedTile.VillageType upgradableVillageType;
 
 
@@ -17,7 +19,7 @@ public class SharedPossibleGameActions {
 	 * ========================
 	 */
 	
-	public SharedPossibleGameActions (Collection<Coordinates> moves, Collection<SharedTile.UnitType> pUnitTypes, Collection<SharedActionType> pActionTypes, SharedTile.VillageType pVillageType, Collection<Coordinates> pCombinable, Collection<Coordinates> pHirable)
+	public SharedPossibleGameActions (Collection<Coordinates> moves, Collection<SharedTile.UnitType> pUnitTypes, Collection<SharedActionType> pActionTypes, SharedTile.VillageType pVillageType, Collection<Coordinates> pCombinable, Collection<Coordinates> pHirable, Collection<Coordinates> pFirable, boolean pWatchtower)
 	{
 		possibleMoves = moves;
 		possibleUnitHireUpgrade = pUnitTypes;
@@ -25,6 +27,8 @@ public class SharedPossibleGameActions {
 		upgradableVillageType = pVillageType;
 		aCombinableUnitTiles = pCombinable;
 		aHirableUnitTiles = pHirable;
+		aFirableTiles = pFirable;
+		canBuildWatchtower = pWatchtower;
 	}
 
 
@@ -61,5 +65,10 @@ public class SharedPossibleGameActions {
 	public Collection<Coordinates> getHirableUnitTiles()
 	{
 		return aHirableUnitTiles;
+	}
+	
+	public Collection<Coordinates> getFirableTiles()
+	{
+		return aFirableTiles;
 	}
  }

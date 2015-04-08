@@ -63,5 +63,10 @@ public class PossibleGameActions
 	{
 		return aUpgradableVillage; 
 	}
+	
+	public Collection<Tile> getFirableTiles()
+	{
+		return aFirableTiles;
+	}
 }
 
