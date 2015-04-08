@@ -124,6 +124,7 @@ public class VillageLogic
 				pVillage.setVillageType(VillageType.FORT);
 				break;
 			case FORT: 
+				pVillage.setVillageType(VillageType.CASTLE);
 			case NO_VILLAGE:
 			default:
 				throw new CantUpgradeException("[Village] Can not upgrade Village due to requested VillageType.");
@@ -149,6 +150,13 @@ public class VillageLogic
 			{
 				Unit lUnit = lTile.getUnit(); 
 				totalUpkeepCost += PriceCalculator.getUpkeepCost(lUnit); 
+			}
+			if (lTile.getStructureType() == StructureType.VILLAGE_CAPITAL)
+			{
+				if (lTile.getVillageType() == VillageType.CASTLE)
+				{
+					totalUpkeepCost += 80;
+				}
 			}
 		}
 		if (totalUpkeepCost > pVillage.getGold())

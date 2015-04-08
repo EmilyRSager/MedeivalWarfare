@@ -23,6 +23,7 @@ import mw.server.gamelogic.logic.VillageLogic;
  */
 public class Village extends Observable implements Serializable
 {
+	private int cannonHits;
 	private int aGold; 
 	private int aWood; 
 	private Tile aCapital; 
@@ -39,10 +40,12 @@ public class Village extends Observable implements Serializable
 		aGold = 7; 
 		aWood = 0;
 		villageAlreadyUpgraded = false; 
+		cannonHits = 0;
 	}
 
 	public Village (Collection<Tile> pVillageTiles, int pGold, int pWood, Tile pCapital, VillageType pVillageType)
 	{
+		cannonHits = 0;
 		aTiles = pVillageTiles;
 		aGold = pGold;
 		aWood = pWood;
@@ -63,7 +66,7 @@ public class Village extends Observable implements Serializable
 
 	public void setRandomCapital()
 	{
-		
+
 		int i = new Random().nextInt(aTiles.size());
 		Iterator<Tile> iterator = aTiles.iterator();
 		while(i > 0) {
@@ -152,7 +155,7 @@ public class Village extends Observable implements Serializable
 	 */
 	public void addOrSubtractGold(int addGold) 
 	{
-		
+
 		aGold = aGold + addGold;
 		aCapital.notifyChanged();
 	}
@@ -257,8 +260,35 @@ public class Village extends Observable implements Serializable
 		aVillageType = null;	
 	}
 
+	public void incrementCannonHits()
+	{
+		cannonHits++;
+	}
+	public boolean isDestroyedByCannon()
+	{
+		switch (aVillageType)
+		{
+		case HOVEL: 
+			return true;
+		case TOWN: 
+			return cannonHits == 2; 
+		case FORT: 
+			return cannonHits == 5;
+		case CASTLE: 
+			return cannonHits == 10; 
+		default: 
+			break;
+		}
+		return false;
+	}
+	
+	public void resetCannonHits()
+	{
+		cannonHits = 0;
+	}
+
 	public boolean alreadyUpgraded() {
-		// TODO Auto-generated method stub
+		
 		return villageAlreadyUpgraded;
 	}
 
