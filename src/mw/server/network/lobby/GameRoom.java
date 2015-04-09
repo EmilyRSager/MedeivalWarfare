@@ -31,7 +31,7 @@ import mw.shared.clientcommands.NotifyBeginTurnCommand;
 import mw.shared.clientcommands.SetColorCommand;
 import mw.util.MultiArrayIterable;
 import mw.util.Tuple2;
-import test.mw.server.gamelogic.SaveGame;
+import test.mw.server.gamelogic.GameMarshaller;
 
 /**
  * @singleton
@@ -83,6 +83,14 @@ public class GameRoom {
 	public Set<UUID> getClients(){
 		return aWaitingClients;
 	}
+	
+	/**
+	 * 
+	 * @param pAccountID
+	 */
+	public void removeClient(UUID pAccountID){
+		aWaitingClients.remove(pAccountID);
+	}
 
 	/**
 	 * Initializes a game and maps the participant accounts to the Game instance and their respective Player instances
@@ -118,7 +126,7 @@ public class GameRoom {
 		}
 		
 		try {
-			SaveGame.SaveMyGame(lGameID);
+			GameMarshaller.saveGame(lGameID);
 		} catch (IOException e) {
 			System.out.println("[server] Failed to save game \"" + lGameID.getName() + "\".");
 			e.printStackTrace();

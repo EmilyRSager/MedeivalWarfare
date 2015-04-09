@@ -125,6 +125,7 @@ public class VillageLogic
 				break;
 			case FORT: 
 				pVillage.setVillageType(VillageType.CASTLE);
+				break;
 			case NO_VILLAGE:
 			default:
 				throw new CantUpgradeException("[Village] Can not upgrade Village due to requested VillageType.");
@@ -148,6 +149,7 @@ public class VillageLogic
 		{
 			if (lTile.hasUnit())
 			{
+				System.out.println("[Game] Trying to pay Villagers");
 				Unit lUnit = lTile.getUnit(); 
 				totalUpkeepCost += PriceCalculator.getUpkeepCost(lUnit); 
 			}
@@ -162,6 +164,9 @@ public class VillageLogic
 		if (totalUpkeepCost > pVillage.getGold())
 		{
 			throw new NotEnoughIncomeException("There is not enough gold for the total upkeep cost of this village. Village will be starved."); 
+		}
+		else {
+			pVillage.addOrSubtractGold(-totalUpkeepCost);
 		}
 	}
 
