@@ -255,11 +255,11 @@ public class Game extends RandomColorGenerator implements Serializable{
 	 */
 	private boolean currentRoundIsOver()
 	{
-		if(currentPlayerIterator.hasNext())
+		if(currentPlayerIterator.isAtBeginning())
 		{
-			return false;
+			return true;
 		}
-		return true;
+		return false;
 	}
 
 	public Collection<Village> getVillages()

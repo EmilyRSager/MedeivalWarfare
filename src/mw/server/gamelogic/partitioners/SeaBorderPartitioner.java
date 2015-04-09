@@ -38,7 +38,7 @@ public class SeaBorderPartitioner extends AbstractMapPartitioner {
 	public void putSeaTilesOnTheMap()
 	{
 		Random r = new Random();
-		double Probability = .2; 
+		double Probability = .3; 
 		for (Tile lTile: aGameMap.getGraph().allNodes())
 		{
 			if (lTile.getCoordinates().X == 0 || lTile.getCoordinates().Y == 0 || lTile.getCoordinates().X ==17 || lTile.getCoordinates().Y ==17 )
@@ -47,13 +47,12 @@ public class SeaBorderPartitioner extends AbstractMapPartitioner {
 			}
 			if ( (lTile.getCoordinates().X == 1 || lTile.getCoordinates().X == 16))
 			{
+				if (r.nextDouble() < Probability)
+				{
 					lTile.setColor(Color.SEATILE);
+				}
 			}
 			if ( (lTile.getCoordinates().Y == 1 || lTile.getCoordinates().Y == 16))
-			{
-					lTile.setColor(Color.SEATILE);
-			}
-			if (lTile.getCoordinates().X == 2 || lTile.getCoordinates().Y == 2 || lTile.getCoordinates().X == 15 || lTile.getCoordinates().Y == 15)
 			{
 				if (r.nextDouble() < Probability)
 				{

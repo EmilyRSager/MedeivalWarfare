@@ -122,9 +122,11 @@ public class Village extends Observable implements Serializable
 	 */
 	public void beginTurnUpdate(boolean isFirstTurn)  
 	{
+		System.out.println("[Game] begin turn update isFirstTurn: " +  isFirstTurn);
 		if(!isFirstTurn)
 		{
 			addOrSubtractGold(VillageLogic.generateGold(aTiles));
+			System.out.println("[Game] added gold");
 		}
 		VillageLogic.clearTombstone(aTiles);
 		VillageLogic.generateMeadows(aTiles);
