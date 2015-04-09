@@ -27,6 +27,8 @@ public final class GameCommandHandler {
 	 */
 	public static void createNewGame(SharedTile[][] newTiles)
 	{
+		ClientSynchronization.gameLock.lock();
+		
 		final int width = newTiles.length;
 		final int height = newTiles[0].length;
 		ModelTile[][] gameTiles = new ModelTile[width][height];
@@ -41,6 +43,8 @@ public final class GameCommandHandler {
 		GameInitializer.newGame(gameTiles);
 		
 		ScreenSwitcher.switchScreen(ScreenKind.NONE);
+		
+		ClientSynchronization.gameLock.unlock();
 	}
 	
 	/**

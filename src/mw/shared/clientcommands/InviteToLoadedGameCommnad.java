@@ -1,5 +1,6 @@
 package mw.shared.clientcommands;
 
+import mw.client.controller.menuing.MenuActionSender;
 import mw.shared.SharedCreatedGame;
 
 public class InviteToLoadedGameCommnad extends AbstractClientCommand {
@@ -12,7 +13,7 @@ public class InviteToLoadedGameCommnad extends AbstractClientCommand {
 	
 	@Override
 	public void execute() {
-		//TODO
+		MenuActionSender.displayGameInvite(aSharedCreatedGame);
 	}
 
 }
