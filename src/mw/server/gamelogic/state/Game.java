@@ -159,10 +159,10 @@ public class Game extends RandomColorGenerator implements Serializable{
 	{
 		VillageType VillageUpgradeType = VillageType.NO_VILLAGE;
 		Tile startTile = aMap.getTile(pStartCoordinates);
-		//if (!getVillage(startTile).alreadyUpgraded())
-		//{
+		if (!getVillage(startTile).alreadyUpgraded())
+		{
 			VillageUpgradeType = GameLogic.getPossibleVillageUpgrades(startTile.getVillageType()); 
-		//}
+		}
 		Collection<Tile> firableTiles = new HashSet<Tile>();
 		Collection<Tile> ReachableTiles = new HashSet<Tile>();
 		Collection<ActionType> UnitActions = new ArrayList<ActionType>();
@@ -352,19 +352,29 @@ public class Game extends RandomColorGenerator implements Serializable{
 		aMap.updateVillages(aPlayers, aCurrentPlayer, invadedVillage);
 		EnemyCaptureLogic.move(startTile.getUnit(), pDestinationTile, invadingVillage);
 		startTile.setUnit(null);
-
 		pDestinationTile.setStructureType(StructureType.NO_STRUCT);
 		pDestinationTile.setVillageType(VillageType.NO_VILLAGE);
+		pDestinationTile.notifyObservers();
 	}
 
 	/**
 	 * builds a Watchtower
+	 * @throws NotEnoughIncomeException 
 	 */
-	public void buildWatchtower(Coordinates pCoordinates) 
+	public void buildWatchtower(Coordinates pCoordinates) throws NotEnoughIncomeException 
 	{
 		Tile lTile = aMap.getTile(pCoordinates); 
+		if (aMap.getVillage(lTile).getWood() > 5)
+		{
 		lTile.setStructureType(StructureType.WATCHTOWER); 
 		lTile.notifyObservers();
+		aMap.getVillage(lTile).addOrSubtractWood(-5);
+		aMap.getVillage(lTile).getCapital().notifyObservers();
+		}
+		else 
+			{
+				throw new NotEnoughIncomeException("Building a watchtower requires 5 wood.  This village has " + aMap.getVillage(lTile).getWood());
+			}
 	}
 
 

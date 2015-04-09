@@ -137,16 +137,13 @@ public class GameLogic
 	{
 		
 		Village lVillage =  pGame.getVillage(pTile);
-		int lVillageWood = lVillage.getWood();
 		VillageType pVillageType = lVillage.getVillageType();
-		if (lVillageWood < 5)
-		{
-			return false; 
-		}
 		if (pVillageType != VillageType.TOWN && pVillageType !=  VillageType.FORT) 
 		{
+			System.out.println("[Game] can build watchtower is false");
 			return false; 
 		}
+		System.out.println("[Game] can build watchtower is true");
 		return true;
 	}
 

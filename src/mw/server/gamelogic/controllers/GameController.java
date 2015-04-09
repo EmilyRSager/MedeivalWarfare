@@ -144,7 +144,7 @@ public class GameController {
 	 * @param pGame
 	 * @param pCoordinates
 	 */
-	public static void fireCannon(Game pGame, Coordinates pCannonCoordinates, Coordinates pFirableCoordinates)
+	public static void fireCannon(Game pGame, Coordinates pCannonCoordinates, Coordinates pFirableCoordinates) 
 	{
 		pGame.fireCannon(pCannonCoordinates, pFirableCoordinates);
 	}
@@ -154,7 +154,7 @@ public class GameController {
 	 * @param pGame
 	 * @param pCoordinates
 	 */
-	public static void buildWatchtower(Game pGame, Coordinates pCoordinates)
+	public static void buildWatchtower(Game pGame, Coordinates pCoordinates) throws NotEnoughIncomeException
 	{
 		pGame.buildWatchtower(pCoordinates);
 	}

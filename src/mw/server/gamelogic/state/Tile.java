@@ -149,6 +149,11 @@ public class Tile extends Observable implements Serializable
 	public void setUnit(Unit pUnit)
 	{
 		aUnit = pUnit; 
+		if (aUnit!=null)
+		{
+			System.out.println("[Game] The tile with coordinates (" + aX + ", " + aY + ") now has a " + aUnit.getUnitType() + " on it" );
+			System.out.println("[Game] This change was made by " + (Thread.currentThread().getStackTrace())[2]);
+		}
 		setChanged();
 	}
 	
