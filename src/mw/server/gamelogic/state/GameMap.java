@@ -78,10 +78,10 @@ public class GameMap implements Serializable
 					StructureType lStructureType = lNeighbor.getStructureType();
 					if (lStructureType == StructureType.NO_STRUCT 
 							//|| lStructureType == StructureType.TREE 
-							&& lTile.getVillageType() == VillageType.NO_VILLAGE
+							&& lNeighbor.getVillageType() == VillageType.NO_VILLAGE
 							&& !lNeighbor.hasUnit())
 					{
-							lNeighboringEmptyOrMeadowTiles.add(lTile);
+							lNeighboringEmptyOrMeadowTiles.add(lNeighbor);
 					}
 				}
 
