@@ -8,8 +8,6 @@ import mw.server.gamelogic.controllers.GameController;
 import mw.server.gamelogic.state.Game;
 import mw.server.gamelogic.state.Player;
 import mw.server.network.communication.ClientCommunicationController;
-import mw.server.network.mappers.AccountMapper;
-import mw.server.network.mappers.ClientChannelMapper;
 import mw.server.network.mappers.PlayerMapper;
 import mw.shared.clientcommands.NotifyBeginTurnCommand;
 import mw.shared.clientcommands.NotifyEndTurnCommand;
@@ -28,9 +26,7 @@ public class EndTurnController {
 	 * @param pGame
 	 */
 	public static void endTurn(Game pGame, UUID pEndingAccountID){
-		Integer lEndingClientID = AccountMapper.getInstance().getClientID(pEndingAccountID);
-		ClientChannelMapper.getInstance().getChannel(lEndingClientID).sendCommand(new NotifyEndTurnCommand());
-		
+		ClientCommunicationController.sendCommand(pEndingAccountID, new NotifyEndTurnCommand());
 		GameController.endTurn(pGame);
 		
 		Player lNewCurrentPlayer = GameController.getCurrentPlayer(pGame);
