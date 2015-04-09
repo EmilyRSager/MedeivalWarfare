@@ -9,10 +9,8 @@ import java.io.IOException;
 import java.util.Set;
 import java.util.UUID;
 
-import test.mw.server.gamelogic.GameMarshaller;
 import mw.server.admin.AccountManager;
 import mw.server.gamelogic.exceptions.TooManyPlayersException;
-import mw.server.gamelogic.state.Game;
 import mw.server.network.communication.ClientCommunicationController;
 import mw.server.network.lobby.GameID;
 import mw.server.network.lobby.GameLobby;
@@ -25,6 +23,7 @@ import mw.shared.clientcommands.AcknowledgementCommand;
 import mw.shared.clientcommands.DisplayGameLobbyCommand;
 import mw.shared.clientcommands.DisplayNewGameRoomCommand;
 import mw.shared.clientcommands.InviteToLoadedGameCommnad;
+import test.mw.server.gamelogic.GameMarshaller;
 
 /**
  * Manages game requests by maintaining a set of game lobbies and creating games when there
@@ -49,7 +48,7 @@ public class GameInitializationController {
 		GameLobby.getInstance().addGameRoom(lLoadedGameID.getName(), lLoadableGameRoom);
 			
 		for(UUID lParticpantAccountID : lLoadedGameID.getParticipantAccountIDs()){
-			if (lParticpantAccountID != pRequestingAccountID) {
+			if (!lParticpantAccountID.equals(pRequestingAccountID)) {
 				ClientCommunicationController.sendCommand(lParticpantAccountID, 
 						new InviteToLoadedGameCommnad(LobbyTranslator.translateGameRoom(pGameName, lLoadableGameRoom)));
 			}
@@ -64,7 +63,7 @@ public class GameInitializationController {
 	 * @return a set of game lobbies that are open and waiting for players to join
 	 */
 	public static void getJoinableGames(UUID pRequestingAccountID){
-		Set<SharedCreatedGame> lCreatedGames = LobbyTranslator.translateGameLobby(GameLobby.getInstance());
+		Set<SharedCreatedGame> lCreatedGames = LobbyTranslator.translateGameRooms(GameLobby.getInstance().getGameRoomsAvailableToClient(pRequestingAccountID));
 		Set<String> lLoadableGameNames = AccountManager.getInstance().getAccount(pRequestingAccountID).getAccountGameInfo().getActiveGamesNames();
 		SharedGameLobby lSharedGameLobby = new SharedGameLobby(lCreatedGames, lLoadableGameNames);
 		ClientCommunicationController.sendCommand(pRequestingAccountID, new DisplayGameLobbyCommand(lSharedGameLobby));
@@ -92,6 +91,7 @@ public class GameInitializationController {
 		if(GameLobby.getInstance().roomIsComplete(pGameName)){
 			GameRoom lReadyGameRoom = GameLobby.getInstance().getGameRoom(pGameName);
 			lReadyGameRoom.initializeGame(pGameName);
+			GameLobby.getInstance().removeGameRoom(pGameName);
 		}
 		else{
 			ClientCommunicationController.sendCommand(pJoiningAccountID,

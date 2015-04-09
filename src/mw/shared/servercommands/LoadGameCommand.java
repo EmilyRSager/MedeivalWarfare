@@ -1,8 +1,9 @@
 package mw.shared.servercommands;
 
+import java.io.IOException;
 import java.util.UUID;
 
-import mw.server.network.controllers.SaveGameController;
+import mw.server.network.controllers.GameInitializationController;
 import mw.server.network.exceptions.IllegalCommandException;
 
 public class LoadGameCommand extends AbstractAuthenticatedServerCommand{
@@ -19,6 +20,12 @@ public class LoadGameCommand extends AbstractAuthenticatedServerCommand{
 
 	@Override
 	protected void doExecution(UUID pAccountID) throws IllegalCommandException {
-		SaveGameController.loadGame(aGameName, pAccountID);
+		try {
+			GameInitializationController.createLoadableGame(pAccountID, aGameName);
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 }

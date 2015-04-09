@@ -1,20 +1,14 @@
 package mw.server.network.controllers;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.UUID;
 
-import test.mw.server.gamelogic.GameMarshaller;
-import mw.server.admin.Account;
 import mw.server.admin.AccountManager;
-import mw.server.gamelogic.state.Game;
-import mw.server.gamelogic.state.Player;
 import mw.server.network.communication.ClientCommunicationController;
 import mw.server.network.lobby.GameID;
-import mw.server.network.mappers.GameMapper;
-import mw.server.network.mappers.PlayerMapper;
+import mw.shared.clientcommands.AcknowledgementCommand;
 import mw.shared.clientcommands.ErrorMessageCommand;
+import test.mw.server.gamelogic.GameMarshaller;
 
 public class SaveGameController {
 	/**
@@ -26,6 +20,8 @@ public class SaveGameController {
 			for(UUID lAccountID : pGameID.getParticipantAccountIDs()){
 				AccountManager.getInstance().saveAccountData(AccountManager.getInstance().getAccount(lAccountID));
 				GameMarshaller.saveGame(pGameID);
+				ClientCommunicationController.sendCommand(pRequestingAccountID,
+						new AcknowledgementCommand("Your game was succefully saved."));
 			}
 			
 		} catch (IOException e) {

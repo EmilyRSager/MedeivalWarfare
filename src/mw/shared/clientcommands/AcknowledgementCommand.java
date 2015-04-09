@@ -5,6 +5,8 @@
 
 package mw.shared.clientcommands;
 
+import mw.client.controller.menuing.MenuActionSender;
+
 public class AcknowledgementCommand extends AbstractClientCommand{
 	private final String aType = "AcknowledgementCommand";
 	private final String aAcknowedgement;
@@ -18,8 +20,7 @@ public class AcknowledgementCommand extends AbstractClientCommand{
 	 */
 	@Override
 	public void execute() {
-		// TODO Auto-generated method stub
-		
+		MenuActionSender.popUpMessage(aAcknowedgement);
 	}
 
 }

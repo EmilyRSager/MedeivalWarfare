@@ -40,6 +40,14 @@ public class LoadableGameRoom extends GameRoom{
 		super(pNumRequestedClients);
 		this.aGameID = pGameID;
 	}
+	
+	/**
+	 * @param pAccountID
+	 */
+	@Override
+	public boolean canAddClient(UUID pAccountID){
+		return aGameID.getParticipantAccountIDs().contains(pAccountID);
+	}
 
 	/**
 	 * 
