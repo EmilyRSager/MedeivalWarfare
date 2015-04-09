@@ -29,7 +29,7 @@ public class CannonLogic
 		{
 			if (isReachableNode(lTile, cannonTile, pGame.getNeighbors(lTile)))
 			{
-				rReachableTiles.add(cannonTile);
+				rReachableTiles.add(lTile);
 			}
 		}
 		return rReachableTiles;
@@ -45,6 +45,9 @@ public class CannonLogic
 		{
 			return false; 
 		}
+		if (crtTile.hasUnit())
+			return false;
+		
 		switch (crtTile.getStructureType())
 		{
 		case TOMBSTONE:

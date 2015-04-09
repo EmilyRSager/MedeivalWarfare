@@ -76,4 +76,9 @@ public final class DisplayUpdater {
 		window.showMessage(message);
 	}
 	
+	public static void showFireButton(boolean show)
+	{
+		
+	}
+	
 }

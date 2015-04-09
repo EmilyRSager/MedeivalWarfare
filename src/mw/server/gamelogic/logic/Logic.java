@@ -81,6 +81,9 @@ public class Logic {
 				break; 
 			case KNIGHT:
 				moveKnight(crtUnit, startTile, pDestinationTile, pGameMap);
+			case CANNON:
+				moveCannon(crtUnit, startTile, pDestinationTile, pGameMap);
+				break;
 			default:
 				break;
 			}
@@ -91,6 +94,39 @@ public class Logic {
 			tookOverTile = true; 
 		}
 		return tookOverTile;
+	}
+	
+	private static void moveCannon(Unit crtUnit, Tile startTile, Tile pDestinationTile, GameMap pGameMap)
+	{
+
+		switch (pDestinationTile.getStructureType())
+		{
+		case TREE:
+		case TOMBSTONE: 
+		case WATCHTOWER: 
+		case VILLAGE_CAPITAL: 
+			throw new IllegalArgumentException("Trying to move a cannon over a "+pDestinationTile.getStructureType());
+			
+		case ROAD: 
+			pDestinationTile.setUnit(crtUnit);
+			startTile.setUnit(null);
+			crtUnit.setActionType(ActionType.MOVED);
+			break;
+			
+		case NO_STRUCT:
+			pDestinationTile.setUnit(crtUnit);
+			startTile.setUnit(null);
+			crtUnit.setActionType(ActionType.MOVED);
+			if (pDestinationTile.isMeadowOnTile())
+			{
+				pDestinationTile.setMeadow(false);
+			}
+			break;
+			
+		default:
+			throw new IllegalArgumentException("The value "+pDestinationTile.getStructureType()+" is not recognized as a StructureType to move a cannon on");
+		}
+
 	}
 
 	/**

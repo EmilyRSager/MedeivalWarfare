@@ -9,7 +9,7 @@ package mw.client.model;
  */
 public final class Village {
 
-	public enum VillageType { HOVEL, TOWN, FORT}; 
+	public enum VillageType { HOVEL, TOWN, FORT, CASTLE }; 
 	
 	private VillageType vtype;
 	private int gold;
