@@ -41,7 +41,6 @@ public class SharedTileTranslator {
 	 * @return SharedTile encoding of pTile
 	 */
 	public static SharedTile translateTile(Tile pTile, Game pGame){
-		System.out.println("[SharedTileTranslator] tile has a road = "+TileController.hasRoad(pTile)+", has a meadow = "+TileController.hasMeadow(pTile));
 		SharedTile lSharedTile = new SharedTile(
 				translateColor(TileController.getColor(pTile)),
 				translateCoordinates(TileController.getCoordinates(pTile)),

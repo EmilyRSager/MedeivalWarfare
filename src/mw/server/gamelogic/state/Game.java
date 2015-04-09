@@ -239,9 +239,13 @@ public class Game extends RandomColorGenerator implements Serializable{
 		System.out.println("[Game] Player is ending their turn");
 		if (currentRoundIsOver())
 		{
+			System.out.println("[Game] The current round is over");
 			beginRound();
+			System.out.println("[Game] New round begun.");
 		}
+		System.out.println("[Game] Beginning turn.");
 		beginTurn();
+		System.out.println("[Game] Hahahaha");
 		
 	}
 
