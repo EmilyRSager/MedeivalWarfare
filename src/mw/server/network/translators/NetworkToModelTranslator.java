@@ -55,6 +55,9 @@ public abstract class NetworkToModelTranslator {
 		case KNIGHT:
 			return UnitType.KNIGHT;
 			
+		case CANNON:
+			return UnitType.CANNON;
+			
 			default:
 				throw new IllegalArgumentException("Invalid value to translate to UnitType : "+sharedUT);
 		}
