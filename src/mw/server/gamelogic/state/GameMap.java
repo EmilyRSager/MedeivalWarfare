@@ -61,12 +61,10 @@ public class GameMap implements Serializable
 	 * design spec
 	 */
 	public void generateTrees(){
-
 		Random rand = new Random();
 
 		for(Tile lTile : MultiArrayIterable.toIterable(aTiles))
 		{
-			System.out.println("[GameMap] some tile");
 			if (lTile.getStructureType() == StructureType.TREE) 
 			{
 				//we are only picking those tiles from the map that have a tree on them 
@@ -76,8 +74,7 @@ public class GameMap implements Serializable
 				ArrayList<Tile> lNeighboringEmptyOrMeadowTiles = new ArrayList<Tile>();
 				for(Tile lNeighbor : lNeighbors){
 					StructureType lStructureType = lNeighbor.getStructureType();
-					if (lStructureType == StructureType.NO_STRUCT 
-							//|| lStructureType == StructureType.TREE 
+					if ((lStructureType == StructureType.NO_STRUCT || lNeighbor.isMeadowOnTile())
 							&& lNeighbor.getVillageType() == VillageType.NO_VILLAGE
 							&& !lNeighbor.hasUnit())
 					{
@@ -88,11 +85,12 @@ public class GameMap implements Serializable
 				//above gives us all the neigboring tiles which are empty or have a tree on them 
 				
 				int max = lNeighboringEmptyOrMeadowTiles.size();
-				
-				if (rand.nextDouble() < TREE_GROWTH_PROBABILITY)
+
+				if (max > 0 && rand.nextDouble() < TREE_GROWTH_PROBABILITY)
 				{
 					Tile randomlyPickedTile = lNeighboringEmptyOrMeadowTiles.get(rand.nextInt(max));
 					randomlyPickedTile.setStructureType(StructureType.TREE);
+					randomlyPickedTile.setMeadow(false);
 					randomlyPickedTile.notifyObservers();
 				}
 			}
