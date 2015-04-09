@@ -57,6 +57,7 @@ public class SharedTileTranslator {
 				TileController.getGold(pTile, pGame),
 				TileController.getWood(pTile, pGame)
 				);
+		System.out.println("[SharedTileTranslator] Unit  Type is" + lSharedTile.getUnitType());
 		return lSharedTile;
 	}
 	
@@ -94,8 +95,9 @@ public class SharedTileTranslator {
 	 */
 	public static SharedTile.UnitType translateUnitType(UnitType pUnitType, StructureType structType){
 		if (structType == StructureType.WATCHTOWER)
+		{
 			return SharedTile.UnitType.WATCHTOWER;
-			
+		}	
 		switch(pUnitType)
 		{
 		case NO_UNIT:

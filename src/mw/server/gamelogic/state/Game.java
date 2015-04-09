@@ -159,10 +159,10 @@ public class Game extends RandomColorGenerator implements Serializable{
 	{
 		VillageType VillageUpgradeType = VillageType.NO_VILLAGE;
 		Tile startTile = aMap.getTile(pStartCoordinates);
-		if (!getVillage(startTile).alreadyUpgraded())
-		{
+		//if (!getVillage(startTile).alreadyUpgraded())
+		//{
 			VillageUpgradeType = GameLogic.getPossibleVillageUpgrades(startTile.getVillageType()); 
-		}
+		//}
 		Collection<Tile> firableTiles = new HashSet<Tile>();
 		Collection<Tile> ReachableTiles = new HashSet<Tile>();
 		Collection<ActionType> UnitActions = new ArrayList<ActionType>();
@@ -364,6 +364,7 @@ public class Game extends RandomColorGenerator implements Serializable{
 	{
 		Tile lTile = aMap.getTile(pCoordinates); 
 		lTile.setStructureType(StructureType.WATCHTOWER); 
+		lTile.notifyObservers();
 	}
 
 

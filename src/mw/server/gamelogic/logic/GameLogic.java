@@ -135,7 +135,7 @@ public class GameLogic
 
 	public static boolean canBuildWatchtower(Tile pTile, Game pGame) 
 	{
-		Collection <Tile> lNeighbors = pGame.getNeighbors(pTile);
+		
 		Village lVillage =  pGame.getVillage(pTile);
 		int lVillageWood = lVillage.getWood();
 		VillageType pVillageType = lVillage.getVillageType();
@@ -146,17 +146,6 @@ public class GameLogic
 		if (pVillageType != VillageType.TOWN && pVillageType !=  VillageType.FORT) 
 		{
 			return false; 
-		}
-		if(pTile.hasUnit())
-		{
-			return false; 
-		}
-		for (Tile lTile : lNeighbors)
-		{
-			if (lTile.getStructureType() !=StructureType.NO_STRUCT)
-			{
-				return false; 
-			}
 		}
 		return true;
 	}

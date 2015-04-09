@@ -107,6 +107,8 @@ public class Village extends Observable implements Serializable
 
 	public void upgrade(VillageType pVillageType) throws NotEnoughIncomeException, CantUpgradeException 
 	{
+		//TODO Remove the following line 
+		villageAlreadyUpgraded = false;
 		if(!villageAlreadyUpgraded)
 		{
 			VillageLogic.upgradeVillage(this, aVillageType);
