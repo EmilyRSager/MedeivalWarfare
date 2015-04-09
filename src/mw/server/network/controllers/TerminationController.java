@@ -36,7 +36,7 @@ public class TerminationController {
 			Set<String> lLoadableGameNames = AccountManager.getInstance().getAccount(lAccountID).getAccountGameInfo().getActiveGamesNames();
 
 			SharedGameLobby lSharedGameLobby = new SharedGameLobby(lCreatedGames, lLoadableGameNames);
-			ClientCommunicationController.sendCommand(lAccountID, new RelaunchLobbyCommand(lSharedGameLobby));
+			ClientCommunicationController.sendCommand(lAccountID, new RelaunchLobbyCommand(lSharedGameLobby, "This game was closed."));
 		}
 	}
 
