@@ -5,9 +5,11 @@
 
 package mw.server.network.controllers;
 
+import java.io.IOException;
 import java.util.Set;
 import java.util.UUID;
 
+import test.mw.server.gamelogic.GameMarshaller;
 import mw.server.admin.AccountManager;
 import mw.server.gamelogic.exceptions.TooManyPlayersException;
 import mw.server.gamelogic.state.Game;
@@ -35,24 +37,25 @@ public class GameInitializationController {
 	 * Gets the loaded game, finds out the allowable Account UUIDs and then creates a LoadableGameRoom
 	 * @param pAccountID
 	 * @param pGameID
+	 * @throws IOException 
+	 * @throws ClassNotFoundException 
 	 */
-	public static void createLoadableGame(UUID pRequestingAccountID, GameID pGameID){
-		Game lGame = pGameID.getGame();
-		int lNumRequestedClients = lGame.getPlayers().size();
-		String lLoadedGameName = pGameID.getName();
+	public static void createLoadableGame(UUID pRequestingAccountID, String pGameName) throws ClassNotFoundException, IOException{
+		GameID lLoadedGameID = GameMarshaller.loadSavedGame(pGameName);
+		int lNumParticipants = lLoadedGameID.getParticipantAccountIDs().size();
 				
-		LoadableGameRoom lLoadableGameRoom = new LoadableGameRoom(lNumRequestedClients, pGameID);
+		LoadableGameRoom lLoadableGameRoom = new LoadableGameRoom(lNumParticipants, lLoadedGameID);
 		lLoadableGameRoom.addClient(pRequestingAccountID);
-		GameLobby.getInstance().addGameRoom(pGameID.getName(), lLoadableGameRoom);
+		GameLobby.getInstance().addGameRoom(lLoadedGameID.getName(), lLoadableGameRoom);
 			
-		for(UUID lParticpantAccountID : pGameID.getParticipantAccountIDs()){
+		for(UUID lParticpantAccountID : lLoadedGameID.getParticipantAccountIDs()){
 			if (lParticpantAccountID != pRequestingAccountID) {
 				ClientCommunicationController.sendCommand(lParticpantAccountID, 
-						new InviteToLoadedGameCommnad(LobbyTranslator.translateGameRoom(lLoadedGameName, lLoadableGameRoom)));
+						new InviteToLoadedGameCommnad(LobbyTranslator.translateGameRoom(pGameName, lLoadableGameRoom)));
 			}
 			else{
 				ClientCommunicationController.sendCommand(pRequestingAccountID, 
-						new DisplayNewGameRoomCommand(LobbyTranslator.translateGameRoom(lLoadedGameName, lLoadableGameRoom)));
+						new DisplayNewGameRoomCommand(LobbyTranslator.translateGameRoom(pGameName, lLoadableGameRoom)));
 			}
 		}
 	}
