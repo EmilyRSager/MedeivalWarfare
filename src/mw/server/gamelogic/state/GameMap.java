@@ -66,7 +66,7 @@ public class GameMap implements Serializable
 
 		for(Tile lTile : MultiArrayIterable.toIterable(aTiles))
 		{
-
+			System.out.println("[GameMap] some tile");
 			if (lTile.getStructureType() == StructureType.TREE) 
 			{
 				//we are only picking those tiles from the map that have a tree on them 
@@ -86,8 +86,9 @@ public class GameMap implements Serializable
 				}
 
 				//above gives us all the neigboring tiles which are empty or have a tree on them 
+				
 				int max = lNeighboringEmptyOrMeadowTiles.size();
-
+				
 				if (rand.nextDouble() < TREE_GROWTH_PROBABILITY)
 				{
 					Tile randomlyPickedTile = lNeighboringEmptyOrMeadowTiles.get(rand.nextInt(max));

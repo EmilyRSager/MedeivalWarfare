@@ -469,7 +469,7 @@ public class Game extends RandomColorGenerator implements Serializable{
 		destUnit.setActionType(ActionType.MOVED);
 
 		srcTile.notifyObservers();
-		destTile.notifyObservers();
+		destTile.notifyChanged();
 	}
 
 	public void fireCannon(Coordinates pCannonCoordinates, Coordinates pFirableCoord) 
