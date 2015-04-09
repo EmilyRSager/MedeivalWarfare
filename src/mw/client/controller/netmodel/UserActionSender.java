@@ -157,7 +157,17 @@ public class UserActionSender {
 		
 		if (possibleActions.getHirableUnitTiles().contains(coord)) 
 		{
-			NetworkController.hireUnit(coord, ut);
+			switch (ut)
+			{
+			case WATCHTOWER:
+				NetworkController.buildWatchtower(coord);
+				break;
+				
+			default:
+				NetworkController.hireUnit(coord, ut);
+				break;
+			}
+			
 			return true;
 		}
 		else
