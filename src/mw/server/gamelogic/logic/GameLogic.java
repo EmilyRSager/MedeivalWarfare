@@ -37,14 +37,7 @@ public class GameLogic
 		if (pTile.getStructureType()!= StructureType.TREE 
 				&& pTile.getStructureType()!=StructureType.TOMBSTONE && pTile.getStructureType()!=StructureType.WATCHTOWER)
 		{
-			for (Tile lTile : pGame.getNeighbors(pTile))
-			{
-				if (lTile.getStructureType() == StructureType.VILLAGE_CAPITAL && lVillageType == VillageType.FORT && !pTile.hasUnit())
-				{
-					rArray.add(UnitType.CANNON); 
-					break;
-				}
-			}
+		
 			if (pTile.getUnit()==(null))
 			{
 				
@@ -65,6 +58,7 @@ public class GameLogic
 					rArray.add(UnitType.KNIGHT); 
 					rArray.add(UnitType.PEASANT); 
 					rArray.add(UnitType.SOLDIER); 
+					rArray.add(UnitType.CANNON);
 				default: 
 					break; 
 				}

@@ -7,6 +7,8 @@ import java.util.HashSet;
 import java.util.Stack;
 import java.util.UUID;
 
+import com.google.gson.GsonBuilder;
+
 import mw.server.gamelogic.PossibleGameActions;
 import mw.server.gamelogic.enums.ActionType;
 import mw.server.gamelogic.enums.Color;
@@ -189,6 +191,11 @@ public class Game extends RandomColorGenerator implements Serializable{
 		Collection<UnitType> UnitUpgrade = GameLogic.getVillagerHireOrUpgradeTypes(startTile, this);
 		Collection<Tile> hirableUnitTiles = wantToHireVillager(startTile);
 		PossibleGameActions possible = new PossibleGameActions(ReachableTiles, UnitUpgrade, UnitActions, VillageUpgradeType, canBuildWatchTower, combinableUnitTiles, hirableUnitTiles, firableTiles);
+		System.out.println("[Game]"); 
+		for (UnitType u : UnitUpgrade)
+		{
+			System.out.println(u + ", ");
+		}
 		return possible; 
 	}
 
