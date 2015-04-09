@@ -83,7 +83,7 @@ public class GameWindow implements Observer {
 			
 			@Override
 			public void buttonClick(int mouseButton) {
-				ActionInterpreter.startFiringCannon();
+				ActionInterpreter.singleton().startFiringCannon();
 				
 			}
 		};
@@ -145,11 +145,6 @@ public class GameWindow implements Observer {
 	 * 		Public methods
 	 * ==========================
 	 */
-	
-	public void closeGameWindow()
-	{
-		this.window.close();
-	}
 	
 	public void addUserDisplay(String user, MinuetoColor c)
 	{
@@ -303,6 +298,10 @@ public class GameWindow implements Observer {
 		windowLayout.addComponent(new TextDisplay(message), 3);
 	}
 	
+	public void close()
+	{
+		this.window.close();
+	}
 	
 	/* ==========================
 	 * 		Private methods
