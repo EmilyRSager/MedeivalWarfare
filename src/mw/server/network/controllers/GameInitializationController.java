@@ -9,10 +9,8 @@ import java.io.IOException;
 import java.util.Set;
 import java.util.UUID;
 
-import test.mw.server.gamelogic.GameMarshaller;
 import mw.server.admin.AccountManager;
 import mw.server.gamelogic.exceptions.TooManyPlayersException;
-import mw.server.gamelogic.state.Game;
 import mw.server.network.communication.ClientCommunicationController;
 import mw.server.network.lobby.GameID;
 import mw.server.network.lobby.GameLobby;
@@ -25,6 +23,7 @@ import mw.shared.clientcommands.AcknowledgementCommand;
 import mw.shared.clientcommands.DisplayGameLobbyCommand;
 import mw.shared.clientcommands.DisplayNewGameRoomCommand;
 import mw.shared.clientcommands.InviteToLoadedGameCommnad;
+import test.mw.server.gamelogic.GameMarshaller;
 
 /**
  * Manages game requests by maintaining a set of game lobbies and creating games when there
@@ -92,6 +91,7 @@ public class GameInitializationController {
 		if(GameLobby.getInstance().roomIsComplete(pGameName)){
 			GameRoom lReadyGameRoom = GameLobby.getInstance().getGameRoom(pGameName);
 			lReadyGameRoom.initializeGame(pGameName);
+			GameLobby.getInstance().removeGameRoom(pGameName);
 		}
 		else{
 			ClientCommunicationController.sendCommand(pJoiningAccountID,
