@@ -34,6 +34,41 @@ public class SeaBorderPartitioner extends AbstractMapPartitioner {
 		populateOuterLayersWithSeaTiles(3);
 	}
 	
+	
+	public void putSeaTilesOnTheMap()
+	{
+		Random r = new Random();
+		double Probability = .2; 
+		for (Tile lTile: aGameMap.getGraph().allNodes())
+		{
+			if (lTile.getCoordinates().X == 0 || lTile.getCoordinates().Y == 0 || lTile.getCoordinates().X ==17 || lTile.getCoordinates().Y ==17 )
+			{
+				lTile.setColor(Color.SEATILE);
+			}
+			if ( (lTile.getCoordinates().X == 1 || lTile.getCoordinates().X == 16))
+			{
+					lTile.setColor(Color.SEATILE);
+			}
+			if ( (lTile.getCoordinates().Y == 1 || lTile.getCoordinates().Y == 16))
+			{
+					lTile.setColor(Color.SEATILE);
+			}
+			if (lTile.getCoordinates().X == 2 || lTile.getCoordinates().Y == 2 || lTile.getCoordinates().X == 15 || lTile.getCoordinates().Y == 15)
+			{
+				if (r.nextDouble() < Probability)
+				{
+					lTile.setColor(Color.SEATILE);
+				}
+			}
+		}
+		for (Tile lTile: aGameMap.getGraph().allNodes())
+		{
+			if (lTile.getColor()!= Color.SEATILE)
+			{
+				lTile.setColor(Color.NEUTRAL);
+			}
+		}
+	}
 	/**
 	 * Probabilistically populate the outer layers of GameMap as SeaTiles 
 	 * @param pNumLayers

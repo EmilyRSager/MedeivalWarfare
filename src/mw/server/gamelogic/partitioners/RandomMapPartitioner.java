@@ -24,7 +24,7 @@ import mw.util.MultiArrayIterable;
  * 
  */
 public class RandomMapPartitioner extends AbstractMapPartitioner {
-	
+
 	/**
 	 * @param pGameMap
 	 */
@@ -42,9 +42,12 @@ public class RandomMapPartitioner extends AbstractMapPartitioner {
 
 
 		Collection<Village> aVillages = new HashSet<Village>();
- 		//assign colors to the tiles
+		//assign colors to the tiles
 		for (Tile lTile : MultiArrayIterable.toIterable(aGameMap.getTiles())) {
-			lTile.setColor(RandomColorGenerator.generateRandomColor(pColors));
+			if (lTile.getColor()!=Color.SEATILE)
+			{
+				lTile.setColor(RandomColorGenerator.generateRandomColor(pColors));
+			}
 		}
 
 		//initializes villages
@@ -65,14 +68,14 @@ public class RandomMapPartitioner extends AbstractMapPartitioner {
 			if (!villageAlreadyExists)
 			{
 				//don't create a village if it's neutral land, or the village is too small to be supported
-				if (villageSet.size()>=3 && villageSet.iterator().next().getColor()!=Color.NEUTRAL)
+				if (villageSet.size()>=3 && villageSet.iterator().next().getColor()!=Color.NEUTRAL && villageSet.iterator().next().getColor()!=Color.SEATILE)
 				{
 					Village v = new Village (villageSet);
-					
+
 					/*//TODO
 					v.addOrSubtractGold(100);
 					v.addOrSubtractWood(100);*/
-					
+
 					aVillages.add(v); 
 					villageAlreadyExists = false; 
 				}

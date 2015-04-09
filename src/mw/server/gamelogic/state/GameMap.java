@@ -25,8 +25,9 @@ import com.google.gson.GsonBuilder;
  */
 public class GameMap implements Serializable
 { 
+
 	private static final double TREE_GROWTH_PROBABILITY = 0.1;
-	
+
 	private Graph<Tile> aTileGraph; 
 	private Tile[][] aTiles; 
 	private Collection<Village> aVillages; 

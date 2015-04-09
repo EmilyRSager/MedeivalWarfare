@@ -132,6 +132,10 @@ public class GameLogic
 		
 		Village lVillage =  pGame.getVillage(pTile);
 		VillageType pVillageType = lVillage.getVillageType();
+		if (!pTile.equals(lVillage.getCapital()))
+		{
+			return false;
+		}
 		if (pVillageType != VillageType.TOWN && pVillageType !=  VillageType.FORT) 
 		{
 			System.out.println("[Game] can build watchtower is false");

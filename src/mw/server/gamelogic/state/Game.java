@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Stack;
 import java.util.UUID;
 
@@ -12,6 +13,7 @@ import com.google.gson.GsonBuilder;
 import mw.server.gamelogic.PossibleGameActions;
 import mw.server.gamelogic.enums.ActionType;
 import mw.server.gamelogic.enums.Color;
+import mw.server.gamelogic.enums.PlayerState;
 import mw.server.gamelogic.enums.StructureType;
 import mw.server.gamelogic.enums.UnitType;
 import mw.server.gamelogic.enums.VillageType;
@@ -37,7 +39,7 @@ public class Game extends RandomColorGenerator implements Serializable{
 	private Collection<Player> aPlayers;
 	private GameMap aMap;  
 	private Player aCurrentPlayer;
-	CircularIterator<Player> crtIterator;
+	private CircularIterator<Player> currentPlayerIterator;
 	boolean isFirstTurn;
 	/**
 	 * Overloaded constructor passes default dimensions to main constructor
@@ -78,11 +80,12 @@ public class Game extends RandomColorGenerator implements Serializable{
 		}
 
 		aMap = new GameMap(pWidth, pHeight);
+		new SeaBorderPartitioner(aMap).putSeaTilesOnTheMap();
 		new RandomMapPartitioner(aMap).partition(availableColors); 
 		aMap.randomlyGenerateTreesAndMeadows();
 		assignVillageToPlayers();
-		crtIterator = new CircularIterator<Player>(pPlayers);
-		aCurrentPlayer = crtIterator.next(); 
+		currentPlayerIterator = new CircularIterator<Player>(aPlayers);
+		aCurrentPlayer = currentPlayerIterator.next(); 
 		isFirstTurn = true;
 	}
 
@@ -115,7 +118,7 @@ public class Game extends RandomColorGenerator implements Serializable{
 	/**
 	 * Returns all the tiles in the game in a 2D array 
 	 * [i][j] indices correspond with x y coordinates
-	 * @return
+	 * @return// TODO Auto-generated method stub
 	 */
 	public Tile [][] getGameTiles()
 	{
@@ -146,7 +149,7 @@ public class Game extends RandomColorGenerator implements Serializable{
 				throw new NotEnoughIncomeException("To upgrade a " + pOldUnitType.toString().toLowerCase() + " to a " + pUnitType.toString().toLowerCase() 
 						+ " costs " + upgradeCost + " This village only has " + getVillage(pTile).getGold());
 			}
-
+			// TODO Auto-generated method stub
 		}
 	}
 
@@ -191,11 +194,6 @@ public class Game extends RandomColorGenerator implements Serializable{
 		Collection<UnitType> UnitUpgrade = GameLogic.getVillagerHireOrUpgradeTypes(startTile, this);
 		Collection<Tile> hirableUnitTiles = wantToHireVillager(startTile);
 		PossibleGameActions possible = new PossibleGameActions(ReachableTiles, UnitUpgrade, UnitActions, VillageUpgradeType, canBuildWatchTower, combinableUnitTiles, hirableUnitTiles, firableTiles);
-		System.out.println("[Game]"); 
-		for (UnitType u : UnitUpgrade)
-		{
-			System.out.println(u + ", ");
-		}
 		return possible; 
 	}
 
@@ -240,7 +238,7 @@ public class Game extends RandomColorGenerator implements Serializable{
 
 	/**
 	 * Informs the Game that the current Player is ending its turn. 
-	 */
+	 */// TODO Auto-generated method stub
 	public void endTurn() 
 	{
 		System.out.println("[Game] Player is ending their turn");
@@ -249,7 +247,7 @@ public class Game extends RandomColorGenerator implements Serializable{
 			beginRound();
 		}
 		beginTurn();
-		
+
 	}
 
 	/**
@@ -257,7 +255,11 @@ public class Game extends RandomColorGenerator implements Serializable{
 	 */
 	private boolean currentRoundIsOver()
 	{
-		return crtIterator.isAtBeginning();
+		if(currentPlayerIterator.hasNext())
+		{
+			return false;
+		}
+		return true;
 	}
 
 	public Collection<Village> getVillages()
@@ -280,10 +282,18 @@ public class Game extends RandomColorGenerator implements Serializable{
 
 	/**
 	 * @return Player whose turn it now is
-	 */
+	 */// TODO Auto-generated method stub
 	private Player getNextPlayer()
 	{
-		return crtIterator.next();
+		while (currentPlayerIterator.hasNext())
+		{
+			Player nextPlayer = currentPlayerIterator.next();
+			if (nextPlayer.getPlayerState() == PlayerState.PLAYING || nextPlayer.getPlayerState() == PlayerState.WON)
+			{
+				return nextPlayer;
+			}
+		}
+		throw new IllegalStateException("No more players left in the game!");
 	}
 
 	/**
@@ -362,6 +372,21 @@ public class Game extends RandomColorGenerator implements Serializable{
 		pDestinationTile.setStructureType(StructureType.NO_STRUCT);
 		pDestinationTile.setVillageType(VillageType.NO_VILLAGE);
 		pDestinationTile.notifyObservers();
+		Iterator<Player> aPlayersIterator = aPlayers.iterator();
+		while (aPlayersIterator.hasNext())
+		{
+			Player loserCandidate = aPlayersIterator.next();
+			if (loserCandidate.isEliminated())
+			{
+				loserCandidate.eliminate();
+				loserCandidate.notifyObservers();
+			}
+		}
+		if (aPlayers.size()==1)
+		{
+			Player winner = aPlayers.iterator().next();
+			winner.win();
+		}
 	}
 
 	/**
@@ -373,15 +398,15 @@ public class Game extends RandomColorGenerator implements Serializable{
 		Tile lTile = aMap.getTile(pCoordinates); 
 		if (aMap.getVillage(lTile).getWood() > 5)
 		{
-		lTile.setStructureType(StructureType.WATCHTOWER); 
-		lTile.notifyObservers();
-		aMap.getVillage(lTile).addOrSubtractWood(-5);
-		aMap.getVillage(lTile).getCapital().notifyObservers();
+			lTile.setStructureType(StructureType.WATCHTOWER); 
+			lTile.notifyObservers();
+			aMap.getVillage(lTile).addOrSubtractWood(-5);
+			aMap.getVillage(lTile).getCapital().notifyObservers();
 		}
 		else 
-			{
-				throw new NotEnoughIncomeException("Building a watchtower requires 5 wood.  This village has " + aMap.getVillage(lTile).getWood());
-			}
+		{
+			throw new NotEnoughIncomeException("Building a watchtower requires 5 wood.  This village has " + aMap.getVillage(lTile).getWood());
+		}
 	}
 
 
@@ -513,10 +538,10 @@ public class Game extends RandomColorGenerator implements Serializable{
 		pFirableTile.setMeadow(false);
 		pFirableTile.setUnit(null);
 		pFirableTile.notifyObservers();
-		
+
 		if (pCannonTile.hasUnit())
 		{
-		pCannonTile.getUnit().setActionType(ActionType.MOVED);
+			pCannonTile.getUnit().setActionType(ActionType.MOVED);
 		}
 	}
 
