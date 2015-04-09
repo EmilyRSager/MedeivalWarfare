@@ -153,6 +153,10 @@ public class SharedTileTranslator {
 			return SharedTile.Terrain.GRASS;
 		}
 		
+		else if(pStructureType == StructureType.WATCHTOWER){
+			return SharedTile.Terrain.GRASS;
+		}
+		
 		else{
 			throw new IllegalArgumentException("The tuple "+pStructureType+","+pHasMeadow+","+pColor+" is not a valid tuple to be translated to SharedTile.Terrain");
 		}
