@@ -29,12 +29,20 @@ public class GameLobby {
 		return aGameLobbyInstance;
 	}
 	
-	
 	/**
+	 * 
+	 * @param pAccountID
 	 * @return
 	 */
-	public HashMap<String, GameRoom> getGameRooms(){
-		return aGameRooms;
+	public HashMap<String, GameRoom> getGameRoomsAvailableToClient(UUID pAccountID){
+		HashMap<String, GameRoom> lAvailableGameRooms = new HashMap<String, GameRoom>();
+		for(String lGameName : aGameRooms.keySet()){
+			GameRoom lTargetRoom = aGameRooms.get(lGameName);
+			if(lTargetRoom.canAddClient(pAccountID)){
+				lAvailableGameRooms.put(lGameName, lTargetRoom);
+			}
+		}
+		return lAvailableGameRooms;
 	}
 	
 	/**

@@ -1,11 +1,11 @@
 package mw.server.network.translators;
 
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
 import mw.server.admin.AccountManager;
-import mw.server.network.lobby.GameLobby;
 import mw.server.network.lobby.GameRoom;
 import mw.shared.SharedCreatedGame;
 
@@ -15,11 +15,11 @@ import mw.shared.SharedCreatedGame;
  * between game names and usernames participating in that game.
  */
 public class LobbyTranslator {
-	public static Set<SharedCreatedGame> translateGameLobby(GameLobby pGameLobby){
+	public static Set<SharedCreatedGame> translateGameRooms(HashMap<String, GameRoom> pGameRooms){
 		Set<SharedCreatedGame> lCreatedGames = new HashSet<SharedCreatedGame>();
 		
-		for(String lGameName : pGameLobby.getGameRooms().keySet()){
-			lCreatedGames.add(translateGameRoom(lGameName, pGameLobby.getGameRoom(lGameName)));
+		for(String lGameName : pGameRooms.keySet()){
+			lCreatedGames.add(translateGameRoom(lGameName, pGameRooms.get(lGameName)));
 		}
 		
 		return lCreatedGames;

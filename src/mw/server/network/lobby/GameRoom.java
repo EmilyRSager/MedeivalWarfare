@@ -50,6 +50,15 @@ public class GameRoom {
 		aWaitingClients = new HashSet<UUID>();
 		aNumRequestedClients = pNumRequestedClients;
 	}
+	
+	/**
+	 * Returns false if the client can not join this lobby. This will only ever be the case in subclasses
+	 * @param pAccount
+	 * @return
+	 */
+	public boolean canAddClient(UUID pAccount){
+		return true;
+	}
 
 	/**
 	 * adds client pClient to the waiting queue if she is not already waiting.

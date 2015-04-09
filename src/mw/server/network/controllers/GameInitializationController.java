@@ -49,7 +49,7 @@ public class GameInitializationController {
 		GameLobby.getInstance().addGameRoom(lLoadedGameID.getName(), lLoadableGameRoom);
 			
 		for(UUID lParticpantAccountID : lLoadedGameID.getParticipantAccountIDs()){
-			if (lParticpantAccountID != pRequestingAccountID) {
+			if (!lParticpantAccountID.equals(pRequestingAccountID)) {
 				ClientCommunicationController.sendCommand(lParticpantAccountID, 
 						new InviteToLoadedGameCommnad(LobbyTranslator.translateGameRoom(pGameName, lLoadableGameRoom)));
 			}
@@ -64,7 +64,7 @@ public class GameInitializationController {
 	 * @return a set of game lobbies that are open and waiting for players to join
 	 */
 	public static void getJoinableGames(UUID pRequestingAccountID){
-		Set<SharedCreatedGame> lCreatedGames = LobbyTranslator.translateGameLobby(GameLobby.getInstance());
+		Set<SharedCreatedGame> lCreatedGames = LobbyTranslator.translateGameRooms(GameLobby.getInstance().getGameRoomsAvailableToClient(pRequestingAccountID));
 		Set<String> lLoadableGameNames = AccountManager.getInstance().getAccount(pRequestingAccountID).getAccountGameInfo().getActiveGamesNames();
 		SharedGameLobby lSharedGameLobby = new SharedGameLobby(lCreatedGames, lLoadableGameNames);
 		ClientCommunicationController.sendCommand(pRequestingAccountID, new DisplayGameLobbyCommand(lSharedGameLobby));

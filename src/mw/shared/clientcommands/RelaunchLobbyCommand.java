@@ -13,7 +13,7 @@ public class RelaunchLobbyCommand extends AbstractClientCommand {
 	
 	@Override
 	public void execute() {
+		MenuActionSender.popUpMessage(aMessage);
 		MenuActionSender.leaveGame(aSharedGameLobby);
 	}
-
 }

@@ -9,6 +9,8 @@ import java.io.EOFException;
 import java.io.IOException;
 
 import mw.serialization.ServerCommandSerializerAndDeserializer;
+import mw.server.network.controllers.TerminationController;
+import mw.server.network.mappers.AccountMapper;
 import mw.shared.servercommands.AbstractServerCommand;
 
 /**
@@ -44,9 +46,7 @@ public class ReaderThread extends Thread {
 			}
 		}
 		catch(IOException e){
-			System.out.println("[Server] Client disconnected forcefully.");
-
-			//TODO deal with client disconnection by removing the client connection from all mappings
+			System.out.println("[Server] Client disconnected forcefully. Closing it's connection, associated mappings, and any games it is involved in.");
 		}
 		finally {
 			cleanUp();
@@ -68,6 +68,8 @@ public class ReaderThread extends Thread {
 	 * @return void
 	 */
 	private void cleanUp(){
+		//TODO this can probably break the multithreaded nature of the server as it bypasses the ServerCommandHandler
+		TerminationController.closeClientConnection(aClientID);
 		try {
 			//TODO verify that there are no more messages to service
 			aDataInputStream.close();
@@ -75,6 +77,5 @@ public class ReaderThread extends Thread {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		//remove all mappings between the clientID and accounts/games/channels...
 	}
 }
