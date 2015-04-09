@@ -7,6 +7,7 @@ import java.util.HashSet;
 import mw.server.gamelogic.enums.ActionType;
 import mw.server.gamelogic.enums.StructureType;
 import mw.server.gamelogic.enums.UnitType;
+import mw.server.gamelogic.enums.VillageType;
 import mw.server.gamelogic.state.Game;
 import mw.server.gamelogic.state.Player;
 import mw.server.gamelogic.state.Tile;
@@ -61,6 +62,14 @@ public class EnemyCaptureLogic {
 				if (!pGame.getVillage(lTile).equals(invadingVillage)) // make sure we aren't just looking at the invading village over and over
 				{ 
 					toFuse.add(pGame.getVillage(lTile)); 
+					Tile tmpCapital = pGame.getVillage(lTile).getCapital();
+					if(tmpCapital.getVillageType().ordinal()>invadingCapital.getVillageType().ordinal())
+					{
+						invadingCapital.setStructureType(StructureType.NO_STRUCT);
+						invadingCapital.setVillageType(VillageType.NO_VILLAGE);
+						invadingCapital.notifyChanged();
+						invadingCapital = tmpCapital;
+					}
 					aCurrentPlayer.removeVillage(pGame.getVillage(lTile));
 					needToFuse = true; 
 				}

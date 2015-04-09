@@ -8,6 +8,7 @@ import mw.server.gamelogic.enums.ActionType;
 import mw.server.gamelogic.enums.Color;
 import mw.server.gamelogic.enums.StructureType;
 import mw.server.gamelogic.enums.UnitType;
+import mw.server.gamelogic.enums.VillageType;
 import mw.server.gamelogic.state.Game;
 import mw.server.gamelogic.state.GameMap;
 import mw.server.gamelogic.state.Player;
@@ -324,6 +325,14 @@ public class Logic {
 				if (!pGame.getVillage(lTile).equals(startVillage))
 				{
 					toFuse.add(pGame.getVillage(lTile)); 
+					Tile tmpCapital = pGame.getVillage(lTile).getCapital();
+					if(tmpCapital.getVillageType().ordinal()> startCapital.getVillageType().ordinal())
+					{
+						startCapital.setStructureType(StructureType.NO_STRUCT);
+						startCapital.setVillageType(VillageType.NO_VILLAGE);
+						startCapital.notifyChanged();
+						startCapital = tmpCapital;
+					}
 					pCurrentPlayer.removeVillage(pGame.getVillage(lTile));
 					needToFuse = true;
 				}
