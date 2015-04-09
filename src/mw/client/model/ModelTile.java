@@ -152,8 +152,11 @@ public final class ModelTile extends Observable {
 			case FORT:
 				return StructureType.FORT;
 				
-				default:
-					throw new IllegalStateException("Tile has a village, but VillageType "+village.getVillageType()+" is not recognized");
+			case CASTLE:
+				return StructureType.CASTLE;
+				
+			default:
+				throw new IllegalStateException("Tile has a village, but VillageType "+village.getVillageType()+" is not recognized");
 			}
 		}
 			
@@ -198,6 +201,9 @@ public final class ModelTile extends Observable {
 			
 		case FORT:
 			return VillageType.FORT;
+			
+		case CASTLE:
+			return VillageType.CASTLE;
 			
 		default:
 			throw new IllegalArgumentException("Invalid cast from StructureType to VillageType");

@@ -81,9 +81,9 @@ public final class GameCommandHandler {
 		CurrentClientState.getCurrentGameWindow().close();
 		CurrentClientState.setCurrentGameWindow(null);
 		
-		ScreenSwitcher.openLobbyScreen(lobby);
-		
 		ClientSynchronization.gameLock.unlock();
+		
+		ScreenSwitcher.openLobbyScreen(lobby);
 	}
 	
 }

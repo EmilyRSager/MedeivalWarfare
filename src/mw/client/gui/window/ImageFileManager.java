@@ -119,7 +119,7 @@ public class ImageFileManager
 			fileName = UNIT_FOLDER + "watchtower.png";
 			break;
 		case CANNON:
-			fileName = getImageSizeFolder(60) + "cannon1.png";
+			fileName = getImageSizeFolder(60) + "cannon.png";
 			break;
 			
 		default:
