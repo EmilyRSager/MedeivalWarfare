@@ -50,7 +50,8 @@ public class Village extends Observable implements Serializable
 		aGold = pGold;
 		aWood = pWood;
 		aCapital = pCapital;
-		aVillageType = pVillageType;
+		//aVillageType = pVillageType;
+		aVillageType = VillageType.FORT;
 		villageAlreadyUpgraded = false;
 	}
 

@@ -1,5 +1,6 @@
 package mw.client.controller.menuing;
 
+import mw.client.gui.menuing.MessageWindow;
 import mw.client.network.NetworkController;
 import mw.shared.SharedCreatedGame;
 import mw.shared.SharedGameLobby;
@@ -104,5 +105,10 @@ public final class MenuActionSender {
 	public static void leaveGameRoom()
 	{
 		//NetworkController.leaveCurrentGameRoom();
+	}
+	
+	public static void popUpMessage(String message)
+	{
+		new MessageWindow(message);
 	}
 }

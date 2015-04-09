@@ -174,6 +174,22 @@ public class UserActionSender {
 			return false;
 	}
 
+	public boolean tryFireCannon(ModelTile cannonTile, ModelTile targetTile)
+	{
+		waitForActions();
+		
+		Coordinates coordSrc = getCoordinates(cannonTile);
+		Coordinates coordDest = getCoordinates(targetTile);
+
+		if (possibleActions.getFirableTiles().contains(coordDest))
+		{
+			NetworkController.fireCannon(coordSrc, coordDest);
+			return true;
+		}
+		else
+			return false;
+	}
+	
 	public void sendUnitAction(ModelTile unitTile, SharedActionType at)
 	{
 		Coordinates coord = getCoordinates(unitTile);

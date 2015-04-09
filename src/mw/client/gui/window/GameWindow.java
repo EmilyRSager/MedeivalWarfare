@@ -32,6 +32,8 @@ import org.minueto.handlers.MinuetoMouseHandler;
 import org.minueto.window.MinuetoFrame;
 import org.minueto.window.MinuetoWindowInvalidStateException;
 
+import com.sun.xml.internal.ws.Closeable;
+
 public class GameWindow implements Observer {
 	
 	public static final MinuetoColor BACKGROUND_COLOR = ExtendedMinuetoColor.mixColors(MinuetoColor.BLACK, MinuetoColor.WHITE, 0.05);
@@ -50,6 +52,7 @@ public class GameWindow implements Observer {
 	private HorizontalLayout userLayout;
 	
 	private AbstractButton endTurn;
+	private AbstractButton fire;
 	private List<AbstractButton> choiceButtonsList;
 	
 	/* ========================
@@ -75,8 +78,16 @@ public class GameWindow implements Observer {
 				}
 			}
 		};
-	
 		
+		fire = new AbstractButton("FIRE CANNON") {
+			
+			@Override
+			public void buttonClick(int mouseButton) {
+				ActionInterpreter.startFiringCannon();
+				
+			}
+		};
+	
 		windowLayout = new VerticalLayout(0, 0, 4);
 		controlBarLayout = new HorizontalLayout(0, 0, CONTROL_LAYOUT_HEIGHT, 3);
 		userLayout = new HorizontalLayout(0, 0, 2);
@@ -251,6 +262,18 @@ public class GameWindow implements Observer {
 		//this.render();
 	}
 	
+	public void addFireButton()
+	{
+		this.registerMouseHandler(fire);
+		controlBarLayout.addComponent(fire, 2);
+	}
+	
+	public void removeFireButton()
+	{
+		controlBarLayout.removeComponent(2);
+		window.unregisterMouseHandler(fire);
+	}
+	
 	public void removeAllChoices()
 	{
 		controlBarLayout.removeComponent(1);
@@ -279,6 +302,7 @@ public class GameWindow implements Observer {
 	{
 		windowLayout.addComponent(new TextDisplay(message), 3);
 	}
+	
 	
 	/* ==========================
 	 * 		Private methods

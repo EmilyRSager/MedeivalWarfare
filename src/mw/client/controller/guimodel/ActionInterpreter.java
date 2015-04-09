@@ -2,6 +2,7 @@ package mw.client.controller.guimodel;
 
 import java.util.Collection;
 
+import mw.client.app.test.GameWindow;
 import mw.client.controller.guimodel.ChoiceCenter.ChoiceType;
 import mw.client.controller.model.ModelQuerier;
 import mw.client.controller.netmodel.UserActionSender;
@@ -12,6 +13,7 @@ import mw.shared.SharedActionType;
 import mw.shared.SharedTile;
 import mw.shared.SharedTile.UnitType;
 import mw.shared.SharedTile.VillageType;
+import mw.shared.servercommands.FireCannonCommand;
 
 public final class ActionInterpreter {
 
@@ -60,6 +62,8 @@ public final class ActionInterpreter {
 	
 	private boolean hiringUnit;
 	private UnitType hiredUnitType;
+	
+	private boolean firingCannon;
 	
 	
 	/* ========================
@@ -111,6 +115,16 @@ public final class ActionInterpreter {
 			
 			unselect();
 		}
+		else if (firingCannon)
+		{
+			ModelTile modelTarget = ModelViewMapping.singleton().getModelTile(dispTarget);
+			boolean status = actionSender.tryFireCannon(selectedMTile, modelTarget);
+			
+			if (!status)
+				DisplayUpdater.showGeneralMessage("You can't fire at this tile");
+			
+			unselect();
+		}
 		else
 		{
 			unselect();
@@ -140,7 +154,7 @@ public final class ActionInterpreter {
 	public void secondarySelect(ImageTile dispTarget)
 	{
 		System.out.println("Starting secondary select");
-		if (dispTarget==null || hiringUnit)
+		if (dispTarget==null || hiringUnit || dispTarget == selectedITile)
 			unselect();
 		else 
 		{
@@ -208,6 +222,12 @@ public final class ActionInterpreter {
 		unselect();
 	}
 	
+
+	public void startFiringCannon()
+	{
+		firingCannon = true;
+	}
+	
 	/* ============================
 	 * 		Private methods
 	 * ============================
@@ -228,11 +248,13 @@ public final class ActionInterpreter {
 	{
 		hiringUnit = false;
 		hiredUnitType = null;
+		firingCannon = false;
 		
 		choiceCenter.clear();
 		
 		actionSender.clearPossibleActions();
 		DisplayUpdater.showGeneralMessage("");
+		DisplayUpdater.showFireButton(false);
 	}
 	
 	private void unselect() 
@@ -267,10 +289,14 @@ public final class ActionInterpreter {
 		if (ats != null && !ats.isEmpty()) {
 			choiceCenter.displayUnitActionChoice(ats);
 		}
+		
+		Collection<mw.shared.Coordinates> firableTiles = possibleActions.getFirableTiles();
+		if (firableTiles != null && !firableTiles.isEmpty()) {
+			DisplayUpdater.showFireButton(true);
+		}
 	}
 	
 
-	
 	
 	
 }

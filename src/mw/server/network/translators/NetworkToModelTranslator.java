@@ -30,6 +30,9 @@ public abstract class NetworkToModelTranslator {
 			
 		case FORT:
 			return VillageType.FORT;
+		
+		case CASTLE:
+			return VillageType.CASTLE;
 			
 			default:
 				throw new IllegalArgumentException("Invalid value to translate to VillageType : "+sharedVT);
