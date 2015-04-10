@@ -103,7 +103,10 @@ public class EnemyCaptureLogic {
 			break;
 		}
 		
-		if (pUnit.getUnitType() == UnitType.SOLDIER || pUnit.getUnitType() == UnitType.KNIGHT) {
+		if (pUnit.getUnitType() == UnitType.SOLDIER
+			|| pUnit.getUnitType() == UnitType.KNIGHT
+			|| pUnit.getUnitType() == UnitType.CANNON)
+		{
 			pDestinationTile.setMeadow(false);
 		}
 		
