@@ -198,10 +198,13 @@ public final class TileGraphLogic {
 			//Collection<Tile> destinationNeighbors = game.getNeighbors(destinationTile);
 			for (Tile lTile: destinationNeighbors)
 			{
-				if(lTile.getColor().equals(destinationTile.getColor()) && lTile.hasUnit() && lTile.getStructureType()!= StructureType.WATCHTOWER)
+				if(lTile.getColor().equals(destinationTile.getColor())
+						&& lTile.hasUnit() 
+						&& lTile.getStructureType()!= StructureType.WATCHTOWER)
 				{
 					System.out.println("Destination Tile  neighbors has unit");
-					if(!unitCanTakeOver(pUnit, lTile.getUnit()))
+					if(!unitCanTakeOver(pUnit, lTile.getUnit()) 
+							&& lTile.getUnit().getUnitType() != UnitType.CANNON)
 					{
 						return false;
 					}

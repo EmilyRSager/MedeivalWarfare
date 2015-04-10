@@ -97,8 +97,17 @@ public class EnemyCaptureLogic {
 		case TREE:
 			pInvadingVillage.addOrSubtractWood(1);
 			pDestinationTile.setStructureType(StructureType.NO_STRUCT);
+			break;
 		default:
 			pDestinationTile.setStructureType(StructureType.NO_STRUCT);
+			break;
+		}
+		
+		if (pUnit.getUnitType() == UnitType.SOLDIER
+			|| pUnit.getUnitType() == UnitType.KNIGHT
+			|| pUnit.getUnitType() == UnitType.CANNON)
+		{
+			pDestinationTile.setMeadow(false);
 		}
 		
 		pDestinationTile.setUnit(pUnit);

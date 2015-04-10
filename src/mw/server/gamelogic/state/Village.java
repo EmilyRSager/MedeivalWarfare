@@ -37,8 +37,8 @@ public class Village extends Observable implements Serializable
 	public Village(Collection<Tile> lVillageTiles) 
 	{
 		aTiles= lVillageTiles; 
-		aGold = 7; 
-		aWood = 0;
+		aGold = 500; 
+		aWood = 500;
 		villageAlreadyUpgraded = false; 
 		cannonHits = 0;
 	}

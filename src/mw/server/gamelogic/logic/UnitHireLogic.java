@@ -89,12 +89,14 @@ public class UnitHireLogic {
 			result.add(UnitType.PEASANT); 
 			result.add(UnitType.SOLDIER); 
 			result.add(UnitType.CANNON);
+			break;
 		case CASTLE: 
 			result.add(UnitType.INFANTRY); 
 			result.add(UnitType.KNIGHT); 
 			result.add(UnitType.PEASANT); 
 			result.add(UnitType.SOLDIER); 
 			result.add(UnitType.CANNON);
+			break;
 		default: 
 			throw new IllegalArgumentException("Unrecognized village type "+vType);
 		}
