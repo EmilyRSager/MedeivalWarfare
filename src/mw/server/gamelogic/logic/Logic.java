@@ -81,6 +81,7 @@ public class Logic {
 				break; 
 			case KNIGHT:
 				moveKnight(crtUnit, startTile, pDestinationTile, pGameMap);
+				break;
 			case CANNON:
 				moveCannon(crtUnit, startTile, pDestinationTile, pGameMap);
 				break;
@@ -347,6 +348,7 @@ public class Logic {
 
 	public static void checkFuse(Tile pStartTile, Tile pDestTile, Game pGame) 
 	{
+		
 		Player pCurrentPlayer = pGame.getCurrentPlayer(); 
 		Village startVillage = pGame.getVillage(pStartTile); 
 		startVillage.addTile(pDestTile);
@@ -354,6 +356,7 @@ public class Logic {
 		Tile startCapital = startVillage.getCapital(); 
 		Collection<Village> toFuse = new HashSet<Village>(); 
 		boolean needToFuse = false; 
+		VillageType highestVillage = startCapital.getVillageType();
 		for (Tile lTile : pNeighbors)
 		{
 			if (lTile.getColor() == startVillage.getColor())
@@ -364,10 +367,11 @@ public class Logic {
 					Tile tmpCapital = pGame.getVillage(lTile).getCapital();
 					if(tmpCapital.getVillageType().ordinal()> startCapital.getVillageType().ordinal())
 					{
-						startCapital.setStructureType(StructureType.NO_STRUCT);
-						startCapital.setVillageType(VillageType.NO_VILLAGE);
-						startCapital.notifyChanged();
-						startCapital = tmpCapital;
+						highestVillage = tmpCapital.getVillageType();
+						//startCapital.setStructureType(StructureType.NO_STRUCT);
+						//startCapital.setVillageType(VillageType.NO_VILLAGE);
+						//startCapital.notifyChanged();
+						//startCapital = tmpCapital;
 					}
 					pCurrentPlayer.removeVillage(pGame.getVillage(lTile));
 					needToFuse = true;
@@ -377,7 +381,7 @@ public class Logic {
 		if (needToFuse)
 		{
 			System.out.println("[Game] A Village Fuse is required... attempting to fuse villages.");
-			pGame.fuseVillages(toFuse, startCapital, pCurrentPlayer);
+			pGame.fuseVillages(toFuse, startCapital, pCurrentPlayer, highestVillage);
 		}
 	}
 

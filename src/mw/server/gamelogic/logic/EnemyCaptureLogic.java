@@ -47,11 +47,12 @@ public class EnemyCaptureLogic {
 
 	private static void fuse(Village invadingVillage, Village invadedVillage,  Tile invadedTile, Game pGame, Player aCurrentPlayer) {
 
-
+		Tile invadingCapital = invadingVillage.getCapital();
+		VillageType highestVillage = invadingCapital.getVillageType();
 		
 		invadedVillage.removeTile(invadedTile);
 		invadingVillage.addTile(invadedTile);
-		Tile invadingCapital = invadingVillage.getCapital(); 
+		 
 		Collection<Village> toFuse = new HashSet<Village>(); 
 		boolean needToFuse = false; 
 
@@ -63,12 +64,16 @@ public class EnemyCaptureLogic {
 				{ 
 					toFuse.add(pGame.getVillage(lTile)); 
 					Tile tmpCapital = pGame.getVillage(lTile).getCapital();
+					
 					if(tmpCapital.getVillageType().ordinal()>invadingCapital.getVillageType().ordinal())
 					{
-						invadingCapital.setStructureType(StructureType.NO_STRUCT);
-						invadingCapital.setVillageType(VillageType.NO_VILLAGE);
-						invadingCapital.notifyChanged();
-						invadingCapital = tmpCapital;
+						//invadingCapital.setStructureType(StructureType.NO_STRUCT);
+						//invadingCapital.setVillageType(VillageType.NO_VILLAGE);
+						//invadingCapital.notifyChanged();
+						//invadingCapital = tmpCapital;
+						highestVillage = tmpCapital.getVillageType();
+						
+						
 					}
 					aCurrentPlayer.removeVillage(pGame.getVillage(lTile));
 					needToFuse = true; 
@@ -79,7 +84,7 @@ public class EnemyCaptureLogic {
 		if(needToFuse)
 		{
 			System.out.println("[Game] Village fusing necessary.  Attempting to fusing villages. ");
-			pGame.fuseVillages(toFuse, invadingCapital, aCurrentPlayer);
+			pGame.fuseVillages(toFuse, invadingCapital, aCurrentPlayer, highestVillage);
 		}
 
 	}

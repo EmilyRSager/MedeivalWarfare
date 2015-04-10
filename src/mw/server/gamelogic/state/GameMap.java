@@ -191,7 +191,7 @@ public class GameMap implements Serializable
 		return aTileGraph.getNeighbors(pTile);
 	}
 
-	public void fuseVillages(Collection<Village> pToFuse, Tile invadingCapital, Player pCurrentPlayer ) 
+	public void fuseVillages(Collection<Village> pToFuse, Tile invadingCapital, Player pCurrentPlayer, VillageType highestVillage ) 
 	{
 		int lGold = 0; 
 		int lWood = 0;
@@ -254,7 +254,8 @@ public class GameMap implements Serializable
 
 		//create the new village
 
-		Village lFusedVillage = new Village(lVillageTiles, lGold, lWood, invadingCapital, invadingCapital.getVillageType()); 
+		System.out.println("[Game] Highest Village was " + highestVillage);
+		Village lFusedVillage = new Village(lVillageTiles, lGold, lWood, invadingCapital, highestVillage); 
 		aVillages.add(lFusedVillage); 
 		pCurrentPlayer.addVillage(lFusedVillage);
 

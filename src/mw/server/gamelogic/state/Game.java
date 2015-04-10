@@ -142,6 +142,7 @@ public class Game extends RandomColorGenerator implements Serializable{
 			if (upgradeCost <=  getVillage(pTile).getGold())
 			{
 				pTile.setUnit(new Unit(pUnitType));
+				getVillage(pTile).addOrSubtractGold(-upgradeCost);
 				pTile.notifyObservers();
 			}
 			else 
@@ -472,9 +473,9 @@ public class Game extends RandomColorGenerator implements Serializable{
 		return aMap.getNeighbors(pTile); 
 	}
 
-	public void fuseVillages(Collection<Village> pToFuse,  Tile invadingCapital, Player pCurrentPlayer)
+	public void fuseVillages(Collection<Village> pToFuse,  Tile invadingCapital, Player pCurrentPlayer, VillageType highestVillage)
 	{
-		aMap.fuseVillages(pToFuse, invadingCapital, pCurrentPlayer);
+		aMap.fuseVillages(pToFuse, invadingCapital, pCurrentPlayer, highestVillage);
 	}
 
 
