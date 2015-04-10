@@ -85,6 +85,11 @@ public class Village extends Observable implements Serializable
 	 */
 	public void setCapital(Tile pCapital)
 	{
+		if (aCapital!=null)
+		{
+			aCapital.setStructureType(StructureType.NO_STRUCT);
+			aCapital.setVillageType(VillageType.NO_VILLAGE);
+		}
 		aVillageType = VillageType.HOVEL;
 		aCapital = pCapital;
 		aCapital.setStructureType(StructureType.VILLAGE_CAPITAL);
