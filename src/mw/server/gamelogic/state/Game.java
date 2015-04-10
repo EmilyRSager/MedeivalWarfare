@@ -509,7 +509,7 @@ public class Game extends RandomColorGenerator implements Serializable{
 
 		UnitType resultingType = UnitHireLogic.unitCombinationResult(srcUnit.getUnitType(), destUnit.getUnitType());
 		
-		VillageType capitalType = srcTile.getVillageType();
+		VillageType capitalType = getVillage(srcTile).getVillageType();
 		if (UnitHireLogic.getManageableUnitTypes(capitalType).contains(resultingType))
 		{
 			srcTile.setUnit(null);
