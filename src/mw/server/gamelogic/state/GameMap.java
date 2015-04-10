@@ -26,7 +26,7 @@ import com.google.gson.GsonBuilder;
 public class GameMap implements Serializable
 { 
 
-	private static final double TREE_GROWTH_PROBABILITY = 0.4;
+	private static final double TREE_GROWTH_PROBABILITY = 0.1;
 
 	private Graph<Tile> aTileGraph; 
 	private Tile[][] aTiles; 
@@ -75,7 +75,7 @@ public class GameMap implements Serializable
 				ArrayList<Tile> lNeighboringEmptyOrMeadowTiles = new ArrayList<Tile>();
 				for(Tile lNeighbor : lNeighbors){
 					StructureType lStructureType = lNeighbor.getStructureType();
-					if ((lStructureType == StructureType.NO_STRUCT || lNeighbor.isMeadowOnTile())
+					if (lStructureType == StructureType.NO_STRUCT
 							&& lNeighbor.getVillageType() == VillageType.NO_VILLAGE
 							&& !lNeighbor.hasUnit())
 					{
