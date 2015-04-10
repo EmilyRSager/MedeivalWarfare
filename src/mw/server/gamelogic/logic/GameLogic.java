@@ -34,8 +34,10 @@ public class GameLogic
 		VillageType lVillageType = lVillage.getVillageType();
 
 		ArrayList<UnitType> rArray = new ArrayList<UnitType>();
+		
 		if (pTile.getStructureType()!= StructureType.TREE 
-				&& pTile.getStructureType()!=StructureType.TOMBSTONE && pTile.getStructureType()!=StructureType.WATCHTOWER)
+				&& pTile.getStructureType()!=StructureType.TOMBSTONE 
+				&& pTile.getStructureType()!=StructureType.WATCHTOWER)
 		{
 		
 			if (pTile.getUnit()==(null))
@@ -129,6 +131,10 @@ public class GameLogic
 		Collection<Tile>rCombinable = new HashSet<Tile>(); 
 		Village startVillage = pGame.getVillage(startTile); 
 		Unit startUnit = startTile.getUnit();
+		
+		if (startUnit == null)
+			return rCombinable;
+		
 		UnitType startUnitType = startUnit.getUnitType();
 		
 		for (Tile lTile: startVillage.getTiles())
