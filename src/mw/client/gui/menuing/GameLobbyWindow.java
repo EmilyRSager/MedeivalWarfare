@@ -87,7 +87,7 @@ public class GameLobbyWindow {
 					MenuControl.openGameLobby();
 				}
 			});
-			refresh.setPreferredSize(new Dimension(80, 18));
+			refresh.setPreferredSize(new Dimension(90, 18));
 			JPanel ref = new JPanel();
 			FlowLayout fL = new FlowLayout();
 			fL.setAlignment(FlowLayout.RIGHT);
