@@ -9,7 +9,6 @@ import java.io.IOException;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.Observer;
 import java.util.Set;
 import java.util.UUID;
 
@@ -21,7 +20,6 @@ import mw.server.gamelogic.enums.Color;
 import mw.server.gamelogic.exceptions.TooManyPlayersException;
 import mw.server.gamelogic.state.Game;
 import mw.server.gamelogic.state.Player;
-import mw.server.gamelogic.state.Tile;
 import mw.server.network.communication.ClientCommunicationController;
 import mw.server.network.controllers.GameStateCommandDistributor;
 import mw.server.network.mappers.GameMapper;
@@ -29,7 +27,6 @@ import mw.server.network.mappers.PlayerMapper;
 import mw.server.network.translators.SharedTileTranslator;
 import mw.shared.clientcommands.NotifyBeginTurnCommand;
 import mw.shared.clientcommands.SetColorCommand;
-import mw.util.MultiArrayIterable;
 import mw.util.Tuple2;
 import test.mw.server.gamelogic.GameMarshaller;
 
@@ -117,9 +114,8 @@ public class GameRoom {
 
 		//map clients to players
 		GameStateCommandDistributor lGameStateCommandDistributor = 
-				new GameStateCommandDistributor(aWaitingClients, lGame);
-		attachObservable(lGame, lGameStateCommandDistributor);
-		lGameStateCommandDistributor.newGame(lGame.getGameTiles());
+				new GameStateCommandDistributor(lGameID);
+		lGameStateCommandDistributor.sendNewGame();
 		
 		//distribute the new Game to each client.
 		Collection<Player> lPlayers = lGame.getPlayers();
@@ -167,16 +163,6 @@ public class GameRoom {
 			Color lPlayerColor = lPlayer.getPlayerColor();
 
 			ClientCommunicationController.sendCommand(lAccountID, new SetColorCommand(SharedTileTranslator.translateColor(lPlayerColor)));
-		}
-	}
-
-	protected void attachObservable(Game pGame, Observer pObserver){
-		//attach observer to each tile
-		Tile[][] lGameTiles = pGame.getGameTiles();
-		//initialize game state observer
-		for(Tile lTile : MultiArrayIterable.toIterable(lGameTiles)){
-			//add observer to each tile
-			lTile.addObserver(pObserver);
 		}
 	}
 }

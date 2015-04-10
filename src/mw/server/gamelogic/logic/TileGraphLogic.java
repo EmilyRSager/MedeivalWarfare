@@ -198,10 +198,21 @@ public final class TileGraphLogic {
 			//Collection<Tile> destinationNeighbors = game.getNeighbors(destinationTile);
 			for (Tile lTile: destinationNeighbors)
 			{
-				if(lTile.getColor().equals(destinationTile.getColor()) && lTile.hasUnit())
+				if(lTile.getColor().equals(destinationTile.getColor()) && lTile.hasUnit() && lTile.getStructureType()!= StructureType.WATCHTOWER)
 				{
 					System.out.println("Destination Tile  neighbors has unit");
-					return unitCanTakeOver(pUnit, lTile.getUnit());
+					if(!unitCanTakeOver(pUnit, lTile.getUnit()))
+					{
+						return false;
+					}
+				}
+			}
+			if (isWatchtowerGuardingTile(destinationTile, destinationNeighbors))
+			{
+				System.out.println("[Game] Watchtower is guarding tile");
+				if (pUnit.getUnitType() != UnitType.SOLDIER && pUnit.getUnitType()!= UnitType.KNIGHT )
+				{
+					return false;
 				}
 			}
 			if (destinationTile.hasUnit())
