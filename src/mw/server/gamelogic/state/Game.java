@@ -499,7 +499,8 @@ public class Game extends RandomColorGenerator implements Serializable{
 		return combinedVillager; 
 	}
 
-	public void combineVillagers(Coordinates p1, Coordinates p2) {
+	public void combineVillagers(Coordinates p1, Coordinates p2) 
+	{
 		Tile srcTile = aMap.getTile(p1);
 		Tile destTile = aMap.getTile(p2);
 
@@ -507,12 +508,20 @@ public class Game extends RandomColorGenerator implements Serializable{
 		Unit destUnit = destTile.getUnit();
 
 		UnitType resultingType = UnitHireLogic.unitCombinationResult(srcUnit.getUnitType(), destUnit.getUnitType());
-		srcTile.setUnit(null);
-		destUnit.setUnitType(resultingType);
-		destUnit.setActionType(ActionType.MOVED);
-
-		srcTile.notifyObservers();
-		destTile.notifyChanged();
+		
+		VillageType capitalType = srcTile.getVillageType();
+		if (UnitHireLogic.getManageableUnitTypes(capitalType).contains(resultingType))
+		{
+			srcTile.setUnit(null);
+			destUnit.setUnitType(resultingType);
+			destUnit.setActionType(ActionType.MOVED);
+	
+			srcTile.notifyObservers();
+			destTile.notifyChanged();
+		}
+		else {
+			throw new IllegalArgumentException("The capital can't handle the fuse that results in a "+resultingType+" unit");
+		}
 	}
 
 	public void fireCannon(Coordinates pCannonCoordinates, Coordinates pFirableCoord) 
