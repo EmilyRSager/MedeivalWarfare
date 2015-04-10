@@ -78,7 +78,10 @@ public final class DisplayUpdater {
 	
 	public static void showFireButton(boolean show)
 	{
-		
+		if (show)
+			CurrentClientState.getCurrentGameWindow().addFireButton();
+		else
+			CurrentClientState.getCurrentGameWindow().removeFireButton();
 	}
 	
 }
