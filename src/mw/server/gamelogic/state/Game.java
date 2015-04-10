@@ -91,6 +91,14 @@ public class Game extends RandomColorGenerator implements Serializable{
 
 	/**
 	 * 
+	 * @return
+	 */
+	public GameMap getGameMap(){
+		return aMap;
+	}
+	
+	/**
+	 * 
 	 */
 	private void assignVillageToPlayers(){
 		Collection<Village> lVillages = aMap.getVillages();
@@ -328,7 +336,8 @@ public class Game extends RandomColorGenerator implements Serializable{
 		if (lColor == Color.NEUTRAL)
 		{
 			System.out.println("[Game] The unit is moving to neutral land.");
-			Logic.checkFuse(startTile, pDestinationTile, this);
+			//Logic.checkFuse(startTile, pDestinationTile, this);
+			EnemyCaptureLogic.TakeoverNeutral(getVillage(startTile), pDestinationTile, this, aCurrentPlayer);
 		}
 		if(lColor != startColor && lColor != Color.NEUTRAL)
 		{
@@ -473,10 +482,10 @@ public class Game extends RandomColorGenerator implements Serializable{
 		return aMap.getNeighbors(pTile); 
 	}
 
-	public void fuseVillages(Collection<Village> pToFuse,  Tile invadingCapital, Player pCurrentPlayer, VillageType highestVillage)
-	{
-		aMap.fuseVillages(pToFuse, invadingCapital, pCurrentPlayer, highestVillage);
-	}
+	//public void fuseVillages(Collection<Village> pToFuse,  Tile invadingCapital, Player pCurrentPlayer, VillageType highestVillage)
+	//{
+		//aMap.fuseVillages(pToFuse, invadingCapital, pCurrentPlayer, highestVillage);
+	//}
 
 
 	//TODO move this into a logic class 

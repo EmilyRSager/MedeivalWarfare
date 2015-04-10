@@ -42,6 +42,18 @@ public class Village extends Observable implements Serializable
 		villageAlreadyUpgraded = false; 
 		cannonHits = 0;
 	}
+	/*
+	 * makes shitty villages 
+	 */
+	public Village(Collection<Tile> lVillageTiles, int pGold, int pWood)
+	{
+		aTiles= lVillageTiles; 
+		aGold = pGold; 
+		aWood = pWood;
+		villageAlreadyUpgraded = false; 
+		cannonHits = 0;
+		aVillageType = VillageType.HOVEL;
+	}
 
 	public Village (Collection<Tile> pVillageTiles, int pGold, int pWood, Tile pCapital, VillageType pVillageType)
 	{
@@ -194,7 +206,10 @@ public class Village extends Observable implements Serializable
 	{
 		pTile.setColor(getColor());
 		aTiles.add(pTile);  
-
+	}
+	
+	public void addTiles(Collection<Tile> tiles){
+		aTiles.addAll(tiles);
 	}
 
 	/**
@@ -304,5 +319,4 @@ public class Village extends Observable implements Serializable
 
 		return villageAlreadyUpgraded;
 	}
-
 }

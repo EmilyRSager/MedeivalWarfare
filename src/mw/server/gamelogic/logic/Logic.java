@@ -346,7 +346,7 @@ public class Logic {
 		return pTile.getColor() == pTile2.getColor();
 	}
 
-	public static void checkFuse(Tile pStartTile, Tile pDestTile, Game pGame) 
+/*	public static void checkFuse(Tile pStartTile, Tile pDestTile, Game pGame) 
 	{
 		
 		Player pCurrentPlayer = pGame.getCurrentPlayer(); 
@@ -383,6 +383,6 @@ public class Logic {
 			System.out.println("[Game] A Village Fuse is required... attempting to fuse villages.");
 			pGame.fuseVillages(toFuse, startCapital, pCurrentPlayer, highestVillage);
 		}
-	}
+	}*/
 
 }

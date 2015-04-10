@@ -25,8 +25,8 @@ import com.google.gson.GsonBuilder;
  */
 public class GameMap implements Serializable
 { 
-
-	private static final double TREE_GROWTH_PROBABILITY = 0.4;
+	private static final int MIN_VILLAGE_SIZE = 3;
+	private static final double TREE_GROWTH_PROBABILITY = 0.1;
 
 	private Graph<Tile> aTileGraph; 
 	private Tile[][] aTiles; 
@@ -55,6 +55,14 @@ public class GameMap implements Serializable
 		//initialize and build graph of tiles that maintains Tile neighbors
 		aTileGraph = new Graph<Tile>();
 		HexGraphBuilder.buildGraph(aTileGraph, aTiles);
+	}
+
+	/**
+	 * 
+	 * @param village
+	 */
+	public void removeVillage(Village village){
+		aVillages.remove(village);
 	}
 
 	/**
@@ -191,7 +199,7 @@ public class GameMap implements Serializable
 		return aTileGraph.getNeighbors(pTile);
 	}
 
-	public void fuseVillages(Collection<Village> pToFuse, Tile invadingCapital, Player pCurrentPlayer, VillageType highestVillage ) 
+	public void NOTfuseVillages(Collection<Village> pToFuse, Tile invadingCapital, Player pCurrentPlayer, VillageType highestVillage ) 
 	{
 		int lGold = 0; 
 		int lWood = 0;
@@ -276,8 +284,165 @@ public class GameMap implements Serializable
 		aVillages.add(pVillage);
 	}
 
-	public void updateVillages(Collection<Player> aPlayers, Player pCurrentPlayer,  Village pInvadedVillage)
+	public void updateVillages(Collection<Player> aPlayers, Player pCurrentPlayer,  Village invadedVillage)
 	{
+		Player invadedPlayer = getInvadedPlayer(aPlayers, invadedVillage);
+		Tile caital = invadedVillage.getCapital();
+		Collection<Tile> caitalSet = PathFinder.getVillage(aTileGraph, caital);
+
+		//no splitting
+		if(caitalSet.containsAll(invadedVillage.getTiles())){
+			if(caitalSet.size() < MIN_VILLAGE_SIZE){
+				this.removeVillage(invadedVillage);
+				invadedPlayer.removeVillage(invadedVillage);
+				clearVillage(invadedVillage);
+			}
+		}
+
+		//splitting
+		else{
+			splitVillage(invadedVillage, invadedPlayer);
+		}
+	}
+
+	/**
+	 * called only when we now we need to split the parameter village
+	 * @param village
+	 */
+	private void splitVillage(Village village, Player invadedPlayer){
+		Collection<Tile> capitalSet = PathFinder.getVillage(aTileGraph, village.getCapital());
+
+		//maximum of 3 nwe villages
+		Collection<Tile> region1 = new HashSet<Tile>();
+		Collection<Tile> region2 = new HashSet<Tile>();
+		for(Tile tile : village.getTiles()){
+			if(!capitalSet.contains(tile)){
+				if(region1.isEmpty()){
+					region1.addAll(PathFinder.getVillage(aTileGraph, tile));
+				}
+				if(!region1.contains(tile) && region2.isEmpty()){
+					region2.addAll(PathFinder.getVillage(aTileGraph, tile));
+				}
+			}
+		}
+	setupNewRegions(capitalSet, region1, region2, village, invadedPlayer);
+	}
+
+	/**
+	 * only called if we're splitting
+	 */
+	private void setupNewRegions(Collection<Tile> capitalRegion, Collection<Tile> region1, Collection<Tile> region2, Village village, Player invadedPlayer){
+		//2 Cases per region
+		//remove all the tiles in the regions from the original village
+
+		if(region1 != null && region1.size() < 3)
+		{
+			for (Tile t: region1)
+			{
+				clearTile(t);
+			}
+			//remove the tiles from the invaded village
+			village.removeTiles(region1);
+			
+		}
+		else
+		{
+			if (region1!=null && region1.size() >= 3 ) 
+			{
+				//remove the tiles from the invaded village
+				village.removeTiles(region1);
+				Village r1 = new Village(region1, 0, 0);
+				r1.setRandomCapital();
+				aVillages.add(r1);
+				invadedPlayer.addVillage(r1);
+			}
+		}
+		if (region2 != null && region2.size()<3)
+		{
+
+			for (Tile t: region2)
+			{
+				clearTile(t);
+			}
+			//remove the tiles from the invaded village
+			village.removeTiles(region2);
+		}
+		else
+		{
+			if (region2!=null && region2.size() >= 3)
+			{
+				village.removeTiles(region2);
+				Village r2 = new Village(region2, 0, 0);
+				r2.setRandomCapital();
+				aVillages.add(r2);
+				invadedPlayer.addVillage(r2);
+			}
+		}
+		if (capitalRegion != null && capitalRegion.size() < 3)
+		{
+			for (Tile t : capitalRegion)
+			{
+				clearTile(t);
+			}
+			village.removeTiles(capitalRegion);
+			aVillages.remove(village);
+			invadedPlayer.removeVillage(village);
+		}
+		else 
+		{
+			if (capitalRegion != null && capitalRegion.size() >= 3)
+			{
+				//do nothing
+			}
+		}
+
+	}
+
+	/**
+	 * hasckzooros
+	 * @param players
+	 * @param invadedVillage
+	 * @return
+	 */
+	private Player getInvadedPlayer(Collection<Player> players, Village invadedVillage){
+		for(Player player : players){
+			if(player.getPlayerColor() == invadedVillage.getColor()){
+				return player;
+			}
+		}
+		return null;
+	}
+
+	/**
+	 * 
+	 * 
+	 * @param village
+	 */
+	private void clearVillage(Village village){
+		for(Tile tile : village.getTiles()){
+			clearTile(tile);
+			village.removeTile(tile);
+		}
+		village.setCapital(null);
+		village.setVillageType(null);
+	}
+
+	/**
+	 * 
+	 * @param tile
+	 */
+	private void clearTile(Tile tile){
+		tile.setColor(Color.NEUTRAL);
+		tile.setStructureType(StructureType.NO_STRUCT);
+		tile.setVillageType(VillageType.NO_VILLAGE);
+		tile.setUnit(null);
+		tile.notifyObservers();
+	}
+
+
+	public void NOTupdatadeVillages(Collection<Player> aPlayers, Player pCurrentPlayer,  Village pInvadedVillage){
+
+
 		Set<Set<Tile>> lVillageSegments = new HashSet<Set<Tile>>();
 		Player invadedPlayer = aPlayers.iterator().next(); 
 		for (Player lPlayer : aPlayers)
