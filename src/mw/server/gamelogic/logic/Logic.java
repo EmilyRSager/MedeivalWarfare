@@ -81,6 +81,7 @@ public class Logic {
 				break; 
 			case KNIGHT:
 				moveKnight(crtUnit, startTile, pDestinationTile, pGameMap);
+				break;
 			case CANNON:
 				moveCannon(crtUnit, startTile, pDestinationTile, pGameMap);
 				break;
