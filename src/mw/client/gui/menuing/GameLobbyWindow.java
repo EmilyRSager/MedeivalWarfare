@@ -2,6 +2,8 @@ package mw.client.gui.menuing;
 
 import java.awt.BorderLayout;
 import java.awt.Container;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -54,8 +56,8 @@ public class GameLobbyWindow {
 	private JPanel createTab(Collection<String> avail, int tab)
 	{
 		JPanel aTab = new JPanel();
-		
-		JLabel gLabel = new JLabel("Available Games:");
+		BorderLayout bL = new BorderLayout();
+		aTab.setLayout(bL);
 		
 		JList<String> gameJList = new JList<String>(avail.toArray(new String[0]));
 		JScrollPane sPane = new JScrollPane(gameJList);
@@ -76,6 +78,23 @@ public class GameLobbyWindow {
 		
 		if(tab == 0)
 		{
+			JButton refresh = new JButton("Refresh");
+			refresh.addActionListener(new ActionListener() {
+				
+				@Override
+				public void actionPerformed(ActionEvent e)
+				{
+					MenuControl.openGameLobby();
+				}
+			});
+			refresh.setPreferredSize(new Dimension(80, 18));
+			JPanel ref = new JPanel();
+			FlowLayout fL = new FlowLayout();
+			fL.setAlignment(FlowLayout.RIGHT);
+			ref.setLayout(fL);
+			ref.add(refresh);
+			aTab.add(ref, BorderLayout.PAGE_START);
+			
 			JButton join = new JButton("Join Selected Game");
 			
 			join.addActionListener(new ActionListener() {
@@ -107,9 +126,6 @@ public class GameLobbyWindow {
 			buttonContainer.add(launch);
 		}
 		
-		BorderLayout bL = new BorderLayout();
-		aTab.setLayout(bL);
-		aTab.add(gLabel, BorderLayout.PAGE_START);
 		aTab.add(sPane, BorderLayout.CENTER);
 		aTab.add(buttonContainer, BorderLayout.PAGE_END);
 		

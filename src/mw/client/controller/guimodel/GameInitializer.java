@@ -74,10 +74,14 @@ public final class GameInitializer {
 		
 		Thread displayThread = new Thread() {
 			public void run() {
-				
+
 				while(true)
 				{
-					MinuetoEventQueue queue = CurrentClientState.getCurrentGameWindow().getEventQueue();
+					GameWindow window = CurrentClientState.getCurrentGameWindow();
+					if (window == null)
+						break;
+					
+					MinuetoEventQueue queue = window.getEventQueue();
 					while(queue.hasNext())
 					{
 						ClientSynchronization.gameLock.lock();

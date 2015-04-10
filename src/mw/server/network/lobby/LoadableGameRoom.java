@@ -70,16 +70,14 @@ public class LoadableGameRoom extends GameRoom{
 	@Override
 	public void initializeGame(String pGameName){
 		System.out.println("[Server] Initializing loaded game.");
-
 		GameMapper.getInstance().putGameID(aWaitingClients, aGameID); //add clients to Game Mapping
-		Game lGame = aGameID.getGame();
 
 		GameStateCommandDistributor lGameStateCommandDistributor = 
-				new GameStateCommandDistributor(aWaitingClients, lGame);
-		attachObservable(lGame, lGameStateCommandDistributor);
-		lGameStateCommandDistributor.newGame(lGame.getGameTiles());
+				new GameStateCommandDistributor(aGameID);
+		lGameStateCommandDistributor.sendNewGame();
 		
 		//map clients to players
+		Game lGame = aGameID.getGame();
 		Collection<Player> lPlayers = lGame.getPlayers();
 		assignAccountsToPlayers(aWaitingClients, lPlayers);
 

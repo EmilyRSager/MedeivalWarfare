@@ -34,34 +34,15 @@ public class GameLogic
 		VillageType lVillageType = lVillage.getVillageType();
 
 		ArrayList<UnitType> rArray = new ArrayList<UnitType>();
+		
 		if (pTile.getStructureType()!= StructureType.TREE 
-				&& pTile.getStructureType()!=StructureType.TOMBSTONE && pTile.getStructureType()!=StructureType.WATCHTOWER)
+				&& pTile.getStructureType()!=StructureType.TOMBSTONE 
+				&& pTile.getStructureType()!=StructureType.WATCHTOWER)
 		{
 
 			if (pTile.getUnit()==(null))
 			{
-
-
-				switch (lVillageType) 
-				{
-				case HOVEL: 
-					rArray.add(UnitType.PEASANT); 
-					rArray.add(UnitType.INFANTRY); 
-					break;
-				case TOWN: 
-					rArray.add(UnitType.PEASANT); 
-					rArray.add(UnitType.SOLDIER); 
-					rArray.add(UnitType.INFANTRY); 
-					break;
-				case FORT: 
-					rArray.add(UnitType.INFANTRY); 
-					rArray.add(UnitType.KNIGHT); 
-					rArray.add(UnitType.PEASANT); 
-					rArray.add(UnitType.SOLDIER); 
-					rArray.add(UnitType.CANNON);
-				default: 
-					break; 
-				}
+				rArray.addAll(UnitHireLogic.getManageableUnitTypes(lVillageType));
 			}
 			else if (pTile.getUnit().getActionType() == ActionType.READY)
 			{
@@ -149,18 +130,43 @@ public class GameLogic
 	{
 		Collection<Tile>rCombinable = new HashSet<Tile>();
 		Village startVillage = pGame.getVillage(startTile); 
+		Unit startUnit = startTile.getUnit();
+		
+		if (startUnit == null)
+			return rCombinable;
+		
+		UnitType startUnitType = startUnit.getUnitType();
+		
 		for (Tile lTile: startVillage.getTiles())
 		{
 			if (lTile.hasUnit())
 			{
 				Unit lUnit = lTile.getUnit(); 
-				if (lUnit.getUnitType() != UnitType.KNIGHT && lUnit.getUnitType() != UnitType.CANNON)
-				{
-					if (lUnit.getActionType() == ActionType.READY)
+				UnitType destUnitType = lUnit.getUnitType();
+				
+				try {
+					UnitType resultType = UnitHireLogic.unitCombinationResult(startUnitType, destUnitType);
+					if (UnitHireLogic.getManageableUnitTypes(startVillage.getVillageType()).contains(resultType)
+							&& lUnit.getActionType() == ActionType.READY) 
 					{
 						rCombinable.add(lTile);
 					}
 				}
+				catch (IllegalArgumentException e) {
+					// continue
+				}
+				
+				/*if (destUnitType != UnitType.KNIGHT
+						&& destUnitType != UnitType.CANNON 
+						&& UnitHireLogic.getManageableUnitTypes(startVillage.getVillageType()).contains(o))
+				{
+					
+					
+					if (lUnit.getActionType() == ActionType.READY)
+					{
+						
+					}
+				}*/
 			}
 		}
 		return rCombinable; 
