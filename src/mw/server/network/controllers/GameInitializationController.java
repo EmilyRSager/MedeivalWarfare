@@ -63,10 +63,19 @@ public class GameInitializationController {
 	 * @return a set of game lobbies that are open and waiting for players to join
 	 */
 	public static void getJoinableGames(UUID pRequestingAccountID){
-		Set<SharedCreatedGame> lCreatedGames = LobbyTranslator.translateGameRooms(GameLobby.getInstance().getGameRoomsAvailableToClient(pRequestingAccountID));
-		Set<String> lLoadableGameNames = AccountManager.getInstance().getAccount(pRequestingAccountID).getAccountGameInfo().getActiveGamesNames();
-		SharedGameLobby lSharedGameLobby = new SharedGameLobby(lCreatedGames, lLoadableGameNames);
+		SharedGameLobby lSharedGameLobby = getSharedLobbyGameLobbyForClient(pRequestingAccountID);
 		ClientCommunicationController.sendCommand(pRequestingAccountID, new DisplayGameLobbyCommand(lSharedGameLobby));
+	}
+	
+	/**
+	 * hackzors with 6 hours to go
+	 * @param pAccountID
+	 * @return
+	 */
+	public static SharedGameLobby getSharedLobbyGameLobbyForClient(UUID pAccountID){
+		Set<SharedCreatedGame> lCreatedGames = LobbyTranslator.translateGameRooms(GameLobby.getInstance().getGameRoomsAvailableToClient(pAccountID));
+		Set<String> lLoadableGameNames = AccountManager.getInstance().getAccount(pAccountID).getAccountGameInfo().getActiveGamesNames();
+		return new SharedGameLobby(lCreatedGames, lLoadableGameNames);
 	}
 
 	/**

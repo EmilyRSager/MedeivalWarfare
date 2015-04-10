@@ -38,7 +38,7 @@ public class Village extends Observable implements Serializable
 	{
 		aTiles= lVillageTiles; 
 		aGold = 500; 
-		aWood = 500;
+		aWood = 35;
 		villageAlreadyUpgraded = false; 
 		cannonHits = 0;
 	}

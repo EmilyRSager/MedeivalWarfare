@@ -10,6 +10,7 @@ import java.util.Set;
 
 import mw.server.gamelogic.enums.ActionType;
 import mw.server.gamelogic.enums.Color;
+import mw.server.gamelogic.enums.StructureType;
 import mw.server.gamelogic.state.Game;
 import mw.server.gamelogic.state.Tile;
 
@@ -95,6 +96,11 @@ public class CannonLogic
 		return rFirableTiles; 
 	}
 	
-	
+	public static boolean tileIsFirable(Tile tile)
+	{
+		StructureType struct = tile.getStructureType();
+		boolean valid = struct == StructureType.VILLAGE_CAPITAL || struct == StructureType.WATCHTOWER;
+		return valid || tile.hasUnit();
+	}
 	
 }

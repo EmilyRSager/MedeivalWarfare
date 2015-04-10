@@ -28,8 +28,7 @@ public class TerminationController {
 	 */
 	public static void closeGame(GameID pGameID) {
 		for(UUID lAccountID : pGameID.getParticipantAccountIDs()){
-			GameMapper.getInstance().removeGameID(lAccountID);
-			PlayerMapper.getInstance().removePlayer(lAccountID);
+			removeMemoryMappings(lAccountID);
 
 			HashMap<String, GameRoom> lAvailableGameRooms = GameLobby.getInstance().getGameRoomsAvailableToClient(lAccountID);
 			Set<SharedCreatedGame> lCreatedGames = LobbyTranslator.translateGameRooms(lAvailableGameRooms);
@@ -38,6 +37,15 @@ public class TerminationController {
 			SharedGameLobby lSharedGameLobby = new SharedGameLobby(lCreatedGames, lLoadableGameNames);
 			ClientCommunicationController.sendCommand(lAccountID, new RelaunchLobbyCommand(lSharedGameLobby, "This game was closed."));
 		}
+	}
+	
+	/**
+	 * more hackz
+	 * @param pAccountID
+	 */
+	public static void removeMemoryMappings(UUID pAccountID){
+		GameMapper.getInstance().removeGameID(pAccountID);
+		PlayerMapper.getInstance().removePlayer(pAccountID);
 	}
 
 	/**

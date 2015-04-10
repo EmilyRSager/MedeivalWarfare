@@ -525,11 +525,24 @@ public class Game extends RandomColorGenerator implements Serializable{
 		}
 	}
 
-	public void fireCannon(Coordinates pCannonCoordinates, Coordinates pFirableCoord) 
+	public void fireCannon(Coordinates pCannonCoordinates, Coordinates pFirableCoord) throws NotEnoughIncomeException 
 	{
 		Tile pCannonTile = getTile(pCannonCoordinates);
 		Tile pFirableTile = getTile(pFirableCoord);
 		StructureType firableStructureType = pFirableTile.getStructureType();
+		
+		if (!CannonLogic.tileIsFirable(pFirableTile)) {
+			return;
+		}
+
+		Village cannonVillage = getVillage(pCannonTile);
+		if (cannonVillage.getWood() >= 1) {
+			cannonVillage.addOrSubtractWood(-1);
+		}
+		else {
+			throw new NotEnoughIncomeException("You need 1 wood to fire a cannon");
+		}
+		
 		switch (firableStructureType)
 		{
 		case VILLAGE_CAPITAL: 
@@ -542,17 +555,24 @@ public class Game extends RandomColorGenerator implements Serializable{
 				destroyedVillage.setRandomCapital();
 				destroyedVillage.resetCannonHits();
 			}
+			break;
 		default: 
-			pFirableTile.setStructureType(StructureType.NO_STRUCT);
+			//pFirableTile.setStructureType(StructureType.NO_STRUCT);
+			break;
 		}
-		pFirableTile.setMeadow(false);
-		pFirableTile.setUnit(null);
+
+		if (pFirableTile.hasUnit()) {
+			pFirableTile.setUnit(null);
+			pFirableTile.setStructureType(StructureType.TOMBSTONE);
+		}
+		
 		pFirableTile.notifyObservers();
 
 		if (pCannonTile.hasUnit())
 		{
 			pCannonTile.getUnit().setActionType(ActionType.MOVED);
 		}
+		
 	}
 
 

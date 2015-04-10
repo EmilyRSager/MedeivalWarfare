@@ -19,12 +19,16 @@ import mw.server.gamelogic.state.Player;
 import mw.server.gamelogic.state.Tile;
 import mw.server.network.communication.ClientCommunicationController;
 import mw.server.network.lobby.GameID;
+import mw.server.network.lobby.GameLobby;
+import mw.server.network.mappers.GameMapper;
 import mw.server.network.mappers.PlayerMapper;
+import mw.server.network.translators.LobbyTranslator;
 import mw.server.network.translators.SharedTileTranslator;
 import mw.shared.Coordinates;
 import mw.shared.SharedTile;
 import mw.shared.clientcommands.AbstractClientCommand;
 import mw.shared.clientcommands.NewGameCommand;
+import mw.shared.clientcommands.RelaunchLobbyCommand;
 import mw.shared.clientcommands.UpdateAggregateTilesCommand;
 import mw.util.MultiArrayIterable;
 
@@ -94,11 +98,16 @@ public class GameStateCommandDistributor implements Observer {
 		if(pPlayer.getPlayerState() == PlayerState.LOST){
 			//TODO deal with current game shit
 			lAccountGameInfo.incrementLosses();
+			ClientCommunicationController.sendCommand(lAccountID, 
+					new RelaunchLobbyCommand(GameInitializationController.getSharedLobbyGameLobbyForClient(lAccountID), "You lost the game!"));
 		}
 		else{
 			lAccountGameInfo.incrementWins();
+			ClientCommunicationController.sendCommand(lAccountID, 
+					new RelaunchLobbyCommand(GameInitializationController.getSharedLobbyGameLobbyForClient(lAccountID), "You won!"));
 		}
 		AccountManager.getInstance().saveAccountData(lAccount);
+		TerminationController.removeMemoryMappings(lAccountID);
 	}
 	
 	/**

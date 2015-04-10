@@ -54,7 +54,8 @@ public final class GameCommandHandler {
 	public static void newTileState(SharedTile newState)
 	{
 		ClientSynchronization.gameLock.lock();
-		NewStateApplier.applyChanges(CurrentClientState.getCurrentGame(), newState);
+		if (CurrentClientState.isInGame())
+			NewStateApplier.applyChanges(CurrentClientState.getCurrentGame(), newState);
 		ClientSynchronization.gameLock.unlock();
 	}
 	

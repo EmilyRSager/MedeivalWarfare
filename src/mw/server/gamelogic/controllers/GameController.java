@@ -144,7 +144,7 @@ public class GameController {
 	 * @param pGame
 	 * @param pCoordinates
 	 */
-	public static void fireCannon(Game pGame, Coordinates pCannonCoordinates, Coordinates pFirableCoordinates) 
+	public static void fireCannon(Game pGame, Coordinates pCannonCoordinates, Coordinates pFirableCoordinates) throws NotEnoughIncomeException
 	{
 		pGame.fireCannon(pCannonCoordinates, pFirableCoordinates);
 	}
