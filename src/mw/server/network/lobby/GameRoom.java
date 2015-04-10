@@ -130,10 +130,12 @@ public class GameRoom {
 			AccountManager.getInstance().saveAccountData(lAccount);
 		}
 		
-		try {
+		try
+		{
 			GameMarshaller.saveGame(lGameID);
-		} catch (IOException e) {
-			System.out.println("[server] Failed to save game \"" + lGameID.getName() + "\".");
+		} catch (IOException e)
+		{
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 

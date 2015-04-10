@@ -89,12 +89,15 @@ public class LoadableGameRoom extends GameRoom{
 			lAccountGameInfo.addToActiveGames(lAccountGameInfo.getCurrentGame());
 			AccountManager.getInstance().saveAccountData(lAccount);
 		}
-		try {
+		
+		try
+		{
 			GameMarshaller.saveGame(aGameID);
-		} catch (IOException e) {
+		} catch (IOException e)
+		{
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
 		//Inform client that it is his turn
 		UUID lCurrentAccountID = PlayerMapper.getInstance().getAccount(GameController.getCurrentPlayer(lGame));
 		ClientCommunicationController.sendCommand(lCurrentAccountID, new NotifyBeginTurnCommand());

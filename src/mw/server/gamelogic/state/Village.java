@@ -1,6 +1,7 @@
 package mw.server.gamelogic.state;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -38,7 +39,7 @@ public class Village extends Observable implements Serializable
 	{
 		aTiles= lVillageTiles; 
 		aGold = 500; 
-		aWood = 35;
+		aWood = 500;
 		villageAlreadyUpgraded = false; 
 		cannonHits = 0;
 	}
@@ -67,16 +68,38 @@ public class Village extends Observable implements Serializable
 
 	public void setRandomCapital()
 	{
-
-		int i = new Random().nextInt(aTiles.size());
-		Iterator<Tile> iterator = aTiles.iterator();
-		while(i > 0) {
-			iterator.next();
-			i--;
+		Random rand = new Random();
+		
+		ArrayList<Tile> tileList = new ArrayList<Tile>();
+		tileList.addAll(aTiles);
+		
+		Tile picked = null;
+		boolean pickeable = true;
+		
+		while(tileList.size() > 0 && pickeable) {
+			int n = rand.nextInt(tileList.size());
+			picked = tileList.remove(n);
+			
+			pickeable = !picked.hasUnit()
+					&& picked.getStructureType() == StructureType.NO_STRUCT
+					&& !picked.isMeadowOnTile();
 		}
-		setCapital(iterator.next());
+		
+		if (!pickeable) 
+		{
+			tileList = new ArrayList<Tile>();
+			tileList.addAll(aTiles);
+			picked = tileList.get(rand.nextInt(tileList.size()));
+		}
+
 		aCapital.setUnit(null);
+		aCapital.setStructureType(StructureType.NO_STRUCT);
+		aCapital.setMeadow(false);
+		
+		setCapital(picked);
+		
 		aCapital.notifyChanged();
+		
 	}
 
 	/**
