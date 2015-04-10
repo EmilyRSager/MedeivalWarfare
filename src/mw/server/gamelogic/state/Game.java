@@ -373,12 +373,14 @@ public class Game extends RandomColorGenerator implements Serializable{
 		pDestinationTile.setStructureType(StructureType.NO_STRUCT);
 		pDestinationTile.setVillageType(VillageType.NO_VILLAGE);
 		pDestinationTile.notifyObservers();
+		
 		Iterator<Player> aPlayersIterator = aPlayers.iterator();
 		while (aPlayersIterator.hasNext())
 		{
 			Player loserCandidate = aPlayersIterator.next();
 			if (loserCandidate.isEliminated())
 			{
+				aPlayersIterator.remove();
 				loserCandidate.eliminate();
 				loserCandidate.notifyObservers();
 			}
@@ -387,8 +389,11 @@ public class Game extends RandomColorGenerator implements Serializable{
 		{
 			Player winner = aPlayers.iterator().next();
 			winner.win();
+			winner.notifyObservers();
 		}
 	}
+	
+	
 
 	/**
 	 * builds a Watchtower
