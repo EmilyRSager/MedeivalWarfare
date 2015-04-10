@@ -59,6 +59,12 @@ public class GameLogic
 					rArray.add(UnitType.PEASANT); 
 					rArray.add(UnitType.SOLDIER); 
 					rArray.add(UnitType.CANNON);
+				case CASTLE: 
+					rArray.add(UnitType.INFANTRY); 
+					rArray.add(UnitType.KNIGHT); 
+					rArray.add(UnitType.PEASANT); 
+					rArray.add(UnitType.SOLDIER); 
+					rArray.add(UnitType.CANNON);
 				default: 
 					break; 
 				}
