@@ -38,8 +38,8 @@ public class Village extends Observable implements Serializable
 	public Village(Collection<Tile> lVillageTiles) 
 	{
 		aTiles= lVillageTiles; 
-		aGold = 500; 
-		aWood = 500;
+		aGold = 7; 
+		aWood = 0;
 		villageAlreadyUpgraded = false; 
 		cannonHits = 0;
 	}
@@ -74,9 +74,9 @@ public class Village extends Observable implements Serializable
 		tileList.addAll(aTiles);
 		
 		Tile picked = null;
-		boolean pickeable = true;
+		boolean pickeable = false;
 		
-		while(tileList.size() > 0 && pickeable) {
+		while(tileList.size() > 0 && !pickeable) {
 			int n = rand.nextInt(tileList.size());
 			picked = tileList.remove(n);
 			
@@ -92,11 +92,11 @@ public class Village extends Observable implements Serializable
 			picked = tileList.get(rand.nextInt(tileList.size()));
 		}
 
+		setCapital(picked);
+		
 		aCapital.setUnit(null);
-		aCapital.setStructureType(StructureType.NO_STRUCT);
 		aCapital.setMeadow(false);
 		
-		setCapital(picked);
 		
 		aCapital.notifyChanged();
 		
