@@ -29,7 +29,7 @@ public class GameLogic
 	 */
 	public static ArrayList<UnitType> getVillagerHireOrUpgradeTypes(Tile pTile, Game pGame) 
 	{
-		
+
 		Village lVillage = pGame.getVillage(pTile);
 		VillageType lVillageType = lVillage.getVillageType();
 
@@ -37,11 +37,11 @@ public class GameLogic
 		if (pTile.getStructureType()!= StructureType.TREE 
 				&& pTile.getStructureType()!=StructureType.TOMBSTONE && pTile.getStructureType()!=StructureType.WATCHTOWER)
 		{
-		
+
 			if (pTile.getUnit()==(null))
 			{
-				
-				
+
+
 				switch (lVillageType) 
 				{
 				case HOVEL: 
@@ -129,7 +129,7 @@ public class GameLogic
 
 	public static boolean canBuildWatchtower(Tile pTile, Game pGame) 
 	{
-		
+
 		Village lVillage =  pGame.getVillage(pTile);
 		VillageType pVillageType = lVillage.getVillageType();
 		if (!pTile.equals(lVillage.getCapital()))
@@ -147,7 +147,7 @@ public class GameLogic
 
 	public static Collection<Tile> getCombinableUnitTiles(Tile startTile, Game pGame) 
 	{
-		Collection<Tile>rCombinable = new HashSet<Tile>(); 
+		Collection<Tile>rCombinable = new HashSet<Tile>();
 		Village startVillage = pGame.getVillage(startTile); 
 		for (Tile lTile: startVillage.getTiles())
 		{
@@ -158,7 +158,7 @@ public class GameLogic
 				{
 					if (lUnit.getActionType() == ActionType.READY)
 					{
-						rCombinable.add(lTile); 
+						rCombinable.add(lTile);
 					}
 				}
 			}

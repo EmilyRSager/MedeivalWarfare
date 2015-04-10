@@ -192,9 +192,6 @@ public class VillageLogic
 	 */
 	public static void starveVillage(Collection<Tile> pTiles, Village pVillage)
 	{
-
-		int x = -pVillage.getGold();
-		pVillage.addOrSubtractGold(x);
 		for (Tile lTile : pTiles)
 		{
 			if (lTile.hasUnit())
