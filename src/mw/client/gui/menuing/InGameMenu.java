@@ -27,6 +27,8 @@ public class InGameMenu
 		pane.setLayout(gLayout);
 		pane.setPreferredSize(new Dimension(250, 80));
 		
+		final InGameMenu dumbRef = this;
+		
 		exit = new JButton("EXIT");
 		exit.addActionListener(new ActionListener() {
 			
@@ -34,6 +36,7 @@ public class InGameMenu
 			public void actionPerformed(ActionEvent e)
 			{
 				MenuControl.leaveGame();
+				dumbRef.close();
 			}
 		});
 		
