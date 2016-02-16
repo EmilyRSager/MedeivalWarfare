@@ -12,3 +12,5 @@ public final class ClientApplication {
 		ScreenSwitcher.switchScreen(ScreenKind.LOGIN);
 	}
 }
+
+//this is a test
